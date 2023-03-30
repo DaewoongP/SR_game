@@ -31,7 +31,9 @@ public:
 		*MaxPoint = m_pBoundingBox->_max;
 	}
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }
-	
+	_vec3 Get_BoundCenter() { return m_pBoundingBox->Get_Center(); }
+	_vec3 Get_BoundSize() { return m_pBoundingBox->Get_Size();
+	}
 	void OnCollisionEnter(const Collision* collision);
 	void OnCollisionStay(const Collision* collision);
 	void OnCollisionExit(const Collision* collision);

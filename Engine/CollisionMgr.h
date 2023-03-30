@@ -22,7 +22,7 @@ public:
 	void		Check_Collision();
 
 	_bool		Collision_Box(CCollider* pSrc, CCollider* pDest);
-
+	_bool		Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _float * pX, _float * pY, _float * pZ);
 	void		Clear_Collision();
 private:
 	vector<CCollider*>	m_ColliderList[COL_END];

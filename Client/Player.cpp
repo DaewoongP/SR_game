@@ -18,7 +18,7 @@ HRESULT CPlayer::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 30.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 0.f);
 	//m_pTransform->m_vAngle.x += D3DXToRadian(180.f);
 
 	_matrix projMatrix;
@@ -39,7 +39,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	up = { 0.f,1.f,0.f };
 
-	m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
+	//m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
 
 	myPos = m_pTransform->m_vInfo[INFO_POS];
 	cameraPos = { myPos.x ,myPos.y + 7.f,myPos.z - 7.f };
@@ -153,23 +153,14 @@ void CPlayer::Free(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
-	_vec3		vDir;
+	_vec3		vUp;
 	_vec3		vRight;
-	m_pTransform->Get_Info(INFO_LOOK, &vDir);
+	m_pTransform->Get_Info(INFO_UP, &vUp);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	if (GetAsyncKeyState(VK_UP))	m_pTransform->Move_Pos(&vDir, fTimeDelta, m_fSpeed);
-	if (GetAsyncKeyState(VK_DOWN))	m_pTransform->Move_Pos(&vDir, fTimeDelta, -m_fSpeed);
+	if (GetAsyncKeyState(VK_UP))	m_pTransform->Move_Pos(&vUp, fTimeDelta, m_fSpeed);
+	if (GetAsyncKeyState(VK_DOWN))	m_pTransform->Move_Pos(&vUp, fTimeDelta, -m_fSpeed);
 	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->Move_Pos(&vRight, fTimeDelta, -m_fSpeed);
 	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->Move_Pos(&vRight, fTimeDelta, m_fSpeed);
 	
-	if (GetAsyncKeyState('Q'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('A'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(-180.f * fTimeDelta));
-
-	if (GetAsyncKeyState('W'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('S'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
-
-	if (GetAsyncKeyState('E'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('D'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(-180.f * fTimeDelta));
-
 }

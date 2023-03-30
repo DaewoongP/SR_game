@@ -40,11 +40,59 @@ void CCollisionMgr::Check_Collision()
 
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
-	_vec3 vMin, vMax;
-	// 이거 포인트 좌표를 8개를 넣어줄지.. 므ㅝ 어케할지 정해야할듯;;
-	pDest->Get_Point(&vMin, &vMax);
-	if (pSrc->Intersect(vMin) || pSrc->Intersect(vMax))
+	_float fX, fY, fZ;
+	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
+	{
+		// 상하 충돌 src기준
+		if (fX > fY)
+		{
+			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
+			{
+				// 상충돌
+				return true;
+			}
+			else 
+			{
+				// 하 충돌
+				return true;
+			}
+		}
+		else // 좌우 충돌
+		{
+			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
+			{
+				// 우 충돌
+				return true;
+			}
+			else
+			{
+				// 좌 충돌
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+_bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _float * pX, _float * pY, _float * pZ)
+{
+	float	fX = fabs(pDest->Get_BoundCenter().x - pSrc->Get_BoundCenter().x);
+	float	fY = fabs(pDest->Get_BoundCenter().y - pSrc->Get_BoundCenter().y);
+	float	fZ = fabs(pDest->Get_BoundCenter().z - pSrc->Get_BoundCenter().z);
+
+	float	fRadiusX = (pDest->Get_BoundSize().x + pSrc->Get_BoundSize().x) * 0.5f;
+	float	fRadiusY = (pDest->Get_BoundSize().y + pSrc->Get_BoundSize().y) * 0.5f;
+	float	fRadiusZ = (pDest->Get_BoundSize().z + pSrc->Get_BoundSize().z) * 0.5f;
+
+	// 만약 2D에서 충돌문제 생기면 Z값에 =처리 할것.
+	if ((fRadiusX > fX) && (fRadiusY > fY) && (fRadiusZ > fZ))
+	{
+		*pX = fRadiusX - fX;
+		*pY = fRadiusY - fY;
+		*pZ = fRadiusZ - fZ;
 		return true;
+	}
+
 	return false;
 }
 

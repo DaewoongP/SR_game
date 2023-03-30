@@ -89,6 +89,16 @@ struct BoundingBox : public Bound
 		_max = { 0.f,0.f,0.f };
 	}
 
+	_vec3	Get_Center()
+	{
+		return (_max - _min) / 2 + _min;
+	}
+
+	_vec3	Get_Size()
+	{
+		return _offsetMax - _offsetMin;
+	}
+
 	// 지금은 큐브와 점의 충돌임
 	virtual bool Intersect(const _vec3& point) override
 	{
