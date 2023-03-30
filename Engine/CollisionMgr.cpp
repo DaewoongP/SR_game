@@ -43,7 +43,7 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_float fX, fY, fZ;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		// 상하 충돌 src기준
+		// 상하 (src기준)
 		if (fX > fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
@@ -51,22 +51,22 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 				// 상충돌
 				return true;
 			}
-			else 
+			else
 			{
-				// 하 충돌
+				// 하충돌
 				return true;
 			}
 		}
-		else // 좌우 충돌
+		else // 좌우
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				// 우 충돌
+				// 우충돌
 				return true;
 			}
 			else
 			{
-				// 좌 충돌
+				// 좌충돌
 				return true;
 			}
 		}
@@ -84,7 +84,7 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 	float	fRadiusY = (pDest->Get_BoundSize().y + pSrc->Get_BoundSize().y) * 0.5f;
 	float	fRadiusZ = (pDest->Get_BoundSize().z + pSrc->Get_BoundSize().z) * 0.5f;
 
-	// 만약 2D에서 충돌문제 생기면 Z값에 =처리 할것.
+	// ???? 2D???? ?浹???? ????? Z???? =??? ???.
 	if ((fRadiusX > fX) && (fRadiusY > fY) && (fRadiusZ > fZ))
 	{
 		*pX = fRadiusX - fX;

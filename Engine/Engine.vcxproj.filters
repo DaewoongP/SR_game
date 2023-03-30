@@ -127,6 +127,9 @@
     <ClInclude Include="ProtoMgr.h">
       <Filter>Manager\ProtoMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Componnent\Rigidbody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -222,6 +225,9 @@
     <ClCompile Include="ProtoMgr.cpp">
       <Filter>Manager\ProtoMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Componnent\Rigidbody</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -282,6 +288,9 @@
     </Filter>
     <Filter Include="Manager\ProtoMgr">
       <UniqueIdentifier>{9390663d-146d-4aec-b311-0f86e79be166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Rigidbody">
+      <UniqueIdentifier>{75c32bce-c51b-4c0f-a13e-1f9a8ba0489a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

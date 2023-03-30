@@ -92,6 +92,7 @@ void CCollider::OnTirggerExit(const CCollider * other)
 	m_pGameObject->OnTirggerExit(other);
 }
 
+// 가로, 세로, 깊이 사이즈 넣어주면 됨.
 void CCollider::Set_BoundingBox(const _vec3 & vSize)
 {
 	D3DXCreateBox(m_pGraphicDev,

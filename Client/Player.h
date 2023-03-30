@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CRigidbody;
 END
 class CPlayer : public Engine::CGameObject
 {
@@ -31,6 +32,7 @@ private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
+	Engine::CRigidbody*		m_pRigid;
 
 	_float					m_fSpeed = 10.f;
 

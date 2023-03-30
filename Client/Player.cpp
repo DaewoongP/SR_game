@@ -18,10 +18,11 @@ HRESULT CPlayer::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 0.f);
-	//m_pTransform->m_vAngle.x += D3DXToRadian(180.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 30.f);
 
 	_matrix projMatrix;
+	
+	//투영임
 	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX/WINCY, 1.f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
 
@@ -39,11 +40,13 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	up = { 0.f,1.f,0.f };
 
-	//m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
 
 	myPos = m_pTransform->m_vInfo[INFO_POS];
-	cameraPos = { myPos.x ,myPos.y + 7.f,myPos.z - 7.f };
-	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
+
+	//카메라가 없어서 여기서 카메라인척함.
+	cameraPos = { 0.f ,0.f,-5.f };
+	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &_vec3(3.f,0.f,0.f), &up);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 
 
@@ -66,14 +69,6 @@ void CPlayer::LateUpdate_GameObject(void)
 
 		float fDot = D3DXPlaneDotCoord(&PlaneVec[i], &playerFootPos);
 		bool bIsIn = terrainTex->IsInPlane(m_pTransform->m_vInfo[INFO_POS], i);
-		
-		if (fDot <  0.f && bIsIn)
-		{
-			m_pTransform->m_vInfo[INFO_POS].y -= fDot ;
-			int i = 0;
-			// collision detected
-			// take appropriate action (e.g. adjust player's position or velocity)
-		}
 	}
 	
 	// 충돌 처리 부분.
@@ -128,6 +123,10 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Player_Collider", pComponent });
 	m_pCollider->Set_BoundingBox({3.f,3.f,3.f});
+
+	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
+	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Player_Rigidbody", pComponent });
 	return S_OK;
 }
 
@@ -153,14 +152,23 @@ void CPlayer::Free(void)
 
 void CPlayer::Key_Input(const _float & fTimeDelta)
 {
-	_vec3		vUp;
+	_vec3		vDir;
 	_vec3		vRight;
-	m_pTransform->Get_Info(INFO_UP, &vUp);
+	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	if (GetAsyncKeyState(VK_UP))	m_pTransform->Move_Pos(&vUp, fTimeDelta, m_fSpeed);
-	if (GetAsyncKeyState(VK_DOWN))	m_pTransform->Move_Pos(&vUp, fTimeDelta, -m_fSpeed);
+	if (GetAsyncKeyState(VK_UP))	m_pTransform->Move_Pos(&vDir, fTimeDelta, m_fSpeed);
+	if (GetAsyncKeyState(VK_DOWN))	m_pTransform->Move_Pos(&vDir, fTimeDelta, -m_fSpeed);
 	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->Move_Pos(&vRight, fTimeDelta, -m_fSpeed);
 	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->Move_Pos(&vRight, fTimeDelta, m_fSpeed);
 	
+	if (GetAsyncKeyState('Q'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(180.f * fTimeDelta));
+	if (GetAsyncKeyState('A'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(-180.f * fTimeDelta));
+
+	if (GetAsyncKeyState('W'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
+	if (GetAsyncKeyState('S'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
+
+	if (GetAsyncKeyState('E'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(180.f * fTimeDelta));
+	if (GetAsyncKeyState('D'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(-180.f * fTimeDelta));
+
 }

@@ -28,7 +28,7 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
 	_vec3	vPlayerPos;
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
-	//m_pTransform->Chase_Target(&vPlayerPos, m_fSpeed, fTimeDelta);
+	m_pTransform->Chase_Target(&vPlayerPos, m_fSpeed, fTimeDelta);
 	
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
