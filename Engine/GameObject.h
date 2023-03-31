@@ -24,9 +24,9 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
-	virtual void OnTriggerEnter(const class CCollider* other) {}
-	virtual void OnTriggerStay(const class CCollider* other) {}
-	virtual void OnTirggerExit(const class CCollider* other) {}
+	virtual void OnTriggerEnter(const class CCollider* other);
+	virtual void OnTriggerStay(const class CCollider* other);
+	virtual void OnTirggerExit(const class CCollider* other);
 
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);

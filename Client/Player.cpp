@@ -25,17 +25,12 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-
-	// m_planeVec
-	__super::Update_GameObject(fTimeDelta);
-
 	_matrix viewMatrix;
 	_vec3 myPos, cameraPos, up;
 
 	up = { 0.f,1.f,0.f };
 
-	//ƒ´∏ﬁ∂Û ¿”Ω√ª˝º∫
+	//Ïπ¥Î©îÎùº ÏûÑÏãúÏÉùÏÑ±
 	myPos = m_pTransform->m_vInfo[INFO_POS];
 	cameraPos = { myPos.x ,myPos.y,-5.f };
 	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
@@ -45,6 +40,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
 
+	Key_Input(fTimeDelta);
+
+	// m_planeVec
+	__super::Update_GameObject(fTimeDelta);
+
+
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -53,7 +54,7 @@ void CPlayer::LateUpdate_GameObject(void)
 	__super::LateUpdate_GameObject();
 
 	//CTerrainTex* terrainTex = dynamic_cast<CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"TerrainTex", ID_STATIC));
-	//NULL_CHECK_MSG(terrainTex, L"≈Õ∑π¿Œ ≈ÿΩ∫ ≥Œ..");
+	//NULL_CHECK_MSG(terrainTex, L"ÌÑ∞Î†àÏù∏ ÌÖçÏä§ ÎÑê..");
 
 	//const vector<D3DXPLANE>& PlaneVec = terrainTex->m_PlaneVec;
 
@@ -67,7 +68,7 @@ void CPlayer::LateUpdate_GameObject(void)
 	//	
 	//}
 	
-	// √Êµπ √≥∏Æ ∫Œ∫–.
+	// Ï∂©Îèå Ï≤òÎ¶¨ Î∂ÄÎ∂Ñ.
 }
 
 void CPlayer::Render_GameObject(void)
@@ -129,9 +130,9 @@ HRESULT CPlayer::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigid", pComponent });
 
-	m_pRigid->m_bUseGrivaty = false;
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -167,18 +168,12 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	if (GetAsyncKeyState(VK_UP))	m_pRigid->AddForce(_vec3(0,1,0),10.f);
-	if (GetAsyncKeyState(VK_DOWN))	m_pRigid->AddForce(_vec3(0,1,0),-10.f);
-	if (GetAsyncKeyState(VK_LEFT))	m_pRigid->AddForce(_vec3(1,0,0),-10.f);
-	if (GetAsyncKeyState(VK_RIGHT))	m_pRigid->AddForce(_vec3(1,0,0),10.f);
+
+	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->m_vInfo[INFO_POS].x += -6.f*fTimeDelta;
+	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->m_vInfo[INFO_POS].x += 6.f * fTimeDelta;
+
 	
-	if (GetAsyncKeyState('Q'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('A'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(-180.f * fTimeDelta));
-
-	if (GetAsyncKeyState('W'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('S'))	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
-
-	if (GetAsyncKeyState('E'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(180.f * fTimeDelta));
-	if (GetAsyncKeyState('D'))	m_pTransform->Rotation(ROT_Z, D3DXToRadian(-180.f * fTimeDelta));
+	if (GetAsyncKeyState(VK_SPACE))
+		m_pRigid->AddForce(_vec3(0, 1, 0), 5.f,IMPULSE,fTimeDelta);
 
 }

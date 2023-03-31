@@ -4,7 +4,7 @@
 #include "Scene.h"
 #include "Logo.h"
 
-// ¡÷ºÆ ≈◊Ω∫∆ÆøÎ
+// Ï£ºÏÑù ÌÖåÏä§Ìä∏Ïö©
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
 {
@@ -17,18 +17,19 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Ready_MainApp(void)
 {
-#ifdef _DEBUG
 
-	if (::AllocConsole() == TRUE)
-	{
-		FILE* nfp[3];
-		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
-		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
-		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
-		std::ios::sync_with_stdio();
-	}
-
-#endif // _DEBUG
+//#ifdef _DEBUG
+//
+//	if (::AllocConsole() == TRUE)
+//	{
+//		FILE* nfp[3];
+//		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+//		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+//		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+//		std::ios::sync_with_stdio();
+//	}
+//
+//#endif // _DEBUG
 
 	srand((unsigned int)time(NULL));
 	FAILED_CHECK_RETURN(Ready_DefaultSetting(&m_pGraphicDev), E_FAIL);
@@ -77,9 +78,9 @@ HRESULT CMainApp::Ready_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	(*ppGraphicDev) = m_pDeviceClass->Get_GraphicDev();
 	(*ppGraphicDev)->AddRef();
 
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"πŸ≈¡", 15, 20, FW_HEAVY), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"±√º≠", 15, 20, FW_HEAVY), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Ganji", L"∞ﬂ∞ÌµÒ", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"Î∞îÌÉï", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"Í∂ÅÏÑú", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Ganji", L"Í≤¨Í≥†Îîï", 15, 20, FW_HEAVY), E_FAIL);
 
 	// dinput
 	FAILED_CHECK_RETURN(Engine::Ready_DInput(g_hInst, g_hWnd), E_FAIL);

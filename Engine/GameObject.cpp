@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "Export_Function.h"
 
-// Å×½ºÆ®¿ë ÁÖ¼®
+// í…ŒìŠ¤íŠ¸ìš© ì£¼ì„
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -53,25 +53,43 @@ void CGameObject::OnCollisionEnter(const Collision * collsion)
 }
 
 void CGameObject::OnCollisionStay(const Collision * collision)
-{
-	//³ª¶û Ãæµ¹ÇÑ ¹°Ã¼°¡ ¸®Áş¹Ùµğ¸¦ °¡Áö°íÀÖÁö ¾Ê´Ù¸é ½ÇÇà X
-	CRigidbody* _rigid;
-	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigid", ID_DYNAMIC));
-	NULL_CHECK_RETURN(_rigid);
-
-	//Ãæµ¹ÀÇ ¹ı¼±À» È®ÀÎÇÕ´Ï´Ù.
-	//Áö±İÀº ±×³É ¹«½ÄÇÏ°Ô y¸¸ °íÁ¤½ÃÄÑÁÖ°ÚÀ½.
-	
-	//¾Ö´Â ³ª¶û Ãæµ¹ÇÑ ¹°Ã¼ÀÇ º§·Î½ÃÆ¼ÀÓ.
-	_vec3 velo = _rigid->m_Velocity;
-	//³ª¶û Ãæµ¹ÇÑ ¹°Ã¼ÀÇ º§·Î½ÃÆ¼¿¡¼­ Æ¯Á¤ ÃàÀ» ÇâÇÑ Èû¸¸ ³²±â°í ³¯·ÁÁÖ°ÚÀ½.
-	_vec3 reaction = _vec3(0,_rigid->m_Velocity.y,0);
-	//³ª¶û Ãæµ¹ÇÑ ¹°Ã¼¿¡ Àû¿ëÁßÀÎ velocirtÀÇ y¸¦ ¾Ë¾Æ³¿. ±×°É ³Ö¾îÁÖ°ÚÀ½
-	//±Ùµ¥ ÀÓÆŞ½º¸¦ »ç¿ëÇÏ·Á¸é Å¸ÀÓµ¨Å¸ ¾Ë¾Æ¾ßÇÏ´Âµ¥???
-	_rigid->m_Velocity -= reaction;
+{	
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)
+{
+}
+
+void CGameObject::OnTriggerEnter(const CCollider * other)
+{
+}
+
+void CGameObject::OnTriggerStay(const CCollider * other)
+{
+	//ë‚˜ë‘ ì¶©ëŒí•œ ë¬¼ì²´ê°€ ë¦¬ì§“ë°”ë””ë¥¼ ê°€ì§€ê³ ìˆì§€ ì•Šë‹¤ë©´ ì‹¤í–‰ X
+	CRigidbody* _rigid;
+	NULL_CHECK(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
+	_rigid = dynamic_cast<CRigidbody*>(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
+	
+
+	//ì¶©ëŒì˜ ë²•ì„ ì„ í™•ì¸í•©ë‹ˆë‹¤.
+	//ì§€ê¸ˆì€ ê·¸ëƒ¥ ë¬´ì‹í•˜ê²Œ yë§Œ ê³ ì •ì‹œì¼œì£¼ê² ìŒ.
+
+	//ì• ëŠ” ë‚˜ë‘ ì¶©ëŒí•œ ë¬¼ì²´ì˜ ë²¨ë¡œì‹œí‹°ì„.
+	_vec3 velo = _rigid->m_Velocity;
+	//ë‚˜ë‘ ì¶©ëŒí•œ ë¬¼ì²´ì˜ ë²¨ë¡œì‹œí‹°ì—ì„œ íŠ¹ì • ì¶•ì„ í–¥í•œ í˜ë§Œ ë‚¨ê¸°ê³  ë‚ ë ¤ì£¼ê² ìŒ.
+	if (_rigid->m_Velocity.y < 0)
+	{
+		_vec3 reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+
+		//ë‚˜ë‘ ì¶©ëŒí•œ ë¬¼ì²´ì— ì ìš©ì¤‘ì¸ velocirtì˜ yë¥¼ ì•Œì•„ëƒ„. ê·¸ê±¸ ë„£ì–´ì£¼ê² ìŒ
+		_rigid->m_Velocity -= reaction;
+	}
+	//ì¶©ëŒì‹œ ë§ˆì°°ê³„ìˆ˜ ì ìš©
+	_rigid->m_Velocity.x *= 0.95f;
+}
+
+void CGameObject::OnTirggerExit(const CCollider * other)
 {
 }
 
