@@ -40,7 +40,7 @@ inline void		Add_RenderGroup(RENDERID eID, CGameObject* pGameObject);
 inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup(void);
 
-inline void		Add_Collider(COLGROUP eID, CCollider* pCollider);
+inline void		Add_Collider(CCollider* pCollider);
 inline void		Check_Collision();
 inline void		Clear_Collision();
 

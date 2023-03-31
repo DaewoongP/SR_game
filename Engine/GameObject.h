@@ -20,9 +20,9 @@ public:
 	virtual void		LateUpdate_GameObject(void);
 	virtual void		Render_GameObject(void);
 
-	virtual void OnCollisionEnter(const class Collision* collsion) {}
-	virtual void OnCollisionStay(const class Collision* collision) {}
-	virtual void OnCollisionExit(const class Collision* collision) {}
+	virtual void OnCollisionEnter(const class Collision* collsion);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 
 	virtual void OnTriggerEnter(const class CCollider* other) {}
 	virtual void OnTriggerStay(const class CCollider* other) {}

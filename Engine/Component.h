@@ -22,7 +22,7 @@ public:
 
 	CComponent*			Get_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
-protected:
+public:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
 	_bool						m_bClone;
 	class CGameObject*			m_pGameObject;	
