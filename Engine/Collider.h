@@ -16,7 +16,7 @@ protected:
 	// 사각형 렌더링
 	LPD3DXMESH			m_pMesh;
 	COLGROUP			m_eGroup;
-	// 현재 충돌중인 상대 콜라이더와의 정보
+	// 현재 충돌중인 상대 콜라이더와의 정보 -> 복사생성시 복사할 필요 없음. 실시간 정보
 	map<CCollider*, Collision*>	m_Colmap;
 public:
 	HRESULT	Ready_Collider();
