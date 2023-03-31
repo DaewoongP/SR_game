@@ -86,6 +86,7 @@ HRESULT CCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
+	m_pCollider->Set_Group(COL_ENV);
 	
 	return S_OK;
 }

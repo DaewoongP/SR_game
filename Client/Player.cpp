@@ -97,10 +97,22 @@ void CPlayer::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CPlayer::OnTriggerStay(const CCollider * other)
+void CPlayer::OnCollisionEnter(const Collision * collision)
 {
-	static int i = 0;
-	cout << "충돌 테스트 플레이어" << ++i <<endl;
+	static int se = 0;
+	cout << "Enter" << ++se << endl;
+}
+
+void CPlayer::OnCollisionStay(const Collision * other)
+{
+	static int ss = 0;
+	cout << "Stay" << ++ss <<endl;
+}
+
+void CPlayer::OnCollisionExit(const Collision * collision)
+{
+	static int sx = 0;
+	cout << "Exit" << ++sx << endl;
 }
 
 HRESULT CPlayer::Add_Component(void)

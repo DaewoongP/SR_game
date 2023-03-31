@@ -8,6 +8,7 @@
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	CComponent(pGraphicDev)
 	, m_pMesh(nullptr)
+	, m_eGroup(COL_OBJ)
 {
 }
 
@@ -15,6 +16,7 @@ CCollider::CCollider(const CCollider & rhs) :
 	CComponent(rhs)
 	, m_pBoundingBox(rhs.m_pBoundingBox)
 	, m_pMesh(rhs.m_pMesh)
+	, m_eGroup(rhs.m_eGroup)
 {
 }
 
@@ -53,23 +55,23 @@ void CCollider::Render_Component()
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
-void CCollider::Add_Collider(CCollider * pCollider, COL_DIR eDir)
+void CCollider::Insert_Collider(CCollider * pCollider, COL_DIR eDir)
 {
 	if (nullptr == pCollider)
 		return;
 
 	if (Check_AlreadyCol(pCollider))
 	{
-		Collision* pColl = Find_ColState(pCollider);
-		COL_STATE eState = pColl->Set_Curcol(true);
-		pColl->_dir = eDir;
+		Collision* pCollision = Find_ColState(pCollider);
+		pCollision->Set_Curcol(true);
+		pCollision->_dir = eDir;
 	}
 	else
 	{
-		Collision tCollision;
-		tCollision.Set_Curcol(true);
-		tCollision._dir = eDir;
-		m_Colmap.insert({ pCollider, &tCollision });
+		Collision* pCollision = new Collision;
+		pCollision->Set_Curcol(true);
+		pCollision->_dir = eDir;
+		m_Colmap.insert({ pCollider, pCollision });
 	}
 }
 
@@ -96,12 +98,26 @@ _bool CCollider::Check_AlreadyCol(CCollider * pOtherCol)
 	return true;
 }
 
-void CCollider::Delete_Collider(CCollider * pCollider)
+_bool CCollider::Delete_OtherCollider(CCollider * pOtherCol)
 {
-	/*auto	iter = find_if(m_Colmap.begin(), m_Colmap.end(), [&](auto& iter)->_bool {
+	auto	iter = find_if(m_Colmap.begin(), m_Colmap.end(), [&](auto& iter)->_bool {
 		return pOtherCol == iter.first;
-	});*/
-	
+	});
+	if (iter == m_Colmap.end())
+		return false;
+
+	if (iter->second->Get_PreCol() == false)
+	{
+		delete iter->second;
+		iter->second = nullptr;
+		m_Colmap.erase(iter);
+		return false;
+	}
+	else
+	{
+		iter->second->Set_Curcol(false);
+		return true;
+	}
 }
 
 void CCollider::OnCollisionEnter(const Collision * collision)
@@ -155,7 +171,7 @@ CCollider * CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool bIsTrigger)
 CComponent * CCollider::Clone(void)
 {
 	CCollider* pClone = new CCollider(*this);
-	Engine::Add_Collider(COL_OBJ, pClone);
+	Engine::Add_Collider(pClone);
 	pClone->Set_BoundingBox();
 	return pClone;
 }
@@ -163,5 +179,10 @@ CComponent * CCollider::Clone(void)
 void CCollider::Free(void)
 {
 	Safe_Delete(m_pBoundingBox);
+	for_each(m_Colmap.begin(), m_Colmap.end(), [](auto& iter) {
+		delete iter.second;
+		iter.second = nullptr;
+	});
+	m_Colmap.clear();
 	__super::Free();
 }

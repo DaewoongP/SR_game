@@ -15,6 +15,7 @@ protected:
 	BoundingBox* m_pBoundingBox;
 	// 사각형 렌더링
 	LPD3DXMESH			m_pMesh;
+	COLGROUP			m_eGroup;
 	// 현재 충돌중인 상대 콜라이더와의 정보
 	map<CCollider*, Collision*>	m_Colmap;
 public:
@@ -23,18 +24,20 @@ public:
 	virtual void LateUpdate_Component() override;
 	virtual void Render_Component() override;
 public:
+	void Set_Group(COLGROUP eGroup) { m_eGroup = eGroup; }
+	COLGROUP Get_Group() { return m_eGroup; }
 	void Get_Point(_vec3* MinPoint, _vec3* MaxPoint)
 	{
 		*MinPoint = m_pBoundingBox->_min;
 		*MaxPoint = m_pBoundingBox->_max;
 	}
 	// 현재 충돌이 일어난 상대 콜라이더, 상태값 저장
-	void Add_Collider(CCollider* pCollider, COL_DIR eDir);
+	void Insert_Collider(CCollider* pCollider, COL_DIR eDir);
 	// 맵안에 해당하는 콜라이더의 상태값을 반환
 	Collision* Find_ColState(class CCollider* pOtherCol);
 	// 이미 리스트에 있는지 체크하는 함수
 	_bool	Check_AlreadyCol(class CCollider* pOtherCol);
-	void Delete_Collider(CCollider* pCollider);
+	_bool Delete_OtherCollider(CCollider* pOtherCol);
 
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }
 	_vec3 Get_BoundCenter() { return m_pBoundingBox->Get_Center(); }
