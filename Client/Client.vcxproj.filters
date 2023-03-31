@@ -65,6 +65,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Cube.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
@@ -97,5 +98,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Cube.cpp" />
   </ItemGroup>
 </Project>
