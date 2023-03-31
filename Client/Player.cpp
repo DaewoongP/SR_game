@@ -40,7 +40,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	up = { 0.f,1.f,0.f };
 
-	m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
+	//m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
 
 	myPos = m_pTransform->m_vInfo[INFO_POS];
 
@@ -101,7 +101,7 @@ void CPlayer::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CPlayer::OnTriggerStay(const CCollider * other)
+void CPlayer::OnCollisionStay(const Collision * collision)
 {
 	static int i = 0;
 	cout << "충돌 테스트 플레이어" << ++i <<endl;

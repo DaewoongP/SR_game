@@ -31,9 +31,43 @@ void CCollisionMgr::Check_Collision()
 		{
 			if (Collision_Box(*iter, *iter2))
 			{
-				(*iter)->OnTriggerStay(*iter2);
-				(*iter2)->OnTriggerStay(*iter);
+				// 충돌상태 작성된거 대로 호출
+				Collision* pCollision = (*iter)->Find_ColState(*iter2);
+				pCollision->Set_PreCol();
+				switch (pCollision->_CurState)
+				{
+				case Engine::COLSTATE_ENTER:
+					(*iter)->OnCollisionEnter(pCollision);
+					break;
+				case Engine::COLSTATE_STAY:
+					(*iter)->OnCollisionStay(pCollision);
+					break;
+				case Engine::COLSTATE_EXIT:
+					(*iter)->OnCollisionExit(pCollision);
+					break;
+				case Engine::COLSTATE_NONE:
+					break;
+				}
+
+				pCollision = (*iter2)->Find_ColState(*iter);
+				pCollision->Set_PreCol();
+				switch (pCollision->_CurState)
+				{
+				case Engine::COLSTATE_ENTER:
+					(*iter2)->OnCollisionEnter(pCollision);
+					break;
+				case Engine::COLSTATE_STAY:
+					(*iter2)->OnCollisionStay(pCollision);
+					break;
+				case Engine::COLSTATE_EXIT:
+					(*iter2)->OnCollisionExit(pCollision);
+					break;
+				case Engine::COLSTATE_NONE:
+					break;
+				}
+				
 			}
+
 		}
 	}
 }
@@ -41,6 +75,7 @@ void CCollisionMgr::Check_Collision()
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;
+
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
 		// 상하 (src기준)
@@ -49,11 +84,15 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
 				// 상충돌
+				pSrc->Add_Collider(pDest, COL_DIR::DIR_UP);
+				pDest->Add_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 			else
 			{
 				// 하충돌
+				pSrc->Add_Collider(pDest, COL_DIR::DIR_DOWN);
+				pDest->Add_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 		}
@@ -62,15 +101,22 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
 				// 우충돌
+				pSrc->Add_Collider(pDest, COL_DIR::DIR_RIGHT);
+				pDest->Add_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
 				// 좌충돌
+				pSrc->Add_Collider(pDest, COL_DIR::DIR_LEFT);
+				pDest->Add_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
 			}
 		}
 	}
+
+	// 현재 충돌이 일어나지 않았는데, 이전프레임에 충돌이 있었다면 Exit 호출
+
 	return false;
 }
 
@@ -84,7 +130,6 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 	float	fRadiusY = (pDest->Get_BoundSize().y + pSrc->Get_BoundSize().y) * 0.5f;
 	float	fRadiusZ = (pDest->Get_BoundSize().z + pSrc->Get_BoundSize().z) * 0.5f;
 
-	// ???? 2D???? ?浹???? ????? Z???? =??? ???.
 	if ((fRadiusX > fX) && (fRadiusY > fY) && (fRadiusZ > fZ))
 	{
 		*pX = fRadiusX - fX;

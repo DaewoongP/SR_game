@@ -76,11 +76,6 @@ struct Bound
 
 struct BoundingBox : public Bound
 {
-	enum COLDIR
-	{
-		COLDIR_TOP, BC_BOTTOM, BC_LEFT, BC_RIGHT
-	};
-
 	BoundingBox(const _vec3& offsetMin = { -1.f, -1.f, -1.f }, const _vec3& offsetMax = { 1.f, 1.f, 1.f })
 	{
 		_offsetMin = offsetMin;
@@ -129,14 +124,39 @@ struct BoundingBox : public Bound
 	_vec3 _offsetMax;
 };
 
-// 이게 충돌에 대한 정보를 담기위한 구조체인데 여기다가 무슨 방향으로 부딪혔는지 체크하는걸 넣으면 더 좋을거같아요
 struct Collision
 {
-	// 어떤 게임오브젝트랑 충돌했는지, 그의 트랜스폼은 무엇인지,
-	// 어떤 콜라이더랑 충돌했는지에 대한 정보에요
-	class CGameObject* otherObj;
-	class CTransform* otherTrans;
-	class CCollider* otherCollider;
+	void Set_ColDir(COL_DIR dir) { _dir = dir; }
+	COL_DIR Get_ColDir() { return _dir; }
+	COL_STATE Set_Curcol(_bool curcol) { 
+		if (false == _bPreCol && true == curcol)
+		{
+			_CurState = COLSTATE_ENTER;
+			_bCurCol = true;
+		}
+		else if (true == _bPreCol && true == curcol)
+		{
+			_CurState = COLSTATE_STAY;
+			_bCurCol = true;
+		}
+		else if (true == _bPreCol && false == curcol)
+		{
+			_CurState = COLSTATE_EXIT;
+			_bCurCol = false;
+		}
+		_bCurCol = curcol;
+		return _CurState;
+	}
+	// 다음프레임 가기전 현재 상태를 이전값에 저장
+	void Set_PreCol() { _bPreCol = _bCurCol; }
+	
+	//		이전프레임에 충돌중이였는지 확인
+	_bool	_bPreCol;
+	_bool	_bCurCol;
+	// 충돌한 방향
+	COL_DIR		_dir;
+	// 현재 enter, stay, exit 판단
+	COL_STATE	_CurState;
 };
 
 typedef struct tagViewParams
