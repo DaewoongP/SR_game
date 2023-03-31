@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "CubeTex.h"
+#include "Rigidbody.h"
 
 BEGIN(Engine)
 
