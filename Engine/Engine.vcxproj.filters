@@ -290,7 +290,7 @@
       <UniqueIdentifier>{9390663d-146d-4aec-b311-0f86e79be166}</UniqueIdentifier>
     </Filter>
     <Filter Include="Componnent\Rigidbody">
-      <UniqueIdentifier>{75c32bce-c51b-4c0f-a13e-1f9a8ba0489a}</UniqueIdentifier>
+      <UniqueIdentifier>{f5bbfd22-3b00-42c5-aefa-8a6bc988a0fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
