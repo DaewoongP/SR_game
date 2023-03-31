@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "MainApp.h"
+#include"imgui.h"
+#include"imgui_impl_dx9.h"
+#include"imgui_impl_win32.h"
 
 #define MAX_LOADSTRING 100
 
@@ -32,7 +35,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
-
+  
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
@@ -43,25 +46,54 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return FALSE;
     }
-
+  
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
-
+    
     MSG msg;
 	msg.message = WM_NULL;
-
+ 
 	CMainApp*		pMainApp = CMainApp::Create();
+
 	if (nullptr == pMainApp)
 		return FALSE;
 
+  // Setup Platform/Renderer backends
+
+    //imgui
+    WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, L"ImGui Example", NULL };
+    ::RegisterClassExW(&wc);
+   // HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX9 Example", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+ 
+    ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
+    ::UpdateWindow(g_hWnd);
+  
+    // imgui 객체 생성
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+
+    //imgui의 색 (디폴트 : 검정)
+    ImGui::StyleColorsDark();
+    //// Setup Platform/Renderer backends
+    LPDIRECT3DDEVICE9 pd3dDevice = Engine::Get_GraphicDev();
+    ImGui_ImplWin32_Init(g_hWnd);
+    ImGui_ImplDX9_Init(pd3dDevice);
+    bool show_demo_window = true;
+    bool show_another_window = true;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+  
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);
 
-
+    
     // 기본 메시지 루프입니다.
     while (true)
-    {
+    { 
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			if (WM_QUIT == msg.message)
@@ -89,11 +121,73 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				pMainApp->Update_MainApp(fTimer_FPS60);
 				pMainApp->LateUpdate_MainApp();
 				pMainApp->Render_MainApp();
-			}
+              
+               //
+                ImGui_ImplDX9_NewFrame();
+                ImGui_ImplWin32_NewFrame();
+                ImGui::NewFrame();
+
+                //// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+                if (show_demo_window)
+                    ImGui::ShowDemoWindow(&show_demo_window);
+
+               // //// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+                {
+                    static float f = 0.0f;
+                    static int counter = 0;
+                    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+               
+                   ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                   ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+                   ImGui::Checkbox("Another Window", &show_another_window);
+
+                   ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                   ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+                   if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+                       counter++;
+                   ImGui::SameLine();
+                   ImGui::Text("counter = %d", counter);
+                 
+                   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+                   ImGui::End();
+               }
+
+               //// 3. Show another simple window.
+               if (show_another_window)
+               {
+                    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                    ImGui::Text("Hello from another window!");
+                    if (ImGui::Button("Close Me"))
+                        show_another_window = false;
+                    ImGui::End();
+                }
+               
+                //// Rendering
+                ImGui::EndFrame();
+                pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+                pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+                pd3dDevice->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
+                D3DCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
+                pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clear_col_dx, 1.0f, 0);
+                if (pd3dDevice->BeginScene() >= 0)
+                {
+                    ImGui::Render();
+                    ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+                    pd3dDevice->EndScene();
+                }
+                HRESULT result = pd3dDevice->Present(NULL, NULL, NULL, NULL);
+
+              
+               
+			} 
 			
 		}        
     }
 
+   /* ImGui_ImplDX9_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();*/
 	_ulong dwRefCnt = 0;
 
 	if (dwRefCnt = Safe_Release(pMainApp))
@@ -102,7 +196,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 	}
 
-
+    
     return (int) msg.wParam;
 }
 
@@ -156,16 +250,36 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	  rc.right - rc.left, 
 	  rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
+ 
    if (!hWnd)
    {
       return FALSE;
    }
 
    g_hWnd = hWnd;
-
+ 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+   ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
+   ::UpdateWindow(g_hWnd); 
+   //IMGUI_CHECKVERSION();
+   //ImGui::CreateContext();
+   //ImGuiIO& io = ImGui::GetIO(); (void)io;
+   //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+   //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+   ////// Setup Dear ImGui style
+   //ImGui::StyleColorsDark();
+   //ImGui::StyleColorsLight();
+
+   //// Setup Platform/Renderer backends
+  /* LPDIRECT3DDEVICE9 pd3dDevice = Engine::Get_GraphicDev();
+   ImGui_ImplWin32_Init(g_hWnd);
+   ImGui_ImplWin32_Init(hWnd);
+   ImGui_ImplDX9_Init(pd3dDevice);*/
+
+   
+  
    return TRUE;
 }
 
@@ -179,8 +293,20 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+// 
+
+// imgui의 툴바를 사용하는데 필요한것으로보임
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0 // From Windows SDK 8.1+ headers
+#endif
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
+{//imgui 클릭시 필요
+   if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:

@@ -14,7 +14,6 @@ CMainApp::CMainApp()
 CMainApp::~CMainApp()
 {
 }
-
 HRESULT CMainApp::Ready_MainApp(void)
 {
 #ifdef _DEBUG

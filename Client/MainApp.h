@@ -9,6 +9,7 @@ BEGIN(Engine)
 class CGraphicDev;
 class CManagement;
 
+
 END
 
 class CMainApp : public CBase
