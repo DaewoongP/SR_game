@@ -15,4 +15,28 @@ namespace Engine
 
 	enum MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB, DIM_END };
 	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
+
+	enum COLGROUP
+	{
+		COL_ENV,
+		COL_OBJ,
+		COL_END
+	};
+
+	enum COL_DIR
+	{
+		DIR_UP,
+		DIR_DOWN,
+		DIR_LEFT,
+		DIR_RIGHT,
+		DIR_END
+	};
+	enum COL_STATE
+	{
+		COLSTATE_ENTER,
+		COLSTATE_STAY,
+		COLSTATE_EXIT,
+		COLSTATE_NONE,
+		COLSTATE_END
+	};
 }
