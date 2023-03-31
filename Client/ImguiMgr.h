@@ -3,15 +3,20 @@
 
 class CImguiMgr
 {
-	DECLARE_SINGLETON(CImguiMgr)
 
 private:
 	explicit CImguiMgr();
-	virtual ~CImguiMgr();
+	~CImguiMgr();
 
 public:
-	HRESULT Ready_Imgui();
+	HRESULT Update_Imgui(LPDIRECT3DDEVICE9		m_pGraphicDev);
 
 
 	void Release();
+
+	private:
+	
+
+
+
 };
