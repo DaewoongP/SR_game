@@ -54,23 +54,11 @@ void CGameObject::OnCollisionEnter(const Collision * collsion)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {	
-}
-
-void CGameObject::OnCollisionExit(const Collision * collision)
-{
-}
-
-void CGameObject::OnTriggerEnter(const CCollider * other)
-{
-}
-
-void CGameObject::OnTriggerStay(const CCollider * other)
-{
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;
-	NULL_CHECK(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
-	_rigid = dynamic_cast<CRigidbody*>(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
-	
+	NULL_CHECK(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
+	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
+
 
 	//충돌의 법선을 확인합니다.
 	//지금은 그냥 무식하게 y만 고정시켜주겠음.
@@ -89,7 +77,7 @@ void CGameObject::OnTriggerStay(const CCollider * other)
 	_rigid->m_Velocity.x *= 0.95f;
 }
 
-void CGameObject::OnTirggerExit(const CCollider * other)
+void CGameObject::OnCollisionExit(const Collision * collision)
 {
 }
 

@@ -108,6 +108,7 @@ void CPlayer::OnCollisionStay(const Collision * other)
 {
 	static int ss = 0;
 	cout << "Stay" << ++ss <<endl;
+	__super::OnCollisionStay(other);
 }
 
 void CPlayer::OnCollisionExit(const Collision * collision)
