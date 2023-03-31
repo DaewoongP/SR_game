@@ -25,11 +25,6 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-
-	// m_planeVec
-	__super::Update_GameObject(fTimeDelta);
-
 	_matrix viewMatrix;
 	_vec3 myPos, cameraPos, up;
 
@@ -44,6 +39,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	_matrix projMatrix;
 	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
+	Key_Input(fTimeDelta);
+
+	// m_planeVec
+	__super::Update_GameObject(fTimeDelta);
+
+	
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -101,6 +102,7 @@ void CPlayer::OnTriggerStay(const CCollider * other)
 {
 	static int i = 0;
 	cout << "충돌 테스트 플레이어" << ++i <<endl;
+	__super::OnTriggerStay(other);
 }
 
 HRESULT CPlayer::Add_Component(void)
@@ -117,9 +119,8 @@ HRESULT CPlayer::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigid", pComponent });
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
 
-	m_pRigid->m_bUseGrivaty = false;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -155,11 +156,12 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	if (GetAsyncKeyState(VK_UP))	m_pRigid->AddForce(_vec3(0,1,0),10.f);
-	if (GetAsyncKeyState(VK_DOWN))	m_pRigid->AddForce(_vec3(0,1,0),-10.f);
-	if (GetAsyncKeyState(VK_LEFT))	m_pRigid->AddForce(_vec3(1,0,0),-10.f);
-	if (GetAsyncKeyState(VK_RIGHT))	m_pRigid->AddForce(_vec3(1,0,0),10.f);
+	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->m_vInfo[INFO_POS].x += -6.f*fTimeDelta;
+	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->m_vInfo[INFO_POS].x += 6.f * fTimeDelta;
 	
+	if (GetAsyncKeyState(VK_SPACE))
+		m_pRigid->AddForce(_vec3(0, 1, 0), 5.f,IMPULSE,fTimeDelta);
+
 	if (GetAsyncKeyState('Q'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(180.f * fTimeDelta));
 	if (GetAsyncKeyState('A'))	m_pTransform->Rotation(ROT_X, D3DXToRadian(-180.f * fTimeDelta));
 

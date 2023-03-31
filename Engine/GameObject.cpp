@@ -54,24 +54,44 @@ void CGameObject::OnCollisionEnter(const Collision * collsion)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
-	CRigidbody* _rigid;
-	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigid", ID_DYNAMIC));
-	NULL_CHECK_RETURN(_rigid);
-
-	//충돌의 법선을 확인합니다.
-	//지금은 그냥 무식하게 y만 고정시켜주겠음.
 	
-	//애는 나랑 충돌한 물체의 벨로시티임.
-	_vec3 velo = _rigid->m_Velocity;
-	//나랑 충돌한 물체의 벨로시티에서 특정 축을 향한 힘만 남기고 날려주겠음.
-	_vec3 reaction = _vec3(0,_rigid->m_Velocity.y,0);
-	//나랑 충돌한 물체에 적용중인 velocirt의 y를 알아냄. 그걸 넣어주겠음
-	//근데 임펄스를 사용하려면 타임델타 알아야하는데???
-	_rigid->m_Velocity -= reaction;
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)
+{
+}
+
+void CGameObject::OnTriggerEnter(const CCollider * other)
+{
+	
+}
+
+void CGameObject::OnTriggerStay(const CCollider * other)
+{
+	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
+	CRigidbody* _rigid;
+	NULL_CHECK(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
+	_rigid = dynamic_cast<CRigidbody*>(other->m_pGameObject->Get_Component(L"Rigidbody", ID_DYNAMIC));
+	
+
+	//충돌의 법선을 확인합니다.
+	//지금은 그냥 무식하게 y만 고정시켜주겠음.
+
+	//애는 나랑 충돌한 물체의 벨로시티임.
+	_vec3 velo = _rigid->m_Velocity;
+	//나랑 충돌한 물체의 벨로시티에서 특정 축을 향한 힘만 남기고 날려주겠음.
+	if (_rigid->m_Velocity.y < 0)
+	{
+		_vec3 reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+
+		//나랑 충돌한 물체에 적용중인 velocirt의 y를 알아냄. 그걸 넣어주겠음
+		_rigid->m_Velocity -= reaction;
+	}
+	//충돌시 마찰계수 적용
+	_rigid->m_Velocity.x *= 0.95f;
+}
+
+void CGameObject::OnTirggerExit(const CCollider * other)
 {
 }
 

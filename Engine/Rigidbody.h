@@ -51,6 +51,7 @@ public:
 	void AddTorque(_vec3 _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta = 1);
 
 public:
+	_float m_time;
 	/////////ÀÌµ¿///////////// 
 	//Èû
 	_vec3 m_Force;

@@ -5,13 +5,13 @@
 
 CRigidbody::CRigidbody(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CComponent(pGraphicDev)
-	, m_fGravity(0.f, -9.8f, 0.f)
+	, m_fGravity(0.f, -15.f, 0.f)
 	, m_Velocity(0.f, 0.f, 0.f)
 	, m_InitialVelocity(0.f, 0.f, 0.f)
 	, m_bUseGrivaty(true)
-	, m_fMass(1.f)
+	, m_fMass(2.f)
 	, m_Accele(0.f, 0.f, 0.f)
-	, m_fAirResistance(1.f)
+	, m_fAirResistance(0.6f)
 	, m_bFreezePos_X(false)
 	, m_bFreezePos_Y(false)
 	, m_bFreezePos_Z(false)
@@ -80,8 +80,23 @@ _int CRigidbody::Update_Component(const _float & fTimeDelta)
 		);
 
 	///////////이동//////////////////
-	//중력 f= m*g
-	if(m_bUseGrivaty)
+
+
+	//위치 pos2 = pos1 + dt*v
+	transPos = originPos + fTimeDelta * m_Velocity;
+		m_pGameObject->m_pTransform->Set_Pos(
+			  (!m_bFreezePos_X)?(transPos.x) : (originPos.x)
+			, (!m_bFreezePos_Y)?(transPos.y) : (originPos.y)
+			, (!m_bFreezePos_Z)?(transPos.z) : (originPos.z));
+
+	m_AngularForce = _vec3(0.f, 0.f, 0.f);
+	m_time = fTimeDelta;
+	return 0;
+}
+
+void CRigidbody::LateUpdate_Component(void)
+{	//중력 f= m*g
+	if (m_bUseGrivaty)
 		AddForce(m_fGravity * m_fMass);
 
 	//공기저항 f = -kv
@@ -91,22 +106,8 @@ _int CRigidbody::Update_Component(const _float & fTimeDelta)
 	m_Accele = m_Force * (1 / m_fMass);
 
 	//속도  v = a*dt
-	m_Velocity += m_Accele * fTimeDelta;
-
-	//위치 pos2 = pos1 + dt*v
-	transPos = originPos + fTimeDelta * m_Velocity;
-		m_pGameObject->m_pTransform->Set_Pos(
-			  (!m_bFreezePos_X)?(transPos.x) : (originPos.x)
-			, (!m_bFreezePos_Y)?(transPos.y) : (originPos.y)
-			, (!m_bFreezePos_Z)?(transPos.z) : (originPos.z));
-
+	m_Velocity += m_Accele * m_time;
 	m_Force = _vec3(0.f, 0.f, 0.f);
-	m_AngularForce = _vec3(0.f, 0.f, 0.f);
-	return 0;
-}
-
-void CRigidbody::LateUpdate_Component(void)
-{
 }
 
 void CRigidbody::AddTorque(_vec3 _axis, _float _force, FORCEMODE _mode, const _float & fTimeDelta)
