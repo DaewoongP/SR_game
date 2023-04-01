@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "MainApp.h"
+#include"imgui.h"
+#include"imgui_impl_dx9.h"
+#include"imgui_impl_win32.h"
+#include"ImguiMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -18,6 +22,8 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+CImguiMgr* ImguiMgr;
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -32,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
-
+  
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
@@ -43,25 +49,44 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return FALSE;
     }
-
+  
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
-
+    
     MSG msg;
 	msg.message = WM_NULL;
-
+ 
 	CMainApp*		pMainApp = CMainApp::Create();
+
 	if (nullptr == pMainApp)
 		return FALSE;
 
+    WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, L"ImGui Example", NULL };
+    ::RegisterClassExW(&wc);
+    ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
+    ::UpdateWindow(g_hWnd);
+  
+    // imgui 객체 생성
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+
+    ////imgui의 색 (디폴트 : 검정)
+    ImGui::StyleColorsDark();
+    // Setup Platform/Renderer backends
+    LPDIRECT3DDEVICE9 pd3dDevice = Engine::Get_GraphicDev();
+    ImGui_ImplWin32_Init(g_hWnd);
+    ImGui_ImplDX9_Init(pd3dDevice);
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+   
+   
+
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
-
 	FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);
 
-
+    
     // 기본 메시지 루프입니다.
     while (true)
-    {
+    { 
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			if (WM_QUIT == msg.message)
@@ -88,8 +113,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 				pMainApp->Update_MainApp(fTimer_FPS60);
 				pMainApp->LateUpdate_MainApp();
-				pMainApp->Render_MainApp();
-			}
+                pMainApp->Render_MainApp();
+
+               
+			} 
 			
 		}        
     }
@@ -102,7 +129,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 	}
 
-
+    
     return (int) msg.wParam;
 }
 
@@ -156,16 +183,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	  rc.right - rc.left, 
 	  rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
+ 
    if (!hWnd)
-   {
-      return FALSE;
-   }
-
+   {    return FALSE;   }
    g_hWnd = hWnd;
-
+ 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
-
    return TRUE;
 }
 
@@ -179,8 +203,20 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+// 
+
+// imgui의 툴바를 사용하는데 필요한것으로보임
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0 // From Windows SDK 8.1+ headers
+#endif
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
+{//imgui 클릭시 필요
+   if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -217,7 +253,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		break;
-
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

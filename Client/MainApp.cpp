@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Logo.h"
 
-// 주석 테스트용
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
 {
@@ -14,10 +13,8 @@ CMainApp::CMainApp()
 CMainApp::~CMainApp()
 {
 }
-
 HRESULT CMainApp::Ready_MainApp(void)
 {
-
 //#ifdef _DEBUG
 //
 //	if (::AllocConsole() == TRUE)
@@ -66,6 +63,8 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	
 	m_pManagementClass->Render_Management(m_pGraphicDev);
+	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
+
 
 	Engine::Render_End();
 }
@@ -113,7 +112,7 @@ CMainApp * CMainApp::Create(void)
 		delete pInstance;
 		pInstance = nullptr;
 	}
-	
+
 	return pInstance;
 }
 
@@ -121,10 +120,12 @@ void CMainApp::Free(void)
 {
 	FreeConsole();
 	Safe_Release(m_pGraphicDev);
-
+	m_pCImguiMgr->Release();
 	Safe_Release(m_pManagementClass);
 	Safe_Release(m_pDeviceClass);
-
+	
 	Engine::Release_Utility();
 	Engine::Release_System();
+	
+	
 }
