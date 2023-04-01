@@ -25,26 +25,8 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	_matrix viewMatrix;
-	_vec3 myPos, cameraPos, up;
-
-	up = { 0.f,1.f,0.f };
-
-	//카메라 임시생성
-	myPos = m_pTransform->m_vInfo[INFO_POS];
-	cameraPos = { myPos.x ,myPos.y,-5.f };
-	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
-
-	_matrix projMatrix;
-	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
-
 	Key_Input(fTimeDelta);
-
-	// m_planeVec
 	__super::Update_GameObject(fTimeDelta);
-
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -52,21 +34,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 void CPlayer::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-
-	//CTerrainTex* terrainTex = dynamic_cast<CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"TerrainTex", ID_STATIC));
-	//NULL_CHECK_MSG(terrainTex, L"터레인 텍스 널..");
-
-	//const vector<D3DXPLANE>& PlaneVec = terrainTex->m_PlaneVec;
-
-	//for (int i = 0; i < PlaneVec.size(); i++)
-	//{
-	//	_vec3 playerFootPos = m_pTransform->m_vInfo[INFO_POS] - _vec3(0.f, 0.7f, 0.f);
-	//	//_vec3 playerFootPos = m_pTransform->m_vInfo[INFO_POS];
-
-	//	float fDot = D3DXPlaneDotCoord(&PlaneVec[i], &playerFootPos);
-	//	bool bIsIn = terrainTex->IsInPlane(m_pTransform->m_vInfo[INFO_POS], i);
-	//	
-	//}
 	
 	// 충돌 처리 부분.
 }
@@ -125,9 +92,7 @@ HRESULT CPlayer::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
-
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -162,7 +127,6 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	_vec3		vRight;
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
-
 
 	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->m_vInfo[INFO_POS].x += -6.f*fTimeDelta;
 	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->m_vInfo[INFO_POS].x += 6.f * fTimeDelta;
