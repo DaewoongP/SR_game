@@ -65,7 +65,6 @@ void CMainApp::Render_MainApp(void)
 	m_pManagementClass->Render_Management(m_pGraphicDev);
 	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
 
-
 	Engine::Render_End();
 }
 
