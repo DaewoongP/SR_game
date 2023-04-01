@@ -5,13 +5,13 @@
 
 CRigidbody::CRigidbody(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CComponent(pGraphicDev)
-	, m_fGravity(0.f, -9.8f, 0.f)
+	, m_fGravity(0.f, -15.f, 0.f)
 	, m_Velocity(0.f, 0.f, 0.f)
 	, m_InitialVelocity(0.f, 0.f, 0.f)
 	, m_bUseGrivaty(true)
-	, m_fMass(1.f)
+	, m_fMass(2.f)
 	, m_Accele(0.f, 0.f, 0.f)
-	, m_fAirResistance(1.f)
+	, m_fAirResistance(0.6f)
 	, m_bFreezePos_X(false)
 	, m_bFreezePos_Y(false)
 	, m_bFreezePos_Z(false)
@@ -57,21 +57,21 @@ HRESULT CRigidbody::Ready_Rigidbody(void)
 
 _int CRigidbody::Update_Component(const _float & fTimeDelta)
 {
-	//ÇÃ·¹ÀÌ¾î À§Ä¡ ¹Þ¾Æ¿À±â
+	//í”Œë ˆì´ì–´ ìœ„ì¹˜ ë°›ì•„ì˜¤ê¸°
 	_vec3 transPos, originPos;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &originPos);
 	
-	//°ø±âÀúÇ×
+	//ê³µê¸°ì €í•­
 	AddTorque(m_AngularVelocity*m_fAirResistance*-1.f,FORCE,fTimeDelta);
-	///////////È¸Àü//////////
+	///////////íšŒì „//////////
 	_vec3 rot = _vec3(0,0,0), originRot = _vec3(0, 0, 0);
-	//ÀÔ·Â¹ÞÀº axis¸¦ xyz·Î ³ª´­°ÅÀÓ.
+	//ìž…ë ¥ë°›ì€ axisë¥¼ xyzë¡œ ë‚˜ëˆŒê±°ìž„.
 	originRot = m_pGameObject->m_pTransform->m_vAngle;
-	//°¡¼Óµµ
+	//ê°€ì†ë„
 	m_AngularAccele = m_AngularForce * (1 / m_fMass);
-	//¼Óµµ
+	//ì†ë„
 	m_AngularVelocity += m_AngularAccele * fTimeDelta;
-	//xÃà ±âÁØ È¸Àü
+	//xì¶• ê¸°ì¤€ íšŒì „
 	rot += originRot + fTimeDelta * m_AngularVelocity;
 	m_pGameObject->m_pTransform->m_vAngle = _vec3(
 		  (!m_bFreezeRot_X) ? (rot.x) : (originRot.x)
@@ -79,34 +79,35 @@ _int CRigidbody::Update_Component(const _float & fTimeDelta)
 		, (!m_bFreezeRot_Z) ? (rot.z) : (originRot.z)
 		);
 
-	///////////ÀÌµ¿//////////////////
-	//Áß·Â f= m*g
-	if(m_bUseGrivaty)
-		AddForce(m_fGravity * m_fMass);
+	///////////ì´ë™//////////////////
 
-	//°ø±âÀúÇ× f = -kv
-	AddForce(m_Velocity*m_fAirResistance*-1.0f);
-
-	//°¡¼Óµµ  a =f/m
-	m_Accele = m_Force * (1 / m_fMass);
-
-	//¼Óµµ  v = a*dt
-	m_Velocity += m_Accele * fTimeDelta;
-
-	//À§Ä¡ pos2 = pos1 + dt*v
+	//ìœ„ì¹˜ pos2 = pos1 + dt*v
 	transPos = originPos + fTimeDelta * m_Velocity;
 		m_pGameObject->m_pTransform->Set_Pos(
 			  (!m_bFreezePos_X)?(transPos.x) : (originPos.x)
 			, (!m_bFreezePos_Y)?(transPos.y) : (originPos.y)
 			, (!m_bFreezePos_Z)?(transPos.z) : (originPos.z));
 
-	m_Force = _vec3(0.f, 0.f, 0.f);
 	m_AngularForce = _vec3(0.f, 0.f, 0.f);
+	m_time = fTimeDelta;
 	return 0;
 }
 
 void CRigidbody::LateUpdate_Component(void)
-{
+{	
+  //ì¤‘ë ¥ f= m*g
+	if (m_bUseGrivaty)
+		AddForce(m_fGravity * m_fMass);
+
+	//ê³µê¸°ì €í•­ f = -kv
+	AddForce(m_Velocity*m_fAirResistance*-1.0f);
+
+	//ê°€ì†ë„  a =f/m
+	m_Accele = m_Force * (1 / m_fMass);
+
+	//ì†ë„  v = a*dt
+	m_Velocity += m_Accele * m_time;
+	m_Force = _vec3(0.f, 0.f, 0.f);
 }
 
 void CRigidbody::AddTorque(_vec3 _axis, _float _force, FORCEMODE _mode, const _float & fTimeDelta)
@@ -114,7 +115,7 @@ void CRigidbody::AddTorque(_vec3 _axis, _float _force, FORCEMODE _mode, const _f
 	D3DXVec3Normalize(&_axis, &_axis);
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
 			m_AngularForce += _axis*_force;
 			break;
@@ -141,7 +142,7 @@ void CRigidbody::AddTorque(_vec3 _force, FORCEMODE _mode, const _float & fTimeDe
 {
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
 			m_AngularForce += _force;
 			break;
@@ -166,17 +167,17 @@ void CRigidbody::AddTorque(_vec3 _force, FORCEMODE _mode, const _float & fTimeDe
 
 void CRigidbody::AddForce(_vec3 _toward, _float _force, FORCEMODE _mode, const _float & fTimeDelta)
 {
-	//velocity¸¦ ¼öÁ¤ÇØÁÖ´Â Ä£±¸·Î º¸¸é µÉµí.
-	//Æ¯Á¤ ¸ðµå¸¦ ¹Þ¾Æ¼­ ÇØ´ç ¸ðµå¿¡ ¸Â°Ô ÈûÀ» ÁÖ´Â Ä£±¸ÀÓ.
-	//Áö±ÝÀº ¸ðµå ¾øÀÌ ÀÌ Ä£±¸·Î Èûµé ÁÖ°Ô ¼³Á¤µÇ¾î ÀÖÀ½.
+	//velocityë¥¼ ìˆ˜ì •í•´ì£¼ëŠ” ì¹œêµ¬ë¡œ ë³´ë©´ ë ë“¯.
+	//íŠ¹ì • ëª¨ë“œë¥¼ ë°›ì•„ì„œ í•´ë‹¹ ëª¨ë“œì— ë§žê²Œ íž˜ì„ ì£¼ëŠ” ì¹œêµ¬ìž„.
+	//ì§€ê¸ˆì€ ëª¨ë“œ ì—†ì´ ì´ ì¹œêµ¬ë¡œ íž˜ë“¤ ì£¼ê²Œ ì„¤ì •ë˜ì–´ ìžˆìŒ.
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
-			//¹Þ¾Æ¿Â ¹æÇâº¤ÅÍ ´ÜÀ§º¤ÅÍ·Î ¸¸µé°í
+			//ë°›ì•„ì˜¨ ë°©í–¥ë²¡í„° ë‹¨ìœ„ë²¡í„°ë¡œ ë§Œë“¤ê³ 
 			D3DXVec3Normalize(&_toward, &_toward);
 
-			//ÈûÀ» °öÇØ¼­ ³Ö¾îÁÜ.
+			//íž˜ì„ ê³±í•´ì„œ ë„£ì–´ì¤Œ.
 			m_Force += _toward * (_force);
 			break;	
 		}
@@ -205,7 +206,7 @@ void CRigidbody::AddForce(_vec3 _force, FORCEMODE _mode, const _float & fTimeDel
 {
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
 			m_Force += _force;
 			break;
@@ -235,7 +236,7 @@ void CRigidbody::AddRelativeForce(_vec3 _toward, _float _force, FORCEMODE _mode,
 	
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
 			D3DXVec3TransformNormal(&transPos, &(_toward * (_force)), &(m_pGameObject->m_pTransform->m_matWorld));
 			m_Force += transPos;
@@ -267,7 +268,7 @@ void CRigidbody::AddRelativeForce(_vec3 _force, FORCEMODE _mode, const _float & 
 	_vec3 transPos = _vec3(0, 0, 0);
 	switch (_mode)
 	{
-		case FORCE://¿¬¼Ó Áú·® o
+		case FORCE://ì—°ì† ì§ˆëŸ‰ o
 		{
 			D3DXVec3TransformNormal(&transPos, &_force, &(m_pGameObject->m_pTransform->m_matWorld));
 			m_Force += transPos;

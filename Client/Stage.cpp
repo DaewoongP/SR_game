@@ -52,16 +52,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	//// CDynamicCamera
-	/*pGameObject = CDynamicCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);*/
-	
-	// Terrain
-	/*pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);*/
-
 	pGameObject = CSkyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
@@ -96,7 +86,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	{
 		for (int j = 0; j < 32; j++)
 		{
-			//¸Ç À­ÁÙ
+			//ë§¨ ìœ—ì¤„
 			if (i == 0)
 			{
 				TCHAR objName[128] = { 0 };
@@ -108,7 +98,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				cubeCnt++;
 			}
 
-			//»çÀÌ Ã¹ÁÙ
+			//ì‚¬ì´ ì²«ì¤„
 			if (i == 17)
 			{
 				TCHAR objName[128] = { 0 };
@@ -120,7 +110,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				cubeCnt++;
 			}
 
-			//»çÀÌ ¸¶Áö¸·ÁÙ
+			//ì‚¬ì´ ë§ˆì§€ë§‰ì¤„
 			if (j == 0)
 			{
 				TCHAR objName[128] = { 0 };
@@ -132,7 +122,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				cubeCnt++;
 			}
 
-			//¸Ç ¾Æ·§ÁÙ
+			//ë§¨ ì•„ëž«ì¤„
 			if (j == 31)
 			{
 				TCHAR objName[128] = { 0 };
@@ -143,7 +133,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
-
 			TCHAR objName[128] = {0};
 			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);

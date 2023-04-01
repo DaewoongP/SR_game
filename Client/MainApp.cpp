@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Logo.h"
 
-// ÁÖ¼® Å×½ºÆ®¿ë
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
 {
@@ -14,7 +13,6 @@ CMainApp::CMainApp()
 CMainApp::~CMainApp()
 {
 }
-
 HRESULT CMainApp::Ready_MainApp(void)
 {
 //#ifdef _DEBUG
@@ -65,6 +63,8 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	
 	m_pManagementClass->Render_Management(m_pGraphicDev);
+	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
+
 
 	Engine::Render_End();
 }
@@ -77,9 +77,8 @@ HRESULT CMainApp::Ready_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	(*ppGraphicDev) = m_pDeviceClass->Get_GraphicDev();
 	(*ppGraphicDev)->AddRef();
 
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"¹ÙÅÁ", 15, 20, FW_HEAVY), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"±Ã¼­", 15, 20, FW_HEAVY), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Ganji", L"°ß°íµñ", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"ë°”íƒ•", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"ê¶ì„œ", 15, 20, FW_HEAVY), E_FAIL);
 
 	// dinput
 	FAILED_CHECK_RETURN(Engine::Ready_DInput(g_hInst, g_hWnd), E_FAIL);
@@ -113,7 +112,7 @@ CMainApp * CMainApp::Create(void)
 		delete pInstance;
 		pInstance = nullptr;
 	}
-	
+
 	return pInstance;
 }
 
@@ -121,10 +120,12 @@ void CMainApp::Free(void)
 {
 	FreeConsole();
 	Safe_Release(m_pGraphicDev);
-
+	m_pCImguiMgr->Release();
 	Safe_Release(m_pManagementClass);
 	Safe_Release(m_pDeviceClass);
-
+	
 	Engine::Release_Utility();
 	Engine::Release_System();
+	
+	
 }

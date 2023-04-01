@@ -20,14 +20,13 @@ public:
 	virtual void		LateUpdate_GameObject(void);
 	virtual void		Render_GameObject(void);
 
-	virtual void OnCollisionEnter(const class Collision* collsion) {}
-	virtual void OnCollisionStay(const class Collision* collision) {}
-	virtual void OnCollisionExit(const class Collision* collision) {}
+	virtual void OnCollisionEnter(const class Collision* collsion);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 
-	virtual void OnTriggerEnter(const class CCollider* other) {}
-	virtual void OnTriggerStay(const class CCollider* other) {}
-	virtual void OnTirggerExit(const class CCollider* other) {}
-
+	virtual void OnTriggerEnter(const class CCollider* collider) {}
+	virtual void OnTriggerStay(const class CCollider* collider) {}
+	virtual void OnTriggerExit(const class CCollider* collider) {}
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
@@ -36,7 +35,9 @@ protected:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 
 public:
-	class CTransform* m_pTransform;
+	class CTransform*	m_pTransform;
+	// 현재 2D, Topview 확인 변수 기본값 2D
+	_bool				Is2D;
 
 protected:
 	virtual void		Free(void);

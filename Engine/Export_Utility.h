@@ -25,6 +25,8 @@ inline HRESULT			Create_Management(CManagement** ppManagement);
 
 inline CComponent*			Get_Component(const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag, COMPONENTID eID);
 
+inline CLayer*				Get_Layer(const _tchar* pLayerTag);
+
 inline HRESULT			Set_Scene(CScene* pScene);
 
 inline _int			Update_Management(const _float& fTimeDelta);
@@ -35,11 +37,12 @@ inline void			Render_Management(LPDIRECT3DDEVICE9 pGraphicDev);
 inline HRESULT		Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);
 inline CComponent*	Clone_Proto(const _tchar* pProtoTag, CGameObject* pGameObject);
 
+
 inline void		Add_RenderGroup(RENDERID eID, CGameObject* pGameObject);
 inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup(void);
 
-inline void		Add_Collider(COLGROUP eID, CCollider* pCollider);
+inline void		Add_Collider(CCollider* pCollider);
 inline void		Check_Collision();
 inline void		Clear_Collision();
 

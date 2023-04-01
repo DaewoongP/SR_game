@@ -21,6 +21,16 @@ CComponent * CScene::Get_Component(const _tchar * pLayerTag, const _tchar * pObj
 	return iter->second->Get_Component(pObjTag, pComponentTag, eID);
 }
 
+CLayer * CScene::Get_Layer(const _tchar * pLayerTag)
+{
+	auto	iter = find_if(m_uMapLayer.begin(), m_uMapLayer.end(), CTag_Finder(pLayerTag));
+
+	if (iter == m_uMapLayer.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 HRESULT CScene::Ready_Scene(void)
 {
 	return S_OK;

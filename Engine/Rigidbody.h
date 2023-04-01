@@ -5,17 +5,17 @@ BEGIN(Engine)
 
 typedef	enum FroceMode
 {
-	FORCE,//¿¬¼Ó + Áú·®¹«½Ã X
-	ACCELERATION, //  ¿¬¼Ó + Áú·®¹«½Ã O
-	IMPULSE, //ºÒ¿¬¼Ó + Áú·®¹«½Ã X
-	VELOCITYCHANGE // ºÒ¿¬¼Ó + Áú·®¹«½Ã O
+	FORCE,//ì—°ì† + ì§ˆëŸ‰ë¬´ì‹œ X
+	ACCELERATION, //  ì—°ì† + ì§ˆëŸ‰ë¬´ì‹œ O
+	IMPULSE, //ë¶ˆì—°ì† + ì§ˆëŸ‰ë¬´ì‹œ X
+	VELOCITYCHANGE // ë¶ˆì—°ì† + ì§ˆëŸ‰ë¬´ì‹œ O
 }FORCEMODE;
 
 typedef enum WorldAxis
 {
-	WORLDAXIS_X, //XÃà 
-	WORLDAXIS_Y, //YÃà
-	WORLDAXIS_Z  //ZÃà
+	WORLDAXIS_X, //Xì¶• 
+	WORLDAXIS_Y, //Yì¶•
+	WORLDAXIS_Z  //Zì¶•
 }WORLDAXIS;
 
 class CRigidbody :
@@ -27,64 +27,65 @@ private:
 	virtual ~CRigidbody();
 
 public:
-	//¸®Áöµå ¹Ùµð ÃÊ±â¼³Á¤ ÇÔ¼ö.
+	//ë¦¬ì§€ë“œ ë°”ë”” ì´ˆê¸°ì„¤ì • í•¨ìˆ˜.
 	HRESULT Ready_Rigidbody(void);
 
-	//ÄÄÆ÷³ÍÆ® ¾÷µ¥ÀÌÆ®
+	//ì»´í¬ë„ŒíŠ¸ ì—…ë°ì´íŠ¸
 	virtual _int Update_Component(const _float& fTimeDelta);
 
-	//ÄÄÆ÷³ÍÆ® late¾÷µ¥ÀÌÆ®
+	//ì»´í¬ë„ŒíŠ¸ lateì—…ë°ì´íŠ¸
 	virtual void LateUpdate_Component(void);
 
 public:
-	//ÈûÀ» °¡ÇÏ´Â ÇÔ¼ö //¹æÇâ,Èû,¸ðµå,½Ã°£(Ãæ°ÝÈ¿°ú¶§¸¸ »ç¿ëÇÔ)À» ÀÔ·Â¹ÞÀ½.
-	//¿ùµå
+	//íž˜ì„ ê°€í•˜ëŠ” í•¨ìˆ˜ //ë°©í–¥,íž˜,ëª¨ë“œ,ì‹œê°„(ì¶©ê²©íš¨ê³¼ë•Œë§Œ ì‚¬ìš©í•¨)ì„ ìž…ë ¥ë°›ìŒ.
+	//ì›”ë“œ
 	void AddForce(_vec3 _toward, _float _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta=1);
 	void AddForce(_vec3 _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta =1);
-	//·ÎÄÃ
+	//ë¡œì»¬
 	void AddRelativeForce(_vec3 _toward, _float _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta = 1);
 	void AddRelativeForce(_vec3 _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta = 1);
 
-	//È¸ÀüÀ» ½ÃÅ°´Â ÇÔ¼ö //Ãà,Èû,¸ðµå,½Ã°£(Ãæ°ÝÈ¿°ú‹š¸¸ »ç¿ëÇÔ)À» ÀÔ·Â¹ÞÀ½.
-	//·ÎÄÃ
+	//íšŒì „ì„ ì‹œí‚¤ëŠ” í•¨ìˆ˜ //ì¶•,íž˜,ëª¨ë“œ,ì‹œê°„(ì¶©ê²©íš¨ê³¼Â‹Âšë§Œ ì‚¬ìš©í•¨)ì„ ìž…ë ¥ë°›ìŒ.
+	//ë¡œì»¬
 	void AddTorque(_vec3 _axis, _float _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta = 1);
 	void AddTorque(_vec3 _force, FORCEMODE _mode = FORCE, const _float & fTimeDelta = 1);
 
 public:
-	/////////ÀÌµ¿///////////// 
-	//Èû
+	_float m_time;
+	/////////ì´ë™///////////// 
+	//íž˜
 	_vec3 m_Force;
-	//ÇöÀç ¼Óµµ
+	//í˜„ìž¬ ì†ë„
 	_vec3 m_Velocity;
-	//ÃÊ±â¼Óµµ
+	//ì´ˆê¸°ì†ë„
 	_vec3 m_InitialVelocity;
-	//°¡¼Óµµ
+	//ê°€ì†ë„
 	_vec3 m_Accele;
 
-	//////////È¸Àü///////////
-	//x,y,z°¢ Èû
+	//////////íšŒì „///////////
+	//x,y,zê° íž˜
 	_vec3 m_AngularForce;
-	//°¢¼Óµµ
+	//ê°ì†ë„
 	_vec3 m_AngularVelocity;
-	//°¢°¡¼Óµµ
+	//ê°ê°€ì†ë„
 	_vec3 m_AngularAccele;
 
-	////////°øÅë////////////
-	//Áß·Â º¯¼ö (Áß·ÂÀº ¼³Á¤ ³ª¸§)
+	////////ê³µí†µ////////////
+	//ì¤‘ë ¥ ë³€ìˆ˜ (ì¤‘ë ¥ì€ ì„¤ì • ë‚˜ë¦„)
 	_vec3 m_fGravity;
-	//Áú·®
+	//ì§ˆëŸ‰
 	_float m_fMass;
-	//°ø±âÀúÇ×
+	//ê³µê¸°ì €í•­
 	_float m_fAirResistance;
 
-	////////¿É¼Ç///////////
-	//Áß·Â Àû¿ë ¿©ºÎ
+	////////ì˜µì…˜///////////
+	//ì¤‘ë ¥ ì ìš© ì—¬ë¶€
 	_bool m_bUseGrivaty;
-	//rigidbody·Î ÀÎÇÑ Æ÷Áö¼Ç º¯È¯ °íÁ¤ ¿©ºÎ
+	//rigidbodyë¡œ ì¸í•œ í¬ì§€ì…˜ ë³€í™˜ ê³ ì • ì—¬ë¶€
 	_bool m_bFreezePos_X;
 	_bool m_bFreezePos_Y;
 	_bool m_bFreezePos_Z;
-	//rigidbody·Î ÀÎÇÑ ·ÎÅ×ÀÌ¼Ç º¯È¯ °íÁ¤ ¿©ºÎ
+	//rigidbodyë¡œ ì¸í•œ ë¡œí…Œì´ì…˜ ë³€í™˜ ê³ ì • ì—¬ë¶€
 	_bool m_bFreezeRot_X;
 	_bool m_bFreezeRot_Y;
 	_bool m_bFreezeRot_Z;
