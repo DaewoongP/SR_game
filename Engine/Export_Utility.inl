@@ -13,6 +13,11 @@ CComponent*			Get_Component(const _tchar* pLayerTag, const _tchar* pObjTag, cons
 	return CManagement::GetInstance()->Get_Component(pLayerTag, pObjTag, pComponentTag, eID);
 }
 
+CLayer*				Get_Layer(const _tchar* pLayerTag)
+{
+	return CManagement::GetInstance()->Get_Layer(pLayerTag);
+}
+
 HRESULT			Set_Scene(CScene* pScene)
 {
 	return CManagement::GetInstance()->Set_Scene(pScene);
