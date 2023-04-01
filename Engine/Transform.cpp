@@ -28,6 +28,10 @@ CTransform::~CTransform()
 
 
 
+//
+//void CTransform::TestXRotation()
+//{
+//}t
 
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)
 {
@@ -112,6 +116,7 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	// 위치 변환
 	_matrix			matTrans;
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
+
 
 
 	m_matWorld = matScale * m_matBill * matRotation * matTrans;

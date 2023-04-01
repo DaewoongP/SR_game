@@ -66,6 +66,9 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DynamiCamera.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
@@ -99,5 +102,8 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DynamiCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

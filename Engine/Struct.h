@@ -139,7 +139,7 @@ typedef struct tagViewParams
 	{
 		ZeroMemory(this, sizeof(tagViewParams));
 	}
-	tagViewParams(const _vec3& vEye, const _vec3& vAt, const _vec3& vUp)
+	tagViewParams(const _vec3& vEye, const _vec3& vAt, const _vec3& vUp = { 0.0f,1.0f,0.0f })
 	{
 		this->vEye = vEye;
 		this->vAt = vAt;
@@ -164,11 +164,11 @@ typedef struct tagProjParams
 	_float fNear;
 	_float fFar;
 
-	tagProjParams()
-	{
-		ZeroMemory(this, sizeof(tagProjParams));
-	}
-	tagProjParams(const _float& fFov, const _float& fAspect, const _float& fNear, const _float& fFar)
+	//tagProjParams()
+	//{
+	//	ZeroMemory(this, sizeof(tagProjParams));
+	//}
+	tagProjParams(const _float& fFov = D3DXToRadian(90), const _float& fAspect = (float)WINCX / WINCY, const _float& fNear = 0.0f, const _float& fFar = 1000.0f)
 	{
 		this->fFov = fFov;
 		this->fAspect = fAspect;

@@ -6,7 +6,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Cube.h"
-
+#include "DynamiCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -81,15 +81,20 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
+	//CAMERA
+	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
+
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
 	int cubeCnt=0;
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 18; i++)
 	{
-		for (int j = 0; j < 25; j++)
+		for (int j = 0; j < 32; j++)
 		{
 			//맨 윗줄
 			if (i == 0)
@@ -104,7 +109,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			}
 
 			//사이 첫줄
-			if (i == 19)
+			if (i == 17)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
@@ -128,7 +133,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			}
 
 			//맨 아랫줄
-			if (j == 24)
+			if (j == 31)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));

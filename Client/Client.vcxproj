@@ -156,6 +156,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DynamiCamera.h" />
     <ClInclude Include="Loading.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />

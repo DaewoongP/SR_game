@@ -48,7 +48,7 @@ public:
 
 		D3DXMatrixInverse(&m_matBill, 0, &m_matBill);
 	}
-
+	
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
 

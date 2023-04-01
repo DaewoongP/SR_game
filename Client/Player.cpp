@@ -30,6 +30,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	// m_planeVec
 	__super::Update_GameObject(fTimeDelta);
 
+#if 0
 	_matrix viewMatrix;
 	_vec3 myPos, cameraPos, up;
 
@@ -44,6 +45,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	_matrix projMatrix;
 	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
+#endif // ¿·Ω√ ≤®µ“
+
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
