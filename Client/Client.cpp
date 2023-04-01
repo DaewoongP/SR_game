@@ -62,7 +62,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     //imgui
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, L"ImGui Example", NULL };
     ::RegisterClassExW(&wc);
-   // HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX9 Example", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+    //HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX9 Example", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
  
     ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
     ::UpdateWindow(g_hWnd);
@@ -85,14 +85,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     bool show_another_window = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
   
-
-
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);
 
-    
     // 기본 메시지 루프입니다.
     while (true)
     { 
@@ -124,7 +121,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				pMainApp->LateUpdate_MainApp();
                 pMainApp->Render_MainApp();
 
-               // //
+               //
                // ImGui_ImplDX9_NewFrame();
                // ImGui_ImplWin32_NewFrame();
                // ImGui::NewFrame();

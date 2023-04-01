@@ -28,6 +28,15 @@ private:
 	HRESULT			Ready_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev);
 	HRESULT			Set_Scene(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagement);
 
+// 플레이어의 값 변경 함수
+private:
+	void			Change_Player_Scale(float fX, float fY, float fZ);
+	void			Change_Player_Pos(float fX, float fY, float fZ);
+	void			Change_Player_Rotation(float fX, float fY, float fZ);
+
+// 플레이어의 값 변경 변수
+
+
 private:
 	Engine::CGraphicDev*		m_pDeviceClass;
 	Engine::CManagement*		m_pManagementClass;

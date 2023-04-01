@@ -18,7 +18,7 @@ HRESULT CPlayer::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 30.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(1.f, 1.f, 1.f);
 	//m_pTransform->m_vAngle.x += D3DXToRadian(180.f);
 
 	_matrix projMatrix;
@@ -42,7 +42,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS].y -= 1.f * fTimeDelta;
 
 	myPos = m_pTransform->m_vInfo[INFO_POS];
-	cameraPos = { myPos.x ,myPos.y + 7.f,myPos.z - 7.f };
+	cameraPos = { myPos.x ,myPos.y + 20.f,myPos.z - 20.f };
 	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 

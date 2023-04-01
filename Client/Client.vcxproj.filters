@@ -98,6 +98,9 @@
     <ClInclude Include="ImguiMgr.h">
       <Filter>Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="CubeTerrain.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="ImguiMgr.cpp">
       <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeTerrain.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
