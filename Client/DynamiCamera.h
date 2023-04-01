@@ -25,28 +25,19 @@ private:
 	void		Key_Input(const _float& fTimeDelta);
 	void		ToodeeAndTopdee(const _float& fTimeDelta);
 
-
-
-	//1~30
 	float Linear(float A, float B, float Alpha)
 	{
 		return A * (1 - Alpha) + B * Alpha;
 	}
 
 	_bool m_bToodee;
-
 	_float m_fTime;
-	
 	_matrix matRotX;
-
 	_vec3 vEye, vAt, vUp;
 
 public:
 	static CDynamiCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-
-private:
-	CCamera* m_pCameraCom;
 };
 //기준점에서 {기준점 y + 0 * 거리, 기준점 z + 1 * 거리},{기준점 y + 삼각함수30 * 거리, 기준점 z + 삼각함수30 * 거리} * 거리
 //바라보는 방향 항상 기준점

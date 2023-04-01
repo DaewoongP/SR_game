@@ -26,30 +26,18 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 	m_pTransform->Set_Pos(0.0f, 0.0f, -100.0f);
 
 	m_pTransform->m_vInfo[INFO_LOOK] = { 0.0f,0.0f,1.0f };
-
 	_matrix ProjectionMatrix;
-
 	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DXToRadian(60), 960.0f / 600.0f, 0.0f, 1000.0f);
-
-
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
-
-
 	return S_OK;
 }
 
 _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	
-
 	_float fTemp;
 
 	fTemp = m_pTransform->m_vAngle.x;
 	fTemp *= -1;
-	/*if (!m_bToodee)
-	{
-		
-	}*/
 	vEye = { 32.0f ,18.0f,-25.0f };
 	vAt = { 32.0f ,18.0f,0.0f };
 	
@@ -65,10 +53,6 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 	_vec3 vAxisX = { 1.f, 0.f, 0.f };
 	// 카메라의 업벡터
 	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
-
-	//vEye.y = sinf(D3DXToRadian(fTemp)) * 20;
-	//vAt.y -= sinf(D3DXToRadian(fTemp)) * 20;
-
 	_matrix viewMatrix;
 
 	D3DXMatrixLookAtLH(&viewMatrix, &vEye, &vAt, &vUp);
@@ -78,11 +62,9 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 
 	Key_Input(fTimeDelta);
 
-	__super::Update_GameObject(fTimeDelta);
+	__super::Update_GameObject(fTimeDelta);	
 
-	
-
-	return _int();
+	return 0;
 }
 
 void CDynamiCamera::LateUpdate_GameObject(void)
@@ -97,10 +79,6 @@ void CDynamiCamera::Render_GameObject(void)
 HRESULT CDynamiCamera::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-
-	pComponent = m_pCameraCom = dynamic_cast<CCamera*>(Engine::Clone_Proto(L"Camera", this));
-	NULL_CHECK_RETURN(m_pTransform, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Camera", pComponent });
 	
 	return S_OK;
 }
@@ -190,34 +168,8 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 			_matrix matParents;
 
 			D3DXMatrixRotationX(&matParents, m_pTransform->m_vAngle.x);
-		
-			
-
-
-			//m_pTransform->Rotation(ROT_X, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			/*_vec3 vPos = { 0.0f, 0.0f, -100.0f };
-
-			_matrix matRotX, matTrans;
-
-			D3DXMatrixRotationX(&matRotX, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, vPos.z);
-
-			vPos = { 0.0f, 0.0f, 0.0f };
-
-			matRotX *= matTrans;
-
-			D3DXVec3TransformCoord(&vPos, &vPos, &matRotX);
-
-			m_pTransform->Set_Pos(vPos.x, vPos.y, vPos.z);*/
 		}
 	}
-	
-	cout << m_pTransform->m_vAngle.x << endl;
-	
-
-
 }
 
 CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
