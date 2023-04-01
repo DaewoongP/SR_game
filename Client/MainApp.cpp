@@ -41,13 +41,6 @@ int CMainApp::Update_MainApp(const _float & fTimeDelta)
 	Engine::Update_DInput();
 
 	_long	dwMouse = 0;
-
-	/*if (dwMouse = Engine::Get_DIMouseMove(DIMS_Z))
-	{
-		int a = 0;
-	}*/
-
-
 	m_pManagementClass->Update_Management(fTimeDelta);
 
 	return 0;

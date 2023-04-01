@@ -1,13 +1,13 @@
 #pragma once
 
-#define		WINCX		800
-#define		WINCY		600
+#define		WINCX		1366
+#define		WINCY		768
 
 #define		VTXCNTX		129
 #define		VTXCNTZ		129
 #define		VTXITV		1
 
-#define		CUBEX		32
+#define		CUBEX		25
 #define		CUBEY		18
 
 #ifndef			MSG_BOX

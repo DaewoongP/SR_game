@@ -38,15 +38,26 @@ public:
 		*(((_float*)&m_vAngle) + eRot) += fAngle;
 	}
 
-	void	Set_Billboard(_matrix* _matView)
+	void	Set_BillboardX(_matrix* _matView)
 	{
-		D3DXMatrixIdentity(&m_matBill);
-		m_matBill._11 = _matView->_11;
-		m_matBill._13 = _matView->_13;
-		m_matBill._31 = _matView->_31;
-		m_matBill._33 = _matView->_33;
+		D3DXMatrixIdentity(&m_matBillX);
+		m_matBillX._22 = _matView->_22;
+		m_matBillX._23 = _matView->_23;
+		m_matBillX._32 = _matView->_32;
+		m_matBillX._33 = _matView->_33;
 
-		D3DXMatrixInverse(&m_matBill, 0, &m_matBill);
+		D3DXMatrixInverse(&m_matBillX, 0, &m_matBillX);
+	}
+
+	void	Set_BillboardY(_matrix* _matView)
+	{
+		D3DXMatrixIdentity(&m_matBillY);
+		m_matBillY._11 = _matView->_11;
+		m_matBillY._13 = _matView->_13;
+		m_matBillY._31 = _matView->_31;
+		m_matBillY._33 = _matView->_33;
+
+		D3DXMatrixInverse(&m_matBillY, 0, &m_matBillY);
 	}
 	
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
@@ -65,7 +76,8 @@ public:
 
 	_vec3		m_vAngle;
 	_matrix		m_matWorld;
-	_matrix		m_matBill;
+	_matrix		m_matBillX;
+	_matrix		m_matBillY;
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent*		Clone(void);

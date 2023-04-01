@@ -21,16 +21,14 @@ HRESULT CCube::Ready_GameObject(void)
 
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
-	_matrix		matCamWorld;
+	_matrix matView;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
-	D3DXMatrixInverse(&matCamWorld, 0, &matCamWorld);
-
-	//m_pTransform->Set_Pos(matCamWorld._41, matCamWorld._42 + 3.f, matCamWorld._43);
+	m_pTransform->Set_BillboardX(&matView);
 
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
 	return 0;
 }
@@ -44,15 +42,9 @@ void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	__super::Render_GameObject();
 }
