@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "CubeTex.h"
+#include "Rigidbody.h"
 
 BEGIN(Engine)
 
@@ -34,11 +35,12 @@ inline void			Render_Management(LPDIRECT3DDEVICE9 pGraphicDev);
 inline HRESULT		Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);
 inline CComponent*	Clone_Proto(const _tchar* pProtoTag, CGameObject* pGameObject);
 
+
 inline void		Add_RenderGroup(RENDERID eID, CGameObject* pGameObject);
 inline void		Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void		Clear_RenderGroup(void);
 
-inline void		Add_Collider(COLGROUP eID, CCollider* pCollider);
+inline void		Add_Collider(CCollider* pCollider);
 inline void		Check_Collision();
 inline void		Clear_Collision();
 

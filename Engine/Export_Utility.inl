@@ -53,9 +53,9 @@ void		Clear_RenderGroup(void)
 	CRenderer::GetInstance()->Clear_RenderGroup();
 }
 
-void		Add_Collider(COLGROUP eID, CCollider* pCollider)
+void		Add_Collider(CCollider* pCollider)
 {
-	CCollisionMgr::GetInstance()->Add_Collider(eID, pCollider);
+	CCollisionMgr::GetInstance()->Add_Collider(pCollider);
 }
 void		Check_Collision()
 {

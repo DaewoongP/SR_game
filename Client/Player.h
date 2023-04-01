@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CRigidbody;
 END
 class CPlayer : public Engine::CGameObject
 {
@@ -21,8 +22,9 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
-
-	virtual void OnTriggerStay(const class CCollider* other);
+	virtual void OnCollisionEnter(const class Collision* collision);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
@@ -31,6 +33,7 @@ private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
+	Engine::CRigidbody*		m_pRigid;
 
 	_float					m_fSpeed = 10.f;
 
