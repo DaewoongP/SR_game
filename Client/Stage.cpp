@@ -138,7 +138,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
-
+			
 			/*TCHAR objName[128] = {0};
 			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);

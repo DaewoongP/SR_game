@@ -100,21 +100,15 @@ void CPlayer::Render_GameObject(void)
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
-	static int se = 0;
-	cout << "Enter" << ++se << endl;
 }
 
 void CPlayer::OnCollisionStay(const Collision * other)
 {
-	static int ss = 0;
-	cout << "Stay" << ++ss <<endl;
 	__super::OnCollisionStay(other);
 }
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
-	static int sx = 0;
-	cout << "Exit" << ++sx << endl;
 }
 
 HRESULT CPlayer::Add_Component(void)

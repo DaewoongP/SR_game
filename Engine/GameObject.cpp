@@ -3,10 +3,8 @@
 #include "Transform.h"
 #include "Export_Function.h"
 
-// 테스트용 주석
-
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: m_pGraphicDev(pGraphicDev)
+	: m_pGraphicDev(pGraphicDev), Is2D(true)
 {
 	m_pGraphicDev->AddRef();
 
