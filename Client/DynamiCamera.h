@@ -30,10 +30,11 @@ private:
 		return A * (1 - Alpha) + B * Alpha;
 	}
 
-	_bool m_bToodee;
 	_float m_fTime;
 	_matrix matRotX;
 	_vec3 vEye, vAt, vUp;
+
+	_float m_fToo, m_fTop;
 
 public:
 	static CDynamiCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

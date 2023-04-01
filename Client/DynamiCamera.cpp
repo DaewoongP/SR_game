@@ -7,11 +7,12 @@
 CDynamiCamera::CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev),
-	m_bToodee(true),
 	m_fTime(0.0f),
 	vEye({ 32.0f ,18.0f,-30.0f}),
 	vAt({ 32.0f ,18.0f,0.0f }),
-	vUp({ 0.0f ,1.0f,0.0f })
+	vUp({ 0.0f ,1.0f,0.0f }),
+	m_fToo(0.0f),
+	m_fTop(30.0f)
 {
 }
 
@@ -27,7 +28,7 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 
 	m_pTransform->m_vInfo[INFO_LOOK] = { 0.0f,0.0f,1.0f };
 	_matrix ProjectionMatrix;
-	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DXToRadian(60), 960.0f / 600.0f, 0.0f, 1000.0f);
+	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DXToRadian(60), (float)WINCX / WINCY, 1.0f, 1000.0f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
 	return S_OK;
 }
@@ -45,11 +46,17 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 
 	D3DXMatrixRotationX(&matRotX, D3DXToRadian(fTemp));
 
+	vEye.y -= sinf(D3DXToRadian(fTemp))*25.0f;
+	vEye.z -= (1 - cosf(D3DXToRadian(fTemp)))*25.0f;
+
 	_vec3 vDir;
 	vDir = vEye - vAt;
 	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
 
 	vEye = vAt + vDir;
+
+
+
 	_vec3 vAxisX = { 1.f, 0.f, 0.f };
 	// 카메라의 업벡터
 	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
@@ -85,35 +92,33 @@ HRESULT CDynamiCamera::Add_Component(void)
 
 void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 {
-	if (30 <= m_pTransform->m_vAngle.x || 1 >= m_pTransform->m_vAngle.x)
-	{
-		if (GetAsyncKeyState('T'))
+	
+		if (GetAsyncKeyState('T') & 0x8000 && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 		{
-			if (m_bToodee)
+			if (Is2D)
 			{
-				m_bToodee = false;
+				Is2D = false;
 			}
-			else if (!m_bToodee)
+			else if (!Is2D)
 			{
-				m_bToodee = true;
+				Is2D = true;
 			}
 		}
-	}
 }
 
 void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 {
 	//투디 일때
-	if (m_bToodee)
+	if (Is2D)
 	{
 		//각도가 1보다 작다면
-		if (1.0f >= m_pTransform->m_vAngle.x)
+		if (m_fToo >= m_pTransform->m_vAngle.x)
 		{
 			//x축 회전 1도
-			m_pTransform->m_vAngle.x = 1.0f;
+			m_pTransform->m_vAngle.x = m_fToo;
 			//시간 초기화
 			m_fTime = 0.0f;
-			m_bToodee = false;
+			//Is2D = false;
 		}
 		//1보다 크다면
 		else
@@ -122,7 +127,7 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 			m_fTime += fTimeDelta;
 			
 			//각도 감소
-			m_pTransform->m_vAngle.x = Linear(30.0f, 1.0f, m_fTime);
+			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
 
 			m_pTransform->Rotation(ROT_X, D3DXToRadian(m_pTransform->m_vAngle.x));
 
@@ -143,16 +148,16 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 			m_pTransform->Set_Pos(vPos.x, vPos.y, vPos.z);
 		}
 	}
-	else if (!m_bToodee)
+	else if (!Is2D)
 	{
 		//각도가 30보다 크다면
-		if (30.0f <= m_pTransform->m_vAngle.x)
+		if (m_fTop <= m_pTransform->m_vAngle.x)
 		{
 			//x축 회전 30도
-			m_pTransform->m_vAngle.x = 30.0f;
+			m_pTransform->m_vAngle.x = m_fTop;
 			//시간 초기화
 			m_fTime = 0.0f;
-			m_bToodee = true;
+			//Is2D = true;
 
 		}
 		//30보다 작다면
@@ -162,7 +167,7 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 			m_fTime += fTimeDelta;
 			
 			//각도 증가
-			m_pTransform->m_vAngle.x = Linear(1.0f, 30.0, m_fTime);
+			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
 
 			//부모 역활을 할 matrix
 			_matrix matParents;
