@@ -22,7 +22,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	//
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -66,21 +65,13 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	// Rendering
 	ImGui::EndFrame();
+	ImGui::Render();
 
-	//D3DCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));
-	//pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clear_col_dx, 1.0f, 0);
-
-//	if (m_pGraphicDev->BeginScene() >= 0)
-	{
-		ImGui::Render();
-		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-		m_pGraphicDev->EndScene();
-	}
+	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+	m_pGraphicDev->EndScene();
 	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
-	//HRESULT result = pd3dDevice->Present(NULL, NULL, NULL, NULL);
-
 	return S_OK;
 }
 
