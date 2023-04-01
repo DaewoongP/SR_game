@@ -18,6 +18,12 @@ CComponent * CManagement::Get_Component(const _tchar * pLayerTag, const _tchar *
 	return m_pScene->Get_Component(pLayerTag, pObjTag, pComponentTag, eID);
 }
 
+CLayer * CManagement::Get_Layer(const _tchar * pLayerTag)
+{
+	NULL_CHECK_RETURN(m_pScene, nullptr);
+	return m_pScene->Get_Layer(pLayerTag);
+}
+
 HRESULT CManagement::Set_Scene(CScene * pScene)
 {
 	Safe_Release(m_pScene);
