@@ -31,16 +31,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	up = { 0.f,1.f,0.f };
 
-	//카메라 임시생성
-	myPos = m_pTransform->m_vInfo[INFO_POS];
-	cameraPos = { myPos.x ,myPos.y,-20.f };
-	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
-
-	_matrix projMatrix;
-	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
-
 	Key_Input(0.01f);
 
 	__super::Update_GameObject(fTimeDelta);
