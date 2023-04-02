@@ -99,6 +99,7 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
+    </ClInclude>
     <ClInclude Include="DynamiCamera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -159,6 +160,7 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
+    </ClCompile>  
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
