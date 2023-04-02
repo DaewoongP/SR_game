@@ -119,20 +119,20 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			// 디폴트 큐브의 움직임(대충)
 			{
-				if (Engine::Get_DIKeyState(DIK_A) & 0x80) // 좌
+				if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN) // 좌
 					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 2.f;
 
-				if (Engine::Get_DIKeyState(DIK_D) & 0x80) // 우
+				if (Engine::Get_DIKeyState(DIK_D) == Engine::KEYDOWN) // 우
 					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 2.f;
 
-				if (Engine::Get_DIKeyState(DIK_W) & 0x80) // 상
+				if (Engine::Get_DIKeyState(DIK_W) == Engine::KEYDOWN) // 상
 					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 2.f;
 
-				if (Engine::Get_DIKeyState(DIK_S) & 0x80) // 하
+				if (Engine::Get_DIKeyState(DIK_S) == Engine::KEYDOWN) // 하
 					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 2.f;
 			}
 
-			if (Engine::Get_DIKeyState(DIK_E) & 0x80)
+			if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
 			{
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);

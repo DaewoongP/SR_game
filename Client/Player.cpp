@@ -75,11 +75,15 @@ void CPlayer::OnCollisionEnter(const Collision * collision)
 void CPlayer::OnCollisionStay(const Collision * collision)
 {
 	if (collision->_dir == DIR_DOWN)
-     		m_bJumpalbe = true;	
+		m_bJumpalbe = true;
 
 	if (fabsf(m_pRigid->m_Velocity.y) > 1.f && m_bJumpalbe)
+	{
+		m_bJumpalbe = false;
 		m_pTextureCom->Switch_Anim(L"Jump");
-	else if (fabsf(m_pRigid->m_Velocity.x)>1.f)
+	}
+
+	else if (fabsf(m_pRigid->m_Velocity.x) > 1.f)
 		m_pTextureCom->Switch_Anim(L"Walk");
 	else
 		m_pTextureCom->Switch_Anim(L"Idle");
@@ -89,7 +93,6 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
-	m_bJumpalbe = false;
 }
 
 HRESULT CPlayer::Add_Component(void)
@@ -117,6 +120,8 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
+
+	m_pTransform->m_bIsStatic = false;
 	return S_OK;
 }
 
