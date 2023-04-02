@@ -52,6 +52,14 @@ typedef	struct tagIndex32
 
 }INDEX32;
 
+struct Anim_Info
+{
+	_int iStartIdx;
+	_int iEndIdx;
+	_ulong dwCycle;
+	bool bisLoop;
+};
+
 struct Particle
 {
 	_vec3 vPos;

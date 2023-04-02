@@ -39,4 +39,12 @@ namespace Engine
 		COLSTATE_NONE,
 		COLSTATE_END
 	};
+
+	enum KEYSTATE
+	{
+		KEYDOWN,
+		KEYPRESS,
+		KEYUP,
+		KEYNONE
+	};
 }

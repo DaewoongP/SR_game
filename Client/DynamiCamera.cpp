@@ -90,7 +90,7 @@ void CDynamiCamera::Rotation_View()
 
 void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_X) & 0x80 && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
+	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYDOWN && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 	{
 		if (Is2D)
 		{

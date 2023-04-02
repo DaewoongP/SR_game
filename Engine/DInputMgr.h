@@ -14,9 +14,24 @@ private:
 	virtual ~CDInputMgr();
 
 public:
-	_byte		Get_DIKeyState(_ubyte ubyKeyID) 
+	Engine::KEYSTATE	Get_DIKeyState(_ubyte ubyKeyID) 
 	{
-		return m_byKeyState[ubyKeyID];
+		//키가 눌렸고 체킹된적 없다.
+		if (m_byKeyState[ubyKeyID]&0x80 && !m_bKeyCheck_main[ubyKeyID])
+		{
+			m_bKeyCheck_sub[ubyKeyID] = true;
+			return KEYDOWN;
+		}//키가 눌렸고 체킹된적 있다.
+		else if(m_byKeyState[ubyKeyID] & 0x80 && m_bKeyCheck_main[ubyKeyID])
+		{
+			return KEYPRESS;
+		}//키가 체킹된적 있지만 눌리진 않았다.
+		else if(!(m_byKeyState[ubyKeyID] & 0x80) && m_bKeyCheck_main[ubyKeyID])
+		{
+			m_bKeyCheck_sub[ubyKeyID] = false;
+			return KEYUP;
+		}
+		return KEYNONE;
 	}
 	_byte		Get_DIMouseState(MOUSEKEYSTATE eMouseID)
 	{
@@ -41,6 +56,8 @@ private:
 
 private:
 	_byte					m_byKeyState[256];
+	_bool					m_bKeyCheck_sub[256];
+	_bool					m_bKeyCheck_main[256];
 	 DIMOUSESTATE			m_MouseState;
 
 public:

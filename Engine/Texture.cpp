@@ -5,12 +5,23 @@
 
 CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CComponent(pGraphicDev)
+	, m_bUseFrameAnimation(false)
+	, m_dwTimer(0)
+	, m_CurIdx(0)
+	, m_bisLoop(false)
 {
+	memset(&m_CurrentAnim, 0, sizeof(m_CurrentAnim));
 }
 
 
 CTexture::CTexture(const CTexture & rhs)
 	:CComponent(rhs)
+	, m_bUseFrameAnimation(rhs.m_bUseFrameAnimation)
+	, m_dwTimer(rhs.m_dwTimer)
+	, m_CurrentAnim(rhs.m_CurrentAnim)
+	, m_CurIdx(rhs.m_CurIdx)
+	, m_AnimMap(rhs.m_AnimMap)
+	, m_bisLoop(rhs.m_bisLoop)
 {
 	_uint	iSize = rhs.m_vecTexture.size();
 	m_vecTexture.reserve(iSize);
@@ -19,7 +30,6 @@ CTexture::CTexture(const CTexture & rhs)
 
 	for (auto& iter : m_vecTexture)
 		iter->AddRef();
-
 }
 
 CTexture::~CTexture()
@@ -56,12 +66,48 @@ HRESULT CTexture::Ready_Texture(TEXTYPE eTextype, const _tchar * pPath, const _u
 	return S_OK;
 }
 
+void CTexture::Add_Anim(_tchar * name, int startIdx, int endIdx, _ulong dwCycle,bool loop)
+{
+	m_AnimMap.insert({ name,Anim_Info{startIdx,endIdx,dwCycle,loop} });
+}
+
+void CTexture::Switch_Anim(_tchar * name)
+{
+	if (m_CurrentAnimName == name)
+		return;
+
+	auto iter = find_if(m_AnimMap.begin(), m_AnimMap.end(), CTag_Finder(name));
+
+	if (iter == m_AnimMap.end())
+		return;
+	m_CurrentAnimName = name;
+	m_dwTimer = 0;
+	m_CurrentAnim = iter->second;
+	m_bisLoop = m_CurrentAnim.bisLoop;
+}
+
+void CTexture::Update_Anim(const _float & fTimeDelta)
+{
+	m_dwTimer += fTimeDelta;
+
+	if (m_dwTimer > m_CurrentAnim.dwCycle)
+		if (m_bisLoop)
+			m_dwTimer = 0;
+		else
+			m_dwTimer = m_CurrentAnim.dwCycle;
+
+	int iIndex = (m_CurrentAnim.iEndIdx - m_CurrentAnim.iStartIdx) * (m_dwTimer/ m_CurrentAnim.dwCycle) + m_CurrentAnim.iStartIdx;
+	m_CurIdx = iIndex;
+}
+
 void CTexture::Set_Texture(const _uint & iIndex)
 {
 	if (m_vecTexture.size() <= iIndex)
 		return;
-
-	m_pGraphicDev->SetTexture(0, m_vecTexture[iIndex]);
+	if (!m_bUseFrameAnimation)
+		m_pGraphicDev->SetTexture(0, m_vecTexture[iIndex]);
+	else
+		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
 }
 
 CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTYPE eTextype, const _tchar * pPath, const _uint & iCnt)
