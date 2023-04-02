@@ -27,8 +27,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	
 	return 0;
 }
@@ -72,7 +72,15 @@ void CPlayer::OnCollisionEnter(const Collision * collision)
 void CPlayer::OnCollisionStay(const Collision * collision)
 {
 	if (collision->_dir == DIR_DOWN)
-		m_bJumpalbe = true;
+     		m_bJumpalbe = true;	
+
+	if (fabsf(m_pRigid->m_Velocity.y)>1.f&&m_bJumpalbe)
+		m_pTextureCom->Switch_Anim(L"Jump");
+	else if (fabsf(m_pRigid->m_Velocity.x)>1.f)
+		m_pTextureCom->Switch_Anim(L"Walk");
+	else
+		m_pTextureCom->Switch_Anim(L"Idle");
+
 	__super::OnCollisionStay(collision);
 }
 
@@ -92,6 +100,11 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
+	m_pTextureCom->Add_Anim(L"Idle",0, 5,1.f,true);
+	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
@@ -131,8 +144,6 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	
-
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 		m_pRigid->m_Velocity.x = -m_fSpeed;
 
@@ -146,7 +157,5 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
-	{
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
-	}
 }

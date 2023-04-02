@@ -57,16 +57,6 @@ HRESULT CCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
 
-	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
-	NULL_CHECK_RETURN(m_pTransform, E_FAIL);
-
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
-
-	m_pRigid->m_bUseGrivaty = false;
-	/*m_pRigid->m_bFreezePos_X = true;
-	m_pRigid->m_bFreezePos_Y = true;
-	m_pRigid->m_bFreezePos_Z = true;*/
-
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube",this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });

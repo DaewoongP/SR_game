@@ -13,6 +13,8 @@ private:
 public:
 	HRESULT		Ready_Buffer(void);
 	void		Render_Buffer(void);
+	void		Switch_UV_Horizontal();
+	void		Switch_UV_Vertical();
 
 public:
 	static CRcTex*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

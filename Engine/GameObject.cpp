@@ -131,6 +131,9 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		break;
 	}
 	_rigid->m_Velocity -= reaction;
+	//deltatime 가져온거임.
+	_float fTimer_FPS60 = Engine::Get_Timer(L"Timer_FPS60");
+
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)

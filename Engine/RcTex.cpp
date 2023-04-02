@@ -70,6 +70,16 @@ void CRcTex::Render_Buffer(void)
 	__super::Render_Buffer();
 }
 
+void CRcTex::Switch_UV_Horizontal()
+{
+
+}
+
+void CRcTex::Switch_UV_Vertical()
+{
+
+}
+
 CRcTex * CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CRcTex *	pInstance = new CRcTex(pGraphicDev);
