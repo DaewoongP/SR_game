@@ -117,16 +117,16 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			// 디폴트 큐브의 움직임(대충)
 			{
 				if (Engine::Get_DIKeyState(DIK_A) & 0x80) // 좌
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 1.f;
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 2.f;
 
 				if (Engine::Get_DIKeyState(DIK_D) & 0x80) // 우
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 1.f;
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 2.f;
 
 				if (Engine::Get_DIKeyState(DIK_W) & 0x80) // 상
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 1.f;
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 2.f;
 
 				if (Engine::Get_DIKeyState(DIK_S) & 0x80) // 하
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 2.f;
 			}
 
 			if (Engine::Get_DIKeyState(DIK_E) & 0x80)
@@ -134,11 +134,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
 				pGameObject = CCube::Create(m_pGraphicDev);
-
-				pGameObject->m_pTransform->m_vInfo[INFO_POS].x = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x;
-				pGameObject->m_pTransform->m_vInfo[INFO_POS].y = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y;
-				pGameObject->m_pTransform->m_vInfo[INFO_POS].z = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].z;
-
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 				++iCubeIndex;
