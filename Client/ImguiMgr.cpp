@@ -4,8 +4,8 @@
 #include"imgui_impl_dx9.h"
 #include"imgui_impl_win32.h"
 #include"..\Engine\Export_Function.h"
-
 #include "Cube.h"
+#include "Grid.h"
 
 CImguiMgr::CImguiMgr()
 {
@@ -25,15 +25,16 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	// ÇÃ·¹ÀÌ¾î °ª º¯°æ ½ºÅÂÆ½ º¯¼ö
+	// í”Œë ˆì´ì–´ ê°’ ë³€ê²½ ìŠ¤íƒœí‹± ë³€ìˆ˜
 	static int e = 0;
 	static bool bReset = false;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	static bool show_demo_window = false;
-	static bool show_another_window = false;
+	bool show_demo_window = true;
+	//bool show_another_window = false;
+
 	//// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
@@ -48,46 +49,45 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 		//ImGui::Checkbox("Another Window", &show_another_window);
 
-		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f		
-
-#pragma region imgui ¿¬½À ºÎºÐ, Ä¿¹ÔÇÒ ‹š »¬ °Í
-		//// ÇÃ·¹ÀÌ¾î ¸®¼Â
-		//ImGui::Checkbox("Reset", &bReset);
-
-		//// ÇÃ·¹ÀÌ¾î °ª º¯°æ ¶óµð¿À ¹öÆ° 3°³
-		//ImGui::RadioButton("Scale", &e, 0); ImGui::SameLine();
-		//ImGui::RadioButton("Rotation", &e, 1); ImGui::SameLine();
-		//ImGui::RadioButton("Translation", &e, 2);
-
-		//// ÇÃ·¹ÀÌ¾î °ª
-		//ImGui::SliderFloat("X", &fX, -1.f, 100.0f);
-		//ImGui::SliderFloat("Y", &fY, -1.f, 100.0f);
-		//ImGui::SliderFloat("Z", &fZ, -1.f, 100.0f);
-
-		//if (0 == e) // ½ºÄÉÀÏ
-		//	pPlayerTransform->m_vScale = { fX + 1.f, fY + 1.f, fZ + 1.f };
-
-		//else if (1 == e) // ·ÎÅ×ÀÌ¼Ç
-		//{
-		//	pPlayerTransform->Rotation(ROT_X, D3DXToRadian(fX));
-		//	pPlayerTransform->Rotation(ROT_Y, D3DXToRadian(fY));
-		//	pPlayerTransform->Rotation(ROT_Z, D3DXToRadian(fZ));
-		//}
-
-		//else if (2 == e) // ÀÌµ¿(¿øÁ¡ ±âÁØ)
-		//	pPlayerTransform->Set_Pos(fX, fY, fZ);
-
-		//if (bReset)
-		//{
-		//	pPlayerTransform->m_vScale = { 1.f, 1.f, 1.f };
-		//	pPlayerTransform->Set_Pos(1.f, 1.f, 1.f);
-		//}
-#pragma endregion
+		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f	
 
 		const char* items[] = { "6_Cube", "4_Cube" };
 		static int item_current = 0;
 		ImGui::Combo("combo", &item_current, items, IM_ARRAYSIZE(items));
 		//pPlantCube->Set_CubeIndex(item_current);
+
+		static bool bGridON = false;
+		static bool bGridCreate = true;
+		ImGui::Checkbox("Grid", &bGridON);
+
+		if (bGridON)
+		{
+			if (bGridCreate)
+			{
+				CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+				NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+				CGameObject* pGameObject = nullptr;
+
+				int iGridIndex = 0;
+				for (int i = 0; i < CUBEY; ++i)
+				{
+					for (int j = 0; j < CUBEX; ++j)
+					{
+						iGridIndex = i * CUBEX + j;
+
+						TCHAR objName[128] = { 0 };
+						_stprintf_s(objName, _T("Grid_Tile%d"), (iGridIndex));
+						pGameObject = CGrid::Create(m_pGraphicDev);
+						pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+						NULL_CHECK_RETURN(pGameObject, E_FAIL);
+						FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+					}
+				}
+				bGridCreate = false;
+			}
+
+			
+		}
 
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
@@ -100,7 +100,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			CGameObject* pGameObject = nullptr;
 
-			if (GetAsyncKeyState('Q'))
+			/*if (GetAsyncKeyState('Q'))
 			{
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
@@ -109,11 +109,15 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 				++iCubeIndex;
-			}
+			}*/
+
+
 		}
 
-		//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+		if (ImGui::IsMousePosValid())
+			ImGui::Text("/ Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
 
+		//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 		//if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 		//	counter++;
 		//ImGui::SameLine();
@@ -124,14 +128,14 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	}
 
 	//// 3. Show another simple window.
-	if (show_another_window)
-	{
-		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-		ImGui::Text("Hello from another window!");
-		if (ImGui::Button("Close Me"))
-			show_another_window = false;
-		ImGui::End();
-	}
+	//if (show_another_window)
+	//{
+	//	ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	//	ImGui::Text("Hello from another window!");
+	//	if (ImGui::Button("Close Me"))
+	//		show_another_window = false;
+	//	ImGui::End();
+	//}
 
 	// Rendering
 	ImGui::EndFrame();
@@ -139,7 +143,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 	m_pGraphicDev->EndScene();
-	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	return S_OK;

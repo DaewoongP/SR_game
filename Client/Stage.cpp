@@ -5,6 +5,7 @@
 #include "Monster.h"
 #include "SkyBox.h"
 #include "Cube.h"
+#include "Grid.h"
 #include "DynamiCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -141,6 +142,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			cubeCnt++;*/
 		}
 	}
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
 }
