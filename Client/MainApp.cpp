@@ -125,6 +125,4 @@ void CMainApp::Free(void)
 	
 	Engine::Release_Utility();
 	Engine::Release_System();
-	
-	
 }

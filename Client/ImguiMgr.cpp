@@ -43,6 +43,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 		//ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+
 		//ImGui::Checkbox("Another Window", &show_another_window);
 
 		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f	
@@ -96,7 +97,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			CGameObject* pGameObject = nullptr;
 
-			if (GetAsyncKeyState('Q'))
+			/*if (GetAsyncKeyState('Q'))
 			{
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
@@ -105,9 +106,13 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 				++iCubeIndex;
-			}
+			}*/
+
+
 		}
 
+		if (ImGui::IsMousePosValid())
+			ImGui::Text("/ Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
 
 		//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
@@ -137,8 +142,8 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 	m_pGraphicDev->EndScene();
 	//m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	return S_OK;
 }
 

@@ -44,6 +44,8 @@ void CGrid::Render_GameObject(void)
 		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 		m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
@@ -51,6 +53,10 @@ void CGrid::Render_GameObject(void)
 		m_pTextureCom->Set_Texture();
 
 		m_pBufferCom->Render_Buffer();
+
+		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
