@@ -154,6 +154,6 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80 && m_bJumpalbe)
 	{
-		m_pRigid->AddForce(_vec3(0, 1, 0), 25.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddForce(_vec3(0, 1, 0), 17.5f, IMPULSE, fTimeDelta);
 	}
 }
