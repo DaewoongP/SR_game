@@ -172,8 +172,6 @@
     <ClCompile Include="Cube.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-    </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -184,6 +182,9 @@
       <Filter>GameObject\Player\Top</Filter>
     </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">

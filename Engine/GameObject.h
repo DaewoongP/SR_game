@@ -37,7 +37,6 @@ protected:
 
 public:
 	class CTransform*	m_pTransform;
-	_bool				Is2D;
 	_bool				m_bDead;
 
 protected:

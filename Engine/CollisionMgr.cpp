@@ -37,15 +37,12 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
 		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
-			// ÏΩúÎùº?¥Îçî??Í∑∏Î£π Í∞íÏùÑ ?µÌï¥ Ï∂©ÎèåÏ≤òÎ¶¨ ?êÎã®
 			if ((*iter) == (*iter2))
 				continue;
-			// Ï∂©ÎèåÎ≤îÏúÑ ?êÏ†ï?∏Îç∞.. Í±∞Ïùò Î≠??òÎÇòÎßàÎÇò ?ú„Öú..
-			if (false == Collision_Range((*iter), (*iter2)))
-				continue;
+			/*if (false == Collision_Range((*iter), (*iter2)))
+				continue;*/
 			if (Collision_Box(*iter, *iter2))
 			{
-				// Ï∂©Îèå?ÅÌÉú ?ëÏÑ±?úÍ±∞ ?ÄÎ°??∏Ï∂ú
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
@@ -94,7 +91,6 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
 	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
 
-	// Î∞îÏö¥?©Î∞ï?§Ïùò ?àÎπÑ, ?íÏù¥, ÍπäÏù¥Ï§?Í∞Ä???∞Í∞í Í∞Ä?∏Ïò¥
 	_float fSrcLong = 9999.f;
 	_float fDstLong = 9999.f;
 	if (fSrcLong > vSrcSize.x)
@@ -113,7 +109,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// Ï∂©Îèå ?êÏ†ï ???¥Î?
+
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 

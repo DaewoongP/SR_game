@@ -4,13 +4,12 @@
 #include "Export_Function.h"
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: m_pGraphicDev(pGraphicDev), Is2D(true), m_bDead(false)
+	: m_pGraphicDev(pGraphicDev), m_bDead(false)
 {	
 	m_pGraphicDev->AddRef();
 
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Transform", m_pTransform });
-
 }
 
 CGameObject::~CGameObject()
