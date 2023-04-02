@@ -85,13 +85,19 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				}
 				bGridCreate = false;
 			}
-
-			
 		}
 
+		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
 		ImGui::Checkbox("Cube Placed", &bCubePlaced);
+
+		// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
+		if (!bCubePlaced && nullptr != pDefaultCube)
+		{
+			pDefaultCube->m_bDead = true;
+			//pDefaultCube = nullptr;
+		}			
 
 		if (bCubePlaced)
 		{
@@ -100,18 +106,43 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			CGameObject* pGameObject = nullptr;
 
-			/*if (GetAsyncKeyState('Q'))
+			if (nullptr == pDefaultCube)
+			{
+				pDefaultCube = CCube::Create(m_pGraphicDev);
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS] = _vec3{ 10.f, 10.f, 10.f };
+				NULL_CHECK_RETURN(pDefaultCube, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"DefaultCube", pDefaultCube), E_FAIL);
+			}
+
+			// 디폴트 큐브의 움직임(대충)
+			{
+				if (Engine::Get_DIKeyState(DIK_A) & 0x80) // 좌
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 1.f;
+
+				if (Engine::Get_DIKeyState(DIK_D) & 0x80) // 우
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 1.f;
+
+				if (Engine::Get_DIKeyState(DIK_W) & 0x80) // 상
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 1.f;
+
+				if (Engine::Get_DIKeyState(DIK_S) & 0x80) // 하
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
+			}
+
+			if (Engine::Get_DIKeyState(DIK_E) & 0x80)
 			{
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{10.f, 7.f, 10.f};
+
+				pGameObject->m_pTransform->m_vInfo[INFO_POS].x = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x;
+				pGameObject->m_pTransform->m_vInfo[INFO_POS].y = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y;
+				pGameObject->m_pTransform->m_vInfo[INFO_POS].z = pDefaultCube->m_pTransform->m_vInfo[INFO_POS].z;
+
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 				++iCubeIndex;
-			}*/
-
-
+			}
 		}
 
 		if (ImGui::IsMousePosValid())

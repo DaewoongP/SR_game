@@ -98,9 +98,10 @@
     <ClInclude Include="Cube.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-    </ClInclude>
     <ClInclude Include="DynamiCamera.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -159,9 +160,10 @@
     <ClCompile Include="Cube.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-    </ClCompile>  
     <ClCompile Include="DynamiCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>

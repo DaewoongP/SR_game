@@ -56,7 +56,7 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
-	//m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
+	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
 
 	Engine::Render_End();
 }
