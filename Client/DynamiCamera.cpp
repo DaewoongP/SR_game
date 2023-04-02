@@ -35,19 +35,26 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 
 _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	_float fTemp;
+	_float fRadian;
 
-	fTemp = m_pTransform->m_vAngle.x;
-	fTemp *= -1;
-	vEye = { 32.0f ,18.0f,-25.0f };
-	vAt = { 32.0f ,18.0f,0.0f };
+	fRadian = m_pTransform->m_vAngle.x;
+	
+	vEye = { 31.0f ,17.0f,-22.0f };
+	vAt = { 31.0f ,17.0f,0.0f };
 	
 	D3DXMatrixIdentity(&matRotX);
 
-	D3DXMatrixRotationX(&matRotX, D3DXToRadian(fTemp));
+	//D3DXMatrixRotationX(&matRotX, D3DXToRadian(fRadian));
 
-	vEye.y -= sinf(D3DXToRadian(fTemp))*25.0f;
-	vEye.z -= (1 - cosf(D3DXToRadian(fTemp)))*25.0f;
+	_float fTemp;
+	fTemp = sinf(D3DXToRadian(fRadian));
+
+	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
+	
+
+	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
+	
+	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
 
 	_vec3 vDir;
 	vDir = vEye - vAt;
@@ -124,28 +131,10 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 		else
 		{
 			//시간 누적 
-			m_fTime += fTimeDelta;
+			m_fTime += fTimeDelta * 4.0f;
 			
 			//각도 감소
 			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
-
-			m_pTransform->Rotation(ROT_X, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			_vec3 vPos = { 0.0f, 0.0f, -100.0f };
-
-			_matrix matRotX, matTrans;
-
-			D3DXMatrixRotationX(&matRotX, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, vPos.z);
-
-			vPos = { 0.0f, 0.0f, 0.0f };
-
-			matRotX *= matTrans;
-
-			D3DXVec3TransformCoord(&vPos, &vPos, &matRotX);
-
-			m_pTransform->Set_Pos(vPos.x, vPos.y, vPos.z);
 		}
 	}
 	else if (!Is2D)
@@ -164,15 +153,10 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 		else
 		{
 			//시간 누적 
-			m_fTime += fTimeDelta;
+			m_fTime += fTimeDelta * 4.0f;
 			
 			//각도 증가
 			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
-
-			//부모 역활을 할 matrix
-			_matrix matParents;
-
-			D3DXMatrixRotationX(&matParents, m_pTransform->m_vAngle.x);
 		}
 	}
 }
