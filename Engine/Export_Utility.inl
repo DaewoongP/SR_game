@@ -70,6 +70,10 @@ void		Clear_Collision()
 {
 	CCollisionMgr::GetInstance()->Clear_Collision();
 }
+void		Delete_Collider(CGameObject* pGameObject)
+{
+	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);
+}
 
 void						Release_Utility(void)
 {

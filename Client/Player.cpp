@@ -24,6 +24,8 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 	_matrix viewMatrix;
 	_vec3 myPos, cameraPos, up;
 
