@@ -6,7 +6,6 @@ BEGIN(Engine)
 
 class CCubeTex;
 class CTexture;
-class CRigidbody;
 class CCollider;
 
 END
@@ -30,7 +29,6 @@ private:
 private:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
-	Engine::CRigidbody*	m_pRigid;
 	Engine::CCollider * m_pCollider;
 
 public:

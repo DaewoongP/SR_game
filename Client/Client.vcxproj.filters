@@ -115,6 +115,7 @@
     </ClInclude>
     <ClInclude Include="Player02.h">
       <Filter>GameObject\Player\Top</Filter>
+    </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -181,6 +182,7 @@
     </ClCompile>
     <ClCompile Include="Player02.cpp">
       <Filter>GameObject\Player\Top</Filter>
+    </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>

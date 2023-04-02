@@ -201,6 +201,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter;
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
 				++iCubeIndex;
 			}
 		}

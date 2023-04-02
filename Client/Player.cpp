@@ -49,9 +49,9 @@ void CPlayer::Render_GameObject(void)
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
 
-	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);*/
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -59,7 +59,7 @@ void CPlayer::Render_GameObject(void)
 
 	m_pBufferCom->Render_Buffer();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -77,7 +77,7 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 	if (collision->_dir == DIR_DOWN)
      		m_bJumpalbe = true;	
 
-	if (fabsf(m_pRigid->m_Velocity.y)>1.f&&m_bJumpalbe)
+	if (fabsf(m_pRigid->m_Velocity.y) > 1.f && m_bJumpalbe)
 		m_pTextureCom->Switch_Anim(L"Jump");
 	else if (fabsf(m_pRigid->m_Velocity.x)>1.f)
 		m_pTextureCom->Switch_Anim(L"Walk");
