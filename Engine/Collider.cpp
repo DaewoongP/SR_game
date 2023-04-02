@@ -155,6 +155,12 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 	}
 }
 
+void CCollider::Set_Group(COLGROUP eGroup)
+{
+	Engine::Set_Collider(eGroup, this);
+	m_eGroup = eGroup;
+}
+
 CCollider * CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool bIsTrigger)
 {
 	CCollider* pInstance = new CCollider(pGraphicDev);

@@ -46,7 +46,8 @@ void CManagement::LateUpdate_Management()
 	NULL_CHECK(m_pScene);
 	m_pScene->LateUpdate_Scene();
 	// 충돌체크
-	Engine::Check_Collision();
+	Engine::Check_Collision(COL_OBJ, COL_OBJ);
+	Engine::Check_Collision(COL_OBJ, COL_ENV);
 }
 
 void CManagement::Render_Management(LPDIRECT3DDEVICE9 pGraphicDev)

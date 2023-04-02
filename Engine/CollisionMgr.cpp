@@ -19,28 +19,33 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 	if (nullptr == pCollider)
 		return;
 	
-	m_ColliderList.push_back(pCollider);
+	m_ColliderList[COL_OBJ].push_back(pCollider);
 	pCollider->AddRef();
 }
 
-void CCollisionMgr::Check_Collision()
+void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 {
-	if (m_ColliderList.empty())
+	if (m_ColliderList[eGroup1].empty())
 		return;
-	for (auto& iter = m_ColliderList.begin();
-	iter != m_ColliderList.end() - 1; ++iter)
+	if (m_ColliderList[eGroup2].empty())
+		return;
+	if (eGroup1 == eGroup2 && m_ColliderList[eGroup1].size() < 2)
+		return;
+	for (auto& iter = m_ColliderList[eGroup1].begin();
+	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
-		for (auto& iter2 = iter + 1; iter2 != m_ColliderList.end(); ++iter2)
+		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
+		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
-			// ƒ›∂Û¿Ã¥ı¿« ±◊∑Ï ∞™¿ª ≈Î«ÿ √Êµπ√≥∏Æ ∆«¥‹
-			if (COL_ENV == (*iter)->Get_Group() && COL_ENV == (*iter2)->Get_Group())
+			// ÏΩúÎùºÏù¥ÎçîÏùò Í∑∏Î£π Í∞íÏùÑ ÌÜµÌï¥ Ï∂©ÎèåÏ≤òÎ¶¨ ÌåêÎã®
+			if ((*iter) == (*iter2))
 				continue;
-			// √Êµππ¸¿ß ∆«¡§¿Œµ•.. ∞≈¿« ππ «œ≥™∏∂≥™ §Ã§Ã..
-			/*if (false == Collision_Range((*iter), (*iter2)))
-				continue;*/
+			// Ï∂©ÎèåÎ≤îÏúÑ ÌåêÏ†ïÏù∏Îç∞.. Í±∞Ïùò Î≠ê ÌïòÎÇòÎßàÎÇò „Öú„Öú..
+			if (false == Collision_Range((*iter), (*iter2)))
+				continue;
 			if (Collision_Box(*iter, *iter2))
 			{
-				// √ÊµπªÛ≈¬ ¿€º∫µ»∞≈ ¥Î∑Œ »£√‚
+				// Ï∂©ÎèåÏÉÅÌÉú ÏûëÏÑ±ÎêúÍ±∞ ÎåÄÎ°ú Ìò∏Ï∂ú
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
@@ -89,7 +94,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
 	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
 
-	// πŸøÓµ˘π⁄Ω∫¿« ≥ ∫Ò, ≥Ù¿Ã, ±Ì¿Ã¡ﬂ ∞°¿Â ≈´∞™ ∞°¡Æø»
+	// Î∞îÏö¥Îî©Î∞ïÏä§Ïùò ÎÑàÎπÑ, ÎÜíÏù¥, ÍπäÏù¥Ï§ë Í∞ÄÏû• ÌÅ∞Í∞í Í∞ÄÏ†∏Ïò¥
 	_float fSrcLong = 9999.f;
 	_float fDstLong = 9999.f;
 	if (fSrcLong > vSrcSize.x)
@@ -108,7 +113,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// √Êµπ ∆«¡§ ø¯ ≥ª∫Œ
+	// Ï∂©Îèå ÌåêÏ†ï Ïõê ÎÇ¥Î∂Ä
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -121,36 +126,36 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		// ªÛ«œ (src±‚¡ÿ)
+		// ÏÉÅÌïò (srcÍ∏∞Ï§Ä)
 		if (fX > fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
-				// ªÛ√Êµπ
+				// ÏÉÅÏ∂©Îèå
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 			else
 			{
-				// «œ√Êµπ
+				// ÌïòÏ∂©Îèå
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 		}
-		else // ¡¬øÏ
+		else // Ï¢åÏö∞
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				// øÏ√Êµπ
+				// Ïö∞Ï∂©Îèå
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
-				// ¡¬√Êµπ
+				// Ï¢åÏ∂©Îèå
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
@@ -189,22 +194,49 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 
 void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 {
-	for (auto iter = m_ColliderList.begin(); iter != m_ColliderList.end();)
+	for (size_t i = 0; i < COL_END; ++i)
 	{
-		if ((*iter)->m_pGameObject == pGameObject)
+		for (auto iter = m_ColliderList[i].begin(); iter != m_ColliderList[i].end();)
 		{
-			Safe_Release(*iter);
-			iter = m_ColliderList.erase(iter);
+			if ((*iter)->m_pGameObject == pGameObject)
+			{
+				Safe_Release(*iter);
+				iter = m_ColliderList[i].erase(iter);
+			}
+			else
+				++iter;
 		}
-		else
-			++iter;
+	}
+}
+
+void CCollisionMgr::Set_Collider(COLGROUP eGroup, CCollider * pCollider)
+{
+	for (size_t i = 0; i < COL_END; ++i)
+	{
+		if (pCollider->Get_Group() == eGroup)
+			return;
+		for (auto iter = m_ColliderList[i].begin(); iter != m_ColliderList[i].end();)
+		{
+			if ((*iter) == pCollider)
+			{
+				iter = m_ColliderList[i].erase(iter);
+				m_ColliderList[eGroup].push_back(pCollider);
+				return;
+			}
+			else
+				++iter;
+		}
 	}
 }
 
 void CCollisionMgr::Clear_Collision()
 {
-	for_each(m_ColliderList.begin(), m_ColliderList.end(), CDeleteObj());
-	m_ColliderList.clear();
+	for (size_t i = 0; i < COL_END; ++i)
+	{
+		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
+		m_ColliderList[i].clear();
+	}
+	
 }
 
 void CCollisionMgr::Free(void)

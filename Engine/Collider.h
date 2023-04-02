@@ -24,7 +24,7 @@ public:
 	virtual void LateUpdate_Component() override;
 	virtual void Render_Component() override;
 public:
-	void Set_Group(COLGROUP eGroup) { m_eGroup = eGroup; }
+	void Set_Group(COLGROUP eGroup);
 	COLGROUP Get_Group() { return m_eGroup; }
 	void Get_Point(_vec3* MinPoint, _vec3* MaxPoint)
 	{
