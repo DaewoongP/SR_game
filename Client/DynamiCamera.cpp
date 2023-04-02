@@ -7,11 +7,12 @@
 CDynamiCamera::CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev),
-	m_bToodee(true),
 	m_fTime(0.0f),
 	vEye({ 32.0f ,18.0f,-30.0f}),
 	vAt({ 32.0f ,18.0f,0.0f }),
-	vUp({ 0.0f ,1.0f,0.0f })
+	vUp({ 0.0f ,1.0f,0.0f }),
+	m_fToo(0.0f),
+	m_fTop(30.0f)
 {
 }
 
@@ -23,35 +24,38 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	_matrix ProjectionMatrix;
-	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 100.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
+	_matrix matProj;
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (float)WINCX / WINCY, 1.0f, 1000.0f);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
 	return S_OK;
 }
 
 _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	_float fTemp;
-	fTemp = m_pTransform->m_vAngle.x;
-	fTemp *= -1;
-	vEye = { 32.0f ,18.0f,-25.0f };
-	vAt = { 32.0f ,18.0f,0.0f };
+	_float fRadian;
+
+	fRadian = m_pTransform->m_vAngle.x;
+	
+	vEye = { 31.0f ,17.0f,-22.0f };
+	vAt = { 31.0f ,17.0f,0.0f };
 	
 	D3DXMatrixIdentity(&matRotX);
 
+	_float fTemp;
+	fTemp = sinf(D3DXToRadian(fRadian));
+	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
+	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
+	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
 
-	// ¿”Ω√¡÷ºÆ
-	/*D3DXMatrixRotationX(&matRotX, D3DXToRadian(fTemp));
-	vEye.y -= sinf(D3DXToRadian(fTemp)) * 25.0f;
-	vEye.z -= (1 - cosf(D3DXToRadian(fTemp))) * 25.0f;*/
 	_vec3 vDir;
 	vDir = vEye - vAt;
 	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
 
 	vEye = vAt + vDir;
+
 	_vec3 vAxisX = { 1.f, 0.f, 0.f };
-	// ƒ´∏ﬁ∂Û¿« æ˜∫§≈Õ
+	// Ïπ¥Î©îÎùºÏùò ÏóÖÎ≤°ÌÑ∞
 	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
 
 	_matrix viewMatrix;
@@ -85,90 +89,64 @@ HRESULT CDynamiCamera::Add_Component(void)
 
 void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 {
-	if (30 <= m_pTransform->m_vAngle.x || 1 >= m_pTransform->m_vAngle.x)
-	{
-		if (GetAsyncKeyState('T'))
+	
+		if (GetAsyncKeyState('T') & 0x8000 && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 		{
-			if (m_bToodee)
+			if (Is2D)
 			{
-				m_bToodee = false;
+				Is2D = false;
 			}
-			else if (!m_bToodee)
+			else if (!Is2D)
 			{
-				m_bToodee = true;
+				Is2D = true;
 			}
 		}
-	}
 }
 
 void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 {
-	//≈ıµ ¿œ∂ß
-	if (m_bToodee)
+	//Ìà¨Îîî ÏùºÎïå
+	if (Is2D)
 	{
-		//∞¢µµ∞° 1∫∏¥Ÿ ¿€¥Ÿ∏È
-		if (1.0f >= m_pTransform->m_vAngle.x)
+		//Í∞ÅÎèÑÍ∞Ä 1Î≥¥Îã§ ÏûëÎã§Î©¥
+		if (m_fToo >= m_pTransform->m_vAngle.x)
 		{
-			//x√‡ »∏¿¸ 1µµ
-			m_pTransform->m_vAngle.x = 1.0f;
-			//Ω√∞£ √ ±‚»≠
+			//xÏ∂ï ÌöåÏ†Ñ 1ÎèÑ
+			m_pTransform->m_vAngle.x = m_fToo;
+			//ÏãúÍ∞Ñ Ï¥àÍ∏∞Ìôî
 			m_fTime = 0.0f;
-			m_bToodee = false;
+			//Is2D = false;
 		}
-		//1∫∏¥Ÿ ≈©¥Ÿ∏È
+		//1Î≥¥Îã§ ÌÅ¨Îã§Î©¥
 		else
 		{
-			//Ω√∞£ ¥©¿˚ 
-			m_fTime += fTimeDelta;
+			//ÏãúÍ∞Ñ ÎàÑÏ†Å 
+			m_fTime += fTimeDelta * 4.0f;
 			
-			//∞¢µµ ∞®º“
-			m_pTransform->m_vAngle.x = Linear(30.0f, 1.0f, m_fTime);
-
-			m_pTransform->Rotation(ROT_X, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			_vec3 vPos = { 0.0f, 0.0f, -100.0f };
-
-			_matrix matRotX, matTrans;
-
-			D3DXMatrixRotationX(&matRotX, D3DXToRadian(m_pTransform->m_vAngle.x));
-
-			D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, vPos.z);
-
-			vPos = { 0.0f, 0.0f, 0.0f };
-
-			matRotX *= matTrans;
-
-			D3DXVec3TransformCoord(&vPos, &vPos, &matRotX);
-
-			m_pTransform->Set_Pos(vPos.x, vPos.y, vPos.z);
+			//Í∞ÅÎèÑ Í∞êÏÜå
+			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
 		}
 	}
-	else if (!m_bToodee)
+	else if (!Is2D)
 	{
-		//∞¢µµ∞° 30∫∏¥Ÿ ≈©¥Ÿ∏È
-		if (30.0f <= m_pTransform->m_vAngle.x)
+		//Í∞ÅÎèÑÍ∞Ä 30Î≥¥Îã§ ÌÅ¨Îã§Î©¥
+		if (m_fTop <= m_pTransform->m_vAngle.x)
 		{
-			//x√‡ »∏¿¸ 30µµ
-			m_pTransform->m_vAngle.x = 30.0f;
-			//Ω√∞£ √ ±‚»≠
+			//xÏ∂ï ÌöåÏ†Ñ 30ÎèÑ
+			m_pTransform->m_vAngle.x = m_fTop;
+			//ÏãúÍ∞Ñ Ï¥àÍ∏∞Ìôî
 			m_fTime = 0.0f;
-			m_bToodee = true;
+			//Is2D = true;
 
 		}
-		//30∫∏¥Ÿ ¿€¥Ÿ∏È
+		//30Î≥¥Îã§ ÏûëÎã§Î©¥
 		else
 		{
-			//Ω√∞£ ¥©¿˚ 
-			m_fTime += fTimeDelta;
+			//ÏãúÍ∞Ñ ÎàÑÏ†Å 
+			m_fTime += fTimeDelta * 4.0f;
 			
-			//∞¢µµ ¡ı∞°
-			m_pTransform->m_vAngle.x = Linear(1.0f, 30.0, m_fTime);
-
-			//∫Œ∏ ø™»∞¿ª «“ matrix
-			_matrix matParents;
-
-			D3DXMatrixRotationX(&matParents, m_pTransform->m_vAngle.x);
-		
+			//Í∞ÅÎèÑ Ï¶ùÍ∞Ä
+			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
 		}
 	}
 	
