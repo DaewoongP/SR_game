@@ -5,7 +5,8 @@
 
 BEGIN(Engine)
 
-class CRcCol;
+class CRcTex;
+class CTexture;
 
 END
 
@@ -25,7 +26,9 @@ private:
 	HRESULT		Add_Component(void);
 
 private:
-	Engine::CRcCol* m_pBufferCom;
+	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pTextureCom;
+	bool m_bGridON;
 
 public:
 	static CGrid*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
