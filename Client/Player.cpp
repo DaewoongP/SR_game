@@ -5,8 +5,9 @@
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
+	, m_bJumpalbe(false)
 {
-	
+
 }
 
 CPlayer::~CPlayer()
@@ -19,8 +20,6 @@ HRESULT CPlayer::Ready_GameObject(void)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
-	//m_pTransform->m_vAngle.x += D3DXToRadian(180.f);
-
 	return S_OK;
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
@@ -32,7 +31,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	//카메라 임시생성
 	myPos = m_pTransform->m_vInfo[INFO_POS];
-	cameraPos = { myPos.x ,myPos.y,-5.f };
+	cameraPos = { myPos.x ,myPos.y,-20.f };
 	D3DXMatrixLookAtLH(&viewMatrix, &cameraPos, &myPos, &up);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 
@@ -40,35 +39,18 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	D3DXMatrixPerspectiveFovLH(&projMatrix, D3DXToRadian(60.f), (float)WINCX / WINCY, 1.f, 1000.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &projMatrix);
 
-	Key_Input(fTimeDelta);
+	Key_Input(0.01f);
 
-	// m_planeVec
 	__super::Update_GameObject(fTimeDelta);
-
-
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	
 	return 0;
 }
 void CPlayer::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-
-	//CTerrainTex* terrainTex = dynamic_cast<CTerrainTex*>(Engine::Get_Component(L"Layer_Environment", L"Terrain", L"TerrainTex", ID_STATIC));
-	//NULL_CHECK_MSG(terrainTex, L"터레인 텍스 널..");
-
-	//const vector<D3DXPLANE>& PlaneVec = terrainTex->m_PlaneVec;
-
-	//for (int i = 0; i < PlaneVec.size(); i++)
-	//{
-	//	_vec3 playerFootPos = m_pTransform->m_vInfo[INFO_POS] - _vec3(0.f, 0.7f, 0.f);
-	//	//_vec3 playerFootPos = m_pTransform->m_vInfo[INFO_POS];
-
-	//	float fDot = D3DXPlaneDotCoord(&PlaneVec[i], &playerFootPos);
-	//	bool bIsIn = terrainTex->IsInPlane(m_pTransform->m_vInfo[INFO_POS], i);
-	//	
-	//}
+	// m_planeVec
 	
-	// 충돌 처리 부분.
 }
 
 void CPlayer::Render_GameObject(void)
@@ -78,7 +60,7 @@ void CPlayer::Render_GameObject(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -102,29 +84,34 @@ void CPlayer::OnCollisionEnter(const Collision * collision)
 {
 	static int se = 0;
 	cout << "Enter" << ++se << endl;
+	__super::OnCollisionEnter(collision);
 }
 
-void CPlayer::OnCollisionStay(const Collision * other)
+void CPlayer::OnCollisionStay(const Collision * collision)
 {
 	static int ss = 0;
-	cout << "Stay" << ++ss <<endl;
+	cout << "Stay" << ++ss << endl;
+	if (collision->_dir == DIR_DOWN)
+		m_bJumpalbe = true;
+	__super::OnCollisionStay(collision);
 }
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
 	static int sx = 0;
 	cout << "Exit" << ++sx << endl;
+	m_bJumpalbe = false;
 }
 
 HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex",this));
+	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
-		
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture",this));
+
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
 
@@ -137,7 +124,7 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({1.f,2.f,0.2f});
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
 	return S_OK;
 }
 
@@ -169,11 +156,15 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
 
-	if (GetAsyncKeyState(VK_LEFT))	m_pTransform->m_vInfo[INFO_POS].x += -6.f*fTimeDelta;
-	if (GetAsyncKeyState(VK_RIGHT))	m_pTransform->m_vInfo[INFO_POS].x += 6.f * fTimeDelta;
+	if (Engine::Get_DIKeyState(DIK_LEFT) & 0x80)
+		m_pRigid->m_Velocity.x = -m_fSpeed;
 
-	
-	if (GetAsyncKeyState(VK_SPACE))
-		m_pRigid->AddForce(_vec3(0, 1, 0), 5.f,IMPULSE,fTimeDelta);
+	if (Engine::Get_DIKeyState(DIK_RIGHT) & 0x80)
+		m_pRigid->m_Velocity.x = m_fSpeed;
 
+
+	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80 && m_bJumpalbe)
+	{
+		m_pRigid->AddForce(_vec3(0, 1, 0), 25.f, IMPULSE, fTimeDelta);
+	}
 }
