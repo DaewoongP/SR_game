@@ -74,7 +74,6 @@ void		Set_Collider(COLGROUP eGroup, CCollider* pCollider)
 {
 	CCollisionMgr::GetInstance()->Set_Collider(eGroup, pCollider);
 }
-
 void		Delete_Collider(CGameObject* pGameObject)
 {
 	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);

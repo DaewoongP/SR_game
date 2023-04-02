@@ -37,15 +37,15 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
 		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
-			// Äİ¶óÀÌ´õÀÇ ±×·ì °ªÀ» ÅëÇØ Ãæµ¹Ã³¸® ÆÇ´Ü
+			// ì½œë¼ì´ë”ì˜ ê·¸ë£¹ ê°’ì„ í†µí•´ ì¶©ëŒì²˜ë¦¬ íŒë‹¨
 			if ((*iter) == (*iter2))
 				continue;
-			// Ãæµ¹¹üÀ§ ÆÇÁ¤ÀÎµ¥.. °ÅÀÇ ¹¹ ÇÏ³ª¸¶³ª ¤Ì¤Ì..
+			// ì¶©ëŒë²”ìœ„ íŒì •ì¸ë°.. ê±°ì˜ ë­ í•˜ë‚˜ë§ˆë‚˜ ã…œã…œ..
 			if (false == Collision_Range((*iter), (*iter2)))
 				continue;
 			if (Collision_Box(*iter, *iter2))
 			{
-				// Ãæµ¹»óÅÂ ÀÛ¼ºµÈ°Å ´ë·Î È£Ãâ
+				// ì¶©ëŒìƒíƒœ ì‘ì„±ëœê±° ëŒ€ë¡œ í˜¸ì¶œ
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
@@ -94,7 +94,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
 	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
 
-	// ¹Ù¿îµù¹Ú½ºÀÇ ³Êºñ, ³ôÀÌ, ±íÀÌÁß °¡Àå Å«°ª °¡Á®¿È
+	// ë°”ìš´ë”©ë°•ìŠ¤ì˜ ë„ˆë¹„, ë†’ì´, ê¹Šì´ì¤‘ ê°€ì¥ í°ê°’ ê°€ì ¸ì˜´
 	_float fSrcLong = 9999.f;
 	_float fDstLong = 9999.f;
 	if (fSrcLong > vSrcSize.x)
@@ -113,7 +113,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// Ãæµ¹ ÆÇÁ¤ ¿ø ³»ºÎ
+	// ì¶©ëŒ íŒì • ì› ë‚´ë¶€
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -126,36 +126,36 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		// »óÇÏ (src±âÁØ)
+		// ìƒí•˜ (srcê¸°ì¤€)
 		if (fX > fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
-				// »óÃæµ¹
+				// ìƒì¶©ëŒ
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 			else
 			{
-				// ÇÏÃæµ¹
+				// í•˜ì¶©ëŒ
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 		}
-		else // ÁÂ¿ì
+		else // ì¢Œìš°
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				// ¿ìÃæµ¹
+				// ìš°ì¶©ëŒ
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
-				// ÁÂÃæµ¹
+				// ì¢Œì¶©ëŒ
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
