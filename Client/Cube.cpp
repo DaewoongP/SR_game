@@ -21,10 +21,10 @@ HRESULT CCube::Ready_GameObject(void)
 
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
-	_matrix matView;
+	/*_matrix matView;
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	m_pTransform->Set_BillboardX(&matView);
+	m_pTransform->Set_BillboardX(&matView);*/
 
 	__super::Update_GameObject(fTimeDelta);
   
