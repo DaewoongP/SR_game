@@ -41,7 +41,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		static bool bLoadButton = false;
 
 		// 큐브 설치 관련 변수
-		static vector<_vec3*> vecCubePos;
+		static vector<_vec3> vecCubePos;
 		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
@@ -140,7 +140,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
-				vecCubePos.push_back(&pGameObject->m_pTransform->m_vInfo[INFO_POS]); // 저장을 위함
+				vecCubePos.push_back(pGameObject->m_pTransform->m_vInfo[INFO_POS]); // 저장을 위함
 				++iCubeIndex;
 			}
 		}
@@ -177,7 +177,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				return E_FAIL;
 
 			DWORD	dwByte = 0;
-			_vec3* vCubePos = nullptr;
+			_vec3 vCubePos = {0,0,0};
 
 			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -186,16 +186,9 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			while (true)
 			{
-				vCubePos = new _vec3;
-
-				ReadFile(hFile, vCubePos, sizeof(_vec3), &dwByte, nullptr);
-
-				if (0 == dwByte)
-				{
-					Safe_Delete(vCubePos);
+				ReadFile(hFile, &vCubePos, sizeof(_vec3), &dwByte, nullptr);
+				if (dwByte == 0)
 					break;
-				}
-
 				vecCubePos.push_back(vCubePos);
 			}
 			CloseHandle(hFile);
@@ -205,7 +198,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				_tchar strCubeIndex[64] = { 0 };
 				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = (*iter);
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter;
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 				++iCubeIndex;

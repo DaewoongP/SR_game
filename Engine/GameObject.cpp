@@ -53,12 +53,12 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	//캐릭터의 위치와 콜라이더를 가져오겠습니다.
+	//캐릭터의 위치와 콜라이더를 가져오	겠습니다.
 	if (this == Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Collider", ID_DYNAMIC)->m_pGameObject)
 		return;
 
 	CTransform* trans_other = collision->otherObj->m_pTransform;
-	CCollider* collider_other = dynamic_cast<CCollider*>(collision->otherObj->Get_Component(L"Collider", ID_DYNAMIC));
+	CCollider* collider_other = collision->otherCol;
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
 	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));

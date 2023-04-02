@@ -35,7 +35,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
 	return 0;
 }
@@ -49,9 +49,9 @@ void CPlayer::Render_GameObject(void)
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
 
 	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -146,6 +146,6 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80 && m_bJumpalbe)
 	{
-		m_pRigid->AddForce(_vec3(0, 1, 0), 17.5f, IMPULSE, fTimeDelta);
+ 		m_pRigid->AddForce(_vec3(0, 1, 0), 17.5f, IMPULSE, fTimeDelta);
 	}
 }

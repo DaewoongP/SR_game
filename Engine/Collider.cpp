@@ -50,7 +50,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	//m_pMesh->DrawSubset(0);
+	m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
@@ -64,12 +64,14 @@ void CCollider::Insert_Collider(CCollider * pCollider, COL_DIR eDir)
 	{
 		Collision* pCollision = Find_ColState(pCollider);
 		pCollision->Set_Curcol(true);
+		pCollision->otherCol = pCollider;
 		pCollision->_dir = eDir;
 	}
 	else
 	{
 		Collision* pCollision = new Collision;
 		pCollision->Set_Curcol(true);
+		pCollision->otherCol = pCollider;
 		pCollision->_dir = eDir;
 		m_Colmap.insert({ pCollider, pCollision });
 	}
