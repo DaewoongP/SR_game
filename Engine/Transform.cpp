@@ -96,8 +96,6 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
 
 	m_matWorld = matScale * m_matBillX * matRotation * matTrans;
-	/*for (size_t i = 0; i < INFO_END; ++i)
-	memcpy(&m_matWorld.m[i][0], &m_vInfo[i], sizeof(_vec3));*/
 
 	return 0;
 }

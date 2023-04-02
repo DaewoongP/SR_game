@@ -2,12 +2,6 @@
 #include "Include.h"
 #include "GameObject.h"
 
-BEGIN(Engine)
-
-class CCamera;
-
-END
-
 class CDynamiCamera : public Engine::CGameObject
 {
 public:
@@ -22,8 +16,9 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
+	void		Rotation_View();
 	void		Key_Input(const _float& fTimeDelta);
-	void		ToodeeAndTopdee(const _float& fTimeDelta);
+	void		Move_Camera(const _float& fTimeDelta);
 
 	float Linear(float A, float B, float Alpha)
 	{

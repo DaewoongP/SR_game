@@ -4,8 +4,8 @@
 #include "Export_Function.h"
 
 CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: m_pGraphicDev(pGraphicDev), Is2D(true)
-{
+	: m_pGraphicDev(pGraphicDev), Is2D(true), m_bDead(false)
+{	
 	m_pGraphicDev->AddRef();
 
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
@@ -47,7 +47,7 @@ void CGameObject::Render_GameObject(void)
 
 void CGameObject::OnCollisionEnter(const Collision * collsion)
 {
-	int a = 0;
+	
 }
 
 void CGameObject::OnCollisionStay(const Collision * collision)

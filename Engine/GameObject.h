@@ -38,6 +38,7 @@ public:
 	class CTransform*	m_pTransform;
 	// 현재 2D, Topview 확인 변수 기본값 2D
 	_bool				Is2D;
+	_bool				m_bDead;
 
 protected:
 	virtual void		Free(void);

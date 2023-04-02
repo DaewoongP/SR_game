@@ -3,7 +3,6 @@
 
 #include "Export_Function.h"
 #include "Monster.h"
-#include "Terrain.h"
 #include "SkyBox.h"
 #include "Cube.h"
 #include "DynamiCamera.h"
@@ -82,9 +81,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
 	int cubeCnt=0;
-	for (int i = 0; i < 18; i++)
+	for (int i = 0; i < CUBEY; i++)
 	{
-		for (int j = 0; j < 32; j++)
+		for (int j = 0; j < CUBEX; j++)
 		{
 			//맨 윗줄
 			if (i == 0)
@@ -99,7 +98,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			}
 
 			//사이 첫줄
-			if (i == 17)
+			if (i == CUBEY - 1)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
@@ -123,7 +122,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			}
 
 			//맨 아랫줄
-			if (j == 31)
+			if (j == CUBEX - 1)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));

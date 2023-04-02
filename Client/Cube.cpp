@@ -26,10 +26,6 @@ _int CCube::Update_GameObject(const _float & fTimeDelta)
 
 	m_pTransform->Set_BillboardX(&matView);
 
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
-
-	m_pTransform->Set_BillboardXY(&matCamWorld);
-
 	__super::Update_GameObject(fTimeDelta);
   
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);

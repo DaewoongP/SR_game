@@ -59,20 +59,6 @@ public:
 
 		D3DXMatrixInverse(&m_matBillY, 0, &m_matBillY);
 	}
-
-	void	Set_BillboardXY(_matrix* _matView)
-	{
-		D3DXMatrixIdentity(&m_matBill);
-		m_matBill._11 = _matView->_11;
-		m_matBill._13 = _matView->_13;
-		m_matBill._31 = _matView->_31;
-		m_matBill._33 = _matView->_33;
-		m_matBill._22 = _matView->_22;
-		m_matBill._23 = _matView->_23;
-		m_matBill._32 = _matView->_32;
-
-		D3DXMatrixInverse(&m_matBill, 0, &m_matBill);
-	}
 	
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
@@ -85,9 +71,6 @@ public:
 public:
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
-
-	//float		m_fScale[3];
-
 	_vec3		m_vAngle;
 	_matrix		m_matWorld;
 	_matrix		m_matBillX;

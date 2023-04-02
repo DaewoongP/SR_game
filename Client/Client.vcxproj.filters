@@ -38,9 +38,6 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -107,9 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">

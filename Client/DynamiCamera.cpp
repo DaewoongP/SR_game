@@ -2,8 +2,6 @@
 #include "DynamiCamera.h"
 #include "Export_Function.h"
 
-
-
 CDynamiCamera::CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev),
@@ -25,7 +23,7 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	_matrix matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (float)WINCX / WINCY, 1.0f, 1000.0f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 1000.0f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
 	return S_OK;
@@ -33,36 +31,9 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 
 _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	_float fRadian;
+	Rotation_View();
 
-	fRadian = m_pTransform->m_vAngle.x;
-	
-	vEye = { 31.0f ,17.0f,-22.0f };
-	vAt = { 31.0f ,17.0f,0.0f };
-	
-	D3DXMatrixIdentity(&matRotX);
-
-	_float fTemp;
-	fTemp = sinf(D3DXToRadian(fRadian));
-	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
-	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
-	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
-
-	_vec3 vDir;
-	vDir = vEye - vAt;
-	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
-
-	vEye = vAt + vDir;
-
-	_vec3 vAxisX = { 1.f, 0.f, 0.f };
-	// 카메라의 업벡터
-	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
-
-	_matrix viewMatrix;
-	D3DXMatrixLookAtLH(&viewMatrix, &vEye, &vAt, &vUp);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
-
-	ToodeeAndTopdee(fTimeDelta);
+	Move_Camera(fTimeDelta);
 
 	Key_Input(fTimeDelta);
 
@@ -87,23 +58,52 @@ HRESULT CDynamiCamera::Add_Component(void)
 	return S_OK;
 }
 
-void CDynamiCamera::Key_Input(const _float & fTimeDelta)
+void CDynamiCamera::Rotation_View()
 {
-	
-		if (GetAsyncKeyState('T') & 0x8000 && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
-		{
-			if (Is2D)
-			{
-				Is2D = false;
-			}
-			else if (!Is2D)
-			{
-				Is2D = true;
-			}
-		}
+	_float fRadian;
+
+	fRadian = m_pTransform->m_vAngle.x;
+
+	vEye = { 31.0f ,17.0f,-22.0f };
+	vAt = { 31.0f ,17.0f,0.0f };
+
+	D3DXMatrixIdentity(&matRotX);
+
+	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
+	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
+	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
+
+	_vec3 vDir;
+	vDir = vEye - vAt;
+	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
+
+	vEye = vAt + vDir;
+
+	_vec3 vAxisX = { 1.f, 0.f, 0.f };
+	// 카메라의 업벡터
+	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
+
+	_matrix viewMatrix;
+	D3DXMatrixLookAtLH(&viewMatrix, &vEye, &vAt, &vUp);
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 }
 
-void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
+void CDynamiCamera::Key_Input(const _float & fTimeDelta)
+{
+	if (Engine::Get_DIKeyState(DIK_X) & 0x80 && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
+	{
+		if (Is2D)
+		{
+			Is2D = false;
+		}
+		else if (!Is2D)
+		{
+			Is2D = true;
+		}
+	}
+}
+
+void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 {
 	//투디 일때
 	if (Is2D)
@@ -149,11 +149,6 @@ void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
 		}
 	}
-	
-	cout << m_pTransform->m_vAngle.x << endl;
-	
-
-
 }
 
 CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
