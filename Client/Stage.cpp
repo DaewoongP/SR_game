@@ -81,67 +81,67 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
-	int cubeCnt=0;
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEX; j++)
-		{
-			//맨 윗줄
-			if (i == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				cubeCnt++;
-			}
+	//int cubeCnt=0;
+	//for (int i = 0; i < CUBEY; i++)
+	//{
+	//	for (int j = 0; j < CUBEX; j++)
+	//	{
+	//		//맨 윗줄
+	//		if (i == 0)
+	//		{
+	//			TCHAR objName[128] = { 0 };
+	//			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+	//			pGameObject = CCube::Create(m_pGraphicDev);
+	//			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+	//			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+	//			cubeCnt++;
+	//		}
 
-			//사이 첫줄
-			if (i == CUBEY - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				cubeCnt++;
-			}
+	//		//사이 첫줄
+	//		if (i == CUBEY - 1)
+	//		{
+	//			TCHAR objName[128] = { 0 };
+	//			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+	//			pGameObject = CCube::Create(m_pGraphicDev);
+	//			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+	//			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+	//			cubeCnt++;
+	//		}
 
-			//사이 마지막줄
-			if (j == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				cubeCnt++;
-			}
+	//		//사이 마지막줄
+	//		if (j == 0)
+	//		{
+	//			TCHAR objName[128] = { 0 };
+	//			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+	//			pGameObject = CCube::Create(m_pGraphicDev);
+	//			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+	//			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+	//			cubeCnt++;
+	//		}
 
-			//맨 아랫줄
-			if (j == CUBEX - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				cubeCnt++;
-			}
-			/*TCHAR objName[128] = {0};
-			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
-			pGameObject = CCube::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{(float)j*2,(float)i*2,11.f };
-			NULL_CHECK_RETURN(pGameObject, E_FAIL);
-			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-			cubeCnt++;*/
-		}
-	}
+	//		//맨 아랫줄
+	//		if (j == CUBEX - 1)
+	//		{
+	//			TCHAR objName[128] = { 0 };
+	//			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+	//			pGameObject = CCube::Create(m_pGraphicDev);
+	//			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+	//			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+	//			cubeCnt++;
+	//		}
+	//		/*TCHAR objName[128] = {0};
+	//		_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+	//		pGameObject = CCube::Create(m_pGraphicDev);
+	//		pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{(float)j*2,(float)i*2,11.f };
+	//		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//		FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+	//		cubeCnt++;*/
+	//	}
+	//}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;

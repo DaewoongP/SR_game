@@ -13,10 +13,4 @@ public:
 
 
 	void Release();
-
-	private:
-	
-
-
-
 };
