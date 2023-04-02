@@ -24,9 +24,10 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
-	virtual void OnTriggerEnter(const class CCollider* collider) {}
-	virtual void OnTriggerStay(const class CCollider* collider) {}
-	virtual void OnTriggerExit(const class CCollider* collider) {}
+	virtual void OnTriggerEnter(const class CCollider* other);
+	virtual void OnTriggerStay(const class CCollider* other);
+	virtual void OnTirggerExit(const class CCollider* other);
+
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
@@ -36,7 +37,7 @@ protected:
 
 public:
 	class CTransform*	m_pTransform;
-	// ÇöÀç 2D, Topview È®ÀÎ º¯¼ö ±âº»°ª 2D
+	// Ã‡Ã¶Ã€Ã§ 2D, Topview ÃˆÂ®Ã€ÃŽ ÂºÂ¯Â¼Ã¶ Â±Ã¢ÂºÂ»Â°Âª 2D
 	_bool				Is2D;
 	_bool				m_bDead;
 

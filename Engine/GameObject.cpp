@@ -20,7 +20,9 @@ CGameObject::~CGameObject()
 CComponent * CGameObject::Get_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
 	CComponent*		pComponent = Find_Component(pComponentTag, eID);
-	NULL_CHECK_RETURN(pComponent, nullptr);
+	if (pComponent == nullptr)
+		return nullptr;
+	//NULL_CHECK_RETURN(pComponent, nullptr);
 
 	return pComponent;
 }
@@ -45,37 +47,105 @@ void CGameObject::Render_GameObject(void)
 		iter.second->Render_Component();
 }
 
-void CGameObject::OnCollisionEnter(const Collision * collsion)
+void CGameObject::OnCollisionEnter(const Collision * collision)
 {
-	
 }
 
 void CGameObject::OnCollisionStay(const Collision * collision)
-{	
+{
+	//캐릭터의 위치와 콜라이더를 가져오겠습니다.
+	if (this == Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Collider", ID_DYNAMIC)->m_pGameObject)
+		return;
+
+	CTransform* trans_other = collision->otherObj->m_pTransform;
+	CCollider* collider_other = dynamic_cast<CCollider*>(collision->otherObj->Get_Component(L"Collider", ID_DYNAMIC));
+
+	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
+	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
+
+	//파고든게 아닌 단순히 맞닿은 경우
+
+	//각 콜라이더의 충돌 영역을 가져옴.
+	_vec3 center_this = collider_this->Get_BoundCenter();
+	_vec3 size_this = collider_this->Get_BoundSize();
+	_vec3 center_other = collider_other->Get_BoundCenter();
+	_vec3 size_other = collider_other->Get_BoundSize();
+
+	//충돌 영역을 이용한 위치 보정값
+	_float min_x = center_this.x - (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
+	_float min_y = center_this.y - (size_this.y*0.5f + size_other.y*0.5f);
+	_float max_x = center_this.x + (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
+	_float max_y = center_this.y + (size_this.y*0.5f + size_other.y*0.5f);
+
+	//이거 임시방편임
+	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
+		(collision->_dir == DIR_RIGHT&&trans_other->m_matWorld._42 == max_y) ||
+		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == max_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == min_x) ||
+		trans_other->m_vInfo[INFO_POS].y == min_y ||
+		trans_other->m_vInfo[INFO_POS].y == max_y ||
+		trans_other->m_vInfo[INFO_POS].x == max_x ||
+		trans_other->m_vInfo[INFO_POS].x == min_x
+		)
+		return;
+
+	if (collision->_dir == DIR_UP &&trans_other->m_vInfo[INFO_POS].y > min_y)
+		trans_other->m_vInfo[INFO_POS].y = min_y;
+	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
+		trans_other->m_vInfo[INFO_POS].y = max_y;
+	else if (collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x < max_x)
+		trans_other->m_vInfo[INFO_POS].x = max_x;
+	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
+		trans_other->m_vInfo[INFO_POS].x = min_x;
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;
-	NULL_CHECK(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
+
+	if ((collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC)) == nullptr) return;
 	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
 
+	//velocity / trans 둘다 밀어내기를 진행해줘야함.
+	_vec3 reaction = _vec3(0, 0, 0);
 
-	//충돌의 법선을 확인합니다.
-	//지금은 그냥 무식하게 y만 고정시켜주겠음.
-
-	//애는 나랑 충돌한 물체의 벨로시티임.
-	_vec3 velo = _rigid->m_Velocity;
-	//나랑 충돌한 물체의 벨로시티에서 특정 축을 향한 힘만 남기고 날려주겠음.
-	if (_rigid->m_Velocity.y < 0)
+	switch (collision->_dir)
 	{
-		_vec3 reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-
-		//나랑 충돌한 물체에 적용중인 velocirt의 y를 알아냄. 그걸 넣어주겠음
-		_rigid->m_Velocity -= reaction;
+	case DIR_UP:
+		if (_rigid->m_Velocity.y > 0)
+			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+		_rigid->m_Velocity.x *= 0.5f;
+		break;
+	case DIR_DOWN:
+		if (_rigid->m_Velocity.y < 0)
+			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+		_rigid->m_Velocity.x *= 0.5f;
+		break;
+	case DIR_LEFT:
+		if (_rigid->m_Velocity.x < 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		_rigid->m_Velocity.y *= 0.95f;
+		break;
+	case DIR_RIGHT:
+		if (_rigid->m_Velocity.x > 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		_rigid->m_Velocity.y *= 0.95f;
+		break;
 	}
-	//충돌시 마찰계수 적용
-	_rigid->m_Velocity.x *= 0.95f;
+	_rigid->m_Velocity -= reaction;
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)
+{
+}
+
+void CGameObject::OnTriggerEnter(const CCollider * other)
+{
+}
+
+void CGameObject::OnTriggerStay(const CCollider * other)
+{
+
+}
+
+void CGameObject::OnTirggerExit(const CCollider * other)
 {
 }
 

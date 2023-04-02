@@ -36,7 +36,7 @@ private:
 	Engine::CRigidbody*		m_pRigid;
 
 	_float					m_fSpeed = 10.f;
-
+	bool					m_bJumpalbe;
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
