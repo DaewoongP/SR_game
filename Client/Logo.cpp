@@ -23,9 +23,8 @@ HRESULT CLogo::Ready_Scene(void)
 	
 	m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
-
+	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 	return S_OK;
 }
 
@@ -56,8 +55,6 @@ void CLogo::LateUpdate_Scene(void)
 
 void CLogo::Render_Scene(void)
 {
-	// _DEBUG ¿ë Ãâ·Â
-
 	Engine::Render_Font(L"Font_Default", m_pLoading->Get_String(), &_vec2(20.f, 20.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
 }

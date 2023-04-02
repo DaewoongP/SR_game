@@ -54,6 +54,7 @@ void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
+
 	for (auto& iter : m_RenderGroup[RENDER_ALPHA])
 		iter->Render_GameObject();
 }

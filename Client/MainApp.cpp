@@ -41,13 +41,6 @@ int CMainApp::Update_MainApp(const _float & fTimeDelta)
 	Engine::Update_DInput();
 
 	_long	dwMouse = 0;
-
-	/*if (dwMouse = Engine::Get_DIMouseMove(DIMS_Z))
-	{
-		int a = 0;
-	}*/
-
-
 	m_pManagementClass->Update_Management(fTimeDelta);
 
 	return 0;
@@ -63,7 +56,7 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
-	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
+	//m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
 
 	Engine::Render_End();
 }

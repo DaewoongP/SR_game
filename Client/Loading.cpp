@@ -45,13 +45,6 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 {
 	InitializeCriticalSection(&m_Crt);
 
-	// 1. 보안 속성
-	// 2. 스택 메모리의 크기, 0인 경우 쓰레드가 요구하는 크기만큼 할당
-	// 3. 쓰레드 함수의 이름(함수 포인터)
-	// 4. 쓰레드 함수를 통해 가공하고자 하는 데이터의 주소
-	// 5. 쓰레드의 생성 및 실행을 조절하기 위한 FLAG 값, 기본 값으로 0
-	// 6. 쓰레드 ID반환
-	
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, Thread_Main, this, 0, nullptr);
 
 	m_eID = eID;

@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <process.h>
+#include <iostream>
 
 #define DIRECTINPUT_VERSION		0x0800
 #include <dinput.h>
@@ -25,6 +26,9 @@
 
 extern HWND		 g_hWnd;
 extern HINSTANCE g_hInst;
+
+//Å×½ºÆ®
+extern int iAngle;
 
 using namespace std;
 using namespace Engine;

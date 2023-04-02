@@ -7,15 +7,110 @@
 
 
 CCamera::CCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CComponent(pGraphicDev), m_hWnd(nullptr)
+	:CComponent(pGraphicDev), m_bSwitch(false),
+	m_pName(nullptr)
+{
+	//ZeroMemory(m_szName, sizeof(_tchar) * 256);
+	ZeroMemory(&m_tViewParams, sizeof(VIEWPARAMS));
+	ZeroMemory(&m_tProjParams, sizeof(PROJPARAMS));
+}
+
+CCamera::CCamera(const CCamera & rhs)
+	:CComponent(rhs), m_bSwitch(false),
+	m_pName(rhs.m_pName)
+{
+	//ZeroMemory(m_szName, sizeof(_tchar) * 256);
+	m_tViewParams = rhs.m_tViewParams;
+	m_tProjParams = rhs.m_tProjParams;
+	m_matView = rhs.m_matView;
+	m_matProj = rhs.m_matProj;
+}
+
+CCamera::~CCamera()
+{
+}
+
+HRESULT CCamera::Ready_Camera(VIEWPARAMS& tViewParam, PROJPARAMS& tProjParam)
+{
+	m_tViewParams = tViewParam;
+	m_tProjParams = tProjParam;
+
+	m_tViewParams.LookAtLH(&m_matView);
+	m_tProjParams.PerspectiveLH(&m_matProj);
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+
+	return S_OK;
+}
+
+_int CCamera::Update_Component(const _float & fTimeDelta)
+{
+	if (!m_bSwitch)
+		return 0;
+
+	m_tViewParams.vEye = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
+
+	m_tViewParams.vAt = m_tViewParams.vEye + m_pGameObject->m_pTransform->m_vInfo[INFO_LOOK];
+
+	m_tViewParams.LookAtLH(&m_matView);
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+
+	return 0;
+}
+
+CCamera * CCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, VIEWPARAMS& tViewParam, PROJPARAMS& tProjParam)
+{
+	CCamera* pInstance = new CCamera(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_Camera(tViewParam, tProjParam)))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CComponent * CCamera::Clone(void)
+{
+	CCamera* pInstance = new CCamera(*this);
+	NULL_CHECK_RETURN(pInstance, nullptr);
+
+	// 여기서 카메라 매니저에 추가.
+	//Engine::CCameraMgr::GetInstance()->Add_Camera(m_pName, pInstance);
+
+	return pInstance;
+}
+
+void CCamera::Free()
+{
+	// 여기서 카메라 매니저에 제거.
+	//Engine::CCameraMgr::GetInstance()->Remove_Camera(m_pName);
+
+	__super::Free();
+}
+
+#if 0
+#include "stdafx.h"
+#include "Camera.h"
+
+#include "Component.h"
+
+#include "Export_Function.h"
+
+
+CCamera::CCamera(LPDIRECT3DDEVICE9 pGraphicDev)
+	:CComponent(pGraphicDev), m_hWnd(nullptr), m_pvTarget(nullptr), m_iTest(2)
 {
 	ZeroMemory(&m_tViewParams, sizeof(VIEWPARAMS));
 	ZeroMemory(&m_tProjParams, sizeof(PROJPARAMS));
 }
 
 CCamera::CCamera(const CCamera & rhs)
-	:CComponent(rhs), 
-	m_hWnd(rhs.m_hWnd)
+	:CComponent(rhs),
+	m_hWnd(rhs.m_hWnd), m_pvTarget(rhs.m_pvTarget), m_iTest(2)
 {
 	m_tViewParams = rhs.m_tViewParams;
 	m_tProjParams = rhs.m_tProjParams;
@@ -39,6 +134,12 @@ HRESULT CCamera::Ready_Camera(VIEWPARAMS& tViewParam, PROJPARAMS& tProjParam, HW
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
 
+
+
+
+
+
+
 	return S_OK;
 }
 
@@ -51,16 +152,9 @@ _int CCamera::Update_Component(const _float & fTimeDelta)
 		Fix_Mouse();
 		Mouse_Move();
 	}
+	First_Person_View();
 
-	CTransform* pTransform = m_pGameObject->m_pTransform;
-	m_tViewParams.vAt = pTransform->m_vInfo[INFO_POS];
 
-	_vec3 vDir = pTransform->m_vInfo[INFO_LOOK] + (-pTransform->m_vInfo[INFO_UP]);
-	m_tViewParams.vEye = (pTransform->m_vInfo[INFO_POS] - vDir * 10.f);
-
-	m_tViewParams.LookAtLH(&m_matView);
-
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 
 	return 0;
 }
@@ -162,6 +256,96 @@ void CCamera::Fix_Mouse()
 	SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
+void CCamera::First_Person_View()
+{
+	CTransform* pTransform = m_pGameObject->m_pTransform;
+
+	_vec3 vDir = pTransform->m_vInfo[INFO_LOOK];
+
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	m_tViewParams.vEye = pTransform->m_vInfo[INFO_POS];
+
+	m_tViewParams.vAt = pTransform->m_vInfo[INFO_POS] + vDir;
+
+	m_tViewParams.LookAtLH(&m_matView);
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+}
+
+void CCamera::Third_Person_View()
+{
+	CTransform* pTransform = m_pGameObject->m_pTransform;
+
+	m_tViewParams.vAt = pTransform->m_vInfo[INFO_POS];
+
+	_vec3 vDir = pTransform->m_vInfo[INFO_LOOK];
+
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	m_tViewParams.vEye = (pTransform->m_vInfo[INFO_POS] - vDir * 10.f);
+
+	m_tViewParams.LookAtLH(&m_matView);
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+}
+
+void CCamera::Ready_Target(_vec3 * Target)
+{
+	m_pvTarget = Target;
+}
+
+void CCamera::Target_View(_vec3 * Target)
+{
+	if (nullptr == Target)
+	{
+		return;
+	}
+	m_tViewParams.vAt = *Target;
+
+	m_tViewParams.vEye = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
+
+	m_tViewParams.LookAtLH(&m_matView);
+
+	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
+}
+
+void CCamera::Test_Change_View()
+{
+	if (GetAsyncKeyState('F'))
+	{
+		++m_iTest;
+		if (3 <= m_iTest)
+		{
+			m_iTest = 0;
+		}
+	}
+
+	switch (m_iTest)
+	{
+	case 0:
+		First_Person_View();
+		break;
+	case 1:
+		Third_Person_View();
+		break;
+	case 2:
+	{
+		_vec3 Test{ 0.0f, 0.0f, 0.0f };
+		Ready_Target(&Test);
+		Target_View(&Test);
+	}
+	break;
+
+	default:
+		break;
+	}
+
+
+
+
+}
+
 CCamera * CCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev, VIEWPARAMS& tViewParam, PROJPARAMS& tProjParam, HWND hWnd)
 {
 	CCamera* pInstance = new CCamera(pGraphicDev);
@@ -184,3 +368,5 @@ void CCamera::Free()
 {
 	__super::Free();
 }
+
+#endif // 0
