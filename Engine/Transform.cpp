@@ -8,7 +8,8 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ZeroMemory(&m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
-	D3DXMatrixIdentity(&m_matBill);
+	D3DXMatrixIdentity(&m_matBillX);
+	D3DXMatrixIdentity(&m_matBillY);
 }
 
 CTransform::CTransform(const CTransform & rhs)
@@ -16,7 +17,8 @@ CTransform::CTransform(const CTransform & rhs)
 	, m_vScale(rhs.m_vScale)
 	, m_vAngle(rhs.m_vAngle)
 	, m_matWorld(rhs.m_matWorld)
-	, m_matBill(rhs.m_matBill)
+	, m_matBillX(rhs.m_matBillX)
+	, m_matBillY(rhs.m_matBillY)
 {
 	for (size_t i = 0; i < INFO_END; ++i)
 		m_vInfo[i] = rhs.m_vInfo[i];
@@ -25,13 +27,6 @@ CTransform::CTransform(const CTransform & rhs)
 CTransform::~CTransform()
 {
 }
-
-
-
-//
-//void CTransform::TestXRotation()
-//{
-//}t
 
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)
 {
@@ -55,23 +50,6 @@ void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSp
 const _matrix* Engine::CTransform::Compute_Lookattarget(const _vec3* pTargetPos)
 {
 	_vec3	vDir = *pTargetPos - m_vInfo[INFO_POS];
-
-	/*_vec3	vAxis = *D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vDir);
-
-	_vec3	vUp;
-
-	D3DXVec3Normalize(&vDir, &vDir);
-	D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]);
-
-	_float	fDot = D3DXVec3Dot(&vDir, &vUp);
-
-	_float	fAngle = acosf(fDot);
-
-	_matrix		matRot;
-
-	D3DXMatrixRotationAxis(&matRot, &vAxis, fAngle);
-
-	return &matRot;*/
 
 	_matrix	matRot;
 	_vec3	vAxis, vUp;
@@ -117,9 +95,7 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	_matrix			matTrans;
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
 
-
-
-	m_matWorld = matScale * m_matBill * matRotation * matTrans;
+	m_matWorld = matScale * m_matBillX * matRotation * matTrans;
 	/*for (size_t i = 0; i < INFO_END; ++i)
 	memcpy(&m_matWorld.m[i][0], &m_vInfo[i], sizeof(_vec3));*/
 

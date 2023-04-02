@@ -24,12 +24,10 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->Set_Pos(0.0f, 0.0f, -100.0f);
+	_matrix matProj;
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (float)WINCX / WINCY, 1.0f, 1000.0f);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
-	m_pTransform->m_vInfo[INFO_LOOK] = { 0.0f,0.0f,1.0f };
-	_matrix ProjectionMatrix;
-	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DXToRadian(60), (float)WINCX / WINCY, 1.0f, 1000.0f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
 	return S_OK;
 }
 
@@ -44,16 +42,10 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 	
 	D3DXMatrixIdentity(&matRotX);
 
-	//D3DXMatrixRotationX(&matRotX, D3DXToRadian(fRadian));
-
 	_float fTemp;
 	fTemp = sinf(D3DXToRadian(fRadian));
-
 	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
-	
-
 	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
-	
 	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
 
 	_vec3 vDir;
@@ -62,13 +54,11 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 
 	vEye = vAt + vDir;
 
-
-
 	_vec3 vAxisX = { 1.f, 0.f, 0.f };
-	// ƒ´∏ﬁ∂Û¿« æ˜∫§≈Õ
+	// Ïπ¥Î©îÎùºÏùò ÏóÖÎ≤°ÌÑ∞
 	D3DXVec3Cross(&vUp, &(-vDir), &vAxisX);
-	_matrix viewMatrix;
 
+	_matrix viewMatrix;
 	D3DXMatrixLookAtLH(&viewMatrix, &vEye, &vAt, &vUp);
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 
@@ -76,7 +66,7 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 
 	Key_Input(fTimeDelta);
 
-	__super::Update_GameObject(fTimeDelta);	
+	__super::Update_GameObject(fTimeDelta);
 
 	return 0;
 }
@@ -115,50 +105,55 @@ void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 
 void CDynamiCamera::ToodeeAndTopdee(const _float & fTimeDelta)
 {
-	//≈ıµ ¿œ∂ß
+	//Ìà¨Îîî ÏùºÎïå
 	if (Is2D)
 	{
-		//∞¢µµ∞° 1∫∏¥Ÿ ¿€¥Ÿ∏È
+		//Í∞ÅÎèÑÍ∞Ä 1Î≥¥Îã§ ÏûëÎã§Î©¥
 		if (m_fToo >= m_pTransform->m_vAngle.x)
 		{
-			//x√‡ »∏¿¸ 1µµ
+			//xÏ∂ï ÌöåÏ†Ñ 1ÎèÑ
 			m_pTransform->m_vAngle.x = m_fToo;
-			//Ω√∞£ √ ±‚»≠
+			//ÏãúÍ∞Ñ Ï¥àÍ∏∞Ìôî
 			m_fTime = 0.0f;
 			//Is2D = false;
 		}
-		//1∫∏¥Ÿ ≈©¥Ÿ∏È
+		//1Î≥¥Îã§ ÌÅ¨Îã§Î©¥
 		else
 		{
-			//Ω√∞£ ¥©¿˚ 
+			//ÏãúÍ∞Ñ ÎàÑÏ†Å 
 			m_fTime += fTimeDelta * 4.0f;
 			
-			//∞¢µµ ∞®º“
+			//Í∞ÅÎèÑ Í∞êÏÜå
 			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
 		}
 	}
 	else if (!Is2D)
 	{
-		//∞¢µµ∞° 30∫∏¥Ÿ ≈©¥Ÿ∏È
+		//Í∞ÅÎèÑÍ∞Ä 30Î≥¥Îã§ ÌÅ¨Îã§Î©¥
 		if (m_fTop <= m_pTransform->m_vAngle.x)
 		{
-			//x√‡ »∏¿¸ 30µµ
+			//xÏ∂ï ÌöåÏ†Ñ 30ÎèÑ
 			m_pTransform->m_vAngle.x = m_fTop;
-			//Ω√∞£ √ ±‚»≠
+			//ÏãúÍ∞Ñ Ï¥àÍ∏∞Ìôî
 			m_fTime = 0.0f;
 			//Is2D = true;
 
 		}
-		//30∫∏¥Ÿ ¿€¥Ÿ∏È
+		//30Î≥¥Îã§ ÏûëÎã§Î©¥
 		else
 		{
-			//Ω√∞£ ¥©¿˚ 
+			//ÏãúÍ∞Ñ ÎàÑÏ†Å 
 			m_fTime += fTimeDelta * 4.0f;
 			
-			//∞¢µµ ¡ı∞°
+			//Í∞ÅÎèÑ Ï¶ùÍ∞Ä
 			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
 		}
 	}
+	
+	cout << m_pTransform->m_vAngle.x << endl;
+	
+
+
 }
 
 CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
