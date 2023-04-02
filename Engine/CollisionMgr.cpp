@@ -20,6 +20,7 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 		return;
 	
 	m_ColliderList.push_back(pCollider);
+	pCollider->AddRef();
 }
 
 void CCollisionMgr::Check_Collision()
@@ -161,10 +162,7 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 		if (pSrc->Delete_OtherCollider(pDest) | pDest->Delete_OtherCollider(pSrc))
 			return true;
 	}
-	
 
-	// 현재 충돌이 일어나지 않았는데, 이전프레임에 충돌이 있었다면 Exit 호출
-	// 둘중 하나라도 true 일경우 충돌 나가기 처리 해야함
 	return false;
 }
 
@@ -187,6 +185,20 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 	}
 
 	return false;
+}
+
+void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
+{
+	for (auto iter = m_ColliderList.begin(); iter != m_ColliderList.end();)
+	{
+		if ((*iter)->m_pGameObject == pGameObject)
+		{
+			Safe_Release(*iter);
+			iter = m_ColliderList.erase(iter);
+		}
+		else
+			++iter;
+	}
 }
 
 void CCollisionMgr::Clear_Collision()

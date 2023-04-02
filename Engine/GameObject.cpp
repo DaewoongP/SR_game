@@ -142,7 +142,6 @@ void CGameObject::OnTriggerEnter(const CCollider * other)
 
 void CGameObject::OnTriggerStay(const CCollider * other)
 {
-
 }
 
 void CGameObject::OnTirggerExit(const CCollider * other)

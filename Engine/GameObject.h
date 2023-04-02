@@ -37,7 +37,6 @@ protected:
 
 public:
 	class CTransform*	m_pTransform;
-	// Çö?ç 2D, Topview È®?Î º¯¼ö ±âº»°ª 2D
 	_bool				Is2D;
 	_bool				m_bDead;
 

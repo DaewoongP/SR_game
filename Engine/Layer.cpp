@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Layer.h"
 
+#include "Export_Function.h"
 
 CLayer::CLayer()
 {
@@ -37,8 +38,18 @@ HRESULT CLayer::Ready_Layer(void)
 
 _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
-	for (auto& iter : m_uMapObject)
-		iter.second->Update_GameObject(fTimeDelta);
+	for (auto iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
+	{
+		_int iResult = iter->second->Update_GameObject(fTimeDelta);
+		if (OBJ_DEAD == iResult)
+		{
+			Engine::Delete_Collider(iter->second);
+			Safe_Release(iter->second);
+			iter = m_uMapObject.erase(iter);
+		}
+		else
+			++iter;
+	}
 
 	return 0;
 }

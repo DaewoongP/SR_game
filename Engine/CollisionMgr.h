@@ -18,6 +18,7 @@ public:
 	_bool		Collision_Range(CCollider* pSrc, CCollider* pDest);
 	_bool		Collision_Box(CCollider* pSrc, CCollider* pDest);
 	_bool		Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _float * pX, _float * pY, _float * pZ);
+	void		Delete_Collider(CGameObject* pGameObject);
 
 	void		Clear_Collision();
 private:

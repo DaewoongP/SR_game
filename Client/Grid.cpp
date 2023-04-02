@@ -25,6 +25,10 @@ _int CGrid::Update_GameObject(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	/*_matrix	matView;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+
+	m_pTransform->Set_BillboardX(&matView);*/
 
 	return 0;
 }
@@ -46,7 +50,7 @@ void CGrid::Render_GameObject(void)
 
 		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
 		m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-		m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+		//m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -56,7 +60,7 @@ void CGrid::Render_GameObject(void)
 
 		m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 		m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-		m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		//m_pGraphicDev->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 

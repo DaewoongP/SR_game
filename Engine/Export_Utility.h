@@ -45,6 +45,7 @@ inline void		Clear_RenderGroup(void);
 inline void		Add_Collider(CCollider* pCollider);
 inline void		Check_Collision();
 inline void		Clear_Collision();
+inline void		Delete_Collider(CGameObject* pGameObject);
 
 inline void						Release_Utility(void);
 
