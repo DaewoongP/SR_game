@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Logo.h"
 
-// 주석 테스트용
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
 {
@@ -14,10 +13,8 @@ CMainApp::CMainApp()
 CMainApp::~CMainApp()
 {
 }
-
 HRESULT CMainApp::Ready_MainApp(void)
 {
-
 //#ifdef _DEBUG
 //
 //	if (::AllocConsole() == TRUE)
@@ -44,13 +41,6 @@ int CMainApp::Update_MainApp(const _float & fTimeDelta)
 	Engine::Update_DInput();
 
 	_long	dwMouse = 0;
-
-	/*if (dwMouse = Engine::Get_DIMouseMove(DIMS_Z))
-	{
-		int a = 0;
-	}*/
-
-
 	m_pManagementClass->Update_Management(fTimeDelta);
 
 	return 0;
@@ -64,8 +54,9 @@ void CMainApp::LateUpdate_MainApp(void)
 void CMainApp::Render_MainApp(void)
 {
 	Engine::Render_Begin(D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
-	
+
 	m_pManagementClass->Render_Management(m_pGraphicDev);
+	//m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
 
 	Engine::Render_End();
 }
@@ -113,7 +104,7 @@ CMainApp * CMainApp::Create(void)
 		delete pInstance;
 		pInstance = nullptr;
 	}
-	
+
 	return pInstance;
 }
 
@@ -121,10 +112,10 @@ void CMainApp::Free(void)
 {
 	FreeConsole();
 	Safe_Release(m_pGraphicDev);
-
+	m_pCImguiMgr->Release();
 	Safe_Release(m_pManagementClass);
 	Safe_Release(m_pDeviceClass);
-
+	
 	Engine::Release_Utility();
 	Engine::Release_System();
 }

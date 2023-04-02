@@ -14,6 +14,12 @@
     <Filter Include="Main">
       <UniqueIdentifier>{e3cfa13b-ee92-4c4f-8a26-3baf0aefc692}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Imgui">
+      <UniqueIdentifier>{c5148e39-762b-437d-9e80-8745e07f6174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Resource">
+      <UniqueIdentifier>{063a6c3c-66e7-4084-b47e-6d2c86206026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -30,9 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Monster.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -65,13 +68,44 @@
     <ClInclude Include="targetver.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h" />
+    <ClInclude Include="imconfig.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx9.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiMgr.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+    </ClInclude>
+    <ClInclude Include="DynamiCamera.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -98,6 +132,37 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="imgui.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx9.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Imgui\Imgui_Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiMgr.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+    </ClCompile>  
+    <ClCompile Include="DynamiCamera.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

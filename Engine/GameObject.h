@@ -36,7 +36,10 @@ protected:
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 
 public:
-	class CTransform* m_pTransform;
+	class CTransform*	m_pTransform;
+	// ÇöÀç 2D, Topview È®ÀÎ º¯¼ö ±âº»°ª 2D
+	_bool				Is2D;
+	_bool				m_bDead;
 
 protected:
 	virtual void		Free(void);

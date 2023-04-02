@@ -268,9 +268,6 @@
     <Filter Include="Componnent\Collider">
       <UniqueIdentifier>{22b78abf-07fe-4458-b091-6c9fa6f830b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Componnent\Texture">
-      <UniqueIdentifier>{3923373d-3387-4c2b-b8fe-d8d82a24d934}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\Transform">
       <UniqueIdentifier>{5863d0d2-b596-4b09-94e2-85040dd09eed}</UniqueIdentifier>
     </Filter>
@@ -291,6 +288,9 @@
     </Filter>
     <Filter Include="Componnent\Rigidbody">
       <UniqueIdentifier>{f5bbfd22-3b00-42c5-aefa-8a6bc988a0fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Texture">
+      <UniqueIdentifier>{3923373d-3387-4c2b-b8fe-d8d82a24d934}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

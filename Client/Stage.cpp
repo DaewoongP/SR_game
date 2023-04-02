@@ -3,10 +3,10 @@
 
 #include "Export_Function.h"
 #include "Monster.h"
-#include "Terrain.h"
 #include "SkyBox.h"
 #include "Cube.h"
-
+#include "Grid.h"
+#include "DynamiCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -52,16 +52,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	//// CDynamicCamera
-	/*pGameObject = CDynamicCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);*/
-	
-	// Terrain
-	/*pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);*/
-
 	pGameObject = CSkyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
@@ -81,73 +71,78 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
+	//CAMERA
+	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
+
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
 	int cubeCnt=0;
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < CUBEY; i++)
 	{
-		for (int j = 0; j < 25; j++)
+		for (int j = 0; j < CUBEX; j++)
 		{
-			//¸Ç À­ÁÙ
+			//ë§¨ ìœ—ì¤„
 			if (i == 0)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
 
-			//»çÀÌ Ã¹ÁÙ
-			if (i == 19)
+			//ì‚¬ì´ ì²«ì¤„
+			if (i == CUBEY - 1)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
 
-			//»çÀÌ ¸¶Áö¸·ÁÙ
+			//ì‚¬ì´ ë§ˆì§€ë§‰ì¤„
 			if (j == 0)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
 
-			//¸Ç ¾Æ·§ÁÙ
-			if (j == 24)
+			//ë§¨ ì•„ëž«ì¤„
+			if (j == CUBEX - 1)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				cubeCnt++;
 			}
-
 			/*TCHAR objName[128] = {0};
 			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{(float)j*1.99f,(float)i*1.99f,11.f };
+			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{(float)j*2,(float)i*2,11.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 			cubeCnt++;*/
 		}
 	}
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
 }

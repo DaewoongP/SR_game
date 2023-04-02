@@ -4,6 +4,7 @@
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
 CCollisionMgr::CCollisionMgr()
+	:m_fRangeOffset(1.f)
 {
 }
 
@@ -33,7 +34,9 @@ void CCollisionMgr::Check_Collision()
 			// 콜라이더의 그룹 값을 통해 충돌처리 판단
 			if (COL_ENV == (*iter)->Get_Group() && COL_ENV == (*iter2)->Get_Group())
 				continue;
-
+			// 충돌범위 판정인데.. 거의 뭐 하나마나 ㅜㅜ..
+			/*if (false == Collision_Range((*iter), (*iter2)))
+				continue;*/
 			if (Collision_Box(*iter, *iter2))
 			{
 				// 충돌상태 작성된거 대로 호출
@@ -75,6 +78,40 @@ void CCollisionMgr::Check_Collision()
 			}
 		}
 	}
+}
+
+_bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
+{
+	_vec3 vSrcCenter, vSrcSize, vDstCenter, vDstSize;
+	vSrcCenter = pSrc->Get_BoundCenter();
+	vDstCenter = pDest->Get_BoundCenter();
+	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
+	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
+
+	// 바운딩박스의 너비, 높이, 깊이중 가장 큰값 가져옴
+	_float fSrcLong = 9999.f;
+	_float fDstLong = 9999.f;
+	if (fSrcLong > vSrcSize.x)
+		fSrcLong = vSrcSize.x;
+	if (fSrcLong > vSrcSize.y)
+		fSrcLong = vSrcSize.y;
+	if (fSrcLong > vSrcSize.z)
+		fSrcLong = vSrcSize.z;
+
+	if (fDstLong > vDstSize.x)
+		fDstLong = vDstSize.x;
+	if (fDstLong > vDstSize.y)
+		fDstLong = vDstSize.y;
+	if (fDstLong > vDstSize.z)
+		fDstLong = vDstSize.z;
+
+	_float fDistance;
+	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
+	// 충돌 판정 원 내부
+	if (fDistance <= fSrcLong + fDstLong)
+		return true;
+
+	return false;
 }
 
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)

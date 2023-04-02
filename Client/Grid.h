@@ -5,16 +5,16 @@
 
 BEGIN(Engine)
 
-class CTerrainTex;
-class CTransform;
+class CRcTex;
 class CTexture;
 
 END
-class CTerrain : public Engine::CGameObject
+
+class CGrid : public Engine::CGameObject
 {
 private:
-	explicit CTerrain(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CTerrain();
+	explicit CGrid(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CGrid();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -24,19 +24,16 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
-	void		Key_Input(const _float& fTimeDelta);
 
 private:
-	Engine::CTerrainTex*	m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
-
-	_float					m_fSpeed = 10.f;
+	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pTextureCom;
+	bool m_bGridON;
 
 public:
-	static CTerrain*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CGrid*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void Free(void) override;
-
 };
 

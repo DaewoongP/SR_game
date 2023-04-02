@@ -42,6 +42,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Key_Input(0.01f);
 
 	__super::Update_GameObject(fTimeDelta);
+
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	
 	return 0;
@@ -49,8 +50,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 void CPlayer::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-	// m_planeVec
-	
 }
 
 void CPlayer::Render_GameObject(void)
@@ -82,15 +81,11 @@ void CPlayer::Render_GameObject(void)
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
-	static int se = 0;
-	cout << "Enter" << ++se << endl;
 	__super::OnCollisionEnter(collision);
 }
 
 void CPlayer::OnCollisionStay(const Collision * collision)
 {
-	static int ss = 0;
-	cout << "Stay" << ++ss << endl;
 	if (collision->_dir == DIR_DOWN)
 		m_bJumpalbe = true;
 	__super::OnCollisionStay(collision);
@@ -98,8 +93,6 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
-	static int sx = 0;
-	cout << "Exit" << ++sx << endl;
 	m_bJumpalbe = false;
 }
 
@@ -117,9 +110,7 @@ HRESULT CPlayer::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
-
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -155,13 +146,11 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-
 	if (Engine::Get_DIKeyState(DIK_LEFT) & 0x80)
 		m_pRigid->m_Velocity.x = -m_fSpeed;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) & 0x80)
 		m_pRigid->m_Velocity.x = m_fSpeed;
-
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80 && m_bJumpalbe)
 	{

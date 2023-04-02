@@ -27,6 +27,8 @@ public:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
 	_bool						m_bClone;
 	class CGameObject*			m_pGameObject;	
+	// 현재 2D, Topview 확인 변수 기본값 2D
+	_bool						Is2D;
 
 public:
 	virtual	CComponent*	Clone(void) PURE;

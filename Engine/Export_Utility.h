@@ -25,6 +25,8 @@ inline HRESULT			Create_Management(CManagement** ppManagement);
 
 inline CComponent*			Get_Component(const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag, COMPONENTID eID);
 
+inline CLayer*				Get_Layer(const _tchar* pLayerTag);
+
 inline HRESULT			Set_Scene(CScene* pScene);
 
 inline _int			Update_Management(const _float& fTimeDelta);

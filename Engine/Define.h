@@ -1,11 +1,17 @@
 #pragma once
 
-#define		WINCX		800
-#define		WINCY		600
+#define		WINCX		1366
+#define		WINCY		768
 
 #define		VTXCNTX		129
 #define		VTXCNTZ		129
 #define		VTXITV		1
+
+#define		CUBEX		32
+#define		CUBEY		18
+
+#define			OBJ_NOEVENT		0
+#define			OBJ_DEAD		1
 
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(NULL, TEXT(_message), L"System Message", MB_OK)
