@@ -120,11 +120,13 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	case DIR_LEFT:
 		if (_rigid->m_Velocity.x < 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		_rigid->m_Velocity.y *= 0.95f;
+		if(_rigid->m_Velocity.y < 0)
+			_rigid->m_Velocity.y *= 0.95f;
 		break;
 	case DIR_RIGHT:
 		if (_rigid->m_Velocity.x > 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		if (_rigid->m_Velocity.y < 0)
 		_rigid->m_Velocity.y *= 0.95f;
 		break;
 	}
