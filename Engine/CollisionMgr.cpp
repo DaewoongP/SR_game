@@ -19,25 +19,30 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 	if (nullptr == pCollider)
 		return;
 	
-	m_ColliderList.push_back(pCollider);
+	m_ColliderList[COL_OBJ].push_back(pCollider);
 	pCollider->AddRef();
 }
 
-void CCollisionMgr::Check_Collision()
+void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 {
-	if (m_ColliderList.empty())
+	if (m_ColliderList[eGroup1].empty())
 		return;
-	for (auto& iter = m_ColliderList.begin();
-	iter != m_ColliderList.end() - 1; ++iter)
+	if (m_ColliderList[eGroup2].empty())
+		return;
+	if (eGroup1 == eGroup2 && m_ColliderList[eGroup1].size() < 2)
+		return;
+	for (auto& iter = m_ColliderList[eGroup1].begin();
+	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
-		for (auto& iter2 = iter + 1; iter2 != m_ColliderList.end(); ++iter2)
+		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
+		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
 			// 콜라이더의 그룹 값을 통해 충돌처리 판단
-			if (COL_ENV == (*iter)->Get_Group() && COL_ENV == (*iter2)->Get_Group())
+			if ((*iter) == (*iter2))
 				continue;
 			// 충돌범위 판정인데.. 거의 뭐 하나마나 ㅜㅜ..
-			/*if (false == Collision_Range((*iter), (*iter2)))
-				continue;*/
+			if (false == Collision_Range((*iter), (*iter2)))
+				continue;
 			if (Collision_Box(*iter, *iter2))
 			{
 				// 충돌상태 작성된거 대로 호출
@@ -189,22 +194,49 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 
 void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 {
-	for (auto iter = m_ColliderList.begin(); iter != m_ColliderList.end();)
+	for (size_t i = 0; i < COL_END; ++i)
 	{
-		if ((*iter)->m_pGameObject == pGameObject)
+		for (auto iter = m_ColliderList[i].begin(); iter != m_ColliderList[i].end();)
 		{
-			Safe_Release(*iter);
-			iter = m_ColliderList.erase(iter);
+			if ((*iter)->m_pGameObject == pGameObject)
+			{
+				Safe_Release(*iter);
+				iter = m_ColliderList[i].erase(iter);
+			}
+			else
+				++iter;
 		}
-		else
-			++iter;
+	}
+}
+
+void CCollisionMgr::Set_Collider(COLGROUP eGroup, CCollider * pCollider)
+{
+	for (size_t i = 0; i < COL_END; ++i)
+	{
+		if (pCollider->Get_Group() == eGroup)
+			return;
+		for (auto iter = m_ColliderList[i].begin(); iter != m_ColliderList[i].end();)
+		{
+			if ((*iter) == pCollider)
+			{
+				iter = m_ColliderList[i].erase(iter);
+				m_ColliderList[eGroup].push_back(pCollider);
+				return;
+			}
+			else
+				++iter;
+		}
 	}
 }
 
 void CCollisionMgr::Clear_Collision()
 {
-	for_each(m_ColliderList.begin(), m_ColliderList.end(), CDeleteObj());
-	m_ColliderList.clear();
+	for (size_t i = 0; i < COL_END; ++i)
+	{
+		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
+		m_ColliderList[i].clear();
+	}
+	
 }
 
 void CCollisionMgr::Free(void)

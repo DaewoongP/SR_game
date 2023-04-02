@@ -21,6 +21,8 @@ HRESULT CCube::Ready_GameObject(void)
 
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 	/*_matrix matView;
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 

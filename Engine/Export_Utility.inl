@@ -62,14 +62,19 @@ void		Add_Collider(CCollider* pCollider)
 {
 	CCollisionMgr::GetInstance()->Add_Collider(pCollider);
 }
-void		Check_Collision()
+void		Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 {
-	CCollisionMgr::GetInstance()->Check_Collision();
+	CCollisionMgr::GetInstance()->Check_Collision(eGroup1, eGroup2);
 }
 void		Clear_Collision()
 {
 	CCollisionMgr::GetInstance()->Clear_Collision();
 }
+void		Set_Collider(COLGROUP eGroup, CCollider* pCollider)
+{
+	CCollisionMgr::GetInstance()->Set_Collider(eGroup, pCollider);
+}
+
 void		Delete_Collider(CGameObject* pGameObject)
 {
 	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);

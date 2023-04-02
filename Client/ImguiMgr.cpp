@@ -96,7 +96,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		if (!bCubePlaced && nullptr != pDefaultCube)
 		{
 			pDefaultCube->m_bDead = true;
-			//pDefaultCube = nullptr;
+			pDefaultCube = nullptr;
 		}			
 
 		if (bCubePlaced)
