@@ -20,6 +20,18 @@
     <Filter Include="Imgui\Imgui_Resource">
       <UniqueIdentifier>{063a6c3c-66e7-4084-b47e-6d2c86206026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Player">
+      <UniqueIdentifier>{e1b87ab7-9a26-4ba9-b03f-757c123c1993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Too">
+      <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Top">
+      <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Player\Shadow">
+      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -36,9 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Monster.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
@@ -103,12 +112,15 @@
     <ClInclude Include="DynamiCamera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObject\Player\Too</Filter>
+    </ClInclude>
+    <ClInclude Include="Player02.h">
+      <Filter>GameObject\Player\Top</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
@@ -160,9 +172,15 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-    </ClCompile>  
+    </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObject\Player\Too</Filter>
+    </ClCompile>
+    <ClCompile Include="Player02.cpp">
+      <Filter>GameObject\Player\Top</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

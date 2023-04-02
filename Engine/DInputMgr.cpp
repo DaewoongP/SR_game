@@ -10,6 +10,8 @@ CDInputMgr::CDInputMgr()
 {
 	ZeroMemory(m_byKeyState, sizeof(m_byKeyState));
 	ZeroMemory(&m_MouseState, sizeof(DIMOUSESTATE));
+	memset(&m_bKeyCheck_sub, 0, sizeof(m_bKeyCheck_sub));
+	memset(&m_bKeyCheck_main, 0, sizeof(m_bKeyCheck_main));
 }
 
 
@@ -53,6 +55,7 @@ HRESULT CDInputMgr::Ready_DInput(HINSTANCE hInst, HWND hWnd)
 void CDInputMgr::Update_DInput(void)
 {
 	m_pKeyBoard->GetDeviceState(256, m_byKeyState);
+	memcpy(&m_bKeyCheck_main, &m_bKeyCheck_sub, sizeof(m_bKeyCheck_sub));
 	m_pMouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
 }
 

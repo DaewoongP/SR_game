@@ -7,6 +7,7 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "DynamiCamera.h"
+#include "Player02.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -81,6 +82,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
+	// PLAYER
+	pGameObject = CPlayer02::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
+
 	int cubeCnt=0;
 	for (int i = 0; i < CUBEY; i++)
 	{
@@ -95,6 +101,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
 
@@ -107,6 +114,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
 
@@ -119,6 +127,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
 
@@ -131,6 +140,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
 			/*TCHAR objName[128] = {0};

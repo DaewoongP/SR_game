@@ -1,43 +1,42 @@
 #include "stdafx.h"
-#include "Player.h"
+#include "Player02.h"
 
 #include "Export_Function.h"
 
-CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
-	, m_bJumpalbe(false)
 {
 
 }
 
-CPlayer::~CPlayer()
+CPlayer02::~CPlayer02()
 {
 }
 
-HRESULT CPlayer::Ready_GameObject(void)
+HRESULT CPlayer02::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(15.f, 10.f, 10.f);
 	return S_OK;
 }
-_int CPlayer::Update_GameObject(const _float& fTimeDelta)
+_int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-	
+
 	return 0;
 }
-void CPlayer::LateUpdate_GameObject(void)
+void CPlayer02::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CPlayer::Render_GameObject(void)
+void CPlayer02::Render_GameObject(void)
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -64,24 +63,21 @@ void CPlayer::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CPlayer::OnCollisionEnter(const Collision * collision)
+void CPlayer02::OnCollisionEnter(const Collision * collision)
 {
 	__super::OnCollisionEnter(collision);
 }
 
-void CPlayer::OnCollisionStay(const Collision * collision)
+void CPlayer02::OnCollisionStay(const Collision * collision)
 {
-	if (collision->_dir == DIR_DOWN)
-		m_bJumpalbe = true;
 	__super::OnCollisionStay(collision);
 }
 
-void CPlayer::OnCollisionExit(const Collision * collision)
+void CPlayer02::OnCollisionExit(const Collision * collision)
 {
-	m_bJumpalbe = false;
 }
 
-HRESULT CPlayer::Add_Component(void)
+HRESULT CPlayer02::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -97,6 +93,8 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
 
+	m_pRigid->m_bUseGrivaty = false;	
+
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
@@ -106,9 +104,9 @@ HRESULT CPlayer::Add_Component(void)
 
 
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer02* CPlayer02::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CPlayer*		pInstance = new CPlayer(pGraphicDev);
+	CPlayer02*		pInstance = new CPlayer02(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
@@ -119,19 +117,19 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CPlayer::Free(void)
+void CPlayer02::Free(void)
 {
 	__super::Free();
 }
 
-void CPlayer::Key_Input(const _float & fTimeDelta)
+void CPlayer02::Key_Input(const _float & fTimeDelta)
 {
 	_vec3		vDir;
 	_vec3		vRight;
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
-	
+
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 		m_pRigid->m_Velocity.x = -m_fSpeed;
@@ -140,13 +138,20 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pRigid->m_Velocity.x = m_fSpeed;
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = -m_fSpeed*0.2f;
+		m_pRigid->m_Velocity.x = -m_fSpeed*0.f;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
+		m_pRigid->m_Velocity.x = m_fSpeed*0.f;
 
-	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
-	{
-		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
-	}
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
+		m_pRigid->m_Velocity.y = +m_fSpeed;
+
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+		m_pRigid->m_Velocity.y =-m_fSpeed;
+
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
+		m_pRigid->m_Velocity.y = +m_fSpeed*0.f;
+
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
+		m_pRigid->m_Velocity.y =-m_fSpeed*0.f;
 }

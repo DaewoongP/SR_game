@@ -53,15 +53,14 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	//캐릭터의 위치와 콜라이더를 가져오겠습니다.
-	if (this == Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Collider", ID_DYNAMIC)->m_pGameObject)
-		return;
-
 	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = dynamic_cast<CCollider*>(collision->otherObj->Get_Component(L"Collider", ID_DYNAMIC));
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
 	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
+
+	if (trans_other->m_bIsStatic)
+		return;
 
 	//파고든게 아닌 단순히 맞닿은 경우
 
@@ -111,12 +110,12 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	case DIR_UP:
 		if (_rigid->m_Velocity.y > 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-		_rigid->m_Velocity.x *= 0.5f;
+		_rigid->m_Velocity.x *= 0.8f;
 		break;
 	case DIR_DOWN:
 		if (_rigid->m_Velocity.y < 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-		_rigid->m_Velocity.x *= 0.5f;
+		_rigid->m_Velocity.x *= 0.8f;
 		break;
 	case DIR_LEFT:
 		if (_rigid->m_Velocity.x < 0)
