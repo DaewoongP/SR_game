@@ -141,7 +141,7 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 	float	fRadiusY = (pDest->Get_BoundSize().y + pSrc->Get_BoundSize().y) * 0.5f;
 	float	fRadiusZ = (pDest->Get_BoundSize().z + pSrc->Get_BoundSize().z) * 0.5f;
 
-	if ((fRadiusX > fX) && (fRadiusY > fY) && (fRadiusZ > fZ))
+	if ((fRadiusX >= fX) && (fRadiusY >= fY) && (fRadiusZ >= fZ))
 	{
 		*pX = fRadiusX - fX;
 		*pY = fRadiusY - fY;
