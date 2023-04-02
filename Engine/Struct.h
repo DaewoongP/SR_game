@@ -162,7 +162,7 @@ struct Collision
 	COL_DIR		_dir;
 	// 현재 enter, stay, exit 판단
 	COL_STATE	_CurState;
-
+	class CCollider*	otherCol;
 	class CGameObject* otherObj;
 };
 

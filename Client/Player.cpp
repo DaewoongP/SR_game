@@ -24,12 +24,15 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+    
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-	m_pTextureCom->Update_Anim(fTimeDelta);
-	
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+  m_pTextureCom->Update_Anim(fTimeDelta);
+  
 	return 0;
 }
 void CPlayer::LateUpdate_GameObject(void)
@@ -42,9 +45,9 @@ void CPlayer::Render_GameObject(void)
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
 
 	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
