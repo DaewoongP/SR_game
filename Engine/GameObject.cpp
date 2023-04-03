@@ -18,11 +18,11 @@ CGameObject::~CGameObject()
 
 CComponent * CGameObject::Get_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
-	CComponent*		pComponent = Find_Component(pComponentTag, eID);
+    CComponent*        pComponent = Find_Component(pComponentTag, eID);
 
-	NULL_CHECK_RETURN(pComponent, nullptr);
+    if (pComponent == nullptr)return nullptr;
 
-	return pComponent;
+    return pComponent;
 }
 
 void CGameObject::Set_Tag(const _tchar * pTag)

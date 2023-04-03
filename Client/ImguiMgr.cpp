@@ -14,7 +14,6 @@ CImguiMgr::CImguiMgr()
 CImguiMgr::~CImguiMgr()
 {
 }
-
 HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -34,87 +33,178 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	// //// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
 	{
+		// 세이브 로드 관련 변수
+		static bool bSaveButton = false;
+		static bool bLoadButton = false;
+
 		// 큐브 설치 관련 변수
-		static vector<CUBEINFO> vecCubeInfo;
+		static vector<_vec3> vecCubePos;
 		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
 
 		// 그리드 생성 관련 변수
-		static vector<CGameObject*> vecGrid;
-		vecGrid.reserve(CUBEX * CUBEY);
 		static bool bGridON = false;
 		static bool bGridCreate = true;
 
 		// 큐브 선택 관련 변수
 		static int item_current = 0;
 
-		// 본문 시작
 		ImGui::Begin("Hello,Imgui!");
 
 		ImGui::Checkbox("Demo Window", &show_demo_window);
 
-		// 그리드 체크 박스
-		ImGui::Checkbox("Grid", &bGridON); 
-
-		// 그리드 체크 박스 활성화 시 그리드 생성
-		if (bGridON && bGridCreate) 
-		{
-			FAILED_CHECK_RETURN(GridON(m_pGraphicDev, vecGrid), E_FAIL);
-			bGridCreate = false;
-		}
-
-		// 그리드 삭제
-		if (!bGridON && !bGridCreate)
-		{
-			for (auto& iter : vecGrid)
-				iter->m_bDead = true;
-
-			vecGrid.clear();
-
-			bGridCreate = true;
-		}
-
-		// 콤보 박스로 큐브 텍스처 고르는 기능
+		// 콤보 박스로 큐브 텍스처 고르는 기능 아직 미구현
 		const char* items[] = { "6_Cube", "4_Cube" };
 		ImGui::Combo("Cube Index", &item_current, items, IM_ARRAYSIZE(items));
-		if (nullptr != pDefaultCube)
-			dynamic_cast<CCube*>(pDefaultCube)->Set_CubeTextureIndex(item_current);
+		//pPlantCube->Set_CubeIndex(item_current);
 
-		// 큐브 설치 체크 박스
-		ImGui::Checkbox("Cube Placed", &bCubePlaced);
+		ImGui::Checkbox("Grid", &bGridON); // 그리드 체크 박스
 
-		// 디폴트 큐브가 없으면 생성
-		if (bCubePlaced && nullptr == pDefaultCube)
-			pDefaultCube = CreateDefaultCube(m_pGraphicDev);
+		if (bGridON) // 그리드 체크 박스 활성화 시 그리드 생성
+		{
+			if (bGridCreate)
+			{
+				CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+				NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+				CGameObject* pGameObject = nullptr;
 
-		// 체크 박스 활성회 시 큐브 설치 부분
-		if (bCubePlaced)
-			CubeInstall(pDefaultCube, m_pGraphicDev, vecCubeInfo, iCubeIndex);
+				int iGridIndex = 0;
+				for (int i = 0; i < CUBEY; ++i)
+				{
+					for (int j = 0; j < CUBEX; ++j)
+					{
+						iGridIndex = i * CUBEX + j;
 
-		// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
+						TCHAR objName[128] = { 0 };
+						_stprintf_s(objName, _T("Grid_Tile%d"), (iGridIndex));
+						pGameObject = CGrid::Create(m_pGraphicDev);
+						pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*1.99f,(float)i*1.99f,10.f };
+						NULL_CHECK_RETURN(pGameObject, E_FAIL);
+						FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+					}
+				}
+				bGridCreate = false;
+			}
+		}
+
+
+		ImGui::Checkbox("Cube Placed", &bCubePlaced); // 큐브 설치 체크 박스
+
+													  // 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
 		if (!bCubePlaced && nullptr != pDefaultCube)
 		{
 			pDefaultCube->m_bDead = true;
 			pDefaultCube = nullptr;
 		}
 
-		// 마우스 커서 위치
+		// 체크 박스 활성회 시 큐브 설치 부분
+		if (bCubePlaced)
+		{
+			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+			CGameObject* pGameObject = nullptr;
+
+			if (nullptr == pDefaultCube)
+			{
+				pDefaultCube = CCube::Create(m_pGraphicDev);
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS] = _vec3{ 10.f, 10.f, 10.f };
+				pDefaultCube->m_pTransform->m_bIsStatic = true;
+				NULL_CHECK_RETURN(pDefaultCube, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"DefaultCube", pDefaultCube), E_FAIL);
+			}
+
+			// 디폴트 큐브의 움직임(대충)
+			{
+				if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN) // 좌
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_D) == Engine::KEYDOWN) // 우
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_W) == Engine::KEYDOWN) // 상
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_S) == Engine::KEYDOWN) // 하
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 2.f;
+			}
+
+			if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
+			{
+				_tchar strCubeIndex[64] = { 0 };
+				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
+				pGameObject = CCube::Create(m_pGraphicDev);
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
+				pGameObject->m_pTransform->m_bIsStatic = true;
+				NULL_CHECK_RETURN(pGameObject, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
+				vecCubePos.push_back(pGameObject->m_pTransform->m_vInfo[INFO_POS]); // 저장을 위함
+				++iCubeIndex;
+			}
+		}
+
 		if (ImGui::IsMousePosValid())
 			ImGui::Text("/ Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
 
-		// 현재 프레임 정보
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);		
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
-		// 저장 기능
-		if (ImGui::Button("Cube Save"))
-			FAILED_CHECK_RETURN(SaveData(vecCubeInfo), E_FAIL);
-		
-		// 로드 기능
-		ImGui::SameLine();		
-		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadData(m_pGraphicDev, vecCubeInfo, iCubeIndex), E_FAIL);
-			
+		if (ImGui::Button("Cube Save")) // 저장 기능
+		{
+			bSaveButton = false;
+			HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+			if (INVALID_HANDLE_VALUE == hFile)
+				return E_FAIL;
+
+			DWORD	dwByte = 0;
+
+			for (auto& iter : vecCubePos)
+				WriteFile(hFile, iter, sizeof(_vec3), &dwByte, nullptr);
+
+			CloseHandle(hFile);
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cube Load")) // 로드 기능
+		{
+			bLoadButton = false;
+			vecCubePos.clear();
+
+			HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+			if (INVALID_HANDLE_VALUE == hFile)
+				return E_FAIL;
+
+			DWORD	dwByte = 0;
+			_vec3 vCubePos = { 0,0,0 };
+
+			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+			CGameObject* pGameObject = nullptr;
+
+			while (true)
+			{
+				ReadFile(hFile, &vCubePos, sizeof(_vec3), &dwByte, nullptr);
+				if (dwByte == 0)
+					break;
+				vecCubePos.push_back(vCubePos);
+			}
+			CloseHandle(hFile);
+
+			for (auto& iter : vecCubePos)
+			{
+				_tchar strCubeIndex[64] = { 0 };
+				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
+				pGameObject = CCube::Create(m_pGraphicDev);
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter;
+				NULL_CHECK_RETURN(pGameObject, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
+				pGameObject->m_pTransform->m_bIsStatic = true;
+				++iCubeIndex;
+			}
+		}
+
 		ImGui::End();
 	}
 
@@ -129,7 +219,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	return S_OK;
 }
-
 void CImguiMgr::Release()
 {
 	ImGui_ImplDX9_Shutdown();
