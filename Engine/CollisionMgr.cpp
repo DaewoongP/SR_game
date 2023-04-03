@@ -37,15 +37,12 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
 		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
-			// 콜라?�더??그룹 값을 ?�해 충돌처리 ?�단
 			if ((*iter) == (*iter2))
 				continue;
-			// 충돌범위 ?�정?�데.. 거의 �??�나마나 ?�ㅜ..
 			//if (false == Collision_Range((*iter), (*iter2)))
 			//	continue;
 			if (Collision_Box(*iter, *iter2))
 			{
-				// 충돌?�태 ?�성?�거 ?��??�출
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
@@ -94,7 +91,6 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
 	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
 
-	// 바운?�박?�의 ?�비, ?�이, 깊이�?가???�값 가?�옴
 	_float fSrcLong = 9999.f;
 	_float fDstLong = 9999.f;
 	if (fSrcLong > vSrcSize.x)
@@ -126,36 +122,31 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		// ?�하 (src기�?)
-		if (fX > fY)
+		if (fX >= fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
-				// ?�충??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 			else
 			{
-				// ?�충??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 		}
-		else // 좌우
+		else 
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				// ?�충??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
-				// 좌충??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
