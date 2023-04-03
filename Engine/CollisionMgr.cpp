@@ -18,7 +18,7 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 {
 	if (nullptr == pCollider)
 		return;
-	
+
 	m_ColliderList[COL_OBJ].push_back(pCollider);
 	pCollider->AddRef();
 }
@@ -34,13 +34,13 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 	for (auto& iter = m_ColliderList[eGroup1].begin();
 	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
-		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
+		for (auto& iter2 = m_ColliderList[eGroup2].begin();
 		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
 			if ((*iter) == (*iter2))
 				continue;
-			/*if (false == Collision_Range((*iter), (*iter2)))
-				continue;*/
+			//if (false == Collision_Range((*iter), (*iter2)))
+			//	continue;
 			if (Collision_Box(*iter, *iter2))
 			{
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
@@ -122,36 +122,31 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		// ?í•˜ (srcê¸°ì?)
-		if (fX > fY)
+		if (fX >= fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
-				// ?ì¶©??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 			else
 			{
-				// ?˜ì¶©??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 		}
-		else // ì¢Œìš°
+		else
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				// ?°ì¶©??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
-				// ì¢Œì¶©??
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
@@ -232,7 +227,7 @@ void CCollisionMgr::Clear_Collision()
 		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
 		m_ColliderList[i].clear();
 	}
-	
+
 }
 
 void CCollisionMgr::Free(void)

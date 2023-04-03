@@ -24,7 +24,7 @@ HRESULT CStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-		
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	return S_OK;
@@ -53,6 +53,12 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
+	/*pGameObject = CSkyBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);*/
+
+
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -77,11 +83,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
 	//// PLAYER
-	//pGameObject = CPlayer02::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
+	pGameObject = CPlayer02::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
 
-	int cubeCnt=0;
+	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
@@ -90,9 +96,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (i == 0)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				pGameObject->m_pTransform->m_bIsStatic = true;
@@ -103,9 +109,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (i == CUBEY - 1)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				pGameObject->m_pTransform->m_bIsStatic = true;
@@ -116,9 +122,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == 0)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				pGameObject->m_pTransform->m_bIsStatic = true;
@@ -129,21 +135,21 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == CUBEX - 1)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j*2,(float)i*2,10.f };
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
-			/*TCHAR objName[128] = {0};
-			_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
+			TCHAR objName[128] = { 0 };
+			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{(float)j*2,(float)i*2,13.f };
+			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,13.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-			cubeCnt++;*/
+			cubeCnt++;
 		}
 	}
 
