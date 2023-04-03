@@ -15,6 +15,8 @@ CMonster::~CMonster()
 HRESULT CMonster::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
 
 	return S_OK;
 }
@@ -22,14 +24,15 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Transform", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
+	if (g_Is2D)
+	{
+		Updatae_2D(fTimeDelta);
+	}
+	else if (!g_Is2D)
+	{
+		Updatae_3D(fTimeDelta);
+	}
 
-	_vec3	vPlayerPos;
-	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-
-	m_pTransform->Chase_Target(&vPlayerPos, m_fSpeed, fTimeDelta);
-	
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
 	return 0;
@@ -52,9 +55,31 @@ void CMonster::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+void CMonster::OnCollisionEnter(const Collision * collision)
+{
+}
+
+void CMonster::OnCollisionStay(const Collision * collision)
+{
+}
+
+void CMonster::OnCollisionExit(const Collision * collision)
+{
+}
+
+_int CMonster::Updatae_2D(const _float & fTimeDelta)
+{
+	return _int();
+}
+
+_int CMonster::Updatae_3D(const _float & fTimeDelta)
+{
+	return _int();
+}
+
 HRESULT CMonster::Add_Component(void)
 {
-	CComponent*		pComponent = nullptr;
+	/*CComponent*		pComponent = nullptr;
 
 	pComponent = m_pBufferCom = dynamic_cast<CTriCol*>(Engine::Clone_Proto(L"TriCol",this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
@@ -66,7 +91,7 @@ HRESULT CMonster::Add_Component(void)
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Monster_Collider", pComponent });
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Monster_Collider", pComponent });*/
 	return S_OK;
 }
 

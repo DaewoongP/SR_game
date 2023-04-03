@@ -124,7 +124,7 @@ void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 			m_fTime += fTimeDelta * 4.0f;
 			
 			//각도 감소
-			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
+			m_pTransform->m_vAngle.x = Lerp(m_fTop, m_fToo, m_fTime);
 		}
 	}
 	else if (!g_Is2D)
@@ -146,7 +146,7 @@ void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 			m_fTime += fTimeDelta * 4.0f;
 			
 			//각도 증가
-			m_pTransform->m_vAngle.x = Linear(m_fToo, m_fTop, m_fTime);
+			m_pTransform->m_vAngle.x = Lerp(m_fToo, m_fTop, m_fTime);
 		}
 	}
 }

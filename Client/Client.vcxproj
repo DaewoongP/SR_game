@@ -172,6 +172,7 @@
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Resource.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player02.cpp" />
     <ClCompile Include="Stage.cpp" />

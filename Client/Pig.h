@@ -1,20 +1,11 @@
 #pragma once
-
-#include "Include.h"
-#include "GameObject.h"
-
-BEGIN(Engine)
-
-class CRcTex;
-class CTexture;
-class CCollider;
-class CRigidbody;
-END
-class CMonster : public Engine::CGameObject
+#include "Monster.h"
+class CPig :
+	public CMonster
 {
-protected:
-	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMonster();
+private:
+	explicit CPig(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CPig();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -29,10 +20,10 @@ public:
 	virtual _int Updatae_2D(const _float& fTimeDelta);
 	virtual _int Updatae_3D(const _float& fTimeDelta);
 
-protected:
+private:
 	virtual HRESULT		Add_Component(void);
 
-protected:
+private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
@@ -41,10 +32,9 @@ protected:
 	_float					m_fSpeed = 5.f;
 
 public:
-	static CMonster*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPig*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-protected:
+private:
 	virtual void Free(void) override;
-
 };
 

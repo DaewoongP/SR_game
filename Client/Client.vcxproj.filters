@@ -119,6 +119,7 @@
     <ClInclude Include="Grid.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Pig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Monster.cpp">
@@ -190,5 +191,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Pig.cpp" />
   </ItemGroup>
 </Project>
