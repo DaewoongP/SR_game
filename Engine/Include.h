@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <process.h>
+#include <bitset>
 #include <iostream>
 
 #define DIRECTINPUT_VERSION		0x0800

@@ -109,7 +109,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-
+	// Ï∂©Îèå ?êÏ†ï ???¥Î?
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
