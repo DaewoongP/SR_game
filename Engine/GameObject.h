@@ -17,8 +17,14 @@ public:
 public:
 	virtual HRESULT		Ready_GameObject(void)PURE;
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
+	virtual _int		Update_Too(const _float& fTimeDelta) { return 0; }
+	virtual _int		Update_Top(const _float& fTimeDelta) { return 0; }
 	virtual void		LateUpdate_GameObject(void);
+	virtual void		LateUpdate_Too() {}
+	virtual void		LateUpdate_Top() {}
 	virtual void		Render_GameObject(void);
+	virtual void		Render_Too() {}
+	virtual void		Render_Top() {}
 
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);

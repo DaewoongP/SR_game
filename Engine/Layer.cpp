@@ -40,7 +40,14 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
 	for (auto iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
 	{
-		_int iResult = iter->second->Update_GameObject(fTimeDelta);
+		_int iResult = OBJ_NOEVENT;
+		if (g_Is2D)
+			iter->second->Update_Too(fTimeDelta);
+		else
+			iter->second->Update_Top(fTimeDelta);
+
+		iResult = iter->second->Update_GameObject(fTimeDelta);
+
 		if (OBJ_DEAD == iResult)
 		{
 			Engine::Delete_Collider(iter->second);
@@ -57,7 +64,13 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 void CLayer::LateUpdate_Layer(void)
 {
 	for (auto& iter : m_uMapObject)
+	{
+		if (g_Is2D)
+			iter.second->LateUpdate_Too();
+		else
+			iter.second->LateUpdate_Top();
 		iter.second->LateUpdate_GameObject();
+	}
 }
 
 
