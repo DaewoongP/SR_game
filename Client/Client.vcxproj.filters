@@ -32,6 +32,12 @@
     <Filter Include="GameObject\Player\Shadow">
       <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Monster">
+      <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Monster\Crow">
+      <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -47,9 +53,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Monster.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -119,11 +122,14 @@
     <ClInclude Include="Grid.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Crow.h">
+      <Filter>GameObject\Monster\Crow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Monster.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -189,6 +195,12 @@
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Crow.cpp">
+      <Filter>GameObject\Monster\Crow</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -31,10 +31,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-  m_pTextureCom->Update_Anim(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
   
 	return 0;
 }
+
 void CPlayer::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
