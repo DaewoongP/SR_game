@@ -41,7 +41,7 @@ private:
 	// 0000 0000
 	_byte					m_byPlayerInputDir;
 	_byte					m_byPlayerMoveDir;
-	_float					m_fSpeed = 10.f;
+	_float					m_fSpeed = 20.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_bool					m_bIsMoveKeyPress = false;
