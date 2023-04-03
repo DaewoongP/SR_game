@@ -18,7 +18,7 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 {
 	if (nullptr == pCollider)
 		return;
-	
+
 	m_ColliderList[COL_OBJ].push_back(pCollider);
 	pCollider->AddRef();
 }
@@ -34,18 +34,13 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 	for (auto& iter = m_ColliderList[eGroup1].begin();
 	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
-		for (auto& iter2 = m_ColliderList[eGroup2].begin(); 
+		for (auto& iter2 = m_ColliderList[eGroup2].begin();
 		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
 		{
 			if ((*iter) == (*iter2))
 				continue;
-<<<<<<< HEAD
 			//if (false == Collision_Range((*iter), (*iter2)))
 			//	continue;
-=======
-			/*if (false == Collision_Range((*iter), (*iter2)))
-				continue;*/
->>>>>>> 204385f593b816347d4b5a7d17659fb83e0f0615
 			if (Collision_Box(*iter, *iter2))
 			{
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
@@ -114,7 +109,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-
+	// Ï∂©Îèå ?êÏ†ï ???¥Î?
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -142,7 +137,7 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
@@ -232,7 +227,7 @@ void CCollisionMgr::Clear_Collision()
 		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
 		m_ColliderList[i].clear();
 	}
-	
+
 }
 
 void CCollisionMgr::Free(void)

@@ -27,24 +27,18 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-    
+
 	Key_Input(fTimeDelta);
-	if (m_pTag)
-		int a = 1;
+
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-<<<<<<< HEAD
-  m_pTextureCom->Update_Anim(fTimeDelta);
-  DoFlip();
-
- // m_pTransform->m_vAngle = _vec3(0,180,0);
-=======
 	m_pTextureCom->Update_Anim(fTimeDelta);
->>>>>>> 204385f593b816347d4b5a7d17659fb83e0f0615
-  
+	DoFlip();
+
+	// m_pTransform->m_vAngle = _vec3(0,180,0);
+
 	return 0;
 }
-
 void CPlayer::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
@@ -59,7 +53,7 @@ void CPlayer::Render_GameObject(void)
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
@@ -87,39 +81,22 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 	if (collision->_dir == DIR_DOWN)
 		m_bJumpalbe = true;
 
-<<<<<<< HEAD
 	if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
 	{
 		m_bJumpalbe = false;
 		m_pTextureCom->Switch_Anim(L"Jump");
-	}		
+	}
 	else if (m_bJumpalbe)
-		if((fabsf(m_pRigid->m_Velocity.x)>1.f))
+		if ((fabsf(m_pRigid->m_Velocity.x)>1.f))
 			m_pTextureCom->Switch_Anim(L"Walk");
 		else
 			m_pTextureCom->Switch_Anim(L"Idle");
-=======
-	if (fabsf(m_pRigid->m_Velocity.y) > 1.f && m_bJumpalbe)
-	{
-		m_bJumpalbe = false;
-		m_pTextureCom->Switch_Anim(L"Jump");
-	}
-
-	else if (fabsf(m_pRigid->m_Velocity.x) > 1.f)
-		m_pTextureCom->Switch_Anim(L"Walk");
-	else
-		m_pTextureCom->Switch_Anim(L"Idle");
-
->>>>>>> 204385f593b816347d4b5a7d17659fb83e0f0615
 	__super::OnCollisionStay(collision);
 }
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
-<<<<<<< HEAD
-  	m_bJumpalbe = false;
-=======
->>>>>>> 204385f593b816347d4b5a7d17659fb83e0f0615
+	m_bJumpalbe = false;
 }
 
 HRESULT CPlayer::Add_Component(void)
@@ -134,7 +111,7 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
-	m_pTextureCom->Add_Anim(L"Idle",0, 5,1.f,true);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
@@ -148,8 +125,6 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
-
-	m_pTransform->m_bIsStatic = false;
 	return S_OK;
 }
 
@@ -177,7 +152,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_LEFT;
-	
+
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_RIGHT;
 
@@ -194,14 +169,14 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
-		
+
 }
 
 void CPlayer::DoFlip()
 {
 	if (m_eKeyState == DIR_LEFT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
-	else if(m_eKeyState == DIR_RIGHT)
+	else if (m_eKeyState == DIR_RIGHT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
 
 }
