@@ -41,8 +41,8 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 			if ((*iter) == (*iter2))
 				continue;
 			// ì¶©ëŒë²”ìœ„ ?ì •?¸ë°.. ê±°ì˜ ë­??˜ë‚˜ë§ˆë‚˜ ?œã…œ..
-			if (false == Collision_Range((*iter), (*iter2)))
-				continue;
+			//if (false == Collision_Range((*iter), (*iter2)))
+			//	continue;
 			if (Collision_Box(*iter, *iter2))
 			{
 				// ì¶©ëŒ?íƒœ ?‘ì„±?œê±° ?€ë¡??¸ì¶œ
