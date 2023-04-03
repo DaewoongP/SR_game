@@ -4,7 +4,6 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
-
 class CRcTex;
 class CTexture;
 class CCollider;

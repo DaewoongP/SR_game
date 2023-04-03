@@ -26,6 +26,7 @@ HRESULT CLayer::Add_GameObject(const _tchar * pObjTag, CGameObject * pGameObject
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
+	pGameObject->Set_Tag(pObjTag);
 	m_uMapObject.insert({ pObjTag, pGameObject });
 
 	return S_OK;

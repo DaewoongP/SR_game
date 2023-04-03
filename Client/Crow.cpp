@@ -14,12 +14,13 @@ CCrow::~CCrow()
 
 HRESULT CCrow::Ready_GameObject(void)
 {
-	return E_NOTIMPL;
+
+	return S_OK;
 }
 
 _int CCrow::Update_GameObject(const _float & fTimeDelta)
 {
-	return _int();
+	return 0;
 }
 
 void CCrow::LateUpdate_GameObject(void)
@@ -32,7 +33,15 @@ void CCrow::Render_GameObject(void)
 
 CCrow * CCrow::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	return nullptr;
+	CCrow*		pInstance = new CCrow(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
 }
 
 void CCrow::Free(void)

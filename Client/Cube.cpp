@@ -23,11 +23,8 @@ _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
-	/*_matrix matView;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-
-	m_pTransform->Set_BillboardX(&matView);*/
+	if (m_pTag)
+		int a = 1;
 
 	__super::Update_GameObject(fTimeDelta);
   
