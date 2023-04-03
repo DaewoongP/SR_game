@@ -102,6 +102,7 @@ void CPlayer::OnCollisionExit(const Collision * collision)
 HRESULT CPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
+	m_pTransform->m_bIsStatic = false;
 
 	m_pTransform->m_bIsStatic = false;
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));

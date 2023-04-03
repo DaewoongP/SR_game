@@ -7,7 +7,6 @@
 #include"imgui.h"
 #include"imgui_impl_dx9.h"
 #include"imgui_impl_win32.h"
-#include"ImguiMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -23,8 +22,6 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-CImguiMgr* ImguiMgr;
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -80,8 +77,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ImGui_ImplDX9_Init(pd3dDevice);
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
    
-   
-
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);

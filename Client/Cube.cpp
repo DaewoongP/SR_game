@@ -3,7 +3,8 @@
 
 #include "Export_Function.h"
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev),
+	m_iCubeTextureIndex(0)
 {
 }
 
@@ -42,7 +43,7 @@ void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iCubeTextureIndex);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -57,9 +58,9 @@ HRESULT CCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube",this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Practice_Cube",this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });
+	m_uMapComponent[ID_STATIC].insert({ L"Practice_Cube", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);

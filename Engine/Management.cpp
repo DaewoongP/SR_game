@@ -24,6 +24,12 @@ CLayer * CManagement::Get_Layer(const _tchar * pLayerTag)
 	return m_pScene->Get_Layer(pLayerTag);
 }
 
+CGameObject * CManagement::Get_GameObject(const _tchar * pLayerTag, const _tchar * pObjTag)
+{
+	NULL_CHECK_RETURN(m_pScene, nullptr);
+	return m_pScene->Get_GameObject(pLayerTag, pObjTag);
+}
+
 HRESULT CManagement::Set_Scene(CScene * pScene)
 {
 	Safe_Release(m_pScene);

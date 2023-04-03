@@ -22,6 +22,9 @@ HRESULT CGrid::Ready_GameObject(void)
 
 _int CGrid::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);

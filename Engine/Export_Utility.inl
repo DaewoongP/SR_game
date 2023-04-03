@@ -23,6 +23,11 @@ HRESULT			Set_Scene(CScene* pScene)
 	return CManagement::GetInstance()->Set_Scene(pScene);
 }
 
+CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
+}
+
 _int			Update_Management(const _float& fTimeDelta)
 {
 	return CManagement::GetInstance()->Update_Management(fTimeDelta);
