@@ -31,6 +31,7 @@ namespace Engine
 		DIR_RIGHT,
 		DIR_END
 	};
+
 	enum COL_STATE
 	{
 		COLSTATE_ENTER,

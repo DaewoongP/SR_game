@@ -6,7 +6,6 @@
 CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
-
 }
 
 CPlayer02::~CPlayer02()
@@ -18,12 +17,15 @@ HRESULT CPlayer02::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(15.f, 10.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(15.f, 10.f, 11.f);
+
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	return S_OK;
 }
 _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 {
 	Key_Input(fTimeDelta);
+	PlayerMove(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -81,6 +83,8 @@ HRESULT CPlayer02::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
+	m_pTransform->m_bIsStatic = false;
+
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
@@ -88,12 +92,6 @@ HRESULT CPlayer02::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
-
-	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
-	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
-
-	m_pRigid->m_bUseGrivaty = false;	
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -124,34 +122,75 @@ void CPlayer02::Free(void)
 
 void CPlayer02::Key_Input(const _float & fTimeDelta)
 {
-	_vec3		vDir;
-	_vec3		vRight;
-	m_pTransform->Get_Info(INFO_LOOK, &vDir);
-	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+		m_bIsMoving = true;
 
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 8;
 
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 4; 
 
-	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.x = -m_fSpeed;
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 2;
 
-	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.x = m_fSpeed;
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 1;
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = -m_fSpeed*0.f;
+		m_byPlayerInputDir ^= 40;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = m_fSpeed*0.f;
-
-	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.y = +m_fSpeed;
-
-	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.y =-m_fSpeed;
+		m_byPlayerInputDir ^= 4;
 
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
-		m_pRigid->m_Velocity.y = +m_fSpeed*0.f;
+		m_byPlayerInputDir ^= 2;
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
-		m_pRigid->m_Velocity.y =-m_fSpeed*0.f;
+		m_byPlayerInputDir ^= 1;
+}
+
+void CPlayer02::PlayerMove(const _float& fTimeDelta)
+{
+	if (m_bIsMoving)
+		if (IsMoveDone(fTimeDelta))
+			return;
+		else
+		{
+			m_byPlayerMoveDir = m_byPlayerInputDir;
+
+			int x = 0;
+			int y = 0;
+
+			if (m_byPlayerMoveDir & 1)
+				y-=2;
+			if (m_byPlayerMoveDir & 2)
+				y+=2;
+			if (m_byPlayerMoveDir & 4)
+				x+=2;
+			if (m_byPlayerMoveDir & 8)
+				x-=2;
+
+			m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + x, m_pTransform->m_vInfo[INFO_POS].y + y, m_pTransform->m_vInfo[INFO_POS].z);
+			m_bIsMoving = false;
+		}
+}
+
+//실제 움직이는 코드
+_bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
+{
+	_vec3 dir;
+	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
+	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*0.01f;
+	//거리 이용 도달했는지 알려주는 코드
+	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.05f)
+	{
+		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
+		return false;
+	}
+
+	return true;
 }

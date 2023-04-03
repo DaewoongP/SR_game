@@ -28,6 +28,8 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
+	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
+	void		DoFlip();
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
@@ -37,6 +39,8 @@ private:
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpalbe;
+	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
+	COL_DIR					m_eKeyState;
 public:
 	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
