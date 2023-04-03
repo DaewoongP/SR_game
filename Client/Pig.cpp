@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CMonster(pGraphicDev)
+	: CMonster(pGraphicDev),m_bMoveLeft(false)
 {
 }
 
@@ -15,9 +15,9 @@ CPig::~CPig()
 HRESULT CPig::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_fSpeed = 5.0f;
+	m_fSpeed = 10.0f;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
 	return S_OK;
 }
 
@@ -26,7 +26,7 @@ _int CPig::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	__super::Update_GameObject(fTimeDelta);
+	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return _int();
@@ -34,13 +34,13 @@ _int CPig::Update_GameObject(const _float & fTimeDelta)
 
 void CPig::LateUpdate_GameObject(void)
 {
-	__super::LateUpdate_GameObject();
+	CGameObject::LateUpdate_GameObject();
 }
 
 void CPig::Render_GameObject(void)
 {
 
-	__super::Render_GameObject();
+	CGameObject::Render_GameObject();
 }
 
 HRESULT CPig::Add_Component(void)
@@ -69,6 +69,19 @@ HRESULT CPig::Add_Component(void)
 
 _int CPig::Update_Too(const _float & fTimeDelta)
 {
+	_vec3 MoveDir = { 1.0f,0.0f,0.0f };
+
+	m_pRigid->m_bUseGrivaty = true;
+
+	if (!m_bMoveLeft)
+	{
+		MoveDir *= -1;
+	}
+
+	
+
+	m_pTransform->Move_Pos(&MoveDir, fTimeDelta, m_fSpeed);
+
 	return 0;
 }
 
@@ -85,8 +98,10 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	_vec3	vPlayerPos;
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
+	vPlayerPos = vPlayerPos - m_pTransform->m_vInfo[INFO_POS];
+
 	m_pRigid->AddForce(vPlayerPos, m_fSpeed, FORCE, fTimeDelta);
-	//여기 들어오는데 트렌스폼 위치가 안바뀜
+	
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	
@@ -110,7 +125,7 @@ void CPig::Render_Too()
 
 	m_pBufferCom->Render_Buffer();
 
-	__super::Render_GameObject();
+	CGameObject::Render_GameObject();
 }
 
 void CPig::Render_Top()
@@ -122,7 +137,23 @@ void CPig::Render_Top()
 
 	m_pBufferCom->Render_Buffer();
 
-	__super::Render_GameObject();
+	CGameObject::Render_GameObject();
+}
+
+void CPig::OnCollisionEnter(const Collision * collision)
+{
+	if (collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT)
+	{
+		if (m_bMoveLeft)
+		{
+			m_bMoveLeft = false;
+		}
+		else if (!m_bMoveLeft)
+		{
+			m_bMoveLeft = true;
+		}
+	}
+	CGameObject::OnCollisionEnter(collision);
 }
 
 CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -140,5 +171,5 @@ CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CPig::Free(void)
 {
-	__super::Free();
+	CGameObject::Free();
 }

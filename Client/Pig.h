@@ -24,13 +24,17 @@ private:
 	virtual void Render_Too();
 	virtual void Render_Top();
 
+	virtual void OnCollisionEnter(const Collision * collision);
+
+
 public:
 	static CPig*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void Free(void) override;
 
-	
+private:
+	_bool m_bMoveLeft;
 	
 };
 

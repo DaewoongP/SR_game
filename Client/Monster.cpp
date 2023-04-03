@@ -12,8 +12,4 @@ CMonster::~CMonster()
 {
 }
 
-void CMonster::Free(void)
-{
-	__super::Free();
-}
 

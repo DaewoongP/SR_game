@@ -17,10 +17,10 @@ protected:
 	virtual ~CMonster();
 
 public:
-	virtual HRESULT Ready_GameObject(void) { return S_OK; }
-	virtual _int Update_GameObject(const _float& fTimeDelta) { return 0; }
-	virtual void LateUpdate_GameObject(void) {}
-	virtual void Render_GameObject(void) {}
+	virtual HRESULT Ready_GameObject(void) PURE;
+	virtual _int Update_GameObject(const _float& fTimeDelta) PURE;
+	virtual void LateUpdate_GameObject(void) PURE;
+	virtual void Render_GameObject(void) PURE;
 
 protected:
 	virtual HRESULT		Add_Component(void) PURE;
@@ -33,5 +33,5 @@ protected:
 	_float					m_fSpeed;
 
 protected:
-	virtual void Free(void);
+	virtual void Free(void) PURE;
 };
