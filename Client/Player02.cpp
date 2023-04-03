@@ -24,6 +24,7 @@ HRESULT CPlayer02::Ready_GameObject(void)
 _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 {
 	Key_Input(fTimeDelta);
+	PlayerMove(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -81,6 +82,8 @@ HRESULT CPlayer02::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
+	m_pTransform->m_bIsStatic = false;
+
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
@@ -88,12 +91,6 @@ HRESULT CPlayer02::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
-
-	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
-	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
-
-	m_pRigid->m_bUseGrivaty = false;	
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -129,29 +126,39 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 	m_pTransform->Get_Info(INFO_LOOK, &vDir);
 	m_pTransform->Get_Info(INFO_RIGHT, &vRight);
 
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
+		m_byPlayerDir |= 8;
 
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
+		m_byPlayerDir |= 4;
 
-	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.x = -m_fSpeed;
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
+		m_byPlayerDir |= 2;
 
-	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.x = m_fSpeed;
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYDOWN)
+		m_byPlayerDir |= 1;
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = -m_fSpeed*0.f;
+		m_byPlayerDir ^= 8;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = m_fSpeed*0.f;
-
-	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.y = +m_fSpeed;
-
-	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
-		m_pRigid->m_Velocity.y =-m_fSpeed;
+		m_byPlayerDir ^= 4;
 
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
-		m_pRigid->m_Velocity.y = +m_fSpeed*0.f;
+		m_byPlayerDir ^= 2;
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
-		m_pRigid->m_Velocity.y =-m_fSpeed*0.f;
+		m_byPlayerDir ^= 1;
+}
+
+void CPlayer02::PlayerMove(const _float& fTimeDelta)
+{
+	if (m_byPlayerDir & 1)
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, (int)(m_pTransform->m_vInfo[INFO_POS].y - 1), 0.1f);
+	if (m_byPlayerDir & 2)
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, (int)(m_pTransform->m_vInfo[INFO_POS].y + 2), 0.1f);
+	if (m_byPlayerDir & 4)
+		m_pTransform->m_vInfo[INFO_POS].x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, (int)(m_pTransform->m_vInfo[INFO_POS].x + 2), 0.1f);
+	if (m_byPlayerDir & 8)
+		m_pTransform->m_vInfo[INFO_POS].x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, (int)(m_pTransform->m_vInfo[INFO_POS].x - 1), 0.1f);
 }

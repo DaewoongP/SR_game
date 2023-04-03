@@ -62,8 +62,6 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	if (trans_other->m_bIsStatic)
 		return;
 
-	//파고든게 아닌 단순히 맞닿은 경우
-
 	//각 콜라이더의 충돌 영역을 가져옴.
 	_vec3 center_this = collider_this->Get_BoundCenter();
 	_vec3 size_this = collider_this->Get_BoundSize();

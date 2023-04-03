@@ -28,14 +28,19 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
+	void		PlayerMove(const _float& fTimeDelta);
+	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
-	Engine::CRigidbody*		m_pRigid;
 
+	//      LRUD
+	// 0000 0000
+	_byte					m_byPlayerDir;
 	_float					m_fSpeed = 10.f;
+	_bool					m_bIsMoving = false;
 
 public:
 	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
