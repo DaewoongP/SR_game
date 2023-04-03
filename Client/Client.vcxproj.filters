@@ -38,6 +38,9 @@
     <Filter Include="GameObject\Monster\Crow">
       <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Monster\Pig">
+      <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -128,6 +131,9 @@
     <ClInclude Include="Crow.h">
       <Filter>GameObject\Monster\Crow</Filter>
     </ClInclude>
+    <ClInclude Include="Pig.h">
+      <Filter>GameObject\Monster\Pig</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -201,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="Crow.cpp">
       <Filter>GameObject\Monster\Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="Pig.cpp">
+      <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

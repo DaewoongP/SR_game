@@ -169,3 +169,4 @@ void CGameObject::Free(void)
 	}
 	Safe_Release(m_pGraphicDev);
 }
+	

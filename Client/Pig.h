@@ -8,33 +8,29 @@ private:
 	virtual ~CPig();
 
 public:
+	// CMonster을(를) 통해 상속됨
 	virtual HRESULT Ready_GameObject(void) override;
-	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual _int Update_GameObject(const _float & fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
-	virtual void OnCollisionEnter(const class Collision* collision);
-	virtual void OnCollisionStay(const class Collision* collision);
-	virtual void OnCollisionExit(const class Collision* collision);
-
-	virtual _int Updatae_2D(const _float& fTimeDelta);
-	virtual _int Updatae_3D(const _float& fTimeDelta);
-
 private:
-	virtual HRESULT		Add_Component(void);
+	virtual HRESULT Add_Component(void) override;
 
-private:
-	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
-	Engine::CCollider*		m_pCollider;
-	Engine::CRigidbody*		m_pRigid;
-
-	_float					m_fSpeed = 5.f;
+	virtual _int Update_Too(const _float & fTimeDelta);
+	virtual _int Update_Top(const _float & fTimeDelta);
+	virtual void LateUpdate_Too();
+	virtual void LateUpdate_Top();
+	virtual void Render_Too();
+	virtual void Render_Top();
 
 public:
 	static CPig*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void Free(void) override;
+
+	
+	
 };
 

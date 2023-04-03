@@ -17,19 +17,21 @@ protected:
 	virtual ~CMonster();
 
 public:
-	virtual HRESULT Ready_GameObject(void) PURE;
-	virtual _int Update_GameObject(const _float& fTimeDelta) PURE;
-	virtual void LateUpdate_GameObject(void) PURE;
-	virtual void Render_GameObject(void) PURE;
+	virtual HRESULT Ready_GameObject(void) { return S_OK; }
+	virtual _int Update_GameObject(const _float& fTimeDelta) { return 0; }
+	virtual void LateUpdate_GameObject(void) {}
+	virtual void Render_GameObject(void) {}
 
-private:
+protected:
+	virtual HRESULT		Add_Component(void) PURE;
+
+protected:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	_float					m_fSpeed;
 
-private:
-	virtual void Free(void) PURE;
+protected:
+	virtual void Free(void);
 };
-
