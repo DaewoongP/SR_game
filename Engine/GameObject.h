@@ -13,7 +13,7 @@ protected:
 
 public:
 	CComponent*			Get_Component(const _tchar* pComponentTag, COMPONENTID eID);
-
+	void				Set_Tag(const _tchar* pTag);
 public:
 	virtual HRESULT		Ready_GameObject(void)PURE;
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
@@ -40,11 +40,10 @@ private:
 protected:
 	unordered_map<const _tchar*, CComponent*>			m_uMapComponent[ID_END];
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
-
+	_tchar					m_pTag[MAX_STR];
 public:
 	class CTransform*	m_pTransform;
-	_bool				m_bDead;
-
+	_bool					m_bDead;
 protected:
 	virtual void		Free(void);
 };

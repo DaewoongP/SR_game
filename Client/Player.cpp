@@ -28,7 +28,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		return OBJ_DEAD;
     
 	Key_Input(fTimeDelta);
-
+	if (m_pTag)
+		int a = 1;
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
