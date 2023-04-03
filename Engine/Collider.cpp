@@ -38,7 +38,8 @@ _int CCollider::Update_Component(const _float& fTimeDelta)
 	_vec3 offsetPoint;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 	m_pBoundingBox->Offset(offsetPoint);
-
+	
+	
 	return 0;
 }
 

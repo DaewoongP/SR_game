@@ -57,7 +57,11 @@ void CGameObject::LateUpdate_GameObject(void)
 void CGameObject::Render_GameObject(void)
 {
 	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	{
 		iter.second->Render_Component();
+		m_pGraphicDev->SetTexture(0, nullptr);
+	}
+		
 }
 
 void CGameObject::OnCollisionEnter(const Collision * collision)

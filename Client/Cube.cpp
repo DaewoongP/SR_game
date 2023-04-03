@@ -43,8 +43,8 @@ void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture(m_iCubeTextureIndex);
-
+	m_pTextureCom->Set_Texture(1);
+	
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
