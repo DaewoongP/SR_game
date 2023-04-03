@@ -4,11 +4,12 @@
 #include "Scene.h"
 #include "Logo.h"
 
+#include"ImguiMgr.h"
+
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
 {
 }
-
 
 CMainApp::~CMainApp()
 {

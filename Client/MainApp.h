@@ -3,12 +3,13 @@
 #include "Include.h"
 #include "Base.h"
 #include "Export_Function.h"
-#include"ImguiMgr.h"
+
+class CImguiMgr;
+
 BEGIN(Engine)
 
 class CGraphicDev;
 class CManagement;
-
 
 END
 
@@ -33,7 +34,8 @@ private:
 	Engine::CManagement*		m_pManagementClass;
 
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
- CImguiMgr* m_pCImguiMgr;
+	CImguiMgr* m_pCImguiMgr;
+
 public:
 	static CMainApp*		Create(void);
 
