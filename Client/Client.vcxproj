@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Crow.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
     <ClInclude Include="imconfig.h" />
@@ -182,6 +183,7 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Crow.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="imgui.cpp" />

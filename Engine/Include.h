@@ -27,9 +27,7 @@
 
 extern HWND		 g_hWnd;
 extern HINSTANCE g_hInst;
-
-//Å×½ºÆ®
-extern int iAngle;
+extern	_bool	g_Is2D;
 
 using namespace std;
 using namespace Engine;

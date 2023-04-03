@@ -13,12 +13,18 @@ protected:
 
 public:
 	CComponent*			Get_Component(const _tchar* pComponentTag, COMPONENTID eID);
-
+	void				Set_Tag(const _tchar* pTag);
 public:
 	virtual HRESULT		Ready_GameObject(void)PURE;
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
+	virtual _int		Update_Too(const _float& fTimeDelta) { return 0; }
+	virtual _int		Update_Top(const _float& fTimeDelta) { return 0; }
 	virtual void		LateUpdate_GameObject(void);
+	virtual void		LateUpdate_Too() {}
+	virtual void		LateUpdate_Top() {}
 	virtual void		Render_GameObject(void);
+	virtual void		Render_Too() {}
+	virtual void		Render_Top() {}
 
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);
@@ -34,12 +40,10 @@ private:
 protected:
 	unordered_map<const _tchar*, CComponent*>			m_uMapComponent[ID_END];
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
-
+	_tchar					m_pTag[MAX_STR];
 public:
 	class CTransform*	m_pTransform;
-	_bool				Is2D;
-	_bool				m_bDead;
-
+	_bool					m_bDead;
 protected:
 	virtual void		Free(void);
 };

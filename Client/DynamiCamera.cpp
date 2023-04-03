@@ -92,13 +92,13 @@ void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYDOWN && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 	{
-		if (Is2D)
+		if (g_Is2D)
 		{
-			Is2D = false;
+			g_Is2D = false;
 		}
-		else if (!Is2D)
+		else if (!g_Is2D)
 		{
-			Is2D = true;
+			g_Is2D = true;
 		}
 	}
 }
@@ -106,7 +106,7 @@ void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 {
 	//투디 일때
-	if (Is2D)
+	if (g_Is2D)
 	{
 		//각도가 1보다 작다면
 		if (m_fToo >= m_pTransform->m_vAngle.x)
@@ -127,7 +127,7 @@ void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 			m_pTransform->m_vAngle.x = Linear(m_fTop, m_fToo, m_fTime);
 		}
 	}
-	else if (!Is2D)
+	else if (!g_Is2D)
 	{
 		//각도가 30보다 크다면
 		if (m_fTop <= m_pTransform->m_vAngle.x)

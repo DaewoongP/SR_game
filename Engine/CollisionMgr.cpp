@@ -39,8 +39,13 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		{
 			if ((*iter) == (*iter2))
 				continue;
+<<<<<<< HEAD
 			//if (false == Collision_Range((*iter), (*iter2)))
 			//	continue;
+=======
+			/*if (false == Collision_Range((*iter), (*iter2)))
+				continue;*/
+>>>>>>> 204385f593b816347d4b5a7d17659fb83e0f0615
 			if (Collision_Box(*iter, *iter2))
 			{
 				Collision* pCollision = (*iter)->Find_ColState(*iter2);
@@ -109,7 +114,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// Ï∂©Îèå ?êÏ†ï ???¥Î?
+
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 

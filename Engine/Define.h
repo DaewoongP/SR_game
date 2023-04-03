@@ -10,6 +10,8 @@
 #define		CUBEX		32
 #define		CUBEY		18
 
+#define		MAX_STR		256
+
 #define			OBJ_NOEVENT		0
 #define			OBJ_DEAD		1
 

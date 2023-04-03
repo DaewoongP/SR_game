@@ -16,8 +16,7 @@ HINSTANCE g_hInst;                                // 현재 인스턴스입니�
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND		g_hWnd;
-
-int iAngle = 0;
+_bool		g_Is2D = true;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -86,7 +85,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_Immediate"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Timer(L"Timer_FPS60"), FALSE);
 	FAILED_CHECK_RETURN(Engine::Ready_Frame(L"Frame60", 60.f), FALSE);
-
     
     // 기본 메시지 루프입니다.
     while (true)
