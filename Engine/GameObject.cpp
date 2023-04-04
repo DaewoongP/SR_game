@@ -86,10 +86,10 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_vec3 size_other = collider_other->Get_BoundSize();
 
 	//충돌 영역을 이용한 위치 보정값
-	_float min_x = center_this.x - (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
+	_float min_x = center_this.x - (size_this.x*0.5f + size_other.x*0.5f);
 	_float min_y = center_this.y - (size_this.y*0.5f + size_other.y*0.5f);
-	_float max_x = center_this.x + (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
 	_float max_y = center_this.y + (size_this.y*0.5f + size_other.y*0.5f);
+	_float max_x = center_this.x + (size_this.x*0.5f + size_other.x*0.5f);
 
 	//이거 임시방편임
 	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
