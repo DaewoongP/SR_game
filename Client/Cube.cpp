@@ -24,8 +24,6 @@ _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	if (m_pTag)
-		int a = 1;
 
 	__super::Update_GameObject(fTimeDelta);
   

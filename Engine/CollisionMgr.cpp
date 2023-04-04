@@ -127,13 +127,13 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 		}
@@ -141,13 +141,13 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 		{
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
+				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 			else
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
+				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
 			}

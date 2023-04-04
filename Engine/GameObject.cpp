@@ -94,8 +94,8 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	//이거 임시방편임
 	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
 		(collision->_dir == DIR_RIGHT&&trans_other->m_matWorld._42 == max_y) ||
-		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == max_x) ||
-		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == min_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == max_x) ||
+		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == min_x) ||
 		trans_other->m_vInfo[INFO_POS].y == min_y ||
 		trans_other->m_vInfo[INFO_POS].y == max_y ||
 		trans_other->m_vInfo[INFO_POS].x == max_x ||
@@ -103,9 +103,9 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		)
 		return;
 
-	if (collision->_dir == DIR_UP &&trans_other->m_vInfo[INFO_POS].y > min_y)
+	if (collision->_dir == DIR_DOWN &&trans_other->m_vInfo[INFO_POS].y > min_y)
 		trans_other->m_vInfo[INFO_POS].y = min_y;
-	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
+	else if (collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y < max_y)
 		trans_other->m_vInfo[INFO_POS].y = max_y;
 	else if (collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x < max_x)
 		trans_other->m_vInfo[INFO_POS].x = max_x;
@@ -123,12 +123,12 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	switch (collision->_dir)
 	{
 	case DIR_UP:
-		if (_rigid->m_Velocity.y > 0)
+		if (_rigid->m_Velocity.y < 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
 		_rigid->m_Velocity.x *= 0.8f;
 		break;
 	case DIR_DOWN:
-		if (_rigid->m_Velocity.y < 0)
+		if (_rigid->m_Velocity.y > 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
 		_rigid->m_Velocity.x *= 0.8f;
 		break;

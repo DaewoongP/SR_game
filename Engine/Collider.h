@@ -12,7 +12,7 @@ protected:
 
 protected:
 	// 감지 영역
-	BoundingBox* m_pBoundingBox;
+	BoundingBox*		m_pBoundingBox;
 	// 사각형 렌더링
 	LPD3DXMESH			m_pMesh;
 	COLGROUP			m_eGroup;
@@ -53,6 +53,10 @@ public:
 	virtual CComponent * Clone(void) override;
 private:
 	virtual void Free(void) override;
+
+	void Change_ColliderColor(_float r, _float g, _float b, _float a);
+private:
+	LPDIRECT3DVERTEXBUFFER9		m_pVB;
 };
 
 END
