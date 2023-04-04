@@ -5,7 +5,7 @@
 #include"imgui_impl_win32.h"
 #include"..\Engine\Export_Function.h"
 #include "Cube.h"
-#include "Grid.h"
+#include "GroundGrid.h"
 
 CImguiMgr::CImguiMgr()
 {
@@ -60,19 +60,22 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		// 그리드 체크 박스 활성화 시 그리드 생성
 		if (bGridON && bGridCreate)
 		{
-			FAILED_CHECK_RETURN(GridON(m_pGraphicDev, vecGrid), E_FAIL);
+			FAILED_CHECK_RETURN(GroundGridON(m_pGraphicDev, vecGrid), E_FAIL);
 			bGridCreate = false;
 		}
 
-		// 그리드 삭제
+		// 그리드 ON
+		if (bGridON && !bGridCreate)
+		{
+			for (auto& iter : vecGrid)
+				static_cast<CGroundGrid*>(iter)->Set_GridOn(true);
+		}
+
+		// 그리드 OFF
 		if (!bGridON && !bGridCreate)
 		{
 			for (auto& iter : vecGrid)
-				iter->m_bDead = true;
-
-			vecGrid.clear();
-
-			bGridCreate = true;
+				static_cast<CGroundGrid*>(iter)->Set_GridOn(false);
 		}
 
 		// 콤보 박스로 큐브 텍스처 고르는 기능
@@ -211,8 +214,6 @@ CGameObject* CImguiMgr::CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Cube_Default", pGameObject), nullptr);
 	pGameObject->m_pTransform->m_bIsStatic = true;
 
-
-
 	return pGameObject;
 }
 
@@ -258,7 +259,7 @@ void CImguiMgr::CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGrap
 	}
 }
 
-HRESULT CImguiMgr::GridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid)
+HRESULT CImguiMgr::GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid)
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -274,7 +275,7 @@ HRESULT CImguiMgr::GridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>&
 
 			TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
-			pGameObject = CGrid::Create(m_pGraphicDev);
+			pGameObject = CGroundGrid::Create(m_pGraphicDev);
 			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f,10.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);

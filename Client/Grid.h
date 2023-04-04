@@ -12,28 +12,27 @@ END
 
 class CGrid : public Engine::CGameObject
 {
-private:
+protected:
 	explicit CGrid(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CGrid();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
-	virtual _int Update_GameObject(const _float& fTimeDelta) override;
-	virtual void LateUpdate_GameObject(void) override;
-	virtual void Render_GameObject(void) override;
+	virtual HRESULT Ready_GameObject(void)  PURE;
+	virtual _int Update_GameObject(const _float& fTimeDelta) PURE;
+	virtual void LateUpdate_GameObject(void)  PURE;
+	virtual void Render_GameObject(void) PURE;
 
-private:
-	HRESULT		Add_Component(void);
+protected:
+	virtual HRESULT		Add_Component(void) PURE;
 
-private:
+protected:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	bool m_bGridON;
 
-public:
-	static CGrid*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+//public:
+//	static CGrid*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-private:
-	virtual void Free(void) override;
+protected:
+	virtual void Free(void)  PURE;
 };
-

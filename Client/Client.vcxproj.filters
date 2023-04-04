@@ -38,6 +38,18 @@
     <Filter Include="GameObject\Monster\Crow">
       <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Imgui\Imgui_Object">
+      <UniqueIdentifier>{7b2f1257-2e0e-43bc-a2e4-72cfad90399e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd">
+      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube">
+      <UniqueIdentifier>{e3d76586-808e-480e-a3b4-ec6029fc5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -119,14 +131,17 @@
     <ClInclude Include="Player02.h">
       <Filter>GameObject\Player\Top</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Crow.h">
       <Filter>GameObject\Monster\Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,17 +205,20 @@
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Crow.cpp">
       <Filter>GameObject\Monster\Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
