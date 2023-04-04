@@ -50,6 +50,12 @@
     <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
       <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
+      <UniqueIdentifier>{fa025452-b800-47b6-b999-7e7141b476bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
+      <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -143,6 +149,12 @@
     <ClInclude Include="GroundGrid.h">
       <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
     </ClInclude>
+    <ClInclude Include="InstallGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -219,6 +231,12 @@
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClCompile>
+    <ClCompile Include="InstallGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

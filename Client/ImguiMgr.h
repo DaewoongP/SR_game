@@ -1,6 +1,8 @@
 #pragma once
 #include"..\Engine\Define.h"
 
+class CDefaultGrid;
+
 class CImguiMgr
 {
 private:
@@ -21,7 +23,10 @@ private:
 private:
 	HRESULT SaveData(vector<CUBEINFO>& vecCubePos);
 	HRESULT LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
+
 	CGameObject* CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev);
+	CDefaultGrid* CreateDefaultGrid(LPDIRECT3DDEVICE9 m_pGraphicDev);
+
 	void	CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
 	HRESULT GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid);
 };

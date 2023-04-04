@@ -157,6 +157,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Crow.h" />
+    <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
     <ClInclude Include="GroundGrid.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="InstallGrid.h" />
     <ClInclude Include="Loading.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
@@ -185,6 +187,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Crow.cpp" />
+    <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
@@ -197,6 +200,7 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="InstallGrid.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />
