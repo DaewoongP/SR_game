@@ -37,8 +37,10 @@ _int CCollider::Update_Component(const _float& fTimeDelta)
 	_vec3 offsetPoint;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 	m_pBoundingBox->Offset(offsetPoint);
-	
-	
+	D3DXMatrixTranslation(&m_matWorld,
+		m_pBoundingBox->Get_Center().x,
+		m_pBoundingBox->Get_Center().y,
+		m_pBoundingBox->Get_Center().z);
 	return 0;
 }
 
@@ -50,6 +52,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 	m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -150,7 +153,7 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 		&m_pMesh, NULL);
 
 	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
-
+	D3DXMatrixIdentity(&m_matWorld);
 	if (nullptr == m_pBoundingBox)
 		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2);
 	else

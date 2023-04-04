@@ -19,7 +19,7 @@ HRESULT CPlayer::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pTransform->m_vScale = { 1.f, 2.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
 	return S_OK;
 }
@@ -104,7 +104,6 @@ HRESULT CPlayer::Add_Component(void)
 	CComponent*		pComponent = nullptr;
 	m_pTransform->m_bIsStatic = false;
 
-	m_pTransform->m_bIsStatic = false;
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
@@ -125,10 +124,9 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
+	m_pCollider->Set_BoundingBox({ 2.f,4.f,0.2f });
 	return S_OK;
 }
-
 
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

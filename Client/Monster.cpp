@@ -12,3 +12,19 @@ CMonster::~CMonster()
 {
 }
 
+_int CMonster::Update_GameObject(const _float & fTimeDelta)
+{
+	__super::Update_GameObject(fTimeDelta);
+	return 0;
+}
+
+void CMonster::LateUpdate_GameObject(void)
+{
+	__super::LateUpdate_GameObject();
+}
+
+void CMonster::Render_GameObject(void)
+{
+	__super::Render_GameObject();
+}
+

@@ -57,6 +57,7 @@ private:
 	void Change_ColliderColor(_float r, _float g, _float b, _float a);
 private:
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
+	_matrix						m_matWorld;
 };
 
 END
