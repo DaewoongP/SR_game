@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "CubeTex.h"
 #include "Rigidbody.h"
+#include "Snow.h"
 
 BEGIN(Engine)
 

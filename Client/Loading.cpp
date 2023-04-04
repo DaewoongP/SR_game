@@ -74,6 +74,10 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/burger%d.dds", 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Texture_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Texture.dds")), E_FAIL);
 
+	//파티클이 사라져야하는 boundbox영역은 맵 전역이다.
+	BoundingBox* box = new BoundingBox(_vec3(-100,-100,-20), _vec3(100,100,20));
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SnowParticle", CSnow::Create(m_pGraphicDev, box,30)), E_FAIL);
+
 	m_bFinish = true;
 
 	Set_String(L"Loading Complete!!!!!!!!");

@@ -9,6 +9,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CSnow;
 END
 class CPlayer : public Engine::CGameObject
 {
@@ -19,8 +20,14 @@ private:
 public:
 	virtual HRESULT Ready_GameObject(void) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual _int Update_Too(const _float& fTimeDelta) override;
+	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Too() override;
+	virtual void LateUpdate_Top() override;
 	virtual void Render_GameObject(void) override;
+	virtual void Render_Too() override;
+	virtual void Render_Top() override;
 
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
@@ -36,6 +43,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
+	//Engine::CSnow * m_praticle;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpalbe;

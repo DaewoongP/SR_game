@@ -18,9 +18,14 @@ private:
 public:
 	virtual HRESULT Ready_GameObject(void) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual _int Update_Too(const _float& fTimeDelta) override;
+	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Too() override;
+	virtual void LateUpdate_Top() override;
 	virtual void Render_GameObject(void) override;
-
+	virtual void Render_Too() override;
+	virtual void Render_Top() override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
@@ -44,6 +49,8 @@ private:
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_bool					m_bIsMoveKeyPress = false;
+
+	_vec3					prePos;
 
 public:
 	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

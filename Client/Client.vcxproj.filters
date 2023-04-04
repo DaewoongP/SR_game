@@ -38,6 +38,12 @@
     <Filter Include="GameObject\Monster\Crow">
       <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Cube">
+      <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\Box">
+      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -107,9 +113,6 @@
     <ClInclude Include="ImguiMgr.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="DynamiCamera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="Crow.h">
       <Filter>GameObject\Monster\Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameObject\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveBox.h">
+      <Filter>GameObject\Cube\Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +184,6 @@
     <ClCompile Include="ImguiMgr.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -201,6 +207,12 @@
     </ClCompile>
     <ClCompile Include="Crow.cpp">
       <Filter>GameObject\Monster\Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameObject\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveBox.cpp">
+      <Filter>GameObject\Cube\Box</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -130,6 +130,7 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
+    <ClInclude Include="WindParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -228,6 +229,7 @@
     <ClCompile Include="Rigidbody.cpp">
       <Filter>Componnent\Rigidbody</Filter>
     </ClCompile>
+    <ClCompile Include="WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">

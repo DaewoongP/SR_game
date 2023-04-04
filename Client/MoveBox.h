@@ -1,6 +1,7 @@
 #pragma once
 #include "Include.h"
 #include "GameObject.h"
+#include "Cube.h"
 
 BEGIN(Engine)
 
@@ -10,12 +11,12 @@ class CCollider;
 
 END
 
-class CCube :
-	public CGameObject
+class CMoveBox :
+	public CCube
 {
-protected:
-	explicit CCube(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CCube();
+private:
+	explicit CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CMoveBox();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -23,18 +24,18 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
-protected:
+private:
 	HRESULT Add_Component(void);
 
-protected:
+private:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
 	Engine::CCollider * m_pCollider;
 
 public:
-	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-protected:
+private:
 	virtual void Free(void) override;
 };
 

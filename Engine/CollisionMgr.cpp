@@ -122,18 +122,18 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-		if (fX >= fY)
+  		if (fX > fY|| fX>0.4f)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
 				return true;
 			}
 		}
@@ -142,13 +142,13 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
 			}
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
+				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
 				return true;
 			}
 		}
@@ -174,9 +174,9 @@ _bool CCollisionMgr::Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _flo
 
 	if ((fRadiusX >= fX) && (fRadiusY >= fY) && (fRadiusZ >= fZ))
 	{
-		*pX = fRadiusX - fX;
-		*pY = fRadiusY - fY;
-		*pZ = fRadiusZ - fZ;
+		*pX = (fRadiusX - fX)/ fRadiusX;
+		*pY = (fRadiusY - fY)/ fRadiusY;
+		*pZ = (fRadiusZ - fZ)/ fRadiusZ;
 		return true;
 	}
 
