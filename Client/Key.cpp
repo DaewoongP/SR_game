@@ -64,10 +64,6 @@ void CKey::OnCollisionEnter(const Collision* collision)
 	m_bDead = true;
 }
 
-void CKey::OnCollisionStay(const Collision * collision)
-{
-}
-
 HRESULT CKey::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
