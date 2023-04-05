@@ -31,6 +31,7 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
+	void		RayDiskey();
 	void		PlayerMove(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
 
@@ -43,7 +44,7 @@ private:
 	// 0000 0000
 	_byte					m_byPlayerInputDir;
 	_byte					m_byPlayerMoveDir;
-	_float					m_fSpeed = 7.f;
+	_float					m_fSpeed = 13.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_bool					m_bIsMoveKeyPress = false;

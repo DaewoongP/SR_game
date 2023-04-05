@@ -18,7 +18,7 @@ HRESULT CPlayer02::Ready_GameObject(void)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(16.f, 10.f, 11.f);
-
+	m_pTransform->m_bIsStatic = true;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 
 	__super::Update_GameObject(0.01f);
@@ -31,20 +31,17 @@ _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 _int CPlayer02::Update_Too(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),3);
-	list<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(ray);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
+	RayDiskey();
 	PlayerMove(fTimeDelta);
-	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 3);
-	list<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(ray);
+
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-
 	return 0;
 }
 void CPlayer02::LateUpdate_GameObject(void)
@@ -208,6 +205,37 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
 		m_byPlayerInputDir ^= 1;
+}
+
+void CPlayer02::RayDiskey()
+{
+	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f));
+	if (_detectedCOL01.size() >= 2)
+	{
+		if (lstrcmp(_detectedCOL01[1].tag, L"MoveCube"))
+			m_byPlayerInputDir &= 11;
+	}
+
+	vector<RayCollision> _detectedCOL02 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 0, 0), 1.5f));
+	if (_detectedCOL02.size() >= 2)
+	{
+		if (lstrcmp(_detectedCOL02[1].tag, L"MoveCube"))
+			m_byPlayerInputDir &= 7;
+	}
+
+	vector<RayCollision> _detectedCOL03 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0), 1.5f));
+	if (_detectedCOL03.size() >= 2)
+	{
+		if (lstrcmp(_detectedCOL03[1].tag, L"MoveCube"))
+			m_byPlayerInputDir &= 13;
+	}
+
+	vector<RayCollision> _detectedCOL04 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.5f));
+	if (_detectedCOL04.size() >= 2)
+	{
+		if (lstrcmp(_detectedCOL04[1].tag, L"MoveCube"))
+			m_byPlayerInputDir &= 14;
+	}
 }
 
 void CPlayer02::PlayerMove(const _float& fTimeDelta)

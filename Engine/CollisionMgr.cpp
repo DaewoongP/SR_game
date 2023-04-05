@@ -200,11 +200,11 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
-list<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
+vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
 {
 	//obj와 거리만 저장하고, 거리에따라 정렬해주면 될듯.
 
-	list<RayCollision> colList;
+	vector<RayCollision> colList;
 	//충돌감지용 그룹이 없으면 리턴
 	for (int i = 0; i < COL_END; i++)
 	{
@@ -221,7 +221,7 @@ list<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
 		}
 	}
 	
-	colList.sort([](RayCollision& iter, RayCollision& iter2)->_bool {
+	sort(colList.begin(),colList.end(),[](RayCollision& iter, RayCollision& iter2)->_bool {
 		return iter.dist < iter2.dist;
 	});
 

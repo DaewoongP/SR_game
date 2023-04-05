@@ -17,7 +17,7 @@ HRESULT CMoveBox::Ready_GameObject(void)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(20, 10, 10);
-	m_pTransform->m_bIsStatic = false;
+	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	return S_OK;
@@ -39,7 +39,6 @@ _int CMoveBox::Update_Too(const _float & fTimeDelta)
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
-	m_pTransform->m_bIsStatic = true;
 	return 0;
 }
 
@@ -53,7 +52,6 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-	m_pTransform->m_bIsStatic = false;
 	return 0;
 }
 
