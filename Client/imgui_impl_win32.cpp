@@ -381,10 +381,10 @@ static ImGuiKey ImGui_ImplWin32_VirtualKeyToImGuiKey(WPARAM wParam)
     switch (wParam)
     {
         case VK_TAB: return ImGuiKey_Tab;
-        case VK_LEFT: return ImGuiKey_LeftArrow;
+       /* case VK_LEFT: return ImGuiKey_LeftArrow;
         case VK_RIGHT: return ImGuiKey_RightArrow;
         case VK_UP: return ImGuiKey_UpArrow;
-        case VK_DOWN: return ImGuiKey_DownArrow;
+        case VK_DOWN: return ImGuiKey_DownArrow;*/
         case VK_PRIOR: return ImGuiKey_PageUp;
         case VK_NEXT: return ImGuiKey_PageDown;
         case VK_HOME: return ImGuiKey_Home;
@@ -392,7 +392,7 @@ static ImGuiKey ImGui_ImplWin32_VirtualKeyToImGuiKey(WPARAM wParam)
         case VK_INSERT: return ImGuiKey_Insert;
         case VK_DELETE: return ImGuiKey_Delete;
         case VK_BACK: return ImGuiKey_Backspace;
-        case VK_SPACE: return ImGuiKey_Space;
+        //case VK_SPACE: return ImGuiKey_Space;
         case VK_RETURN: return ImGuiKey_Enter;
         case VK_ESCAPE: return ImGuiKey_Escape;
         case VK_OEM_7: return ImGuiKey_Apostrophe;

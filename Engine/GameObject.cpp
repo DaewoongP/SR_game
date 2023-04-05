@@ -18,11 +18,25 @@ CGameObject::~CGameObject()
 
 CComponent * CGameObject::Get_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
-	CComponent*		pComponent = Find_Component(pComponentTag, eID);
+    CComponent*        pComponent = Find_Component(pComponentTag, eID);
+    if (pComponent == nullptr)return nullptr;
 
-	NULL_CHECK_RETURN(pComponent, nullptr);
+    return pComponent;
+}
 
-	return pComponent;
+void CGameObject::Set_Tag(const _tchar * pTag)
+{
+	const _tchar* pCutTag = nullptr;
+	pCutTag = wcschr(pTag, '_');
+
+	if (nullptr == pCutTag)
+	{
+		wcscpy_s(m_pTag, pTag);
+		return;
+	}
+	// 입력한 사이즈만큼 문자열 복사
+	wcsncpy_s(m_pTag, wcslen(pTag) - wcslen(pCutTag) + 1, pTag, _TRUNCATE );
+	NULL_CHECK(m_pTag);
 }
 
 void CGameObject::Set_Tag(const _tchar * pTag)
@@ -57,7 +71,11 @@ void CGameObject::LateUpdate_GameObject(void)
 void CGameObject::Render_GameObject(void)
 {
 	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	{
 		iter.second->Render_Component();
+		m_pGraphicDev->SetTexture(0, nullptr);
+	}
+		
 }
 
 void CGameObject::OnCollisionEnter(const Collision * collision)
@@ -66,7 +84,7 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	CTransform* trans_other = collision->otherObj->m_pTransform;
+ 	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
@@ -75,8 +93,6 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	if (trans_other->m_bIsStatic)
 		return;
 
-	//파고든게 아닌 단순히 맞닿은 경우
-
 	//각 콜라이더의 충돌 영역을 가져옴.
 	_vec3 center_this = collider_this->Get_BoundCenter();
 	_vec3 size_this = collider_this->Get_BoundSize();
@@ -84,16 +100,16 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_vec3 size_other = collider_other->Get_BoundSize();
 
 	//충돌 영역을 이용한 위치 보정값
-	_float min_x = center_this.x - (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
+	_float min_x = center_this.x - (size_this.x*0.5f + size_other.x*0.5f);
 	_float min_y = center_this.y - (size_this.y*0.5f + size_other.y*0.5f);
-	_float max_x = center_this.x + (size_this.x*(size_other.x / size_other.y) + size_other.x*0.5f);
 	_float max_y = center_this.y + (size_this.y*0.5f + size_other.y*0.5f);
+	_float max_x = center_this.x + (size_this.x*0.5f + size_other.x*0.5f);
 
 	//이거 임시방편임
 	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
 		(collision->_dir == DIR_RIGHT&&trans_other->m_matWorld._42 == max_y) ||
-		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == max_x) ||
-		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == min_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == max_x) ||
+		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == min_x) ||
 		trans_other->m_vInfo[INFO_POS].y == min_y ||
 		trans_other->m_vInfo[INFO_POS].y == max_y ||
 		trans_other->m_vInfo[INFO_POS].x == max_x ||
@@ -102,13 +118,14 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		return;
 
 	if (collision->_dir == DIR_UP &&trans_other->m_vInfo[INFO_POS].y > min_y)
-		trans_other->m_vInfo[INFO_POS].y = min_y;
-	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
 		trans_other->m_vInfo[INFO_POS].y = max_y;
+	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
+		trans_other->m_vInfo[INFO_POS].y = min_y;
 	else if (collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x < max_x)
-		trans_other->m_vInfo[INFO_POS].x = max_x;
-	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
 		trans_other->m_vInfo[INFO_POS].x = min_x;
+	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
+		trans_other->m_vInfo[INFO_POS].x = max_x;
+		
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;
 
@@ -121,26 +138,27 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	switch (collision->_dir)
 	{
 	case DIR_UP:
+		if (_rigid->m_Velocity.y < 0)
+			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+		_rigid->m_Velocity.x *= 0.8f;
+		
+		break;
+	case DIR_DOWN:
 		if (_rigid->m_Velocity.y > 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
 		_rigid->m_Velocity.x *= 0.8f;
 		break;
-	case DIR_DOWN:
-		if (_rigid->m_Velocity.y < 0)
-			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-		_rigid->m_Velocity.x *= 0.8f;
-		break;
 	case DIR_LEFT:
-		if (_rigid->m_Velocity.x < 0)
-			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		if(_rigid->m_Velocity.y < 0)
-			_rigid->m_Velocity.y *= 0.95f;
-		break;
-	case DIR_RIGHT:
 		if (_rigid->m_Velocity.x > 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
 		if (_rigid->m_Velocity.y < 0)
-		_rigid->m_Velocity.y *= 0.95f;
+			_rigid->m_Velocity.y *= 0.95f;
+		break;
+	case DIR_RIGHT:
+		if (_rigid->m_Velocity.x < 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		if (_rigid->m_Velocity.y < 0)
+			_rigid->m_Velocity.y *= 0.95f;
 		break;
 	}
 	_rigid->m_Velocity -= reaction;

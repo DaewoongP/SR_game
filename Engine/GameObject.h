@@ -40,8 +40,9 @@ private:
 protected:
 	unordered_map<const _tchar*, CComponent*>			m_uMapComponent[ID_END];
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
-	_tchar					m_pTag[MAX_STR];
+
 public:
+	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
 protected:

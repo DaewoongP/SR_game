@@ -43,6 +43,32 @@
     </Filter>
     <Filter Include="GameObject\Monster\Pig\Pig_Parts">
       <UniqueIdentifier>{88e91236-7cfe-477a-bf5b-af607e9267cb}</UniqueIdentifier>
+    <Filter Include="GameObject\Monster\Bat">
+      <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube">
+      <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\Box">
+      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object">
+      <UniqueIdentifier>{7b2f1257-2e0e-43bc-a2e4-72cfad90399e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd">
+      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube">
+      <UniqueIdentifier>{e3d76586-808e-480e-a3b4-ec6029fc5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
+      <UniqueIdentifier>{fa025452-b800-47b6-b999-7e7141b476bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
+      <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +139,6 @@
     <ClInclude Include="ImguiMgr.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="DynamiCamera.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -125,8 +148,29 @@
     <ClInclude Include="Player02.h">
       <Filter>GameObject\Player\Top</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>GameObject\Monster\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameObject\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveBox.h">
+      <Filter>GameObject\Cube\Box</Filter>
+    </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>GameObject</Filter>
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+    </ClInclude>
+    <ClInclude Include="InstallGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultGrid.h">
+      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
@@ -187,9 +231,6 @@
     <ClCompile Include="ImguiMgr.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -202,11 +243,32 @@
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>GameObject</Filter>
+    <ClCompile Include="Monster.cpp">
+      <Filter>GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>GameObject\Monster\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameObject\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveBox.cpp">
+      <Filter>GameObject\Cube\Box</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+    </ClCompile>
+    <ClCompile Include="InstallGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultGrid.cpp">
+      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>

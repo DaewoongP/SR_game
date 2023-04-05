@@ -18,7 +18,6 @@ CCubeTex::~CCubeTex()
 
 HRESULT CCubeTex::Ready_Buffer(void)
 {
-
 	m_dwFVF = FVF_CUBE;
 	m_dwVtxSize = sizeof(VTXCUBE);
 	m_dwVtxCnt = 8;

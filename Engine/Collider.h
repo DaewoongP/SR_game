@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
-
+#include "Transform.h"
+#include "GameObject.h"
 BEGIN(Engine)
 
 class CCollider : public CComponent
@@ -12,7 +13,7 @@ protected:
 
 protected:
 	// 감지 영역
-	BoundingBox* m_pBoundingBox;
+	BoundingBox*		m_pBoundingBox;
 	// 사각형 렌더링
 	LPD3DXMESH			m_pMesh;
 	COLGROUP			m_eGroup;
@@ -41,18 +42,27 @@ public:
 
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }
 	_vec3 Get_BoundCenter() { return m_pBoundingBox->Get_Center(); }
-	_vec3 Get_BoundSize() { return m_pBoundingBox->Get_Size();}
+	_vec3 Get_BoundSize() { return _vec3(
+		(m_pBoundingBox->Get_Size().x * m_pGameObject->m_pTransform->m_vScale.x),
+		(m_pBoundingBox->Get_Size().y * m_pGameObject->m_pTransform->m_vScale.y),
+		(m_pBoundingBox->Get_Size().z * m_pGameObject->m_pTransform->m_vScale.z));}
 	void OnCollisionEnter(const Collision* collision);
 	void OnCollisionStay(const Collision* collision);
 	void OnCollisionExit(const Collision* collision);
 
 	void Set_BoundingBox(const _vec3& vSize = {2.f, 2.f, 2.f});
+	LPD3DXMESH Get_Mesh() { return m_pMesh; }
 
 public:
 	static CCollider* Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool bIsTrigger);
 	virtual CComponent * Clone(void) override;
 private:
 	virtual void Free(void) override;
+
+	void Change_ColliderColor(_float r, _float g, _float b, _float a);
+private:
+	LPDIRECT3DVERTEXBUFFER9		m_pVB;
+	_matrix						m_matWorld;
 };
 
 END

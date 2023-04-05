@@ -18,16 +18,16 @@
 #include "Camera.h"
 #include "CubeTex.h"
 #include "Rigidbody.h"
+#include "Snow.h"
 
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);
 
-inline CComponent*			Get_Component(const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag, COMPONENTID eID);
-
-inline CLayer*				Get_Layer(const _tchar* pLayerTag);
-
+inline CComponent*		Get_Component(const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag, COMPONENTID eID);
+inline CLayer*			Get_Layer(const _tchar* pLayerTag);
 inline HRESULT			Set_Scene(CScene* pScene);
+inline CGameObject*		Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
 
 inline _int			Update_Management(const _float& fTimeDelta);
 inline void			LateUpdate_Management();
@@ -47,6 +47,7 @@ inline void		Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2);
 inline void		Clear_Collision();
 inline void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);
 inline void		Delete_Collider(CGameObject* pGameObject);
+inline CCollider*		Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup);
 
 inline void						Release_Utility(void);
 

@@ -1,3 +1,4 @@
+#include "Export_Utility.h"
 HRESULT			Create_Management(CManagement** ppManagement)
 {
 	CManagement*		pManagement = CManagement::GetInstance();
@@ -21,6 +22,11 @@ CLayer*				Get_Layer(const _tchar* pLayerTag)
 HRESULT			Set_Scene(CScene* pScene)
 {
 	return CManagement::GetInstance()->Set_Scene(pScene);
+}
+
+CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
 }
 
 _int			Update_Management(const _float& fTimeDelta)
@@ -77,6 +83,11 @@ void		Set_Collider(COLGROUP eGroup, CCollider* pCollider)
 void		Delete_Collider(CGameObject* pGameObject)
 {
 	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);
+}
+
+inline CCollider * Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup)
+{
+	return CCollisionMgr::GetInstance()->Check_Collision_Ray(ray,eGroup);
 }
 
 void						Release_Utility(void)

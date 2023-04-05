@@ -155,10 +155,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
-    <ClInclude Include="Crow.h" />
+    <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
+    <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="ImguiMgr.h" />
@@ -169,12 +171,14 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="InstallGrid.h" />
     <ClInclude Include="Loading.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="PigTail.h" />
+    <ClInclude Include="MoveBox.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Resource.h" />
@@ -184,10 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="Crow.cpp" />
+    <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
+    <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="ImguiMgr.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -197,6 +203,7 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="InstallGrid.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />
@@ -205,6 +212,7 @@
     <ClCompile Include="PigTail.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player02.cpp" />
+    <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -53,6 +53,7 @@ _int CParticleSystem::Update_Component(const _float& fTimeDelta)
 	_int iExit = __super::Update_Component(fTimeDelta);
 	if (iExit != 0) return iExit;
 
+	//위치 적용 코드임.
 	_vec3 offsetPoint;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 
