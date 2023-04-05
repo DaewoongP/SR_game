@@ -153,6 +153,7 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 
 	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
 	D3DXMatrixIdentity(&m_matWorld);
+  
 	if (nullptr == m_pBoundingBox)
 		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2);
 	else

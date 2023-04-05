@@ -27,8 +27,6 @@ protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	_float					m_fSpeed;
-
-private:
+protected:
 	virtual void Free(void) PURE;
 };
-

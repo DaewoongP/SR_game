@@ -9,6 +9,8 @@
 #include "DynamiCamera.h"
 #include "MoveBox.h"
 #include "Player02.h"
+#include "Pig.h"
+#include "PigTail.h"
 #include "Bat.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -73,6 +75,16 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
 
+	//Pig_Tail
+	pGameObject = CPigTail::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PigTail_0", pGameObject), E_FAIL);
+	
+	//Pig
+	pGameObject = CPig::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -101,7 +113,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (i == 0)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -114,7 +126,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (i == CUBEY - 1)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -127,7 +139,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == 0)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -140,7 +152,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == CUBEX - 1)
 			{
 				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 				pGameObject = CCube::Create(m_pGraphicDev);
 				pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,10.f };
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -148,8 +160,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
-			/*TCHAR objName[128] = { 0 };
-			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
+      
+			/*TCHAR objName[128] = {0};
+			_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
 			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,12.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -159,6 +172,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
+
 	return S_OK;
 }
 

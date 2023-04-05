@@ -34,17 +34,14 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-
 	m_pRigid->m_bUseGrivaty = true;
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
+
 	DoFlip();
-
-	// m_pTransform->m_vAngle = _vec3(0,180,0);
-
 	return 0;
 }
 _int CPlayer::Update_Top(const _float & fTimeDelta)
@@ -53,6 +50,7 @@ _int CPlayer::Update_Top(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
+
 void CPlayer::LateUpdate_GameObject(void)
 {
 	

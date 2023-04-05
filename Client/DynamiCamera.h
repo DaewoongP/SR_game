@@ -20,10 +20,6 @@ private:
 	void		Key_Input(const _float& fTimeDelta);
 	void		Move_Camera(const _float& fTimeDelta);
 
-	float Linear(float A, float B, float Alpha)
-	{
-		return A * (1 - Alpha) + B * Alpha;
-	}
 
 	_float m_fTime;
 	_matrix matRotX;

@@ -39,6 +39,21 @@ void CGameObject::Set_Tag(const _tchar * pTag)
 	NULL_CHECK(m_pTag);
 }
 
+void CGameObject::Set_Tag(const _tchar * pTag)
+{
+	const _tchar* pCutTag = nullptr;
+	pCutTag = wcschr(pTag, '_');
+
+	if (nullptr == pCutTag)
+	{
+		wcscpy_s(m_pTag, pTag);
+		return;
+	}
+	// 입력한 사이즈만큼 문자열 복사
+	wcsncpy_s(m_pTag, wcslen(pTag) - wcslen(pCutTag) + 1, pTag, _TRUNCATE );
+	NULL_CHECK(m_pTag);
+}
+
 _int CGameObject::Update_GameObject(const _float & fTimeDelta)
 {
 	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
@@ -187,3 +202,4 @@ void CGameObject::Free(void)
 	}
 	Safe_Release(m_pGraphicDev);
 }
+	

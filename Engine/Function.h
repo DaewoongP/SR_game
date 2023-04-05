@@ -137,3 +137,8 @@ public: // operator
 			Pair.second = NULL;
 	}
 };
+
+static float Lerp(float A, float B, float Alpha)
+{
+	return A * (1 - Alpha) + B * Alpha;
+}
