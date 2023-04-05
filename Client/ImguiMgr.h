@@ -21,7 +21,9 @@ private:
 private:
 	HRESULT SaveData(vector<CUBEINFO>& vecCubePos);
 	HRESULT LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
+
 	CGameObject* CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev);
+
 	void	CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
-	HRESULT GridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid);
+	HRESULT GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid);
 };

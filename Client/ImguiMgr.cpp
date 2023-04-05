@@ -5,7 +5,7 @@
 #include"imgui_impl_win32.h"
 #include"..\Engine\Export_Function.h"
 #include "Cube.h"
-#include "Grid.h"
+#include "GroundGrid.h"
 
 CImguiMgr::CImguiMgr()
 {
@@ -35,131 +35,86 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	// //// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
 	{
 		// 큐브 설치 관련 변수
-		static vector<CUBEINFO> vecCubeInfo;
+		static vector<CUBEINFO> vecCubeInfo; // 저장을 위한 큐브 벡터
 		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
 
-		// 그리드 생성 관련 변수
-		static vector<CGameObject*> vecGrid;
-		vecGrid.reserve(CUBEX * CUBEY);
+		// 그리드 관련 변수
+		static vector<CGameObject*> vecGroundGrid;
+		vecGroundGrid.reserve(CUBEX * CUBEY);
 		static bool bGridON = false;
 		static bool bGridCreate = true;
-
-		// 큐브 선택 관련 변수
-		static int item_current = 0;
 
 		// 본문 시작
 		ImGui::Begin("Hello,Imgui!");
 
 		ImGui::Checkbox("Demo Window", &show_demo_window);
 
-		// 그리드 체크 박스
-		ImGui::Checkbox("Grid", &bGridON);
-
-		// 그리드 체크 박스 활성화 시 그리드 생성
-		if (bGridON && bGridCreate)
+		// 그리드 관련
 		{
-			FAILED_CHECK_RETURN(GridON(m_pGraphicDev, vecGrid), E_FAIL);
-			bGridCreate = false;
-		}
+			// 그리드 체크 박스
+			ImGui::Checkbox("Grid", &bGridON);
 
-		// 그리드 삭제
-		if (!bGridON && !bGridCreate)
-		{
-			for (auto& iter : vecGrid)
-				iter->m_bDead = true;
-
-			vecGrid.clear();
-
-			bGridCreate = true;
-		}
-
-		// 콤보 박스로 큐브 텍스처 고르는 기능
-		const char* items[] = { "6_Cube", "4_Cube" };
-		ImGui::Combo("Cube Index", &item_current, items, IM_ARRAYSIZE(items));
-		if (nullptr != pDefaultCube)
-			dynamic_cast<CCube*>(pDefaultCube)->Set_CubeTextureIndex(item_current);
-
-		// 큐브 설치 체크 박스
-		ImGui::Checkbox("Cube Placed", &bCubePlaced);
-
-		// 디폴트 큐브가 없으면 생성
-		if (bCubePlaced && nullptr == pDefaultCube)
-			pDefaultCube = CreateDefaultCube(m_pGraphicDev);
-
-		// 체크 박스 활성회 시 큐브 설치 부분
-		if (bCubePlaced)
-			CubeInstall(pDefaultCube, m_pGraphicDev, vecCubeInfo, iCubeIndex);
-
-		// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
-		if (!bCubePlaced && nullptr != pDefaultCube)
-		{
-			pDefaultCube->m_bDead = true;
-			pDefaultCube = nullptr;
-		}			
-
-		// 체크 박스 활성회 시 큐브 설치 부분
-		if (bCubePlaced)
-		{
-			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
-
-			CGameObject* pGameObject = nullptr;
-
-			if (nullptr == pDefaultCube)
+			// 그리드 체크 박스 활성화 시 그리드 생성
+			if (bGridON && bGridCreate)
 			{
-				pDefaultCube = CCube::Create(m_pGraphicDev);
-				pDefaultCube->m_pTransform->m_vInfo[INFO_POS] = _vec3{ 10.f, 10.f, 10.f };
-				pDefaultCube->m_pTransform->m_bIsStatic = true;
-				NULL_CHECK_RETURN(pDefaultCube, E_FAIL);
-				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"DefaultCube", pDefaultCube), E_FAIL);
+				FAILED_CHECK_RETURN(GroundGridON(m_pGraphicDev, vecGroundGrid), E_FAIL);
+				bGridCreate = false;
 			}
 
-			// 디폴트 큐브의 움직임(대충)
+			// 그리드 ON
+			if (bGridON && !bGridCreate)
 			{
-				if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN) // 좌
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 2.f;
-
-				if (Engine::Get_DIKeyState(DIK_D) == Engine::KEYDOWN) // 우
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 2.f;
-
-				if (Engine::Get_DIKeyState(DIK_W) == Engine::KEYDOWN) // 상
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 2.f;
-
-				if (Engine::Get_DIKeyState(DIK_S) == Engine::KEYDOWN) // 하
-					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 2.f;
+				for (auto& iter : vecGroundGrid)
+					dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(true);
 			}
 
-			if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
+			// 그리드 OFF
+			if (!bGridON && !bGridCreate)
 			{
-				_tchar strCubeIndex[64] = { 0 };
-				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
-				pGameObject = CCube::Create(m_pGraphicDev);
-				pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
-				pGameObject->m_pTransform->m_bIsStatic = true;
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
-				vecCubePos.push_back(pGameObject->m_pTransform->m_vInfo[INFO_POS]); // 저장을 위함
-				++iCubeIndex;
+				for (auto& iter : vecGroundGrid)
+					dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(false);
 			}
 		}
 
+		if (ImGui::TreeNode("Cube"))
+		{
+			// 큐브 설치 체크 박스
+			ImGui::Checkbox("Cube Placed", &bCubePlaced);
+
+			// 디폴트 큐브, 그리드가 없으면 생성
+			if (bCubePlaced && nullptr == pDefaultCube)
+				pDefaultCube = CreateDefaultCube(m_pGraphicDev);			
+
+			// 체크 박스 활성회 시 큐브 설치 부분
+			if (bCubePlaced)
+				CubeInstall(pDefaultCube, m_pGraphicDev, vecCubeInfo, iCubeIndex);
+
+			// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
+			if (!bCubePlaced && nullptr != pDefaultCube)
+			{
+				pDefaultCube->m_bDead = true;
+				pDefaultCube = nullptr;
+			}
+
+			// 저장 기능
+			if (ImGui::Button("Cube Save"))
+				FAILED_CHECK_RETURN(SaveData(vecCubeInfo), E_FAIL);
+
+			// 로드 기능
+			ImGui::SameLine();
+			if (ImGui::Button("Cube Load"))
+				FAILED_CHECK_RETURN(LoadData(m_pGraphicDev, vecCubeInfo, iCubeIndex), E_FAIL);
+
+			ImGui::TreePop();
+		}		
 		// 마우스 커서 위치
 		if (ImGui::IsMousePosValid())
-			ImGui::Text("/ Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+			ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
 
 		// 현재 프레임 정보
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-
-		// 저장 기능
-		if (ImGui::Button("Cube Save"))
-			FAILED_CHECK_RETURN(SaveData(vecCubeInfo), E_FAIL);
-
-		// 로드 기능
-		ImGui::SameLine();
-		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadData(m_pGraphicDev, vecCubeInfo, iCubeIndex), E_FAIL);
 
 		ImGui::End();
 	}
@@ -231,7 +186,7 @@ HRESULT CImguiMgr::LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& v
 		pGameObject = CCube::Create(m_pGraphicDev);
 
 		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vCubePos;
-		dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(iter.iCubeTextureNumber);
+		//dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(iter.iCubeTextureNumber);
 
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
@@ -256,8 +211,6 @@ CGameObject* CImguiMgr::CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Cube_Default", pGameObject), nullptr);
 	pGameObject->m_pTransform->m_bIsStatic = true;
-
-
 
 	return pGameObject;
 }
@@ -293,8 +246,8 @@ void CImguiMgr::CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGrap
 		pGameObject = CCube::Create(m_pGraphicDev);
 
 		tCube.vCubePos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
-		tCube.iCubeTextureNumber = dynamic_cast<CCube*>(pDefaultCube)->Get_CubeTextureIndex();
-		dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(tCube.iCubeTextureNumber);
+		//tCube.iCubeTextureNumber = dynamic_cast<CCube*>(pDefaultCube)->Get_CubeTextureIndex();
+		//dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(tCube.iCubeTextureNumber);
 
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
@@ -304,7 +257,7 @@ void CImguiMgr::CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGrap
 	}
 }
 
-HRESULT CImguiMgr::GridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid)
+HRESULT CImguiMgr::GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid)
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -320,7 +273,7 @@ HRESULT CImguiMgr::GridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>&
 
 			TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
-			pGameObject = CGrid::Create(m_pGraphicDev);
+			pGameObject = CGroundGrid::Create(m_pGraphicDev);
 			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f,10.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
