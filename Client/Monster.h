@@ -8,6 +8,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CLayer;
 END
 class CMonster : public CGameObject
 {
@@ -31,6 +32,7 @@ protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	_float					m_fSpeed;
+
 protected:
 	virtual void Free(void);
 };

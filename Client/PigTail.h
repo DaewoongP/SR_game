@@ -20,17 +20,14 @@ public:
 	virtual void LateUpdate_GameObject(void);
 	virtual void Render_GameObject(void);
 
-	virtual _int Update_Top(const _float & fTimeDelta);
-
-	virtual void Render_Top();
-
 private:
 	virtual HRESULT		Add_Component(void);
-
+	void	Set_ParentTransform(CTransform* pTrans) { m_pParentTrans = pTrans; }
 public:
-	static CPigTail*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPigTail*		Create(LPDIRECT3DDEVICE9 pGraphicDev, CTransform* pParentTrans);
 
 private:
+	Engine::CTransform*		m_pParentTrans;
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 
