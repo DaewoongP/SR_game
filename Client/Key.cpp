@@ -17,27 +17,31 @@ HRESULT CKey::Ready_GameObject(void)
 	m_pTransform->m_vScale = { 0.6f,0.6f,1.f };
 	
 	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
-
+	m_pTransform->m_bIsStatic = false;
 	return S_OK;
 }
 
 _int CKey::Update_GameObject(const _float& fTimeDelta)
 {	
 	if (m_bDead)
-	{
-		Add_KeyCount(); OBJ_DEAD;
-	}
-	if(g_Is2D)
-		m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,10.f };
-
-	else
-		m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
+		return OBJ_DEAD;
 
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-	
-	
-	return 0();
+
+	return 0;
+}
+
+_int CKey::Update_Too(const _float & fTimeDelta)
+{
+	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,10.f };
+	return 0;
+}
+
+_int CKey::Update_Top(const _float & fTimeDelta)
+{
+	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
+	return 0;
 }
 
 void CKey::LateUpdate_GameObject(void)
@@ -47,39 +51,22 @@ void CKey::LateUpdate_GameObject(void)
 
 void CKey::Render_GameObject(void)
 {
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-	//서순때문인지 키면 투디 배경이보임
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
 	__super::Render_GameObject();
-
 }
 
 void CKey::OnCollisionEnter(const Collision* collision)
 {
 	m_bDead = true;
-	__super::OnCollisionEnter(collision);
 }
 
-
+void CKey::OnCollisionStay(const Collision * collision)
+{
+}
 
 HRESULT CKey::Add_Component(void)
 {
@@ -98,8 +85,7 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_BoundingBox({1.f, 1.f, 1.f});
-
+	m_pCollider->Set_BoundingBox({1.f, 1.f, 0.2f});
 
 	return S_OK;
 }
@@ -120,6 +106,5 @@ CKey* CKey::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CKey::Free(void)
 {
-
 	__super::Free();
 }
