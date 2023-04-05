@@ -176,15 +176,16 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Crow.h">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
     <ClInclude Include="PigTail.h">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClInclude>
+    <ClInclude Include="PigBody.h">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="PigLeftEar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -274,14 +275,15 @@
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Crow.cpp">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
     <ClCompile Include="PigTail.cpp">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClCompile>
+    <ClCompile Include="PigBody.cpp">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="PigLeftEar.cpp" />
   </ItemGroup>
 </Project>

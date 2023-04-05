@@ -177,6 +177,8 @@
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Pig.h" />
+    <ClInclude Include="PigBody.h" />
+    <ClInclude Include="PigLeftEar.h" />
     <ClInclude Include="PigTail.h" />
     <ClInclude Include="MoveBox.h" />
     <ClInclude Include="Player.h" />
@@ -209,6 +211,8 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Pig.cpp" />
+    <ClCompile Include="PigBody.cpp" />
+    <ClCompile Include="PigLeftEar.cpp" />
     <ClCompile Include="PigTail.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player02.cpp" />

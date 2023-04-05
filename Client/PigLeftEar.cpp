@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "PigTail.h"
+#include "PigLeftEar.h"
 
 #include "Export_Function.h"
 
 
-CPigTail::CPigTail(LPDIRECT3DDEVICE9 pGraphicDev)
+CPigLeftEar::CPigLeftEar(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev)
 {
 
 }
 
-CPigTail::~CPigTail()
+CPigLeftEar::~CPigLeftEar()
 {
 }
 
-HRESULT CPigTail::Ready_GameObject(void)
+HRESULT CPigLeftEar::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->m_vScale = { 0.5f, 0.5f, 0.0f };
+	m_pTransform->m_vScale = { 1.0f, 1.0f, 0.0f };
 
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(-1.5f, 0.0f, 0.0f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(1.0f, 1.0f, 0.1f);
 
 	//m_pTransform->m_vAngle.x = 90.0f;
 
@@ -29,39 +29,39 @@ HRESULT CPigTail::Ready_GameObject(void)
 	return S_OK;
 }
 
-_int CPigTail::Update_GameObject(const _float & fTimeDelta)
+_int CPigLeftEar::Update_GameObject(const _float & fTimeDelta)
 {
-	
-	
+
+
 	return 0;
 }
 
-void CPigTail::LateUpdate_GameObject(void)
+void CPigLeftEar::LateUpdate_GameObject(void)
 {
 
 }
 
-void CPigTail::Render_GameObject(void)
+void CPigLeftEar::Render_GameObject(void)
 {
 
 }
 
-_int CPigTail::Update_Top(const _float & fTimeDelta)
+_int CPigLeftEar::Update_Top(const _float & fTimeDelta)
 {
 	if (m_pTransform->m_pParent)
 	{
 		//╬у╣з
-		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform-> Get_WorldMatrixPointer()->_42)
+		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform->Get_WorldMatrixPointer()->_42)
 		{
-			m_pTransform->m_vInfo[INFO_POS].z = -0.1f;
+			//m_pTransform->m_vInfo[INFO_POS].z = -0.1f;
 		}
-		else 
-			m_pTransform->m_vInfo[INFO_POS].z = 0.5f;
+		else
+			//m_pTransform->m_vInfo[INFO_POS].z = 0.1f;
 		//аб©Л
 		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_41 > m_pTransform->Get_WorldMatrixPointer()->_41)
 		{
-			if(m_pTransform->m_vAngle.y >= D3DXToRadian(0.0f))
-			m_pTransform->m_vAngle.y -= D3DXToRadian(5.0f);
+			if (m_pTransform->m_vAngle.y >= D3DXToRadian(0.0f))
+				m_pTransform->m_vAngle.y -= D3DXToRadian(5.0f);
 		}
 		else
 		{
@@ -80,11 +80,11 @@ _int CPigTail::Update_Top(const _float & fTimeDelta)
 
 		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	}
-	
+
 	return _int();
 }
 
-void CPigTail::Render_Top()
+void CPigLeftEar::Render_Top()
 {
 	if (m_pTransform->m_pParent)
 	{
@@ -93,7 +93,7 @@ void CPigTail::Render_Top()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-		m_pTextureCom->Set_Texture(PIG_TAIL);
+		m_pTextureCom->Set_Texture(PIG_EAR);
 
 		m_pBufferCom->Render_Buffer();
 
@@ -103,7 +103,7 @@ void CPigTail::Render_Top()
 	CGameObject::Render_GameObject();
 }
 
-HRESULT CPigTail::Add_Component(void)
+HRESULT CPigLeftEar::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -114,13 +114,13 @@ HRESULT CPigTail::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Pig_Parts_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Pig_Parts_Texture", pComponent });
-	
+
 	return S_OK;
 }
 
-CPigTail * CPigTail::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPigLeftEar * CPigLeftEar::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CPigTail*		pInstance = new CPigTail(pGraphicDev);
+	CPigLeftEar*		pInstance = new CPigLeftEar(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
@@ -131,7 +131,7 @@ CPigTail * CPigTail::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CPigTail::Free(void)
+void CPigLeftEar::Free(void)
 {
 	__super::Free();
 }
