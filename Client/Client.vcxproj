@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Crow.h" />
     <ClInclude Include="DefaultGrid.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MoveBox.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Resource.h" />
@@ -185,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Crow.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
@@ -207,6 +210,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player02.cpp" />
+    <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

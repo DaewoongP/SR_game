@@ -31,6 +31,7 @@ typedef	 struct tagVertexCube
 
 const	_ulong		FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 
+
 typedef VTXCOL PTCCOL;
 typedef VTXTEX PTCTEX;
 
@@ -224,5 +225,27 @@ typedef struct tagProjParams
 		return D3DXMatrixPerspectiveFovLH(pMatProj, fFov, fAspect, fNear, fFar);
 	}
 }PROJPARAMS;
+
+typedef struct tagRay
+{
+	_vec3 _origin;
+	_vec3 _direction;
+	float _Length;
+
+	tagRay(_vec3 origin, _vec3 dir)
+	{
+		_origin = origin;
+		D3DXVec3Normalize(&_direction,&dir);
+		_Length = D3DXVec3Length(&dir);
+	}
+
+	tagRay(_vec3 origin, _vec3 dir, float Length)
+	{
+		_origin = origin;
+		_direction = dir;
+		_Length = Length;
+	}
+
+}RAYCAST;
 
 END

@@ -23,8 +23,6 @@ _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	if (m_pTag)
-		int a = 1;
 
 	__super::Update_GameObject(fTimeDelta);
   
@@ -47,6 +45,21 @@ void CCube::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+}
+
+void CCube::OnCollisionEnter(const Collision * collision)
+{
+	__super::OnCollisionEnter(collision);
+}
+
+void CCube::OnCollisionStay(const Collision * collision)
+{
+	__super::OnCollisionStay(collision);
+}
+
+void CCube::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
 }
 
 HRESULT CCube::Add_Component(void)

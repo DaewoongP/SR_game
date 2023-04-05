@@ -109,7 +109,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 			ImGui::TreePop();
 		}		
-
 		// 마우스 커서 위치
 		if (ImGui::IsMousePosValid())
 			ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);

@@ -54,7 +54,7 @@ void CDynamiCamera::Render_GameObject(void)
 HRESULT CDynamiCamera::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-	
+
 	return S_OK;
 }
 

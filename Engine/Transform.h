@@ -69,7 +69,7 @@ public:
 	virtual		void	LateUpdate_Component(void);
 
 public:
-	_bool		m_bIsStatic = false;
+	_bool		m_bIsStatic = true;
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
 	_vec3		m_vAngle;
