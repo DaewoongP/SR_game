@@ -26,7 +26,6 @@ CCollider::~CCollider()
 
 HRESULT CCollider::Ready_Collider()
 {
-
 	return S_OK;
 }
 
@@ -38,7 +37,10 @@ _int CCollider::Update_Component(const _float& fTimeDelta)
 	_vec3 offsetPoint;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 	m_pBoundingBox->Offset(offsetPoint);
-
+	D3DXMatrixTranslation(&m_matWorld,
+		m_pBoundingBox->Get_Center().x,
+		m_pBoundingBox->Get_Center().y,
+		m_pBoundingBox->Get_Center().z);
 	return 0;
 }
 
@@ -124,20 +126,23 @@ _bool CCollider::Delete_OtherCollider(CCollider * pOtherCol)
 
 void CCollider::OnCollisionEnter(const Collision * collision)
 {
+	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
 	m_pGameObject->OnCollisionEnter(collision);
 }
 
 void CCollider::OnCollisionStay(const Collision * collision)
 {
+	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
 	m_pGameObject->OnCollisionStay(collision);
 }
 
 void CCollider::OnCollisionExit(const Collision * collision)
 {
+	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
 	m_pGameObject->OnCollisionExit(collision);
 }
 
-// °¡·Î, ¼¼·Î, ±íÀÌ »çÀÌÁî ³Ö¾îÁÖ¸é µÊ.
+// ê°€ë¡œ, ì„¸ë¡œ, ê¹Šì´ ì‚¬ì´ì¦ˆ ë„£ì–´ì£¼ë©´ ë¨.
 void CCollider::Set_BoundingBox(const _vec3 & vSize)
 {
 	D3DXCreateBox(m_pGraphicDev,
@@ -145,6 +150,9 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 		vSize.y,
 		vSize.z,
 		&m_pMesh, NULL);
+
+	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
+	D3DXMatrixIdentity(&m_matWorld);
 	if (nullptr == m_pBoundingBox)
 		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2);
 	else
@@ -193,4 +201,22 @@ void CCollider::Free(void)
 	});
 	m_Colmap.clear();
 	__super::Free();
+}
+
+void CCollider::Change_ColliderColor(_float r, _float g, _float b, _float a)
+{
+	m_pMesh->CloneMeshFVF(0, FVF_COL, m_pGraphicDev, &m_pMesh);
+
+	m_pMesh->GetVertexBuffer(&m_pVB);
+	_int iNum = m_pMesh->GetNumVertices();
+	VTXCOL* pVertices = NULL;
+
+	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
+	{
+		for (int i = 0; i < iNum; ++i)
+		{
+			pVertices[i].dwColor = D3DXCOLOR(r, g, b, a);
+		}
+	}
+	m_pVB->Unlock();
 }

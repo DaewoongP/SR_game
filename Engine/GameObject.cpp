@@ -18,11 +18,10 @@ CGameObject::~CGameObject()
 
 CComponent * CGameObject::Get_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
-	CComponent*		pComponent = Find_Component(pComponentTag, eID);
+    CComponent*        pComponent = Find_Component(pComponentTag, eID);
+    if (pComponent == nullptr)return nullptr;
 
-	if (pComponent == nullptr)return nullptr;
-
-	return pComponent;
+    return pComponent;
 }
 
 void CGameObject::Set_Tag(const _tchar * pTag)
@@ -57,7 +56,11 @@ void CGameObject::LateUpdate_GameObject(void)
 void CGameObject::Render_GameObject(void)
 {
 	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	{
 		iter.second->Render_Component();
+		m_pGraphicDev->SetTexture(0, nullptr);
+	}
+		
 }
 
 void CGameObject::OnCollisionEnter(const Collision * collision)
@@ -90,8 +93,8 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	//이거 임시방편임
 	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
 		(collision->_dir == DIR_RIGHT&&trans_other->m_matWorld._42 == max_y) ||
-		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == max_x) ||
-		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == min_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == max_x) ||
+		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == min_x) ||
 		trans_other->m_vInfo[INFO_POS].y == min_y ||
 		trans_other->m_vInfo[INFO_POS].y == max_y ||
 		trans_other->m_vInfo[INFO_POS].x == max_x ||

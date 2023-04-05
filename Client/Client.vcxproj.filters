@@ -35,8 +35,8 @@
     <Filter Include="GameObject\Monster">
       <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Monster\Crow">
-      <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
+    <Filter Include="GameObject\Monster\Bat">
+      <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Cube">
       <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
@@ -128,8 +128,8 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Crow.h">
-      <Filter>GameObject\Monster\Crow</Filter>
+    <ClInclude Include="Bat.h">
+      <Filter>GameObject\Monster\Bat</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>GameObject\Cube</Filter>
@@ -205,8 +205,8 @@
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Crow.cpp">
-      <Filter>GameObject\Monster\Crow</Filter>
+    <ClCompile Include="Bat.cpp">
+      <Filter>GameObject\Monster\Bat</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>GameObject\Cube</Filter>

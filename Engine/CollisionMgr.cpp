@@ -109,7 +109,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// ì¶©ëŒ ?ì • ???´ë?
+	// Ã¬Â¶Â©Ã«ÂÅ’ ?ÂÃ¬Â â€¢ ???Â´Ã«?
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -202,15 +202,12 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 
 CCollider* CCollisionMgr::Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup)
 {
-	//Ãæµ¹°¨Áö¿ë ±×·ìÀÌ ¾øÀ¸¸é ¸®ÅÏ
 	if (m_ColliderList[eGroup].empty())
 		return nullptr;
 
-	//¸ğµç ¸®½ºÆ®¸¦ ¼øÈ¸
 	for (auto& iter = m_ColliderList[eGroup].begin();
 	iter != m_ColliderList[eGroup].end(); ++iter)
 	{
-		//·¹ÀÌ °¨Áö ½ÇÇà. °¢ ¿ÀºêÁ§Æ®ÀÇ ÇÑ tri¾¿ °Ë»çÇÔ.
 		if (Collision_Ray(ray, *iter))
 		{
 			return *iter;

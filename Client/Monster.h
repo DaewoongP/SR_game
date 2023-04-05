@@ -17,11 +17,11 @@ protected:
 
 public:
 	virtual HRESULT Ready_GameObject(void) PURE;
-	virtual _int Update_GameObject(const _float& fTimeDelta) PURE;
-	virtual void LateUpdate_GameObject(void) PURE;
-	virtual void Render_GameObject(void) PURE;
+	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual void LateUpdate_GameObject(void) override;
+	virtual void Render_GameObject(void) override;
 
-private:
+protected:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;

@@ -71,9 +71,15 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	{
 		iter->Render_GameObject();
 		if (g_Is2D)
+		{
+			pGraphicDev->SetTexture(0, nullptr);
 			iter->Render_Too();
+		}
 		else
+		{
+			pGraphicDev->SetTexture(0, nullptr);
 			iter->Render_Top();
+		}
 	}
 }
 

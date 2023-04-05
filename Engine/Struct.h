@@ -31,6 +31,7 @@ typedef	 struct tagVertexCube
 
 const	_ulong		FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 
+
 typedef VTXCOL PTCCOL;
 typedef VTXTEX PTCTEX;
 

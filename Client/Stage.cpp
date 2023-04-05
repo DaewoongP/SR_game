@@ -9,6 +9,7 @@
 #include "DynamiCamera.h"
 #include "MoveBox.h"
 #include "Player02.h"
+#include "Bat.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -54,12 +55,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	/*pGameObject = CSkyBox::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);*/
-
-
-
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -84,9 +79,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
 	//// PLAYER
-	pGameObject = CPlayer02::Create(m_pGraphicDev);
+	/*pGameObject = CPlayer02::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);*/
+
+	/*pGameObject = CBat::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Crow", pGameObject), E_FAIL);*/
 
 	//// PLAYER
 	pGameObject = CMoveBox::Create(m_pGraphicDev);
@@ -152,7 +151,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			/*TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,13.f };
+			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,12.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 			cubeCnt++;*/
