@@ -71,6 +71,9 @@
     <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
       <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Key">
+      <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -176,14 +179,14 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Crow.h">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
     <ClInclude Include="PigTail.h">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Key.h">
+      <Filter>GameObject\Key</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,14 +277,14 @@
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Crow.cpp">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
     <ClCompile Include="PigTail.cpp">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Key.cpp">
+      <Filter>GameObject\Key</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
