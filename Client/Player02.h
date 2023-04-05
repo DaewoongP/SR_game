@@ -34,8 +34,6 @@ private:
 	void		PlayerMove(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
 
-	CCollider* DoRay(RAYCAST ray);
-
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;

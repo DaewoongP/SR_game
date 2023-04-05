@@ -31,8 +31,8 @@ _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 _int CPlayer02::Update_Too(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),10);
-	DoRay(ray);
+	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),3);
+	list<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(ray);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -40,7 +40,8 @@ _int CPlayer02::Update_Top(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 	PlayerMove(fTimeDelta);
-
+	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 3);
+	list<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(ray);
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
@@ -258,13 +259,4 @@ _bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
 		return false;
 	}
 	return true;
-}
-
-CCollider * CPlayer02::DoRay(RAYCAST ray)
-{
-	CCollider* _detectedCOL = nullptr;
-	_detectedCOL = Engine::Check_Collision_Ray(ray, COL_OBJ);
-	if (_detectedCOL == nullptr)
-		_detectedCOL = Engine::Check_Collision_Ray(ray, COL_ENV);
-	return _detectedCOL;
 }

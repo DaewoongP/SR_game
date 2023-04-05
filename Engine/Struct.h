@@ -167,6 +167,12 @@ struct Collision
 	class CGameObject* otherObj;
 };
 
+struct RayCollision 
+{
+	_tchar* tag;
+	float dist;
+};
+
 typedef struct tagViewParams
 {
 	_vec3 vEye;
