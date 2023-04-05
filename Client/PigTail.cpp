@@ -48,15 +48,31 @@ _int CPigTail::Update_Top(const _float & fTimeDelta)
 {
 	if (m_pTransform->m_pParent)
 	{
+		//앞뒤
 		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform-> Get_WorldMatrixPointer()->_42)
 		{
 			m_pTransform->m_vInfo[INFO_POS].z = -0.1f;
 		}
 		else 
 			m_pTransform->m_vInfo[INFO_POS].z = 0.1f;
+		//좌우
+		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_41 > m_pTransform->Get_WorldMatrixPointer()->_41)
+		{
+			m_pTransform->m_vAngle.y = D3DXToRadian(0.0f);
+		}
+		else
+		{
+			m_pTransform->m_vAngle.y = D3DXToRadian(180.0f);
+		}
+
+
 		//m_pTransform->m_vAngle.y = m_pTransform->m_pParent->m_vAngle.y;
 
+		//역회전을 걸려면...부모의 회전의 반대만큼 각도를...
+		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_pParent->m_vAngle.z;
+
 		CGameObject::Update_GameObject(fTimeDelta);
+
 
 		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	}
