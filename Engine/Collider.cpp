@@ -52,8 +52,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-	m_pMesh->DrawSubset(0);
+	//m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
@@ -143,7 +142,7 @@ void CCollider::OnCollisionExit(const Collision * collision)
 	m_pGameObject->OnCollisionExit(collision);
 }
 
-// ∞°∑Œ, ºº∑Œ, ±Ì¿Ã ªÁ¿Ã¡Ó ≥÷æÓ¡÷∏È µ .
+// Í∞ÄÎ°ú, ÏÑ∏Î°ú, ÍπäÏù¥ ÏÇ¨Ïù¥Ï¶à ÎÑ£Ïñ¥Ï£ºÎ©¥ Îê®.
 void CCollider::Set_BoundingBox(const _vec3 & vSize)
 {
 	D3DXCreateBox(m_pGraphicDev,

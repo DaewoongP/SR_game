@@ -19,7 +19,6 @@ CGameObject::~CGameObject()
 CComponent * CGameObject::Get_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
     CComponent*        pComponent = Find_Component(pComponentTag, eID);
-
     if (pComponent == nullptr)return nullptr;
 
     return pComponent;
@@ -70,7 +69,7 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	CTransform* trans_other = collision->otherObj->m_pTransform;
+ 	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
@@ -103,14 +102,15 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		)
 		return;
 
-	if (collision->_dir == DIR_DOWN &&trans_other->m_vInfo[INFO_POS].y > min_y)
-		trans_other->m_vInfo[INFO_POS].y = min_y;
-	else if (collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y < max_y)
+	if (collision->_dir == DIR_UP &&trans_other->m_vInfo[INFO_POS].y > min_y)
 		trans_other->m_vInfo[INFO_POS].y = max_y;
+	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
+		trans_other->m_vInfo[INFO_POS].y = min_y;
 	else if (collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x < max_x)
-		trans_other->m_vInfo[INFO_POS].x = max_x;
-	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
 		trans_other->m_vInfo[INFO_POS].x = min_x;
+	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
+		trans_other->m_vInfo[INFO_POS].x = max_x;
+		
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;
 
@@ -126,6 +126,7 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		if (_rigid->m_Velocity.y < 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
 		_rigid->m_Velocity.x *= 0.8f;
+		
 		break;
 	case DIR_DOWN:
 		if (_rigid->m_Velocity.y > 0)
@@ -133,16 +134,16 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		_rigid->m_Velocity.x *= 0.8f;
 		break;
 	case DIR_LEFT:
-		if (_rigid->m_Velocity.x < 0)
-			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		if(_rigid->m_Velocity.y < 0)
-			_rigid->m_Velocity.y *= 0.95f;
-		break;
-	case DIR_RIGHT:
 		if (_rigid->m_Velocity.x > 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
 		if (_rigid->m_Velocity.y < 0)
-		_rigid->m_Velocity.y *= 0.95f;
+			_rigid->m_Velocity.y *= 0.95f;
+		break;
+	case DIR_RIGHT:
+		if (_rigid->m_Velocity.x < 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		if (_rigid->m_Velocity.y < 0)
+			_rigid->m_Velocity.y *= 0.95f;
 		break;
 	}
 	_rigid->m_Velocity -= reaction;

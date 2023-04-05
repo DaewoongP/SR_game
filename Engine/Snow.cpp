@@ -58,10 +58,11 @@ _int CSnow::Update_Component(const _float& fTimeDelta)
 	{
 		it->vPos += it->vVelocity * fTimeDelta;
 
-		if (m_BoundingBox.Intersect(it->vPos) == false)
+		//영역 이탈시 삭제해주는 친구
+		/*if (m_BoundingBox.Intersect(it->vPos) == false)
 		{
 			ResetParticle(&(*it));
-		}
+		}*/
 	}
 	return 0;
 }

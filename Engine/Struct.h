@@ -226,4 +226,26 @@ typedef struct tagProjParams
 	}
 }PROJPARAMS;
 
+typedef struct tagRay
+{
+	_vec3 _origin;
+	_vec3 _direction;
+	float _Length;
+
+	tagRay(_vec3 origin, _vec3 dir)
+	{
+		_origin = origin;
+		D3DXVec3Normalize(&_direction,&dir);
+		_Length = D3DXVec3Length(&dir);
+	}
+
+	tagRay(_vec3 origin, _vec3 dir, float Length)
+	{
+		_origin = origin;
+		_direction = dir;
+		_Length = Length;
+	}
+
+}RAYCAST;
+
 END

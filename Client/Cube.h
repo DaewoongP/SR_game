@@ -13,7 +13,7 @@ END
 class CCube :
 	public CGameObject
 {
-private:
+protected:
 	explicit CCube(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CCube();
 
@@ -26,11 +26,14 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
+	virtual void OnCollisionEnter(const class Collision* collision);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 
-private:
+protected:
 	HRESULT Add_Component(void);
 
-private:
+protected:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
 	Engine::CCollider * m_pCollider;
@@ -40,7 +43,7 @@ private:
 public:
 	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-private:
+protected:
 	virtual void Free(void) override;
 };
 

@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "CubeTex.h"
 #include "Rigidbody.h"
+#include "Snow.h"
 
 BEGIN(Engine)
 
@@ -46,6 +47,7 @@ inline void		Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2);
 inline void		Clear_Collision();
 inline void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);
 inline void		Delete_Collider(CGameObject* pGameObject);
+inline CCollider*		Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup);
 
 inline void						Release_Utility(void);
 

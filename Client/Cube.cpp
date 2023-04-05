@@ -48,6 +48,21 @@ void CCube::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+void CCube::OnCollisionEnter(const Collision * collision)
+{
+	__super::OnCollisionEnter(collision);
+}
+
+void CCube::OnCollisionStay(const Collision * collision)
+{
+	__super::OnCollisionStay(collision);
+}
+
+void CCube::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
+}
+
 HRESULT CCube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

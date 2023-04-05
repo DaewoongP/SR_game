@@ -97,6 +97,52 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		{
 			pDefaultCube->m_bDead = true;
 			pDefaultCube = nullptr;
+		}			
+
+		// 체크 박스 활성회 시 큐브 설치 부분
+		if (bCubePlaced)
+		{
+			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+			CGameObject* pGameObject = nullptr;
+
+			if (nullptr == pDefaultCube)
+			{
+				pDefaultCube = CCube::Create(m_pGraphicDev);
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS] = _vec3{ 10.f, 10.f, 10.f };
+				pDefaultCube->m_pTransform->m_bIsStatic = true;
+				NULL_CHECK_RETURN(pDefaultCube, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"DefaultCube", pDefaultCube), E_FAIL);
+			}
+
+			// 디폴트 큐브의 움직임(대충)
+			{
+				if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN) // 좌
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x -= 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_D) == Engine::KEYDOWN) // 우
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x += 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_W) == Engine::KEYDOWN) // 상
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y += 2.f;
+
+				if (Engine::Get_DIKeyState(DIK_S) == Engine::KEYDOWN) // 하
+					pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y -= 2.f;
+			}
+
+			if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
+			{
+				_tchar strCubeIndex[64] = { 0 };
+				_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
+				pGameObject = CCube::Create(m_pGraphicDev);
+				pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
+				pGameObject->m_pTransform->m_bIsStatic = true;
+				NULL_CHECK_RETURN(pGameObject, E_FAIL);
+				FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
+				vecCubePos.push_back(pGameObject->m_pTransform->m_vInfo[INFO_POS]); // 저장을 위함
+				++iCubeIndex;
+			}
 		}
 
 		// 마우스 커서 위치

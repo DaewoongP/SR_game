@@ -7,6 +7,7 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "DynamiCamera.h"
+#include "MoveBox.h"
 #include "Player02.h"
 #include "Bat.h"
 
@@ -86,6 +87,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Crow", pGameObject), E_FAIL);*/
 
+	//// PLAYER
+	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{
@@ -142,13 +148,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
-			TCHAR objName[128] = { 0 };
+			/*TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Map_Cube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
 			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,12.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-			cubeCnt++;
+			cubeCnt++;*/
 		}
 	}
 

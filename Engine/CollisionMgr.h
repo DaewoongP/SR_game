@@ -20,6 +20,8 @@ public:
 	_bool		Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _float * pX, _float * pY, _float * pZ);
 	void		Delete_Collider(CGameObject* pGameObject);
 
+	CCollider*		Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup);
+	_bool		Collision_Ray(RAYCAST ray, CCollider* pDest);
 
 	void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);
 	void		Clear_Collision();
