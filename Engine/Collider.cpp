@@ -50,7 +50,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pMesh->DrawSubset(0);
+	//m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
@@ -144,7 +144,8 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 		vSize.x,
 		vSize.y,
 		vSize.z,
-		&m_pMesh, NULL);
+		&m_pMesh, NULL); 
+
 	if (nullptr == m_pBoundingBox)
 		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2);
 	else

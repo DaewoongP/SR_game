@@ -47,4 +47,15 @@ namespace Engine
 		KEYUP,
 		KEYNONE
 	};
+
+	enum PIG_PARTS
+	{
+		PIG_BODY,
+		PIG_EAR,
+		PIG_LEFTEYE,
+		PIG_NOSE,
+		PIG_RIGHTEYE,
+		PIG_TAIL,
+		PIG_END
+	};
 }

@@ -25,7 +25,7 @@ private:
 	virtual void Render_Top();
 
 	virtual void OnCollisionEnter(const Collision * collision);
-
+	virtual void OnCollisionStay(const Collision * collision);
 
 public:
 	static CPig*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -35,6 +35,6 @@ private:
 
 private:
 	_bool m_bMoveLeft;
-	
+
 };
 

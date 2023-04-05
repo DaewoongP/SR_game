@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CComponent(pGraphicDev)
@@ -73,6 +74,7 @@ HRESULT CTransform::Ready_Transform(void)
 _int CTransform::Update_Component(const _float & fTimeDelta)
 {
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matRT);
 
 	for (size_t i = 0; i < INFO_POS; ++i)
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
@@ -95,7 +97,36 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	_matrix			matTrans;
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
 
-	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
+	m_matRT = m_matBillY * m_matBillX * matRotation * matTrans;
+
+	//부모 있을 경우 -> 빌보드 없음 -> 있어야 겠넴 쭈발
+	if (m_pParent)
+	{
+		// 회전 변환
+		_matrix			matParent_Rot[ROT_END];
+		_matrix			matParent_Rotation;
+		
+		D3DXMatrixRotationX(&matParent_Rot[ROT_X], m_pParent->m_vAngle.x);
+		D3DXMatrixRotationY(&matParent_Rot[ROT_Y], m_pParent->m_vAngle.y);
+		D3DXMatrixRotationZ(&matParent_Rot[ROT_Z], m_pParent->m_vAngle.z);
+
+		_matrix			matParent_Rotation2;
+		D3DXMatrixRotationZ(&matParent_Rotation2, m_pParent->m_vAngle.z);
+
+
+		matParent_Rotation = matParent_Rot[ROT_Y] * matParent_Rot[ROT_Z] * matParent_Rot[ROT_X];
+
+		// 위치 변환
+		_matrix			matParent_Trans;
+		D3DXMatrixTranslation(&matParent_Trans, 
+			m_pParent->m_vInfo[INFO_POS].x, 
+			m_pParent->m_vInfo[INFO_POS].y, 
+			m_pParent->m_vInfo[INFO_POS].z);
+		
+		m_matRT = m_matRT  *  m_pParent->m_matBillY * m_pParent->m_matBillX * matParent_Rotation * matParent_Trans;
+	}
+	
+	m_matWorld = matScale * m_matRT;
 
 	return 0;
 }

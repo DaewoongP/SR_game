@@ -15,5 +15,8 @@ public:
 	static	CCrow* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void Free(void) override;
+
+	// CMonster을(를) 통해 상속됨
+	virtual HRESULT Add_Component(void) override;
 };
 

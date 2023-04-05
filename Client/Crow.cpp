@@ -47,3 +47,8 @@ CCrow * CCrow::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 void CCrow::Free(void)
 {
 }
+
+HRESULT CCrow::Add_Component(void)
+{
+	return E_NOTIMPL;
+}
