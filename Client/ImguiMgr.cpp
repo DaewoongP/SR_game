@@ -6,8 +6,6 @@
 #include"..\Engine\Export_Function.h"
 #include "Cube.h"
 #include "GroundGrid.h"
-#include "InstallGrid.h"
-#include "DefaultGrid.h"
 
 CImguiMgr::CImguiMgr()
 {
@@ -37,7 +35,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	// //// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
 	{
 		// 큐브 설치 관련 변수
-		static vector<CUBEINFO> vecCubeInfo;
+		static vector<CUBEINFO> vecCubeInfo; // 저장을 위한 큐브 벡터
 		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
 		static bool bCubePlaced = false;
 		static int iCubeIndex = 0;
@@ -47,13 +45,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		vecGroundGrid.reserve(CUBEX * CUBEY);
 		static bool bGridON = false;
 		static bool bGridCreate = true;
-
-		// 디폴트 큐브 면 바꾸는 변수 관련
-		static vector<CGameObject*> vecInstallGrid;
-		vecInstallGrid.reserve(CUBEX * CUBEY);
-		static CGameObject* pDefaultGrid = nullptr; // 디폴트 그리드 형성
-		static CGameObject* pInstallGrid = nullptr; // 큐브 설치시 한 면을 변경하기 위한 변수
-		static int iInstallGridIndex = 0;
 
 		// 본문 시작
 		ImGui::Begin("Hello,Imgui!");
@@ -92,64 +83,19 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			// 큐브 설치 체크 박스
 			ImGui::Checkbox("Cube Placed", &bCubePlaced);
 
-			// 이미지 띄우기 연습
-			static int Stage1TileIndex = 0;
-			const char* Stage1Tile[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-				"11", "12", "13", "14", "15" };//, "16", "17", "18", "19" };
-			ImGui::Combo("Stagetile Index", &Stage1TileIndex, Stage1Tile, IM_ARRAYSIZE(Stage1Tile));
-
-			// 이미지 띄우기 연습
-			IDirect3DBaseTexture9* pTexture = nullptr;
-			TCHAR	szFileName[128] = {};
-			wsprintf(szFileName, L"../Resource/Texture/Export_Textures/Sprites/theme1WallSpr/theme1WallSpr_%d.png", Stage1TileIndex);
-			FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture), E_FAIL);
-			ImGui::Image(pTexture, ImVec2(64, 64));
-
 			// 디폴트 큐브, 그리드가 없으면 생성
-			if (bCubePlaced && nullptr == pDefaultCube && nullptr == pDefaultGrid)
-			{
-				pDefaultCube = CreateDefaultCube(m_pGraphicDev);
-				pDefaultGrid = CreateDefaultGrid(m_pGraphicDev);
-			}				
+			if (bCubePlaced && nullptr == pDefaultCube)
+				pDefaultCube = CreateDefaultCube(m_pGraphicDev);			
 
 			// 체크 박스 활성회 시 큐브 설치 부분
 			if (bCubePlaced)
-			{
 				CubeInstall(pDefaultCube, m_pGraphicDev, vecCubeInfo, iCubeIndex);
 
-				CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-				NULL_CHECK_RETURN(pStageLayer, );
-
-				CGameObject* pGameObject = nullptr;
-
-				if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
-				{
-					_tchar strInstallGirdIndex[64] = { 0 };
-					_stprintf_s(strInstallGirdIndex, _T("InstallGrid%d"), iInstallGridIndex);
-					pGameObject = CInstallGrid::Create(m_pGraphicDev);
-
-					pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultGrid->m_pTransform->m_vInfo[INFO_POS];
-					dynamic_cast<CInstallGrid*>(pGameObject)->Set_StageTileIndex(Stage1TileIndex);					
-
-					NULL_CHECK_RETURN(pGameObject, );
-					FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strInstallGirdIndex, pGameObject), );
-
-					vecInstallGrid.push_back(pGameObject);
-					++iInstallGridIndex;
-				}
-			}		
-
-			if(nullptr != pDefaultGrid)
-				dynamic_cast<CDefaultGrid*>(pDefaultGrid)->Set_StageTileIndex(Stage1TileIndex);
-
 			// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
-			if (!bCubePlaced && nullptr != pDefaultCube && nullptr != pDefaultGrid)
+			if (!bCubePlaced && nullptr != pDefaultCube)
 			{
 				pDefaultCube->m_bDead = true;
 				pDefaultCube = nullptr;
-
-				pDefaultGrid->m_bDead = true;
-				pDefaultGrid = nullptr;
 			}
 
 			// 저장 기능
@@ -241,7 +187,7 @@ HRESULT CImguiMgr::LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& v
 		pGameObject = CCube::Create(m_pGraphicDev);
 
 		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vCubePos;
-		dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(iter.iCubeTextureNumber);
+		//dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(iter.iCubeTextureNumber);
 
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
@@ -266,22 +212,6 @@ CGameObject* CImguiMgr::CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Cube_Default", pGameObject), nullptr);
 	pGameObject->m_pTransform->m_bIsStatic = true;
-
-	return pGameObject;
-}
-
-CDefaultGrid * CImguiMgr::CreateDefaultGrid(LPDIRECT3DDEVICE9 m_pGraphicDev)
-{
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, nullptr);
-
-	CDefaultGrid* pGameObject = nullptr;
-
-	pGameObject = CDefaultGrid::Create(m_pGraphicDev);
-	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ 10.f, 10.f, 10.f - 1.001f };
-
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Grid_Default", pGameObject), nullptr);
 
 	return pGameObject;
 }
@@ -317,8 +247,8 @@ void CImguiMgr::CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGrap
 		pGameObject = CCube::Create(m_pGraphicDev);
 
 		tCube.vCubePos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
-		tCube.iCubeTextureNumber = dynamic_cast<CCube*>(pDefaultCube)->Get_CubeTextureIndex();
-		dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(tCube.iCubeTextureNumber);
+		//tCube.iCubeTextureNumber = dynamic_cast<CCube*>(pDefaultCube)->Get_CubeTextureIndex();
+		//dynamic_cast<CCube*>(pGameObject)->Set_CubeTextureIndex(tCube.iCubeTextureNumber);
 
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );

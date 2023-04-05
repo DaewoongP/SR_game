@@ -3,8 +3,7 @@
 
 #include "Export_Function.h"
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev),
-	m_iCubeTextureIndex(0)
+	:CGameObject(pGraphicDev)
 {
 }
 
@@ -43,7 +42,7 @@ void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture(m_iCubeTextureIndex);
+	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
