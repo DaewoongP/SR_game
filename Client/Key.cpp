@@ -22,9 +22,11 @@ HRESULT CKey::Ready_GameObject(void)
 }
 
 _int CKey::Update_GameObject(const _float& fTimeDelta)
-{
+{	
 	if (m_bDead)
-		Free();
+	{
+		Add_KeyCount(); OBJ_DEAD;
+	}
 	if(g_Is2D)
 		m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,10.f };
 
@@ -71,10 +73,13 @@ void CKey::Render_GameObject(void)
 
 }
 
-void CKey::OnTriggerEnter(const CCollider* other)
+void CKey::OnCollisionEnter(const Collision* collision)
 {
 	m_bDead = true;
+	__super::OnCollisionEnter(collision);
 }
+
+
 
 HRESULT CKey::Add_Component(void)
 {

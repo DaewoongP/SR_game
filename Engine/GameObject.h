@@ -45,6 +45,7 @@ public:
 	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
+	_int m_iKey_Count = 0;
 protected:
 	virtual void		Free(void);
 };
