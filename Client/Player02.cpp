@@ -31,7 +31,8 @@ _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 _int CPlayer02::Update_Too(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-
+	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),10);
+	DoRay(ray);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }

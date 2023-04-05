@@ -28,6 +28,21 @@ void CMonster::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+void CMonster::OnCollisionEnter(const Collision * collision)
+{
+	__super::OnCollisionEnter(collision);
+}
+
+void CMonster::OnCollisionStay(const Collision * collision)
+{
+	__super::OnCollisionStay(collision);
+}
+
+void CMonster::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
+}
+
 void CMonster::Free(void)
 {
 	__super::Free();

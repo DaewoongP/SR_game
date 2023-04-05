@@ -9,7 +9,7 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 END
-class CMonster : public Engine::CGameObject
+class CMonster : public CGameObject
 {
 protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -20,6 +20,10 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
+
+	virtual void OnCollisionEnter(const Collision* collision);
+	virtual void OnCollisionStay(const Collision* collision);
+	virtual void OnCollisionExit(const Collision* collision);
 
 protected:
 	Engine::CRcTex*			m_pBufferCom;

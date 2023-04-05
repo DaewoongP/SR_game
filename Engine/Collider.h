@@ -42,10 +42,8 @@ public:
 
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }
 	_vec3 Get_BoundCenter() { return m_pBoundingBox->Get_Center(); }
-	_vec3 Get_BoundSize() { return _vec3(
-		(m_pBoundingBox->Get_Size().x * m_pGameObject->m_pTransform->m_vScale.x),
-		(m_pBoundingBox->Get_Size().y * m_pGameObject->m_pTransform->m_vScale.y),
-		(m_pBoundingBox->Get_Size().z * m_pGameObject->m_pTransform->m_vScale.z));}
+	_vec3 Get_BoundSize() { return _vec3(	m_pBoundingBox->Get_Size().x,	m_pBoundingBox->Get_Size().y,
+		m_pBoundingBox->Get_Size().z);}
 	void OnCollisionEnter(const Collision* collision);
 	void OnCollisionStay(const Collision* collision);
 	void OnCollisionExit(const Collision* collision);

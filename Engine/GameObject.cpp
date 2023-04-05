@@ -73,7 +73,7 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	CCollider* collider_other = collision->otherCol;
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
-	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
+  	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
 
 	if (trans_other->m_bIsStatic)
 		return;
@@ -90,15 +90,11 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_float max_y = center_this.y + (size_this.y*0.5f + size_other.y*0.5f);
 	_float max_x = center_this.x + (size_this.x*0.5f + size_other.x*0.5f);
 
-	//이거 임시방편임
-	if ((collision->_dir == DIR_LEFT&&trans_other->m_matWorld._42 == max_y) ||
-		(collision->_dir == DIR_RIGHT&&trans_other->m_matWorld._42 == max_y) ||
-		(collision->_dir == DIR_DOWN&&trans_other->m_matWorld._41 == max_x) ||
-		(collision->_dir == DIR_UP&&trans_other->m_matWorld._41 == min_x) ||
-		trans_other->m_vInfo[INFO_POS].y == min_y ||
-		trans_other->m_vInfo[INFO_POS].y == max_y ||
-		trans_other->m_vInfo[INFO_POS].x == max_x ||
-		trans_other->m_vInfo[INFO_POS].x == min_x
+
+	if ((collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x <= min_x) ||
+		(collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x >= max_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y <= min_y) ||
+		(collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y >= max_y)
 		)
 		return;
 
@@ -147,9 +143,6 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		break;
 	}
 	_rigid->m_Velocity -= reaction;
-	//deltatime 가져온거임.
-	_float fTimer_FPS60 = Engine::Get_Timer(L"Timer_FPS60");
-
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)
