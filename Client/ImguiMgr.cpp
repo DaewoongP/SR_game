@@ -113,6 +113,48 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		if (ImGui::IsMousePosValid())
 			ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
 
+		int x = 1366 / CUBEX * 2;
+		int y = 768 / CUBEY * 2;
+
+		int nx = 1366 / x;
+		int ny = 768 / y;
+
+		// 마우스 피킹 관련
+		{
+			if (pDefaultCube)
+			{
+				float Gridx = io.MousePos.x / nx / (1.3f) - 1.f;
+				float Gridy = (768 / ny - io.MousePos.y / ny) / (2.35f) - 1.f;
+
+				int installx = Gridx / 2;
+				int instally = Gridy / 2;
+
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS].x = installx * 2;
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS].y = instally * 2;
+				pDefaultCube->m_pTransform->m_vInfo[INFO_POS].z = 10.f;
+				
+				if (Engine::Get_DIKeyState(DIK_E) == Engine::KEYDOWN)
+				{
+					CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+					NULL_CHECK_RETURN(pStageLayer, );
+
+					CGameObject* pGameObject = nullptr;
+
+					CUBEINFO tCube = {};
+
+					_tchar strCubeIndex[64] = { 0 };
+					_stprintf_s(strCubeIndex, _T("Cube%d"), iCubeIndex);
+					pGameObject = CCube::Create(m_pGraphicDev);
+
+					NULL_CHECK_RETURN(pGameObject, );
+					FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
+					pGameObject->m_pTransform->m_bIsStatic = true;
+					vecCubeInfo.push_back(tCube); // 저장을 위함
+					++iCubeIndex;
+				}
+			}
+		}
+
 		// 현재 프레임 정보
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
@@ -274,7 +316,7 @@ HRESULT CImguiMgr::GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObj
 			TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
 			pGameObject = CGroundGrid::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f,10.f };
+			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 			vecGrid.push_back(pGameObject);
