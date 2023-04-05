@@ -182,6 +182,10 @@
     <ClInclude Include="PigTail.h">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClInclude>
+    <ClInclude Include="PigBody.h">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="PigLeftEar.h" />
     <ClInclude Include="Key.h">
       <Filter>GameObject\Key</Filter>
     </ClInclude>
@@ -280,6 +284,10 @@
     <ClCompile Include="PigTail.cpp">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClCompile>
+    <ClCompile Include="PigBody.cpp">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="PigLeftEar.cpp" />
     <ClCompile Include="Key.cpp">
       <Filter>GameObject\Key</Filter>
     </ClCompile>

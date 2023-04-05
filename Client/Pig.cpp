@@ -16,8 +16,8 @@ CPig::~CPig()
 HRESULT CPig::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_fSpeed = 8.0f;
-	m_pTransform->m_vScale = { -2.f, 2.f, 2.f };
+	m_fSpeed = 5.0f;
+	m_pTransform->m_vScale = { -2.f, -2.f, -2.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
 	m_pTransform->m_bIsStatic = false;
 	
@@ -25,7 +25,17 @@ HRESULT CPig::Ready_GameObject(void)
 }
 
 _int CPig::Update_GameObject(const _float & fTimeDelta)
-{	
+{
+	//ÂºÃÂ¸Ã° Â¼Â³ÃÂ¤
+	/*dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigTail_0", L"Transform", ID_DYNAMIC))
+		->Set_Parent(m_pTransform);
+
+	dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigBody_0", L"Transform", ID_DYNAMIC))
+		->Set_Parent(m_pTransform);
+
+	dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigLeftEar_0", L"Transform", ID_DYNAMIC))
+		->Set_Parent(m_pTransform);*/
+
 	if (m_bDead)
 		return OBJ_DEAD;
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -81,6 +91,11 @@ HRESULT CPig::Add_Component(void)
 
 _int CPig::Update_Too(const _float & fTimeDelta)
 {
+	m_pTransform->m_vAngle.z = 0.0f;
+	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
+	
+
+
 	_vec3 MoveDir = { 1.0f,0.0f,0.0f };
 
 	m_pRigid->m_bUseGrivaty = true;
@@ -100,8 +115,10 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player", L"Transform", ID_DYNAMIC));
+	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player02", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
+
+	m_pRigid->m_Velocity = { 0.0f, 0.0f, 0.0f };
 
 	m_pRigid->m_bUseGrivaty = false;
 
@@ -115,19 +132,18 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	m_pTransform->Move_Pos(&vPlayerPos, fTimeDelta, m_fSpeed);
 
-	//zÃà È¸Àü
+	//zÃƒÃ  ÃˆÂ¸Ã€Ã¼
 	_vec3 vStandard = { 1.0f,0.0f,0.0f };
 
 	m_pTransform->m_vAngle.z = (acosf(D3DXVec3Dot(&vStandard, &vPlayerPos)));
 
-	if (0>vPlayerPos.y)
+	if (0 > vPlayerPos.y)
 	{
 		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
 	}
 	
 	return 0;
 }
-
 
 void CPig::OnCollisionEnter(const Collision * collision)
 {
@@ -161,7 +177,7 @@ CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev, CLayer* pLayer)
 		Safe_Release(pInstance);
 		return nullptr;
 	}
-	// ÆÄÃ÷ ±¸ÇöºÎ
+	// Ã†Ã„ÃƒÃ· Â±Â¸Ã‡Ã¶ÂºÃ
 	pPartObjects = CPigTail::Create(pGraphicDev, pInstance->m_pTransform);
 	NULL_CHECK(pPartObjects);
 	pLayer->Add_GameObject(L"PigTail_0", pPartObjects);
