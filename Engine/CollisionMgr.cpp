@@ -109,7 +109,6 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// ì¶©ëŒ ?ì • ???´ë?
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -119,10 +118,10 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;
-	_bool bChk = false;
+
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY|| fX>0.4f)
+  		if (fX > fY)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{

@@ -28,3 +28,8 @@ void CMonster::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+void CMonster::Free(void)
+{
+	__super::Free();
+}
+

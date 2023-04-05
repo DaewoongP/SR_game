@@ -28,5 +28,5 @@ protected:
 	Engine::CRigidbody*		m_pRigid;
 	_float					m_fSpeed;
 protected:
-	virtual void Free(void) PURE;
+	virtual void Free(void);
 };

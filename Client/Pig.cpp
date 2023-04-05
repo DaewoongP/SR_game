@@ -48,7 +48,6 @@ void CPig::LateUpdate_GameObject(void)
 
 void CPig::Render_GameObject(void)
 {
-
 	CGameObject::Render_GameObject();
 }
 
@@ -77,6 +76,8 @@ HRESULT CPig::Add_Component(void)
 	m_pCollider->Set_BoundingBox({1.0f, 1.0f, 0.1f});
 
 	m_pTransform->m_bIsStatic = false;
+
+	return S_OK;
 }
 
 _int CPig::Update_Too(const _float & fTimeDelta)
@@ -125,9 +126,6 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
 	}
 
-
-
-	
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
 	return 0;
@@ -156,7 +154,6 @@ void CPig::Render_Too()
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
-	CGameObject::Render_GameObject();
 }
 
 void CPig::Render_Top()
@@ -172,8 +169,6 @@ void CPig::Render_Top()
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	CGameObject::Render_GameObject();
 }
 
 void CPig::OnCollisionEnter(const Collision * collision)
@@ -195,7 +190,7 @@ void CPig::OnCollisionEnter(const Collision * collision)
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
-	CGameObject::OnCollisionEnter(collision);
+	CGameObject::OnCollisionStay(collision);
 }
 
 CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -213,5 +208,5 @@ CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CPig::Free(void)
 {
-	CGameObject::Free();
+	__super::Free();
 }

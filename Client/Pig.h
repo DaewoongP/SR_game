@@ -15,8 +15,7 @@ public:
 	virtual void Render_GameObject(void) override;
 
 private:
-	virtual HRESULT Add_Component(void) override;
-
+	HRESULT Add_Component(void);
 	virtual _int Update_Too(const _float & fTimeDelta);
 	virtual _int Update_Top(const _float & fTimeDelta);
 	virtual void LateUpdate_Too();
