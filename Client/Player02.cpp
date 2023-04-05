@@ -41,7 +41,6 @@ _int CPlayer02::Update_Top(const _float & fTimeDelta)
 	PlayerMove(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
 	return 0;

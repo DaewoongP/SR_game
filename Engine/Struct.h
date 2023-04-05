@@ -244,6 +244,7 @@ typedef struct tagRay
 		_direction = dir;
 		_Length = Length;
 	}
+
 }RAYCAST;
 
 END
