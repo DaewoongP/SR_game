@@ -57,7 +57,6 @@ _uint CLoading::Loading_ForStage(void)
 	Set_String(L"Texture Loading....");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 68)), E_FAIL);
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 68)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Terrain_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/Grass_%d.tga", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileFloor.png")), E_FAIL);
 	//2D돼지
@@ -74,7 +73,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Collider", CCollider::Create(m_pGraphicDev, true)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Rigidbody", CRigidbody::Create(m_pGraphicDev)), E_FAIL);
 
-	Set_String(L"Buffer Loading..........");
+	Set_String(L"CubeTex Loading..........");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CubeTex", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/burger%d.dds", 4)), E_FAIL);
@@ -82,8 +81,8 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage1.dds")), E_FAIL);
 
 	//파티클이 사라져야하는 boundbox영역은 맵 전역이다.
-	BoundingBox* box = new BoundingBox(_vec3(-100,-100,-20), _vec3(100,100,20));
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SnowParticle", CSnow::Create(m_pGraphicDev, box,30)), E_FAIL);
+	/*BoundingBox* box = new BoundingBox(_vec3(-100, -100, -20), _vec3(100, 100, 20));
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SnowParticle", CSnow::Create(m_pGraphicDev, box, 30)), E_FAIL);*/
 
 	m_bFinish = true;
 
