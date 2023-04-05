@@ -17,12 +17,10 @@ HRESULT CPig::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 8.0f;
-	m_pTransform->m_vScale = { -2.f, 2.f, 2.f };
+	m_pTransform->m_vScale = { -2.f, -2.f, -2.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
-
-	
-
-	
+	m_pTransform->m_bIsStatic = false;
+	m_pCollider->Set_Group(COL_OBJ);
 	
 	return S_OK;
 }
@@ -185,12 +183,12 @@ void CPig::OnCollisionEnter(const Collision * collision)
 		}
 		m_pTransform->m_vScale.x *= -1;
 	}
-	CGameObject::OnCollisionEnter(collision);
+	__super::OnCollisionEnter(collision);
 }
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
-	CGameObject::OnCollisionStay(collision);
+	__super::OnCollisionStay(collision);
 }
 
 CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)

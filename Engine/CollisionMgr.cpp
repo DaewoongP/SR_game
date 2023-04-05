@@ -109,6 +109,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
+	// 異⑸룎 ?먯젙 ???대?
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -118,10 +119,10 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;
-
+	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY)
+  		if (fX > fY|| fX>0.4f)
 		{
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
@@ -201,9 +202,11 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 
 CCollider* CCollisionMgr::Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup)
 {
+	//충돌감지용 그룹이 없으면 리턴
 	if (m_ColliderList[eGroup].empty())
 		return nullptr;
 
+	//모든 리스트를 순회
 	for (auto& iter = m_ColliderList[eGroup].begin();
 	iter != m_ColliderList[eGroup].end(); ++iter)
 	{
@@ -220,8 +223,8 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest)
 	BOOL returnValue;
 
 	D3DXIntersect(pDest->Get_Mesh(),
-		&ray._origin,
-		&(ray._direction*ray._Length),
+		&_vec3(0,0,0),
+		&(_vec3(0,0,0)),
 		&returnValue,
 		nullptr,
 		nullptr,

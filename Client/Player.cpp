@@ -19,7 +19,7 @@ HRESULT CPlayer::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->m_vScale = { 1.f, 2.f, 1.f };
+	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
 	return S_OK;
 }
@@ -115,6 +115,7 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
 	m_bJumpalbe = false;
+	__super::OnCollisionExit(collision);
 }
 
 HRESULT CPlayer::Add_Component(void)
@@ -142,7 +143,7 @@ HRESULT CPlayer::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.f,4.f,0.2f });
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
 	return S_OK;
 }
 
@@ -185,7 +186,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
-		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
+    		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 
 }
 
