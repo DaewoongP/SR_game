@@ -66,7 +66,7 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	CTransform* trans_other = collision->otherObj->m_pTransform;
+ 	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
 
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.

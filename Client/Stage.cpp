@@ -7,6 +7,7 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "DynamiCamera.h"
+#include "MoveBox.h"
 #include "Player02.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -86,6 +87,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CPlayer02::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
+
+	//// PLAYER
+	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)

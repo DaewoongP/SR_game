@@ -150,7 +150,7 @@ HRESULT CPlayer02::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
+	m_pCollider->Set_BoundingBox({ 0.99f,1.99f,0.2f });
 	return S_OK;
 }
 
@@ -244,7 +244,7 @@ _bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
 {
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
-	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*0.01f;
+	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 	
 	if (prePos == m_pTransform->m_vInfo[INFO_POS])
 	{
@@ -252,10 +252,19 @@ _bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
 	}
 	prePos = m_pTransform->m_vInfo[INFO_POS];
 	//거리 이용 도달했는지 알려주는 코드
-	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.05f)
+	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.2f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		return false;
 	}
 	return true;
+}
+
+CCollider * CPlayer02::DoRay(RAYCAST ray)
+{
+	CCollider* _detectedCOL = nullptr;
+	_detectedCOL = Engine::Check_Collision_Ray(ray, COL_OBJ);
+	if (_detectedCOL == nullptr)
+		_detectedCOL = Engine::Check_Collision_Ray(ray, COL_ENV);
+	return _detectedCOL;
 }

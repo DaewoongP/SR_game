@@ -22,6 +22,9 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
+	virtual void OnCollisionEnter(const class Collision* collision);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 
 protected:
 	HRESULT Add_Component(void);

@@ -200,6 +200,46 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
+CCollider* CCollisionMgr::Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup)
+{
+	//충돌감지용 그룹이 없으면 리턴
+	if (m_ColliderList[eGroup].empty())
+		return nullptr;
+
+	//모든 리스트를 순회
+	for (auto& iter = m_ColliderList[eGroup].begin();
+	iter != m_ColliderList[eGroup].end(); ++iter)
+	{
+		//레이 감지 실행. 각 오브젝트의 한 tri씩 검사함.
+		if (Collision_Ray(ray, *iter))
+		{
+			return *iter;
+		}
+	}
+	return nullptr;
+}
+
+_bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest)
+{
+	BOOL returnValue;
+
+	D3DXIntersect(pDest->Get_Mesh(),
+		&ray._origin,
+		&(ray._direction*ray._Length),
+		&returnValue,
+		nullptr,
+		nullptr,
+		nullptr,
+		nullptr,
+		nullptr,
+		nullptr);
+
+	if (returnValue)
+		return true;
+
+	return false;
+}
+
 void CCollisionMgr::Set_Collider(COLGROUP eGroup, CCollider * pCollider)
 {
 	for (size_t i = 0; i < COL_END; ++i)

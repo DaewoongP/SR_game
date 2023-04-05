@@ -1,3 +1,4 @@
+#include "Export_Utility.h"
 HRESULT			Create_Management(CManagement** ppManagement)
 {
 	CManagement*		pManagement = CManagement::GetInstance();
@@ -77,6 +78,11 @@ void		Set_Collider(COLGROUP eGroup, CCollider* pCollider)
 void		Delete_Collider(CGameObject* pGameObject)
 {
 	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);
+}
+
+inline CCollider * Check_Collision_Ray(RAYCAST ray, COLGROUP eGroup)
+{
+	return CCollisionMgr::GetInstance()->Check_Collision_Ray(ray,eGroup);
 }
 
 void						Release_Utility(void)

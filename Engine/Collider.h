@@ -51,6 +51,7 @@ public:
 	void OnCollisionExit(const Collision* collision);
 
 	void Set_BoundingBox(const _vec3& vSize = {2.f, 2.f, 2.f});
+	LPD3DXMESH Get_Mesh() { return m_pMesh; }
 
 public:
 	static CCollider* Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool bIsTrigger);
