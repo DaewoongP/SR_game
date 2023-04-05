@@ -60,7 +60,6 @@ void CGameObject::Render_GameObject(void)
 		iter.second->Render_Component();
 		m_pGraphicDev->SetTexture(0, nullptr);
 	}
-		
 }
 
 void CGameObject::OnCollisionEnter(const Collision * collision)

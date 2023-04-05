@@ -23,41 +23,21 @@ HRESULT CPigTail::Ready_GameObject(void)
 
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(-1.5f, 0.0f, 0.0f);
 
-	//m_pTransform->m_vAngle.x = 90.0f;
-
-
 	return S_OK;
 }
 
 _int CPigTail::Update_GameObject(const _float & fTimeDelta)
 {
-	
-	
-	return 0;
-}
-
-void CPigTail::LateUpdate_GameObject(void)
-{
-
-}
-
-void CPigTail::Render_GameObject(void)
-{
-
-}
-
-_int CPigTail::Update_Top(const _float & fTimeDelta)
-{
 	if (m_pTransform->m_pParent)
 	{
-		//¾ÕµÚ
-		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform-> Get_WorldMatrixPointer()->_42)
+		//ì•žë’¤
+		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform->Get_WorldMatrixPointer()->_42)
 		{
 			m_pTransform->m_vInfo[INFO_POS].z = -0.1f;
 		}
 		else 
 			m_pTransform->m_vInfo[INFO_POS].z = 0.5f;
-		//ÁÂ¿ì
+		//ì¢Œìš°
 		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_41 > m_pTransform->Get_WorldMatrixPointer()->_41)
 		{
 			if(m_pTransform->m_vAngle.y >= D3DXToRadian(0.0f))
@@ -72,35 +52,35 @@ _int CPigTail::Update_Top(const _float & fTimeDelta)
 
 		//m_pTransform->m_vAngle.y = m_pTransform->m_pParent->m_vAngle.y;
 
-		//¿ªÈ¸ÀüÀ» °É·Á¸é...ºÎ¸ðÀÇ È¸ÀüÀÇ ¹Ý´ë¸¸Å­ °¢µµ¸¦...
+		//ì—­íšŒì „ì„ ê±¸ë ¤ë©´...ë¶€ëª¨ì˜ íšŒì „ì˜ ë°˜ëŒ€ë§Œí¼ ê°ë„ë¥¼...
 		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_pParent->m_vAngle.z;
 
-		CGameObject::Update_GameObject(fTimeDelta);
+		__super::Update_GameObject(fTimeDelta);
 
 
 		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	}
 	
-	return _int();
+	return 0;
 }
 
-void CPigTail::Render_Top()
+void CPigTail::LateUpdate_GameObject(void)
+{
+	__super::LateUpdate_GameObject();
+}
+
+void CPigTail::Render_GameObject(void)
 {
 	if (m_pTransform->m_pParent)
 	{
-		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 		m_pTextureCom->Set_Texture(PIG_TAIL);
 
 		m_pBufferCom->Render_Buffer();
 
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	}
-	CGameObject::Render_GameObject();
+	__super::Render_GameObject();
 }
 
 HRESULT CPigTail::Add_Component(void)
@@ -118,7 +98,7 @@ HRESULT CPigTail::Add_Component(void)
 	return S_OK;
 }
 
-CPigTail * CPigTail::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPigTail * CPigTail::Create(LPDIRECT3DDEVICE9 pGraphicDev, CTransform* pParentTrans)
 {
 	CPigTail*		pInstance = new CPigTail(pGraphicDev);
 

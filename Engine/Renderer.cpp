@@ -70,6 +70,8 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
+	pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	for (auto& iter : m_RenderGroup[RENDER_ALPHA])
 	{
@@ -87,6 +89,7 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	}
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
