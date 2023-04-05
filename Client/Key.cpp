@@ -15,7 +15,8 @@ HRESULT CKey::Ready_GameObject(void)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 0.6f,0.6f,1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,15.f,10.f };
+	
+	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
 
 	return S_OK;
 }
@@ -23,7 +24,12 @@ HRESULT CKey::Ready_GameObject(void)
 _int CKey::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
-		return OBJ_DEAD;
+		Free();
+	if(g_Is2D)
+		m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,10.f };
+
+	else
+		m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
 
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -39,8 +45,8 @@ void CKey::LateUpdate_GameObject(void)
 
 void CKey::Render_GameObject(void)
 {
-	/*m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);*/
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -55,14 +61,19 @@ void CKey::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	//서순때문인지 키면 투디 배경이보임
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	__super::Render_GameObject();
 
+}
+
+void CKey::OnTriggerEnter(const CCollider* other)
+{
+	m_bDead = true;
 }
 
 HRESULT CKey::Add_Component(void)
@@ -82,7 +93,7 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_BoundingBox({1.f, 1.1f, 0.3f});
+	m_pCollider->Set_BoundingBox({1.f, 1.f, 1.f});
 
 
 	return S_OK;

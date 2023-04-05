@@ -22,6 +22,8 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
+	virtual void OnTriggerEnter(const class CCollider* other);
+	_bool Set_Dead() { return OBJ_DEAD; }
 private:
 	HRESULT		Add_Component(void);
 	//_float		Lerp(_float v0, _float v1, _float t) { return v0 + t * (v1 - v0); }
