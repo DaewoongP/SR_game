@@ -217,7 +217,7 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
 		iter != m_ColliderList[i].end(); ++iter)
 		{
 			if (Collision_Ray(ray, *iter, &pDist))
-				colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,pDist });
+				colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
 		}
 	}
 	
@@ -241,7 +241,7 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 
 	D3DXIntersect(pDest->Get_Mesh(),
 		&__ray._origin,
-		&_vec3(__ray._direction),
+		&__ray._direction,
 		&returnValue,
 		NULL,
 		NULL,
@@ -253,7 +253,7 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 	if (returnValue)
 		if (*pDist < ray._Length)
 		{
-			cout << pDest->m_pGameObject->m_pTag << endl;
+			//cout << pDest->m_pGameObject->m_pTag << endl;
 			return true;
 		}
 			

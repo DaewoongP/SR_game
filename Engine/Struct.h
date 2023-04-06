@@ -170,6 +170,7 @@ struct Collision
 struct RayCollision 
 {
 	_tchar* tag;
+	CCollider* col;
 	float dist;
 };
 
