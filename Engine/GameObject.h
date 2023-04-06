@@ -26,6 +26,9 @@ public:
 	virtual void		Render_Too() {}
 	virtual void		Render_Top() {}
 
+	virtual _int Get_KeyCount() { return m_iKey_Count; }
+	virtual _int Dis_KeyCount() { return --m_iKey_Count; }
+
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
@@ -45,7 +48,10 @@ public:
 	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
-	_int m_iKey_Count = 0;
+	
+public:
+	 _int m_iKey_Count =1;
+	
 protected:
 	virtual void		Free(void);
 };
