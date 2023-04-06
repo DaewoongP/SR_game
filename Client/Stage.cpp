@@ -10,10 +10,8 @@
 #include "MoveBox.h"
 #include "Player02.h"
 #include "Pig.h"
-#include "PigTail.h"
 #include "Bat.h"
-#include "PigBody.h"
-#include "PigLeftEar.h"
+
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -77,21 +75,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
 
-	//PigLeftEar
-	pGameObject = CPigLeftEar::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PigLeftEar_0", pGameObject), E_FAIL);
-
-	//Pig_Body
-	pGameObject = CPigBody::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PigBody_0", pGameObject), E_FAIL);
-
-	//Pig_Tail
-	pGameObject = CPigTail::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PigTail_0", pGameObject), E_FAIL);
-	
 	////Pig
 	pGameObject = CPig::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

@@ -2,10 +2,9 @@
 #include "Pig.h"
 #include "Cube.h"
 #include "Export_Function.h"
-#include "PigTail.h"
 
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CMonster(pGraphicDev),m_bMoveLeft(false)
+	: CMonster(pGraphicDev),m_bMoveLeft(false), m_bBackSprite(false)
 {
 }
 
@@ -17,7 +16,7 @@ HRESULT CPig::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 5.0f;
-	m_pTransform->m_vScale = { -2.f, -2.f, -2.f };
+	m_pTransform->m_vScale = { -PIGSCALE, PIGSCALE, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
 	m_pTransform->m_bIsStatic = false;
 	m_pCollider->Set_Group(COL_OBJ);
@@ -27,22 +26,13 @@ HRESULT CPig::Ready_GameObject(void)
 
 _int CPig::Update_GameObject(const _float & fTimeDelta)
 {
-	//부모 설정
-	dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigTail_0", L"Transform", ID_DYNAMIC))
-		->Set_Parent(m_pTransform);
-
-	dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigBody_0", L"Transform", ID_DYNAMIC))
-		->Set_Parent(m_pTransform);
-
-	dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"PigLeftEar_0", L"Transform", ID_DYNAMIC))
-		->Set_Parent(m_pTransform);
-	
 	if (m_bDead)
 		return OBJ_DEAD;
 
 	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
+	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	return 0;
 }
 
@@ -63,6 +53,13 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	
+	pComponent = m_pTextureCom_Back = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Back_Pig_Texture", this));
+	NULL_CHECK_RETURN(m_pTextureCom_Back, E_FAIL);
+	m_uMapComponent[ID_STATIC].insert({ L"Back_Pig_Texture", pComponent });
+	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
+	m_pTextureCom_Back->Switch_Anim(L"Idle");
+	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Pig_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
@@ -89,20 +86,56 @@ _int CPig::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vAngle.z = 0.0f;
 	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
-	
+	m_bBackSprite = false;
 
 
 	_vec3 MoveDir = { 1.0f,0.0f,0.0f };
 
 	m_pRigid->m_bUseGrivaty = true;
 
-	if (!m_bMoveLeft)
+	//떨어지는 중
+	if (-1.0f > m_pRigid->m_Velocity.y)
 	{
-		MoveDir *= -1;
+		if (-5.0f > m_pRigid->m_Velocity.y)
+		{
+			_float m_fFallingScale = (fabsf(m_pRigid->m_Velocity.y + 4.0f));
+
+			if (-9.0f > m_pRigid->m_Velocity.y)
+			{
+				m_fFallingScale = 5.0f;
+			}
+
+			if (m_bMoveLeft)
+			{
+				m_pTransform->m_vScale.x = PIGSCALE / m_fFallingScale*2.0f;
+			}
+			else
+				m_pTransform->m_vScale.x = -PIGSCALE / m_fFallingScale*2.0f;
+
+			m_pTransform->m_vScale.y = PIGSCALE + PIGSCALE - PIGSCALE / m_fFallingScale;
+		}
 	}
+	else
+	{
+		if (m_pTransform->m_vScale.y > PIGSCALE)
+		{
+			m_pTransform->m_vScale.y -= PIGSCALE * 0.1f;
+		}
+		else
+			m_pTransform->m_vScale.y = PIGSCALE;
 
-	m_pTransform->Move_Pos(&MoveDir, fTimeDelta, m_fSpeed);
+		if (m_bMoveLeft)
+		{
+			m_pTransform->m_vScale.x = PIGSCALE;
+		}
+		else if (!m_bMoveLeft)
+		{
+			m_pTransform->m_vScale.x = -PIGSCALE;
+			MoveDir *= -1;
+		}
 
+		m_pTransform->Move_Pos(&MoveDir, fTimeDelta, m_fSpeed);
+	}
 	return 0;
 }
 
@@ -110,6 +143,8 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	m_pTransform->m_vScale.y = PIGSCALE;
 
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player02", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
@@ -122,21 +157,28 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
+	//플레이어가 위에 있는지 아래 있는지
+	//플레이어가 위
+	if (vPlayerPos.y > m_pTransform->Get_WorldMatrixPointer()->_42)
+	{
+		m_bBackSprite = true;
+	}
+	else
+		m_bBackSprite = false;
+	
+	if (vPlayerPos.x < m_pTransform->Get_WorldMatrixPointer()->_41)
+	{
+		m_pTransform->m_vScale.x = -PIGSCALE;
+	}
+	else
+		m_pTransform->m_vScale.x = PIGSCALE;
+
+
 	vPlayerPos = vPlayerPos - m_pTransform->m_vInfo[INFO_POS];
 
 	D3DXVec3Normalize(&vPlayerPos, &vPlayerPos);
 
 	m_pTransform->Move_Pos(&vPlayerPos, fTimeDelta, m_fSpeed);
-
-	//z축 회전
-	_vec3 vStandard = { 1.0f,0.0f,0.0f };
-
-	m_pTransform->m_vAngle.z = (acosf(D3DXVec3Dot(&vStandard, &vPlayerPos)));
-
-	if (0 > vPlayerPos.y)
-	{
-		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
-	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
@@ -170,17 +212,22 @@ void CPig::Render_Too()
 
 void CPig::Render_Top()
 {
-	/*m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture(0);
+	if (m_bBackSprite)
+	{
+		m_pTextureCom_Back->Set_Texture(0);
+	}
+	else
+		m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);*/
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CPig::OnCollisionEnter(const Collision * collision)
@@ -190,12 +237,14 @@ void CPig::OnCollisionEnter(const Collision * collision)
 		if (m_bMoveLeft)
 		{
 			m_bMoveLeft = false;
+			m_pTransform->m_vScale.x = -PIGSCALE;
 		}
 		else if (!m_bMoveLeft)
 		{
 			m_bMoveLeft = true;
+			m_pTransform->m_vScale.x = PIGSCALE;
 		}
-		m_pTransform->m_vScale.x *= -1;
+		
 	}
 	__super::OnCollisionEnter(collision);
 }
