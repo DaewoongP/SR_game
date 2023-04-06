@@ -78,7 +78,6 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	if (!m_bMove)
 		return 0;
 	D3DXMatrixIdentity(&m_matWorld);
-	D3DXMatrixIdentity(&m_matRT);
 
 	for (size_t i = 0; i < INFO_POS; ++i)
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));

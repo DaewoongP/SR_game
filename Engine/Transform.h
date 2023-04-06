@@ -78,11 +78,6 @@ public:
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
 
-	//RT부모 행렬 누적 하기 위한 행렬
-	_matrix		m_matRT;
-	//부모
-	CTransform* m_pParent;
-
 	_bool		m_bMove;
 
 public:
