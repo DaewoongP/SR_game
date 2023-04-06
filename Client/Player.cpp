@@ -25,7 +25,7 @@ HRESULT CPlayer::Ready_GameObject(void)
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }
@@ -38,7 +38,7 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
 	DoFlip();
@@ -47,18 +47,17 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 _int CPlayer::Update_Top(const _float & fTimeDelta)
 {
 	m_pRigid->m_bUseGrivaty = false;
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	return 0;
 }
 
 void CPlayer::LateUpdate_GameObject(void)
 {
-	
+	__super::LateUpdate_GameObject();
 }
 
 void CPlayer::LateUpdate_Too()
 {
-	__super::LateUpdate_GameObject();
 }
 
 void CPlayer::LateUpdate_Top()
@@ -67,16 +66,11 @@ void CPlayer::LateUpdate_Top()
 
 void CPlayer::Render_GameObject(void)
 {
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	__super::Render_GameObject();
 }

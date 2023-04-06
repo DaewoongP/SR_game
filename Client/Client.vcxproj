@@ -172,6 +172,7 @@
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InstallGrid.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="Loading.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -203,6 +205,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="InstallGrid.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />
@@ -212,6 +215,7 @@
     <ClCompile Include="Player02.cpp" />
     <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StageBG.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

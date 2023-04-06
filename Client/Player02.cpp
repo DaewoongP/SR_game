@@ -26,6 +26,7 @@ HRESULT CPlayer02::Ready_GameObject(void)
 }
 _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 {
+	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 _int CPlayer02::Update_Too(const _float & fTimeDelta)
@@ -33,7 +34,7 @@ _int CPlayer02::Update_Too(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),10);
 	DoRay(ray);
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	
 	return 0;
 }
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
@@ -42,7 +43,6 @@ _int CPlayer02::Update_Top(const _float & fTimeDelta)
 	PlayerMove(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
 	return 0;
 }
@@ -61,61 +61,21 @@ void CPlayer02::LateUpdate_Top()
 
 void CPlayer02::Render_GameObject(void)
 {
-	
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+
+	m_pTextureCom->Set_Texture(0);
+
+	m_pBufferCom->Render_Buffer();
+
+	__super::Render_GameObject();
 }
 
 void CPlayer02::Render_Too()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);*/
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
-	m_pTextureCom->Set_Texture(0);
-
-	m_pBufferCom->Render_Buffer();
-
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	__super::Render_GameObject();
 }
 
 void CPlayer02::Render_Top()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-	/*m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);*/
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
-	m_pTextureCom->Set_Texture(0);
-
-	m_pBufferCom->Render_Buffer();
-
-	//m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	//m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	__super::Render_GameObject();
 }
 
 void CPlayer02::OnCollisionEnter(const Collision * collision)

@@ -35,9 +35,6 @@
     <Filter Include="GameObject\Monster">
       <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Monster\Crow">
-      <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Monster\Pig">
       <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,9 @@
     </Filter>
     <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
       <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Key">
+      <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +176,15 @@
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
+    <ClInclude Include="PigTail.h">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Key.h">
+      <Filter>GameObject\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBG.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -267,6 +276,15 @@
     </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
+    </ClCompile>
+    <ClCompile Include="PigTail.cpp">
+      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Key.cpp">
+      <Filter>GameObject\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBG.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

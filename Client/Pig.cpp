@@ -19,7 +19,6 @@ HRESULT CPig::Ready_GameObject(void)
 	m_pTransform->m_vScale = { -PIGSCALE, PIGSCALE, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
 	m_pTransform->m_bIsStatic = false;
-	m_pCollider->Set_Group(COL_OBJ);
 	
 	return S_OK;
 }
@@ -28,8 +27,6 @@ _int CPig::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
-	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	m_pTextureCom_Back->Update_Anim(fTimeDelta);
@@ -38,12 +35,18 @@ _int CPig::Update_GameObject(const _float & fTimeDelta)
 
 void CPig::LateUpdate_GameObject(void)
 {
-	CGameObject::LateUpdate_GameObject();
+	__super::LateUpdate_GameObject();
 }
 
 void CPig::Render_GameObject(void)
 {
-	CGameObject::Render_GameObject();
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+
+	m_pTextureCom->Set_Texture(0);
+
+	m_pBufferCom->Render_Buffer();
+
+	__super::Render_GameObject();
 }
 
 HRESULT CPig::Add_Component(void)
@@ -75,7 +78,7 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({1.0f, 1.0f, 0.1f});
+	m_pCollider->Set_BoundingBox({ 1.0f, 1.0f, 0.1f });
 
 	m_pTransform->m_bIsStatic = false;
 
@@ -93,7 +96,7 @@ _int CPig::Update_Too(const _float & fTimeDelta)
 
 	m_pRigid->m_bUseGrivaty = true;
 
-	//¶³¾îÁö´Â Áß
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	if (-1.0f > m_pRigid->m_Velocity.y)
 	{
 		if (-5.0f > m_pRigid->m_Velocity.y)
@@ -157,8 +160,8 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
-	//ÇÃ·¹ÀÌ¾î°¡ À§¿¡ ÀÖ´ÂÁö ¾Æ·¡ ÀÖ´ÂÁö
-	//ÇÃ·¹ÀÌ¾î°¡ À§
+	//ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½
+	//ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½
 	if (vPlayerPos.y > m_pTransform->Get_WorldMatrixPointer()->_42)
 	{
 		m_bBackSprite = true;
@@ -254,15 +257,20 @@ void CPig::OnCollisionStay(const Collision * collision)
 	__super::OnCollisionStay(collision);
 }
 
-CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev, CLayer* pLayer)
 {
 	CPig*		pInstance = new CPig(pGraphicDev);
+	CGameObject*	pPartObjects  = nullptr;
 
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
 	}
+	// Ã†Ã„ÃƒÃ· Â±Â¸Ã‡Ã¶ÂºÃŽ
+	pPartObjects = CPigTail::Create(pGraphicDev, pInstance->m_pTransform);
+	NULL_CHECK(pPartObjects);
+	pLayer->Add_GameObject(L"PigTail_0", pPartObjects);
 
 	return pInstance;
 }
