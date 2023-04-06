@@ -33,6 +33,8 @@ HRESULT CMainApp::Ready_MainApp(void)
 	FAILED_CHECK_RETURN(Ready_DefaultSetting(&m_pGraphicDev), E_FAIL);
 	FAILED_CHECK_RETURN(Set_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
+	m_pCImguiMgr->GetInstance()->Ready_Imgui(m_pGraphicDev);
+
 	return S_OK;
 }
 
@@ -56,7 +58,7 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.3f, 0.6f, 0.3f, 1.f));
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
-	m_pCImguiMgr->Update_Imgui(m_pGraphicDev);
+	m_pCImguiMgr->GetInstance()->Update_Imgui(m_pGraphicDev);
 
 	Engine::Render_End();
 }
@@ -110,9 +112,11 @@ CMainApp * CMainApp::Create(void)
 
 void CMainApp::Free(void)
 {
+	m_pCImguiMgr->DestroyInstance();
+
 	FreeConsole();
 	Safe_Release(m_pGraphicDev);
-	m_pCImguiMgr->Release();
+
 	Safe_Release(m_pManagementClass);
 	Safe_Release(m_pDeviceClass);
 	

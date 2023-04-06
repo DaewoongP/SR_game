@@ -38,6 +38,9 @@ private:
 	HRESULT		Add_Component(void);
 	void		Move(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
+	_bool		ShootRay();
+	_bool		DoRayToDir(COL_DIR dir);
+	void		SetMovePos(COL_DIR dir);
 
 private:
 	Engine::CCubeTex*	m_pBufferCom;
@@ -49,6 +52,9 @@ private:
 	_bool					m_bIsMoving = false;
 	_vec3					prePos;
 	_vec3					m_MoveVec;
+	
+public:
+	_bool					m_bIsCol[DIR_END] = { 0 };
 
 public:
 	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev);

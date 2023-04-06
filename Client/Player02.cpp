@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player02.h"
-
+#include "MoveBox.h"
 #include "Export_Function.h"
 
 CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -18,7 +18,7 @@ HRESULT CPlayer02::Ready_GameObject(void)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = _vec3(16.f, 10.f, 11.f);
-
+	m_pTransform->m_bIsStatic = true;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 
 	__super::Update_GameObject(0.01f);
@@ -32,9 +32,6 @@ _int CPlayer02::Update_GameObject(const _float& fTimeDelta)
 _int CPlayer02::Update_Too(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-	RAYCAST ray(m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0),10);
-	DoRay(ray);
-	
 	return 0;
 }
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
@@ -43,7 +40,6 @@ _int CPlayer02::Update_Top(const _float & fTimeDelta)
 	PlayerMove(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
-
 	return 0;
 }
 void CPlayer02::LateUpdate_GameObject(void)
@@ -110,7 +106,7 @@ HRESULT CPlayer02::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 0.99f,1.99f,0.2f });
+	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,0.2f });
 	return S_OK;
 }
 
@@ -167,6 +163,48 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
 		m_byPlayerInputDir ^= 1;
+
+	RayDiskey();
+}
+
+void CPlayer02::RayDiskey()
+{
+	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f));
+	if (_detectedCOL01.size() >= 2)
+	{
+		if (!lstrcmp(_detectedCOL01[1].tag, L"MapCube")) m_byPlayerInputDir &= 11;
+		if(!lstrcmp(_detectedCOL01[1].tag, L"MoveCube")) 
+			if(dynamic_cast<CMoveBox*>(_detectedCOL01[1].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
+				m_byPlayerInputDir &= 11;
+	}
+
+	vector<RayCollision> _detectedCOL02 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 0, 0), 1.5f));
+	if (_detectedCOL02.size() >= 2)
+	{
+		if (!lstrcmp(_detectedCOL02[1].tag, L"MapCube")) m_byPlayerInputDir &= 7;
+		if (!lstrcmp(_detectedCOL02[1].tag, L"MoveCube")) 
+			if (dynamic_cast<CMoveBox*>(_detectedCOL02[1].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
+				m_byPlayerInputDir &= 7;
+	}
+
+	vector<RayCollision> _detectedCOL03 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0), 1.5f));
+	if (_detectedCOL03.size() >= 2)
+	{
+		if (!lstrcmp(_detectedCOL03[1].tag, L"MapCube")) m_byPlayerInputDir &= 13;
+		if (!lstrcmp(_detectedCOL03[1].tag, L"MoveCube"))
+			if (dynamic_cast<CMoveBox*>(_detectedCOL03[1].col->m_pGameObject)->m_bIsCol[DIR_UP])
+				m_byPlayerInputDir &= 13;
+	}
+
+	vector<RayCollision> _detectedCOL04 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.5f));
+	if (_detectedCOL04.size() >= 2)
+	{
+		if (!lstrcmp(_detectedCOL04[1].tag, L"MapCube")) m_byPlayerInputDir &= 14;
+		if (!lstrcmp(_detectedCOL04[1].tag, L"MoveCube")) 
+			if (dynamic_cast<CMoveBox*>(_detectedCOL04[1].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
+				m_byPlayerInputDir &= 14;
+
+	}
 }
 
 void CPlayer02::PlayerMove(const _float& fTimeDelta)
@@ -176,8 +214,7 @@ void CPlayer02::PlayerMove(const _float& fTimeDelta)
 			return;
 		else
 		{
-			m_byPlayerMoveDir = m_byPlayerInputDir;
-
+			
 			if (prePos == m_pTransform->m_vInfo[INFO_POS])
 			{
 				m_MovetoPos = prePos;
@@ -185,6 +222,7 @@ void CPlayer02::PlayerMove(const _float& fTimeDelta)
 			int x = 0;
 			int y = 0;
 
+			m_byPlayerMoveDir = m_byPlayerInputDir;
 			if (m_byPlayerMoveDir & 1)
 				y-=2;
 			if (m_byPlayerMoveDir & 2)
@@ -199,7 +237,7 @@ void CPlayer02::PlayerMove(const _float& fTimeDelta)
 		}
 }
 
-//½ÇÁ¦ ¿òÁ÷ÀÌ´Â ÄÚµå
+//ì‹¤ì œ ì›€ì§ì´ëŠ” ì½”ë“œ
 _bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
 {
 	_vec3 dir;
@@ -211,20 +249,11 @@ _bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
 		m_MovetoPos = prePos;
 	}
 	prePos = m_pTransform->m_vInfo[INFO_POS];
-	//°Å¸® ÀÌ¿ë µµ´ÞÇß´ÂÁö ¾Ë·ÁÁÖ´Â ÄÚµå
+	//ê±°ë¦¬ ì´ìš© ë„ë‹¬í–ˆëŠ”ì§€ ì•Œë ¤ì£¼ëŠ” ì½”ë“œ
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.2f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		return false;
 	}
 	return true;
-}
-
-CCollider * CPlayer02::DoRay(RAYCAST ray)
-{
-	CCollider* _detectedCOL = nullptr;
-	_detectedCOL = Engine::Check_Collision_Ray(ray, COL_OBJ);
-	if (_detectedCOL == nullptr)
-		_detectedCOL = Engine::Check_Collision_Ray(ray, COL_ENV);
-	return _detectedCOL;
 }
