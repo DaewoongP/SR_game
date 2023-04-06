@@ -185,6 +185,9 @@
     <ClInclude Include="Key.h">
       <Filter>GameObject\Key</Filter>
     </ClInclude>
+    <ClInclude Include="StageBG.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -282,6 +285,9 @@
     </ClCompile>
     <ClCompile Include="Key.cpp">
       <Filter>GameObject\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBG.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
