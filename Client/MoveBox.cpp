@@ -71,7 +71,17 @@ void CMoveBox::LateUpdate_Top()
 
 void CMoveBox::Render_GameObject(void)
 {
-	
+	_vec3 v1 = m_pTransform->m_vInfo[INFO_POS];
+	_vec3 v2 = m_pTransform->m_vInfo[INFO_POS] + _vec3(5,0,0);
+
+
+	_matrix matView, matProj;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	_matrix matworld;
+	D3DXMatrixIdentity(&matworld);
+	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	m_pLine->Draw_Line(matworld, matView, matProj);
 }
 
 void CMoveBox::Render_Too()
@@ -135,6 +145,10 @@ HRESULT CMoveBox::Add_Component(void)
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 2.0f,2.0f,2.0f });
 	m_pCollider->Set_Group(COL_ENV);
+
+	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
+	NULL_CHECK_RETURN(m_pLine, E_FAIL);
+	m_uMapComponent[ID_STATIC].insert({ L"Line", pComponent });
 
 	return S_OK;
 }

@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CCubeTex;
 class CTexture;
 class CCollider;
-
+class CLine;
 END
 
 class CMoveBox :
@@ -46,6 +46,7 @@ private:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
 	Engine::CCollider * m_pCollider;
+	Engine::CLine*			m_pLine;
 
 	_float					m_fSpeed = 16.f;
 	_vec3					m_MovetoPos;

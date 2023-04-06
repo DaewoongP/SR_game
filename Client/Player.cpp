@@ -68,24 +68,12 @@ void CPlayer::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	_vec3 v1 = { 0.f, 0.f, 0.f };
-	_vec3 v2 = { 10.f, 10.f, 0.f };
-
-
-	_matrix matView, matProj;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
-	_matrix matworld;
-	D3DXMatrixIdentity(&matworld);
-
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 	
 	__super::Render_GameObject();
 
-	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
 }
 
 void CPlayer::Render_Too()
@@ -151,10 +139,6 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
-
-	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
-	NULL_CHECK_RETURN(m_pLine, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Line", pComponent });
 
 	return S_OK;
 }
