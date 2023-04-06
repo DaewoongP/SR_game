@@ -19,9 +19,7 @@ HRESULT CPigTail::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->m_vScale = { 0.5f, 0.5f, 0.0f };
-
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(-1.5f, 0.0f, 0.0f);
+	m_pTransform->m_vInfo[INFO_POS] = _vec3(-1.0f, 0.0f, 0.0f);
 
 	return S_OK;
 }
@@ -30,29 +28,27 @@ _int CPigTail::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_pTransform->m_pParent)
 	{
-		//ì•žë’¤
+		//¾ÕµÚ
 		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_42 > m_pTransform->Get_WorldMatrixPointer()->_42)
 		{
 			m_pTransform->m_vInfo[INFO_POS].z = -0.1f;
 		}
-		else 
-			m_pTransform->m_vInfo[INFO_POS].z = 0.5f;
-		//ì¢Œìš°
+		else
+			m_pTransform->m_vInfo[INFO_POS].z = 0.1f;
+		//ÁÂ¿ì
 		if (m_pTransform->m_pParent->Get_WorldMatrixPointer()->_41 > m_pTransform->Get_WorldMatrixPointer()->_41)
 		{
-			if(m_pTransform->m_vAngle.y >= D3DXToRadian(0.0f))
-			m_pTransform->m_vAngle.y -= D3DXToRadian(5.0f);
+			m_pTransform->m_vAngle.y = D3DXToRadian(0.0f);
 		}
 		else
 		{
-			if (m_pTransform->m_vAngle.y <= D3DXToRadian(180.0f))
-				m_pTransform->m_vAngle.y += D3DXToRadian(5.0f);
+			m_pTransform->m_vAngle.y = D3DXToRadian(180.0f);
 		}
 
 
 		//m_pTransform->m_vAngle.y = m_pTransform->m_pParent->m_vAngle.y;
 
-		//ì—­íšŒì „ì„ ê±¸ë ¤ë©´...ë¶€ëª¨ì˜ íšŒì „ì˜ ë°˜ëŒ€ë§Œí¼ ê°ë„ë¥¼...
+		//¿ªÈ¸ÀüÀ» °É·Á¸é...ºÎ¸ðÀÇ È¸ÀüÀÇ ¹Ý´ë¸¸Å­ °¢µµ¸¦...
 		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_pParent->m_vAngle.z;
 
 		__super::Update_GameObject(fTimeDelta);

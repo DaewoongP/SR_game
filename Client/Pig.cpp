@@ -132,7 +132,7 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	m_pTransform->Move_Pos(&vPlayerPos, fTimeDelta, m_fSpeed);
 
-	//zÃà È¸Àü
+	//zÃà È¸?ü
 	_vec3 vStandard = { 1.0f,0.0f,0.0f };
 
 	m_pTransform->m_vAngle.z = (acosf(D3DXVec3Dot(&vStandard, &vPlayerPos)));

@@ -28,7 +28,7 @@ _int CKey::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	return 0;
 }
 
@@ -75,8 +75,9 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Key_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 11, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 21, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
