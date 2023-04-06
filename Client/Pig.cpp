@@ -215,6 +215,7 @@ void CPig::Render_Too()
 
 void CPig::Render_Top()
 {
+	//render
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
