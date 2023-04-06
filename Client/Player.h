@@ -10,6 +10,7 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 class CSnow;
+class CLine;
 END
 class CPlayer : public Engine::CGameObject
 {
@@ -43,6 +44,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CLine*			m_pLine;
 	//Engine::CSnow * m_praticle;
 
 	_float					m_fSpeed = 10.f;

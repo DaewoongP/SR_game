@@ -131,6 +131,7 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="Line.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -230,6 +231,7 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="WindParticle.cpp" />
+    <ClCompile Include="Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
