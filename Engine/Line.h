@@ -14,7 +14,7 @@ public:
 	HRESULT		Ready_Line(_float width);
 	void		Set_Line(const _vec3& first, const _vec3& second, D3DXCOLOR color);
 	// 라인의 트랜스폼 포인터
-	void		Draw_Line(const _matrix* matLine);
+	void		Draw_Line(const _matrix& matWorld, const _matrix& matView, const _matrix& matProj);
 public:
 	static CLine*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _float width = 3.f);
 	virtual CComponent * Clone(void) override;

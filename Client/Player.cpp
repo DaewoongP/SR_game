@@ -68,23 +68,24 @@ void CPlayer::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	_vec3 v1 = { 0.f, 0.5f, 0.f };
-	_vec3 v2 = { 0.5f, 1.f, 0.f };
-	
-	_matrix	mat;
-	D3DXMatrixIdentity(&mat);
+	_vec3 v1 = { 0.f, 0.f, 0.f };
+	_vec3 v2 = { 10.f, 10.f, 0.f };
 
 
-
-
-	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(&mat);
+	_matrix matView, matProj;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	_matrix matworld;
+	D3DXMatrixIdentity(&matworld);
 
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 	
 	__super::Render_GameObject();
+
+	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	m_pLine->Draw_Line(matworld, matView, matProj);
 }
 
 void CPlayer::Render_Too()

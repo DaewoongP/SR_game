@@ -41,11 +41,15 @@ void CLine::Set_Line(const _vec3 & first, const _vec3 & second, D3DXCOLOR color)
 	m_Color = color;
 }
 
-void CLine::Draw_Line(const _matrix* matLine)
+void CLine::Draw_Line(const _matrix& matWorld, const _matrix& matView, const _matrix& matProj)
 {
 	m_pLine->SetWidth(m_fWidth);
 	m_pLine->Begin();
-	m_pLine->DrawTransform(m_vecLine, 2, matLine, m_Color);
+
+	_matrix mat;
+
+	mat = matWorld * matView * matProj;
+	m_pLine->DrawTransform(m_vecLine, 2, &mat, m_Color);
 
 	m_pLine->End();
 }
