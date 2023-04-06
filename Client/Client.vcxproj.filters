@@ -79,6 +79,7 @@
     </Filter>
     <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
       <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameObject\Key">
       <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
     </Filter>
@@ -204,6 +205,7 @@
     </ClInclude>
     <ClInclude Include="ImguiStage.h">
       <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
+    </ClInclude>
     <ClInclude Include="Key.h">
       <Filter>GameObject\Key</Filter>
     </ClInclude>
@@ -316,6 +318,7 @@
     </ClCompile>
     <ClCompile Include="ImguiUnit.cpp">
       <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
+    </ClCompile>
     <ClCompile Include="Key.cpp">
       <Filter>GameObject\Key</Filter>
     </ClCompile>
