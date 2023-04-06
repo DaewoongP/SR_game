@@ -107,6 +107,12 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CMoveBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(20, 10, 10);
+
+	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(30, 20, 10);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
