@@ -1,14 +1,5 @@
 #pragma once
 #include "Monster.h"
-
-#define PIGSCALE 2.0f
-
-BEGIN(Engine)
-
-class CTexture;
-
-END
-
 class CPig :
 	public CMonster
 {
@@ -38,11 +29,7 @@ private:
 	virtual void Free(void) override;
 
 private:
-	CTexture* m_pTextureCom_Back;
-
 	_bool m_bMoveLeft;
-
-	_bool m_bBackSprite;
 
 };
 

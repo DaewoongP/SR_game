@@ -38,6 +38,9 @@
     <Filter Include="GameObject\Monster\Pig">
       <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Monster\Pig\Pig_Parts">
+      <UniqueIdentifier>{88e91236-7cfe-477a-bf5b-af607e9267cb}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameObject\Monster\Bat">
       <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
     </Filter>
