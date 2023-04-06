@@ -25,8 +25,8 @@ CImguiStage::~CImguiStage()
 
 _int CImguiStage::Update_Imgui_Stage()
 {
-	GridMeun(m_pGraphicDev);
-	CubeMeun(m_pGraphicDev);
+	GridMeun();
+	CubeMeun();
 
 	return S_OK;
 }
@@ -40,7 +40,7 @@ void CImguiStage::Release()
 	m_vecCubeInfo.shrink_to_fit();
 }
 
-HRESULT CImguiStage::GridMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
+HRESULT CImguiStage::GridMeun()
 {
 	// 그리드 체크 박스
 	ImGui::Checkbox("Grid", &m_bGridON);
@@ -48,7 +48,7 @@ HRESULT CImguiStage::GridMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	// 그리드 체크 박스 활성화 시 그리드 생성
 	if (m_bGridON && m_bGridCreate)
 	{
-		FAILED_CHECK_RETURN(GroundGridON(m_pGraphicDev, m_vecGroundGrid), E_FAIL);
+		FAILED_CHECK_RETURN(GroundGridON(m_vecGroundGrid), E_FAIL);
 		m_bGridCreate = false;
 	}
 
@@ -69,7 +69,7 @@ HRESULT CImguiStage::GridMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	return S_OK;
 }
 
-HRESULT CImguiStage::GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid)
+HRESULT CImguiStage::GroundGridON(vector<CGameObject*>& vecGrid)
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -96,7 +96,7 @@ HRESULT CImguiStage::GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameO
 	return S_OK;
 }
 
-HRESULT CImguiStage::CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
+HRESULT CImguiStage::CubeMeun()
 {
 	if (ImGui::TreeNode("Cube"))
 	{
@@ -105,7 +105,7 @@ HRESULT CImguiStage::CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 		// 디폴트 큐브 설치
 		if (m_bCubePlaced && nullptr == m_pDefaultCube)
-			m_pDefaultCube = CreateDefaultCube(m_pGraphicDev);
+			m_pDefaultCube = CreateDefaultCube();
 
 		// 큐브 모양 선택 콤보 박스
 		const char* items[] = { "NONE", "STYLE" };
@@ -117,7 +117,7 @@ HRESULT CImguiStage::CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 		// 체크 박스 활성회 시 큐브 설치 부분
 		if (m_bCubePlaced && nullptr != m_pDefaultCube)
-			CubeInstall(m_pDefaultCube, m_pGraphicDev, m_vecCubeInfo, m_iCubeIndex, m_iCubeTextureNumber);
+			CubeInstall(m_pDefaultCube, m_vecCubeInfo, m_iCubeIndex, m_iCubeTextureNumber);
 
 		// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
 		if (!m_bCubePlaced && nullptr != m_pDefaultCube)
@@ -133,7 +133,7 @@ HRESULT CImguiStage::CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadData(m_pGraphicDev, m_vecCubeInfo, m_iCubeIndex), E_FAIL);
+			FAILED_CHECK_RETURN(LoadData(m_vecCubeInfo, m_iCubeIndex), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -141,7 +141,7 @@ HRESULT CImguiStage::CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	return S_OK;
 }
 
-CGameObject * CImguiStage::CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev)
+CGameObject * CImguiStage::CreateDefaultCube()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, nullptr);
@@ -157,7 +157,7 @@ CGameObject * CImguiStage::CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	return pGameObject;
 }
 
-void CImguiStage::CubeInstall(CGameObject * pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex, int iCubeTextureNumber)
+void CImguiStage::CubeInstall(CGameObject * pDefaultCube, vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex, int iCubeTextureNumber)
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
@@ -199,7 +199,7 @@ HRESULT CImguiStage::SaveData(vector<CUBEINFO>& vecCubeInfo)
 	return S_OK;
 }
 
-HRESULT CImguiStage::LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
+HRESULT CImguiStage::LoadData(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
 {
 	vecCubeInfo.clear();
 

@@ -37,16 +37,16 @@ private:
 
 private:
 	// 그리드 메뉴
-	HRESULT GridMeun(LPDIRECT3DDEVICE9 m_pGraphicDev);
-	HRESULT GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid);
+	HRESULT GridMeun();
+	HRESULT GroundGridON(vector<CGameObject*>& vecGrid);
 
 	// 큐브 메뉴
-	HRESULT CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev);
-	CGameObject* CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev);
-	void	CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex, int iCubeTextureNumber);
+	HRESULT CubeMeun();
+	CGameObject* CreateDefaultCube();
+	void	CubeInstall(CGameObject* pDefaultCube, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex, int iCubeTextureNumber);
 
 	HRESULT SaveData(vector<CUBEINFO>& vecCubeInfo);
-	HRESULT LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);
+	HRESULT LoadData(vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);
 	
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);
