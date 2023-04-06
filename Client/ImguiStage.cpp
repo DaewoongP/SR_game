@@ -23,12 +23,21 @@ CImguiStage::~CImguiStage()
 {
 }
 
-_int CImguiStage::Update_Imgui_Stage(LPDIRECT3DDEVICE9 m_pGraphicDev)
+_int CImguiStage::Update_Imgui_Stage()
 {
 	GridMeun(m_pGraphicDev);
 	CubeMeun(m_pGraphicDev);
 
 	return S_OK;
+}
+
+void CImguiStage::Release()
+{
+	m_vecGroundGrid.clear();
+	m_vecGroundGrid.shrink_to_fit();
+
+	m_vecCubeInfo.clear();
+	m_vecCubeInfo.shrink_to_fit();
 }
 
 HRESULT CImguiStage::GridMeun(LPDIRECT3DDEVICE9 m_pGraphicDev)

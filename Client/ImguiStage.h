@@ -4,12 +4,13 @@
 
 class CImguiStage
 {
-private:
+public:
 	explicit CImguiStage(LPDIRECT3DDEVICE9 pGraphicDev);
 	~CImguiStage();
 
 public:
-	_int Update_Imgui_Stage(LPDIRECT3DDEVICE9 m_pGraphicDev);
+	_int Update_Imgui_Stage();
+	void Release();
 
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
@@ -43,7 +44,6 @@ private:
 	HRESULT CubeMeun(LPDIRECT3DDEVICE9 m_pGraphicDev);
 	CGameObject* CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev);
 	void	CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex, int iCubeTextureNumber);
-
 
 	HRESULT SaveData(vector<CUBEINFO>& vecCubeInfo);
 	HRESULT LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);

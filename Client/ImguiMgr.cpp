@@ -20,6 +20,7 @@ CImguiMgr::CImguiMgr()
 
 CImguiMgr::~CImguiMgr()
 {
+	Release();
 }
 
 HRESULT CImguiMgr::Ready_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
@@ -71,7 +72,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			{
 				ImGui::Begin("StageTool");
 
-				m_pImguiStage->Update_Imgui_Stage(m_pGraphicDev);
+				m_pImguiStage->Update_Imgui_Stage();
 
 				ImGui::End();
 			}
@@ -101,6 +102,13 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 void CImguiMgr::Release()
 {
+	m_pImguiStage->Release();
+	if (nullptr != m_pInstance)
+	{
+		delete m_pImguiStage;
+		m_pImguiStage = nullptr;
+	}
+
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();

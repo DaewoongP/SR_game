@@ -112,9 +112,11 @@ CMainApp * CMainApp::Create(void)
 
 void CMainApp::Free(void)
 {
+	m_pCImguiMgr->DestroyInstance();
+
 	FreeConsole();
 	Safe_Release(m_pGraphicDev);
-	m_pCImguiMgr->Release();
+
 	Safe_Release(m_pManagementClass);
 	Safe_Release(m_pDeviceClass);
 	
