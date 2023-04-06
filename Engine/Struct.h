@@ -256,3 +256,10 @@ typedef struct tagRay
 }RAYCAST;
 
 END
+
+// 위치값과 종류를 저장하기 위한 구조체
+typedef struct ObjectInfo
+{
+	_vec3	vObjPos;
+	int		iObjTypeNumber;
+}OBJINFO;

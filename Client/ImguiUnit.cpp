@@ -58,6 +58,15 @@ HRESULT CImguiUnit::MonsterMenu()
 			m_pDefaultMonster = nullptr;
 		}
 
+		// 저장 기능
+		if (ImGui::Button("Monster Save"))
+			FAILED_CHECK_RETURN(SaveMonster(), E_FAIL);
+
+		// 로드 기능
+		ImGui::SameLine();
+		if (ImGui::Button("Monster Load"))
+			FAILED_CHECK_RETURN(LoadMonster(), E_FAIL);
+
 		ImGui::TreePop();
 	}
 
@@ -88,6 +97,7 @@ void CImguiUnit::MonsterInstall()
 
 	if (Engine::Get_DIKeyState(DIK_F2) == Engine::KEYDOWN)
 	{
+		OBJINFO tMonsterInfo = {};
 		_tchar strCubeIndex[64] = { 0 };
 
 		if (0 == m_iMonsterType) // 돼지
@@ -96,14 +106,79 @@ void CImguiUnit::MonsterInstall()
 			pGameObject = CPig::Create(m_pGraphicDev);
 		}
 
-		pGameObject->m_pTransform->m_vInfo[INFO_POS] = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
+		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
+		tMonsterInfo.iObjTypeNumber = m_iMonsterType;
 
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
 		pGameObject->m_pTransform->m_bIsStatic = false;
-
+		m_vecMonsterInfo.push_back(tMonsterInfo);
 		++m_iMonsterindex;
 	}
+}
+
+HRESULT CImguiUnit::SaveMonster()
+{
+	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	DWORD	dwByte = 0;
+
+	for (auto& iter : m_vecMonsterInfo)
+		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
+
+	CloseHandle(hFile);
+	return S_OK;
+}
+
+HRESULT CImguiUnit::LoadMonster()
+{
+	m_vecMonsterInfo.clear();
+
+	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	DWORD	dwByte = 0;
+	OBJINFO vMonsterInfo = {};
+
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+	CGameObject* pGameObject = nullptr;
+
+	while (true)
+	{
+		ReadFile(hFile, &vMonsterInfo, sizeof(OBJINFO), &dwByte, nullptr);
+		if (dwByte == 0)
+			break;
+		m_vecMonsterInfo.push_back(vMonsterInfo);
+	}
+	CloseHandle(hFile);
+
+	for (auto& iter : m_vecMonsterInfo)
+	{
+		_tchar strCubeIndex[64] = { 0 };
+
+		// 돼지
+		if (0 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
+			pGameObject = CPig::Create(m_pGraphicDev);			
+		}
+
+		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;
+
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
+
+		pGameObject->m_pTransform->m_bIsStatic = false;
+		++m_iMonsterindex;
+	}
+
+	return S_OK;
 }
 
 HRESULT CImguiUnit::MapObjectMenu()
