@@ -1,5 +1,14 @@
 #pragma once
 #include "Monster.h"
+
+#define PIGSCALE 2.0f
+
+BEGIN(Engine)
+
+class CTexture;
+
+END
+
 class CPig :
 	public CMonster
 {
@@ -16,6 +25,7 @@ public:
 
 private:
 	HRESULT Add_Component(void);
+
 	virtual _int Update_Too(const _float & fTimeDelta);
 	virtual _int Update_Top(const _float & fTimeDelta);
 	virtual void LateUpdate_Too();
@@ -25,15 +35,18 @@ private:
 
 	virtual void OnCollisionEnter(const Collision * collision);
 	virtual void OnCollisionStay(const Collision * collision);
-
 public:
-	static CPig*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPig*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void Free(void) override;
 
 private:
+	CTexture* m_pTextureCom_Back;
+
 	_bool m_bMoveLeft;
+
+	_bool m_bBackSprite;
 
 };
 

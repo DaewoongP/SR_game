@@ -60,7 +60,6 @@ void CGameObject::Render_GameObject(void)
 		iter.second->Render_Component();
 		m_pGraphicDev->SetTexture(0, nullptr);
 	}
-		
 }
 
 void CGameObject::OnCollisionEnter(const Collision * collision)
@@ -69,6 +68,8 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
+	if (!m_pTransform->m_bIsStatic)
+		return;
  	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
 

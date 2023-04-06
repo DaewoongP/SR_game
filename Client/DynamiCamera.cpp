@@ -20,8 +20,6 @@ CDynamiCamera::~CDynamiCamera()
 
 HRESULT CDynamiCamera::Ready_GameObject(void)
 {
-	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
 	_matrix matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 1000.0f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
@@ -45,17 +43,6 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 void CDynamiCamera::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-}
-
-void CDynamiCamera::Render_GameObject(void)
-{
-}
-
-HRESULT CDynamiCamera::Add_Component(void)
-{
-	CComponent*		pComponent = nullptr;
-
-	return S_OK;
 }
 
 void CDynamiCamera::Rotation_View()
@@ -162,4 +149,9 @@ CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	}
 
 	return pInstance;
+}
+
+void CDynamiCamera::Free()
+{
+	__super::Free();
 }

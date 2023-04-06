@@ -35,14 +35,8 @@
     <Filter Include="GameObject\Monster">
       <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Monster\Crow">
-      <UniqueIdentifier>{c8cd0ada-2b56-48ad-bae5-4276c004cfb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Monster\Pig">
       <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Monster\Pig\Pig_Parts">
-      <UniqueIdentifier>{88e91236-7cfe-477a-bf5b-af607e9267cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Monster\Bat">
       <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
@@ -70,6 +64,23 @@
     </Filter>
     <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
       <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
+      <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube\InstallCube">
+      <UniqueIdentifier>{51752646-cb79-4f82-9e33-fe49c6158465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Menu">
+      <UniqueIdentifier>{62560a8c-506d-4348-8b19-bf031d4812d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Menu\imgui_stage">
+      <UniqueIdentifier>{eebd6916-35be-4735-8aef-b36ddc0237fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
+      <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
+    <Filter Include="GameObject\Key">
+      <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -176,14 +187,28 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Crow.h">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
     <ClInclude Include="PigTail.h">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultCube.h">
+      <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
+    </ClInclude>
+    <ClInclude Include="InstallCube.h">
+      <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiUnit.h">
+      <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiStage.h">
+      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
+    <ClInclude Include="Key.h">
+      <Filter>GameObject\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBG.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,14 +299,28 @@
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Crow.cpp">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
     <ClCompile Include="PigTail.cpp">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultCube.cpp">
+      <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
+    </ClCompile>
+    <ClCompile Include="InstallCube.cpp">
+      <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiStage.cpp">
+      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiUnit.cpp">
+      <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
+    <ClCompile Include="Key.cpp">
+      <Filter>GameObject\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBG.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
