@@ -71,6 +71,18 @@
     <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
       <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
+      <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Cube\InstallCube">
+      <UniqueIdentifier>{51752646-cb79-4f82-9e33-fe49c6158465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Menu">
+      <UniqueIdentifier>{62560a8c-506d-4348-8b19-bf031d4812d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Menu\imgui_stage">
+      <UniqueIdentifier>{eebd6916-35be-4735-8aef-b36ddc0237fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -176,14 +188,20 @@
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Crow.h">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
     <ClInclude Include="PigTail.h">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultCube.h">
+      <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
+    </ClInclude>
+    <ClInclude Include="InstallCube.h">
+      <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiStage.h">
+      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,14 +292,20 @@
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Crow.cpp">
-      <Filter>GameObject\Monster\Crow</Filter>
-    </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
     <ClCompile Include="PigTail.cpp">
       <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultCube.cpp">
+      <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
+    </ClCompile>
+    <ClCompile Include="InstallCube.cpp">
+      <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiStage.cpp">
+      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

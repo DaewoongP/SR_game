@@ -1,15 +1,20 @@
 #pragma once
 #include"..\Engine\Define.h"
+#include "Include.h"
+class CImguiStage;
 
 class CImguiMgr
 {
+	DECLARE_SINGLETON(CImguiMgr)
+		
 private:
 	explicit CImguiMgr();
 	~CImguiMgr();
 
 public:
+	HRESULT Ready_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev);
 	HRESULT Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev);
-	void Release();
+	void	Release();
 
 private:
 	typedef struct CubeInfo
@@ -18,12 +23,8 @@ private:
 		int		iCubeTextureNumber;
 	}CUBEINFO;
 
-private:
-	HRESULT SaveData(vector<CUBEINFO>& vecCubePos);
-	HRESULT LoadData(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
+	CImguiStage* m_pImguiStage; // 스테이지 툴
 
-	CGameObject* CreateDefaultCube(LPDIRECT3DDEVICE9 m_pGraphicDev);
-
-	void	CubeInstall(CGameObject* pDefaultCube, LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CUBEINFO>& vecCubePos, int iCubeIndex);
-	HRESULT GroundGridON(LPDIRECT3DDEVICE9 m_pGraphicDev, vector<CGameObject*>& vecGrid);
+	// window 창 onoff 관련 변수
+	bool m_bStageTool;
 };
