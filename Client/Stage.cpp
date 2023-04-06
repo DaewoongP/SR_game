@@ -12,6 +12,7 @@
 #include "Pig.h"
 #include "Bat.h"
 #include"Key.h"
+#include"KeyBox.h"
 #include "StageBG.h"
 
 
@@ -83,13 +84,20 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	//Key
 	pGameObject = CKey::Create(m_pGraphicDev);
+	
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
+
+	//KeyBox
+	pGameObject = CKeyBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KeyBox", pGameObject), E_FAIL);
+  
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
-
+  
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

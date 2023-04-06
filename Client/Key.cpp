@@ -4,6 +4,7 @@
 #include"..\Engine\Export_Function.h"
 CKey::CKey(LPDIRECT3DDEVICE9 pGraphicDev) : CGameObject(pGraphicDev)
 {
+	
 }
 
 CKey::~CKey()
@@ -16,8 +17,10 @@ HRESULT CKey::Ready_GameObject(void)
 
 	m_pTransform->m_vScale = { 0.6f,0.6f,1.f };
 	
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
+	//m_pTransform->m_vInfo[INFO_POS] = _vec3{ 30.f,5.f,11.f };
 	m_pTransform->m_bIsStatic = false;
+
+
 	return S_OK;
 }
 
@@ -46,6 +49,7 @@ _int CKey::Update_Top(const _float & fTimeDelta)
 
 void CKey::LateUpdate_GameObject(void)
 {
+	
 	__super::LateUpdate_GameObject();
 }
 
@@ -60,7 +64,9 @@ void CKey::Render_GameObject(void)
 }
 
 void CKey::OnCollisionEnter(const Collision* collision)
-{
+{	
+	CGameObject* pKeyBox= Get_GameObject(L"Layer_GameLogic", L"KeyBox");
+	pKeyBox->Dis_KeyCount();
 	m_bDead = true;
 }
 
@@ -83,14 +89,16 @@ HRESULT CKey::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
 	m_pCollider->Set_BoundingBox({1.f, 1.f, 0.2f});
+	
+
 
 	return S_OK;
 }
 
 CKey* CKey::Create(LPDIRECT3DDEVICE9 pGraphicDev)
-{
+{  	
 	CKey* pInstance = new CKey(pGraphicDev);
-
+	
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
 		Safe_Release(pInstance);

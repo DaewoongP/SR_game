@@ -1,21 +1,19 @@
 #pragma once
-
-#include "Include.h"
-#include "GameObject.h"
+#include "Cube.h"
 
 BEGIN(Engine)
-
-class CRcTex;
+class CCubeTex;
 class CTexture;
 class CCollider;
 
 END
-class CKey : public Engine::CGameObject
+
+class CKeyBox :
+    public CCube
 {
 private:
-	explicit CKey(LPDIRECT3DDEVICE9 pGraphicDev);
-	
-	virtual ~CKey();
+	explicit CKeyBox(LPDIRECT3DDEVICE9 pGraphicDev);
+    virtual ~CKeyBox();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -23,22 +21,31 @@ public:
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Too() override;
+	virtual void LateUpdate_Top() override;
 	virtual void Render_GameObject(void) override;
-
-	virtual void OnCollisionEnter(const Collision* collision);
+	virtual void Render_Too() override;
+	virtual void Render_Top() override;
+	
 
 private:
 	HRESULT		Add_Component(void);
 private:
-	Engine::CRcTex* m_pBufferCom;
+	Engine::CCubeTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
 	
+	
 public:
-	static CKey* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CKeyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	
 
+	
 private:
-	virtual void Free(void) override;
+	virtual void Free() override ;
+
+
 
 };
+
+
