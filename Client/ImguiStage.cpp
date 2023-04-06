@@ -164,7 +164,7 @@ void CImguiStage::CubeInstall(CGameObject * pDefaultCube, vector<CUBEINFO>& vecC
 
 	CGameObject* pGameObject = nullptr;
 
-	if (Engine::Get_DIMouseState(DIM_LB))
+	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
 		CUBEINFO tCube = {};
 
