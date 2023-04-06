@@ -1,7 +1,9 @@
 #pragma once
 #include"..\Engine\Define.h"
 #include "Include.h"
+
 class CImguiStage;
+class CImguiUnit;
 
 class CImguiMgr
 {
@@ -24,7 +26,9 @@ private:
 	}CUBEINFO;
 
 	CImguiStage* m_pImguiStage; // 스테이지 툴
+	CImguiUnit*  m_pImguiUnit;  // 유닛 툴
 
 	// window 창 onoff 관련 변수
-	bool m_bStageTool;
+	bool m_bStageTool; // 스테이지 onoff
+	bool m_bUnitTool;  // 유닛 onoff
 };

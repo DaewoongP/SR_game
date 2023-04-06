@@ -166,6 +166,7 @@
     <ClInclude Include="imgui.h" />
     <ClInclude Include="ImguiMgr.h" />
     <ClInclude Include="ImguiStage.h" />
+    <ClInclude Include="ImguiUnit.h" />
     <ClInclude Include="imgui_impl_dx9.h" />
     <ClInclude Include="imgui_impl_win32.h" />
     <ClInclude Include="imgui_internal.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="ImguiMgr.cpp" />
     <ClCompile Include="ImguiStage.cpp" />
+    <ClCompile Include="ImguiUnit.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_dx9.cpp" />

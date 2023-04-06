@@ -5,16 +5,14 @@
 #include"imgui_impl_win32.h"
 #include"..\Engine\Export_Function.h"
 
-#include "DefaultCube.h"
-#include "InstallCube.h"
-
 #include "ImguiStage.h"
+#include "ImguiUnit.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
-	:m_pImguiStage(nullptr),
-	m_bStageTool(true)
+	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr),
+	m_bStageTool(false), m_bUnitTool(false)
 {
 }
 
@@ -26,6 +24,7 @@ CImguiMgr::~CImguiMgr()
 HRESULT CImguiMgr::Ready_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 {
 	m_pImguiStage = CImguiStage::Create(m_pGraphicDev);
+	m_pImguiUnit = CImguiUnit::Create(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -49,15 +48,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	// //// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
 	{
-		// 큐브 설치 관련 변수
-		static vector<CUBEINFO> vecCubeInfo; // 저장을 위한 큐브 벡터
-		static CGameObject* pDefaultCube = nullptr; // 디폴트 큐브 형성
-		static bool bCubePlaced = false; // 큐브 체크 박스
-		static int iCubeIndex = 0;		 // 큐브 인덱스 번호
-		static bool bCubeCreate = false;
-
-		// 그리드 관련 변수
-
 		// 본문 시작
 		ImGui::Begin("Hello,Imgui!");
 
@@ -73,6 +63,20 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				ImGui::Begin("StageTool");
 
 				m_pImguiStage->Update_Imgui_Stage();
+
+				ImGui::End();
+			}
+		}
+
+		// 유닛 툴 on / off
+		{
+			ImGui::Checkbox("UnitTool", &m_bUnitTool);
+
+			if (m_bUnitTool)
+			{
+				ImGui::Begin("UnitTool");
+
+				m_pImguiUnit->Update_Imgui_Unit();
 
 				ImGui::End();
 			}
@@ -103,11 +107,10 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 void CImguiMgr::Release()
 {
 	m_pImguiStage->Release();
-	if (nullptr != m_pInstance)
-	{
-		delete m_pImguiStage;
-		m_pImguiStage = nullptr;
-	}
+	m_pImguiUnit->Release();
+
+	Safe_Delete(m_pImguiStage);
+	Safe_Delete(m_pImguiUnit);
 
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();

@@ -83,6 +83,9 @@
     <Filter Include="Imgui\Imgui_Menu\imgui_stage">
       <UniqueIdentifier>{eebd6916-35be-4735-8aef-b36ddc0237fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
+      <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -200,6 +203,9 @@
     <ClInclude Include="InstallCube.h">
       <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
     </ClInclude>
+    <ClInclude Include="ImguiUnit.h">
+      <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
+    </ClInclude>
     <ClInclude Include="ImguiStage.h">
       <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
     </ClInclude>
@@ -306,6 +312,9 @@
     </ClCompile>
     <ClCompile Include="ImguiStage.cpp">
       <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiUnit.cpp">
+      <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
