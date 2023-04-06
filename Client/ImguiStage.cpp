@@ -115,7 +115,7 @@ HRESULT CImguiStage::CubeMeun()
 		if (m_pDefaultCube)
 			dynamic_cast<CDefaultCube*>(m_pDefaultCube)->Set_CubeIndex(m_iCubeTextureNumber);
 
-		// 체크 박스 활성회 시 큐브 설치 부분
+		// 체크 박스 활성화 시 큐브 설치 부분
 		if (m_bCubePlaced && nullptr != m_pDefaultCube)
 			CubeInstall(m_pDefaultCube, m_vecCubeInfo, m_iCubeIndex, m_iCubeTextureNumber);
 
@@ -128,12 +128,12 @@ HRESULT CImguiStage::CubeMeun()
 
 		// 저장 기능
 		if (ImGui::Button("Cube Save"))
-			FAILED_CHECK_RETURN(SaveData(m_vecCubeInfo), E_FAIL);
+			FAILED_CHECK_RETURN(SaveCube(m_vecCubeInfo), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadData(m_vecCubeInfo, m_iCubeIndex), E_FAIL);
+			FAILED_CHECK_RETURN(LoadCube(m_vecCubeInfo, m_iCubeIndex), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -184,7 +184,7 @@ void CImguiStage::CubeInstall(CGameObject * pDefaultCube, vector<CUBEINFO>& vecC
 	}
 }
 
-HRESULT CImguiStage::SaveData(vector<CUBEINFO>& vecCubeInfo)
+HRESULT CImguiStage::SaveCube(vector<CUBEINFO>& vecCubeInfo)
 {
 	HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
@@ -199,7 +199,7 @@ HRESULT CImguiStage::SaveData(vector<CUBEINFO>& vecCubeInfo)
 	return S_OK;
 }
 
-HRESULT CImguiStage::LoadData(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
+HRESULT CImguiStage::LoadCube(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
 {
 	vecCubeInfo.clear();
 

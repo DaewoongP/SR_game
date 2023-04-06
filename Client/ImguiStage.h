@@ -45,8 +45,8 @@ private:
 	CGameObject* CreateDefaultCube();
 	void	CubeInstall(CGameObject* pDefaultCube, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex, int iCubeTextureNumber);
 
-	HRESULT SaveData(vector<CUBEINFO>& vecCubeInfo);
-	HRESULT LoadData(vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);
+	HRESULT SaveCube(vector<CUBEINFO>& vecCubeInfo);
+	HRESULT LoadCube(vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);
 	
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);
