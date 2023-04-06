@@ -26,8 +26,7 @@ public:
 	virtual void		Render_Too() {}
 	virtual void		Render_Top() {}
 
-	virtual _int Get_KeyCount() { return m_iKey_Count; }
-	virtual _int Dis_KeyCount() { return --m_iKey_Count; }
+	
 
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);
@@ -51,7 +50,10 @@ public:
 	
 public:
 	 _int m_iKey_Count =1;
-	
+	 _int Get_KeyCount() { return m_iKey_Count; }
+	 _int Dis_KeyCount() { return --m_iKey_Count; }
+	 //스테이지에 열쇠갯수만큼 추가
+	 _int Set_KeyCount(_int i) { return m_iKey_Count = i; }
 protected:
 	virtual void		Free(void);
 };

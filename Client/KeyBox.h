@@ -1,5 +1,6 @@
 #pragma once
 #include "Cube.h"
+
 BEGIN(Engine)
 class CCubeTex;
 class CTexture;
@@ -34,11 +35,11 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
 	
-	CGameObject* m_pGameObject;
-
-
+	
 public:
 	static CKeyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	
+
 	
 private:
 	virtual void Free() override ;
@@ -46,4 +47,5 @@ private:
 
 
 };
+
 

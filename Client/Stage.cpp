@@ -101,6 +101,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
   
 	//Key
 	pGameObject = CKey::Create(m_pGraphicDev);
+	
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
 	//KeyBox

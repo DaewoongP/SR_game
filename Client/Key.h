@@ -33,11 +33,12 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
-	Engine::CGameObject* m_pGameObject;
+	
 public:
 	static CKey* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	
+
 private:
 	virtual void Free(void) override;
 
 };
-
