@@ -253,7 +253,6 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 	if (returnValue)
 		if (*pDist < ray._Length)
 		{
-			//cout << pDest->m_pGameObject->m_pTag << endl;
 			return true;
 		}
 			

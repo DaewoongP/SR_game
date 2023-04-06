@@ -39,7 +39,8 @@ private:
 	void		Move(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
 	_bool		ShootRay();
-	_bool		DoRayToDir(_vec3 dir);
+	_bool		DoRayToDir(COL_DIR dir);
+	void		SetMovePos(COL_DIR dir);
 
 private:
 	Engine::CCubeTex*	m_pBufferCom;

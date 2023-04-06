@@ -100,24 +100,7 @@ void CMoveBox::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02"))
 	{
-		//방향을 얻어와서 밀어준다.
-		switch (collision->_dir)
-		{
-		case DIR_UP:
-			m_MoveVec = _vec3(0, -2, 0);
-			break;
-		case DIR_DOWN:
-			m_MoveVec = _vec3(0, 2, 0);
-			break;
-		case DIR_LEFT:
-			m_MoveVec = _vec3(2, 0, 0);
-			break;
-		case DIR_RIGHT:
-			m_MoveVec = _vec3(-2, 0, 0);
-			break;
-		}
-		m_bIsMoving = true;
-		m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
+		DoRayToDir(collision->_dir);
 	}
 
 	//충돌시 레이 발생! 
@@ -126,37 +109,6 @@ void CMoveBox::OnCollisionEnter(const Collision * collision)
 
 void CMoveBox::OnCollisionStay(const Collision * collision)
 {
-	//자신과 충돌한 큐브에게 자신의 움직임 상태를 전염시킴.
-	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube"))
-	{
-		//나랑 충돌한애가 움직이지 않고있어?
-		if (!dynamic_cast<CMoveBox*>(collision->otherObj)->m_bIsMoving)
-		{
-			CMoveBox* otherBox = dynamic_cast<CMoveBox*>(collision->otherObj);
-			//당장 움직여줘
-			switch (collision->_dir)
-			{
-			case DIR_UP:
-				otherBox->m_MoveVec = _vec3(0, 2, 0);
-				break;
-			case DIR_DOWN:
-				otherBox->m_MoveVec = _vec3(0, -2, 0);
-				break;
-			case DIR_LEFT:
-				otherBox->m_MoveVec = _vec3(-2, 0, 0);
-				break;
-			case DIR_RIGHT:
-				otherBox->m_MoveVec = _vec3(2, 0, 0);
-				break;
-			}
-			otherBox->m_bIsMoving = true;
-			otherBox->m_MovetoPos =
-				_vec3(otherBox->m_pTransform->m_vInfo[INFO_POS].x + otherBox->m_MoveVec.x,
-					otherBox->m_pTransform->m_vInfo[INFO_POS].y + otherBox->m_MoveVec.y,
-					otherBox->m_pTransform->m_vInfo[INFO_POS].z);
-		}
-	}
-
 	__super::OnCollisionStay(collision);
 }
 
@@ -271,6 +223,75 @@ _bool CMoveBox::ShootRay()
 		}
 	}
 	return false;
+}
+
+_bool CMoveBox::DoRayToDir(COL_DIR  dir)
+{
+	//들어온 방향으로 레이를 쏩니다.
+	_vec3 centerpos;
+	vector<RayCollision> _detectedCOL;
+	switch (dir)
+	{
+	case DIR_UP:
+		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 1, 0);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 3.5f));
+		break;
+	case DIR_DOWN:
+		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, -1, 0);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 3.5f));
+		break;
+	case DIR_LEFT:
+		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(-1, 0, 0);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 3.5f));
+		break;
+	case DIR_RIGHT:
+		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(1, 0, 0);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 3.5f));
+		break;
+	}
+	//거기에 movecube 검출되면 그 친구에게 드로우 레이를 쏩니다.
+	if (_detectedCOL.size() >= 2)
+	{
+		if (!lstrcmp(_detectedCOL[1].tag, L"MoveCube"))
+		{
+			if (dynamic_cast<CMoveBox*>(_detectedCOL[1].col->m_pGameObject)->DoRayToDir(dir))
+			{
+				//만약 참이라면? ... 뭐가 검출이 안됐으면 이동을 합니다
+				//여기에 이동로직 삽입
+				//방향을 얻어와서 밀어준다.
+				SetMovePos(dir);
+				return true;
+			}
+			//거짓이라면 암것도 안합니다.
+			return false;
+		}
+	}
+	//방향을 얻어와서 밀어준다.
+	SetMovePos(dir);	
+	// 여기에 이동로직 삽입
+	return true;
+}
+
+void CMoveBox::SetMovePos(COL_DIR dir)
+{
+	switch (dir)
+	{
+	case DIR_UP:
+		m_MoveVec = _vec3(0, -2, 0);
+		break;
+	case DIR_DOWN:
+		m_MoveVec = _vec3(0, 2, 0);
+		break;
+	case DIR_LEFT:
+		m_MoveVec = _vec3(2, 0, 0);
+		break;
+	case DIR_RIGHT:
+		m_MoveVec = _vec3(-2, 0, 0);
+		break;
+	}
+	m_bIsMoving = true;
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
+
 }
 
 CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
