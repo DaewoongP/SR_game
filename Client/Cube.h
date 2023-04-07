@@ -18,7 +18,7 @@ protected:
 	virtual ~CCube();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
@@ -35,7 +35,7 @@ protected:
 	Engine::CCollider * m_pCollider;
 
 public:
-	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;

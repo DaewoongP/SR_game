@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="BoxHole.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
@@ -195,6 +196,7 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="BoxHole.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />

@@ -194,9 +194,6 @@
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
-    <ClInclude Include="PigTail.h">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultCube.h">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
     </ClInclude>
@@ -217,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxHole.h">
+      <Filter>GameObject\Cube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +310,6 @@
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
-    <ClCompile Include="PigTail.cpp">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultCube.cpp">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
     </ClCompile>
@@ -333,6 +330,9 @@
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxHole.cpp">
+      <Filter>GameObject\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

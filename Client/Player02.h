@@ -15,7 +15,7 @@ private:
 	virtual ~CPlayer02();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
@@ -52,7 +52,7 @@ private:
 	_vec3					prePos;
 
 public:
-	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

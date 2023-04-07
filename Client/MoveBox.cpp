@@ -11,14 +11,14 @@ CMoveBox::~CMoveBox()
 {
 }
 
-HRESULT CMoveBox::Ready_GameObject(void)
+HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
 
@@ -80,6 +80,7 @@ void CMoveBox::Render_GameObject(void)
 	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
 	_matrix matworld;
 	D3DXMatrixIdentity(&matworld);
+
 	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
 	m_pLine->Draw_Line(matworld, matView, matProj);
 }
@@ -308,11 +309,11 @@ void CMoveBox::SetMovePos(COL_DIR dir)
 
 }
 
-CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CMoveBox*		pInstance = new CMoveBox(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

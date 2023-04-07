@@ -10,7 +10,6 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Transform", m_pTransform });
-	//m_iKey_Count = 1;
 }
 
 CGameObject::~CGameObject()
@@ -151,17 +150,6 @@ void CGameObject::OnCollisionExit(const Collision * collision)
 {
 }
 
-void CGameObject::OnTriggerEnter(const CCollider * other)
-{
-}
-
-void CGameObject::OnTriggerStay(const CCollider * other)
-{
-}
-
-void CGameObject::OnTirggerExit(const CCollider * other)
-{
-}
 
 CComponent * CGameObject::Find_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
