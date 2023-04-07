@@ -69,6 +69,8 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Key_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png",21)), E_FAIL);
 	// imgui 디폴트 몬스터
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_Monster_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss1Spr/boss1Spr_0.png")), E_FAIL);
+	// 포탈
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Portal_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/portalSpr/NewportalSpr/portalSpr_%d.png", 11)), E_FAIL);
 
 	Set_String(L"Buffer Loading.......");
 
