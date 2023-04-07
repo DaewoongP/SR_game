@@ -85,8 +85,7 @@ HRESULT CImguiStage::GroundGridON()
 
 			TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
-			pGameObject = CGroundGrid::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f };
+			pGameObject = CGroundGrid::Create(m_pGraphicDev, _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f });
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 			m_vecGroundGrid.push_back(pGameObject);
@@ -148,7 +147,7 @@ CGameObject * CImguiStage::CreateDefaultCube()
 
 	CGameObject* pGameObject = nullptr;
 
-	pGameObject = CDefaultCube::Create(m_pGraphicDev);
+	pGameObject = CDefaultCube::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 10.f });
 
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Cube_Default", pGameObject), nullptr);
@@ -170,9 +169,9 @@ void CImguiStage::CubeInstall()
 
 		_tchar strCubeIndex[64] = { 0 };
 		_stprintf_s(strCubeIndex, _T("Cube%d"), m_iCubeIndex);
-		pGameObject = CInstallCube::Create(m_pGraphicDev);
+		pGameObject = CInstallCube::Create(m_pGraphicDev, m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS]);
 
-		tCube.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
+		tCube.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
 		tCube.iObjTypeNumber = m_iCubeTextureNumber;
 		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(tCube.iObjTypeNumber);
 
@@ -229,9 +228,8 @@ HRESULT CImguiStage::LoadCube()
 	{
 		_tchar strCubeIndex[64] = { 0 };
 		_stprintf_s(strCubeIndex, _T("CubeIndex%d"), m_iCubeIndex);
-		pGameObject = CInstallCube::Create(m_pGraphicDev);
+		pGameObject = CInstallCube::Create(m_pGraphicDev, iter.vObjPos);
 
-		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;
 		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(iter.iObjTypeNumber);
 
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
