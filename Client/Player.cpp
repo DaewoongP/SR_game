@@ -2,11 +2,13 @@
 #include "Player.h"
 
 #include "Export_Function.h"
+#include "Portal.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpalbe(false)
-	, m_eKeyState(DIR_END)
+	, m_eKeyState(DIR_END),
+	m_pPortal(nullptr)
 {
 
 }
@@ -86,6 +88,11 @@ void CPlayer::Render_Top()
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
+	m_pPortal = Engine::Get_GameObject(L"Layer_GameLogic", L"Portal");
+
+	if (m_pPortal == collision->otherObj)
+		dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(true);
+
 	__super::OnCollisionEnter(collision);
 }
 
@@ -109,6 +116,8 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
+	dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(false);
+
 	m_bJumpalbe = false;
 	__super::OnCollisionExit(collision);
 }

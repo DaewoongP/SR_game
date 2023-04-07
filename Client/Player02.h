@@ -51,6 +51,8 @@ private:
 
 	_vec3					prePos;
 
+	CGameObject*			m_pPortal;
+
 public:
 	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

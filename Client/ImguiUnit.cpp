@@ -7,6 +7,7 @@
 
 #include "DefaultMonster.h"
 #include "Pig.h"
+#include "Bat.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
@@ -80,7 +81,7 @@ CGameObject * CImguiUnit::CreateDefaultMonster()
 
 	CGameObject* pGameObject = nullptr;
 
-	pGameObject = CDefaultMonster::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+	pGameObject = CDefaultMonster::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f });
 
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Monster_Default", pGameObject), nullptr);
@@ -104,6 +105,12 @@ void CImguiUnit::MonsterInstall()
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
 			pGameObject = CPig::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (1 == m_iMonsterType) // ¹ÚÁã
+		{
+			_stprintf_s(strCubeIndex, _T("Bat%d"), m_iMonsterindex);
+			pGameObject = CBat::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
@@ -167,6 +174,13 @@ HRESULT CImguiUnit::LoadMonster()
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
 			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);			
+		}
+
+		// ¹ÚÁã
+		else if (1 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
+			pGameObject = CBat::Create(m_pGraphicDev, iter.vObjPos);
 		}
 
 		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;

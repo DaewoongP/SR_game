@@ -2,9 +2,13 @@
 #include "Portal.h"
 
 #include"Export_Function.h"
+#include "SwallowPortal.h"
+#include "Player.h"
+#include "Player02.h"
 
 CPortal::CPortal(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev),
+	m_bTooCol(false), m_bTopCol(false)
 {
 }
 
@@ -38,11 +42,15 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 
 _int CPortal::Update_Too(const _float & fTimeDelta)
 {
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+
 	return 0;
 }
 
 _int CPortal::Update_Top(const _float & fTimeDelta)
 {
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+
 	return 0;
 }
 
@@ -64,7 +72,17 @@ void CPortal::Render_GameObject(void)
 
 void CPortal::OnCollisionEnter(const Collision * collision)
 {
-	
+	if (m_bTooCol && m_bTopCol)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, );
+
+		CGameObject* pGameObject = nullptr;
+
+		pGameObject = CSwallowPortal::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
+		NULL_CHECK_RETURN(pGameObject, );
+		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Swallow_Portal", pGameObject), );
+	}
 }
 
 HRESULT CPortal::Add_Component(void)
@@ -85,7 +103,7 @@ HRESULT CPortal::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_BoundingBox({ 5.f, 5.f, 0.f });
+	m_pCollider->Set_BoundingBox({ 5.f, 5.f, 2.f });
 
 	return S_OK;
 }
