@@ -176,6 +176,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InstallCube.h" />
     <ClInclude Include="Key.h" />
+    <ClInclude Include="KeyBox.h" />
     <ClInclude Include="Loading.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainApp.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="InstallCube.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="KeyBox.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainApp.cpp" />

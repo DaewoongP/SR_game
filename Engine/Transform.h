@@ -68,8 +68,6 @@ public:
 	virtual		_int	Update_Component(const _float& fTimeDelta);
 	virtual		void	LateUpdate_Component(void);
 
-	//부모 지정 함수
-	void Set_Parent(CTransform* Parent) { m_pParent = Parent; }
 
 public:
 	_bool		m_bIsStatic = true;
@@ -80,10 +78,7 @@ public:
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
 
-	//RT부모 행렬 누적 하기 위한 행렬
-	_matrix		m_matRT;
-	//부모
-	CTransform* m_pParent;
+	_bool		m_bMove;
 
 	_bool		m_bMove;
 

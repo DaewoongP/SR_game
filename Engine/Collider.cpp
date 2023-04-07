@@ -9,6 +9,7 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	CComponent(pGraphicDev)
 	, m_pMesh(nullptr)
 	, m_eGroup(COL_OBJ)
+	, m_bIsTrigger(false)
 {
 }
 
@@ -17,6 +18,7 @@ CCollider::CCollider(const CCollider & rhs) :
 	, m_pBoundingBox(rhs.m_pBoundingBox)
 	, m_pMesh(rhs.m_pMesh)
 	, m_eGroup(rhs.m_eGroup)
+	, m_bIsTrigger(rhs.m_bIsTrigger)
 {
 }
 
@@ -163,6 +165,14 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 		m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 		m_pBoundingBox->Offset(offsetPoint);
 	}
+}
+
+HRESULT CCollider::Set_Options(const _vec3 & vSize, COLGROUP eGroup, _bool isTrigger)
+{
+	Set_BoundingBox(vSize);
+	Set_Group(eGroup);
+	m_bIsTrigger = isTrigger;
+	return S_OK;
 }
 
 void CCollider::Set_Group(COLGROUP eGroup)

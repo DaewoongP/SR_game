@@ -15,7 +15,8 @@ public:
 	CComponent*			Get_Component(const _tchar* pComponentTag, COMPONENTID eID);
 	void				Set_Tag(const _tchar* pTag);
 public:
-	virtual HRESULT		Ready_GameObject(void)PURE;
+	virtual HRESULT		Ready_GameObject(void) { return S_OK; }
+	virtual HRESULT		Ready_GameObject(_vec3& vPos) { return S_OK; }
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
 	virtual _int		Update_Too(const _float& fTimeDelta) { return 0; }
 	virtual _int		Update_Top(const _float& fTimeDelta) { return 0; }
@@ -26,13 +27,12 @@ public:
 	virtual void		Render_Too() {}
 	virtual void		Render_Top() {}
 
+	
+
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
-	virtual void OnTriggerEnter(const class CCollider* other);
-	virtual void OnTriggerStay(const class CCollider* other);
-	virtual void OnTirggerExit(const class CCollider* other);
 
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
@@ -45,7 +45,7 @@ public:
 	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
-	_int m_iKey_Count = 0;
+
 protected:
 	virtual void		Free(void);
 };

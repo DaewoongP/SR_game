@@ -131,6 +131,12 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>Manager\AbstractFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Componnent\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -230,6 +236,9 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="WindParticle.cpp" />
+    <ClCompile Include="Line.cpp">
+      <Filter>Componnent\Line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -293,6 +302,12 @@
     </Filter>
     <Filter Include="Componnent\Texture">
       <UniqueIdentifier>{3923373d-3387-4c2b-b8fe-d8d82a24d934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\AbstractFactory">
+      <UniqueIdentifier>{c76fc5ab-7dcb-49b2-9cde-19f72c86c3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Line">
+      <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -29,8 +29,6 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		return;
 	if (m_ColliderList[eGroup2].empty())
 		return;
-	if (eGroup1 == eGroup2 && m_ColliderList[eGroup1].size() < 2)
-		return;
 	for (auto& iter = m_ColliderList[eGroup1].begin();
 	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
@@ -122,14 +120,16 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY|| fX>0.4f)
+  		if (fX > fY)
 		{
+			// src 상충돌
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
+			// src 하충돌
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
@@ -139,12 +139,14 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 		}
 		else
 		{
+			// src 우충돌
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
 			}
+			// src 좌충돌
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);

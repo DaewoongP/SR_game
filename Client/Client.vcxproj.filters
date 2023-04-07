@@ -83,6 +83,9 @@
     <Filter Include="GameObject\Portal">
       <UniqueIdentifier>{fc218ae6-2353-4c26-b2ce-c733916ec993}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Cube\KeyBox">
+      <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -200,6 +203,9 @@
     <ClInclude Include="Key.h">
       <Filter>GameObject\Key</Filter>
     </ClInclude>
+    <ClInclude Include="KeyBox.h">
+      <Filter>GameObject\Cube\KeyBox</Filter>
+    </ClInclude>
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -309,6 +315,9 @@
     </ClCompile>
     <ClCompile Include="Key.cpp">
       <Filter>GameObject\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyBox.cpp">
+      <Filter>GameObject\Cube\KeyBox</Filter>
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>

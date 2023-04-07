@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CCubeTex;
 class CTexture;
 class CCollider;
-
+class CLine;
 END
 
 class CMoveBox :
@@ -19,7 +19,7 @@ private:
 	virtual ~CMoveBox();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
@@ -46,6 +46,7 @@ private:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
 	Engine::CCollider * m_pCollider;
+	Engine::CLine*			m_pLine;
 
 	_float					m_fSpeed = 16.f;
 	_vec3					m_MovetoPos;
@@ -57,7 +58,7 @@ public:
 	_bool					m_bIsCol[DIR_END] = { 0 };
 
 public:
-	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

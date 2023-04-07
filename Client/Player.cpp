@@ -15,12 +15,12 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Ready_GameObject(void)
+HRESULT CPlayer::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
@@ -40,7 +40,7 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 	
 	m_pTextureCom->Update_Anim(fTimeDelta);
-
+	
 	DoFlip();
 	return 0;
 }
@@ -71,8 +71,9 @@ void CPlayer::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-
+	
 	__super::Render_GameObject();
+
 }
 
 void CPlayer::Render_Too()
@@ -138,15 +139,16 @@ HRESULT CPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
+
 	return S_OK;
 }
 
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CPlayer*		pInstance = new CPlayer(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
