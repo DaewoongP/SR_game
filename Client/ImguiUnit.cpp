@@ -80,7 +80,7 @@ CGameObject * CImguiUnit::CreateDefaultMonster()
 
 	CGameObject* pGameObject = nullptr;
 
-	pGameObject = CDefaultMonster::Create(m_pGraphicDev);
+	pGameObject = CDefaultMonster::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
 
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Monster_Default", pGameObject), nullptr);
@@ -103,10 +103,10 @@ void CImguiUnit::MonsterInstall()
 		if (0 == m_iMonsterType) // µÅÁö
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev);
+			pGameObject = CPig::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
-		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
+		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
 		tMonsterInfo.iObjTypeNumber = m_iMonsterType;
 
 		NULL_CHECK_RETURN(pGameObject, );
@@ -166,7 +166,7 @@ HRESULT CImguiUnit::LoadMonster()
 		if (0 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev);			
+			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);			
 		}
 
 		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;
