@@ -94,7 +94,6 @@ CKey* CKey::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 		return nullptr;
 	}
 	return pInstance;
-	
 }
 
 void CKey::Free(void)

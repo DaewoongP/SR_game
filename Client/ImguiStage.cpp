@@ -48,7 +48,7 @@ HRESULT CImguiStage::GridMeun()
 	// 그리드 체크 박스 활성화 시 그리드 생성
 	if (m_bGridON && m_bGridCreate)
 	{
-		FAILED_CHECK_RETURN(GroundGridON(m_vecGroundGrid), E_FAIL);
+		FAILED_CHECK_RETURN(GroundGridON(), E_FAIL);
 		m_bGridCreate = false;
 	}
 
@@ -69,7 +69,7 @@ HRESULT CImguiStage::GridMeun()
 	return S_OK;
 }
 
-HRESULT CImguiStage::GroundGridON(vector<CGameObject*>& vecGrid)
+HRESULT CImguiStage::GroundGridON()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -89,7 +89,7 @@ HRESULT CImguiStage::GroundGridON(vector<CGameObject*>& vecGrid)
 			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f };
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-			vecGrid.push_back(pGameObject);
+			m_vecGroundGrid.push_back(pGameObject);
 		}
 	}
 
@@ -115,9 +115,9 @@ HRESULT CImguiStage::CubeMeun()
 		if (m_pDefaultCube)
 			dynamic_cast<CDefaultCube*>(m_pDefaultCube)->Set_CubeIndex(m_iCubeTextureNumber);
 
-		// 체크 박스 활성회 시 큐브 설치 부분
+		// 체크 박스 활성화 시 큐브 설치 부분
 		if (m_bCubePlaced && nullptr != m_pDefaultCube)
-			CubeInstall(m_pDefaultCube, m_vecCubeInfo, m_iCubeIndex, m_iCubeTextureNumber);
+			CubeInstall();
 
 		// 디폴트 큐브가 생성되어 있는데 체크 항목이 꺼질 경우 디폴트 큐브 사망처리
 		if (!m_bCubePlaced && nullptr != m_pDefaultCube)
@@ -128,12 +128,12 @@ HRESULT CImguiStage::CubeMeun()
 
 		// 저장 기능
 		if (ImGui::Button("Cube Save"))
-			FAILED_CHECK_RETURN(SaveData(m_vecCubeInfo), E_FAIL);
+			FAILED_CHECK_RETURN(SaveCube(), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadData(m_vecCubeInfo, m_iCubeIndex), E_FAIL);
+			FAILED_CHECK_RETURN(LoadCube(), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -157,34 +157,34 @@ CGameObject * CImguiStage::CreateDefaultCube()
 	return pGameObject;
 }
 
-void CImguiStage::CubeInstall(CGameObject * pDefaultCube, vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex, int iCubeTextureNumber)
+void CImguiStage::CubeInstall()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
 	CGameObject* pGameObject = nullptr;
 
-	if (Engine::Get_DIMouseState(DIM_LB))
+	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
-		CUBEINFO tCube = {};
+		OBJINFO tCube = {};
 
 		_tchar strCubeIndex[64] = { 0 };
-		_stprintf_s(strCubeIndex, _T("Cube%d"), iCubeIndex);
+		_stprintf_s(strCubeIndex, _T("Cube%d"), m_iCubeIndex);
 		pGameObject = CInstallCube::Create(m_pGraphicDev);
 
-		tCube.vCubePos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
-		tCube.iCubeTextureNumber = iCubeTextureNumber;
-		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(tCube.iCubeTextureNumber);
+		tCube.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS] = m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
+		tCube.iObjTypeNumber = m_iCubeTextureNumber;
+		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(tCube.iObjTypeNumber);
 
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
 		pGameObject->m_pTransform->m_bIsStatic = true;
-		vecCubeInfo.push_back(tCube); // 저장을 위함
-		++iCubeIndex;
+		m_vecCubeInfo.push_back(tCube); // 저장을 위함
+		++m_iCubeIndex;
 	}
 }
 
-HRESULT CImguiStage::SaveData(vector<CUBEINFO>& vecCubeInfo)
+HRESULT CImguiStage::SaveCube()
 {
 	HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
@@ -192,16 +192,16 @@ HRESULT CImguiStage::SaveData(vector<CUBEINFO>& vecCubeInfo)
 
 	DWORD	dwByte = 0;
 
-	for (auto& iter : vecCubeInfo)
-		WriteFile(hFile, &iter, sizeof(CUBEINFO), &dwByte, nullptr);
+	for (auto& iter : m_vecCubeInfo)
+		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
 
 	CloseHandle(hFile);
 	return S_OK;
 }
 
-HRESULT CImguiStage::LoadData(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
+HRESULT CImguiStage::LoadCube()
 {
-	vecCubeInfo.clear();
+	m_vecCubeInfo.clear();
 
 	HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
@@ -209,7 +209,7 @@ HRESULT CImguiStage::LoadData(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
 		return E_FAIL;
 
 	DWORD	dwByte = 0;
-	CUBEINFO vCubeInfo = {};
+	OBJINFO vCubeInfo = {};
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -218,27 +218,27 @@ HRESULT CImguiStage::LoadData(vector<CUBEINFO>& vecCubeInfo, int & iCubeIndex)
 
 	while (true)
 	{
-		ReadFile(hFile, &vCubeInfo, sizeof(CUBEINFO), &dwByte, nullptr);
+		ReadFile(hFile, &vCubeInfo, sizeof(OBJINFO), &dwByte, nullptr);
 		if (dwByte == 0)
 			break;
-		vecCubeInfo.push_back(vCubeInfo);
+		m_vecCubeInfo.push_back(vCubeInfo);
 	}
 	CloseHandle(hFile);
 
-	for (auto& iter : vecCubeInfo)
+	for (auto& iter : m_vecCubeInfo)
 	{
 		_tchar strCubeIndex[64] = { 0 };
-		_stprintf_s(strCubeIndex, _T("CubeIndex%d"), iCubeIndex);
+		_stprintf_s(strCubeIndex, _T("CubeIndex%d"), m_iCubeIndex);
 		pGameObject = CInstallCube::Create(m_pGraphicDev);
 
-		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vCubePos;
-		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(iter.iCubeTextureNumber);
+		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;
+		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(iter.iObjTypeNumber);
 
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
 
 		pGameObject->m_pTransform->m_bIsStatic = true;
-		++iCubeIndex;
+		++m_iCubeIndex;
 	}
 
 	return S_OK;
