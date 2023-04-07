@@ -15,6 +15,7 @@ HRESULT CMoveBox::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_handleState = CH_NONE;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
@@ -45,10 +46,17 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	ShootRay();
-	Move(0.02f);
-
-	__super::Update_GameObject(0.02f);
+	MoveToPos(fTimeDelta);
+	if(m_handleState == CH_START || m_handleState == CH_END)
+	{
+		
+	}
+	else
+	{
+		ShootRay();
+		Move(fTimeDelta);
+	}
+	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -71,26 +79,26 @@ void CMoveBox::LateUpdate_Top()
 
 void CMoveBox::Render_GameObject(void)
 {
-	_vec3 v1 = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 0); // origin
-	_vec3 v2 = v1+ _vec3(2.5,0,0); // dir
+	//_vec3 v1 = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 0); // origin
+	//_vec3 v2 = v1+ _vec3(2.5,0,0); // dir
 
-	_vec3 v3 = v1 + _vec3(-2.5, 0, 0);
-	_vec3 v4 = v1 + _vec3(0, 2.5, 0);
-	_vec3 v5 = v1 + _vec3(0, -2.5, 0);
+	//_vec3 v3 = v1 + _vec3(-2.5, 0, 0);
+	//_vec3 v4 = v1 + _vec3(0, 2.5, 0);
+	//_vec3 v5 = v1 + _vec3(0, -2.5, 0);
 
-	_matrix matView, matProj;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
-	_matrix matworld;
-	D3DXMatrixIdentity(&matworld);
-	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
-	m_pLine->Set_Line(v1, v3, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
-	m_pLine->Set_Line(v1, v4, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
-	m_pLine->Set_Line(v1, v5, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
+	//_matrix matView, matProj;
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	//m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	//_matrix matworld;
+	//D3DXMatrixIdentity(&matworld);
+	//m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	//m_pLine->Draw_Line(matworld, matView, matProj);
+	//m_pLine->Set_Line(v1, v3, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	//m_pLine->Draw_Line(matworld, matView, matProj);
+	//m_pLine->Set_Line(v1, v4, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	//m_pLine->Draw_Line(matworld, matView, matProj);
+	//m_pLine->Set_Line(v1, v5, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	//m_pLine->Draw_Line(matworld, matView, matProj);
 	
 }
 
@@ -168,13 +176,6 @@ void CMoveBox::Move(const _float & fTimeDelta)
 	if (m_bIsMoving)
 		if (IsMoveDone(fTimeDelta))
 			return;
-		else
-		{
-			if (prePos == m_pTransform->m_vInfo[INFO_POS])
-			{
-				m_MovetoPos = prePos;
-			}
-		}
 }
 
 _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
@@ -192,6 +193,8 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
+		m_bIsMoving = false;
+
 		return false;
 	}
 	return true;
@@ -200,7 +203,7 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 void CMoveBox::ShootRay()
 {
 	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
-	CheckColAble(_vec3(-1, 0, 0), 3.5f, DIR_RIGHT);
+	CheckColAble(_vec3(-1, 0, 0), 2.5f, DIR_RIGHT);
 	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_UP);
 	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
 }
@@ -209,7 +212,7 @@ void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
-	if (_detectedCOL.size() >= 1)
+	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
 		{
@@ -219,8 +222,7 @@ void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 			m_bIsCol[edir] = false;
 
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir])
-				m_bIsCol[edir] = true;
+			m_bIsCol[edir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
 	else
 		m_bIsCol[edir] = false;
@@ -287,6 +289,54 @@ void CMoveBox::SetMovePos(COL_DIR dir)
 	m_bIsMoving = true;
 	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
 
+}
+
+void CMoveBox::MoveToPos(const _float& fTimeDelta)
+{
+	switch (m_handleState)
+	{
+	case Engine::CH_NONE:
+		//암것도 없음
+		break;
+	case Engine::CH_START:
+		//머리위로
+	{
+		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
+		if (D3DXVec3Length(&vec)<0.3f)
+		{
+			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			m_handleState = CH_ING;
+		}
+		D3DXVec3Normalize(&vec, &vec);
+		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;
+		break;
+	}
+		
+	case Engine::CH_ING:
+	{//플레이어 머리위 위치로 고정
+		m_pTransform->m_vInfo[INFO_POS] = m_Target->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-4);
+		break;
+	}
+	case Engine::CH_END:
+	{
+		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
+		if (D3DXVec3Length(&vec)<0.3f)
+		{
+			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			m_handleState = CH_NONE;
+		}
+		D3DXVec3Normalize(&vec, &vec);
+		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;
+		break;
+		}
+	}
+}
+
+void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
+{
+	m_TargetPos = pos;
+	m_Target = obj;
+	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
 }
 
 CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)

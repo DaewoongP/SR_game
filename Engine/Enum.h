@@ -59,4 +59,19 @@ namespace Engine
 		PIG_TAIL,
 		PIG_END
 	};
+
+	enum TOPDEESTATE 
+	{
+		TD_IDLE,
+		TD_MOVE,
+		TD_FINDING
+	};
+
+	enum CUBE_HANDING
+	{
+		CH_NONE,
+		CH_START,
+		CH_ING,
+		CH_END
+	};
 }

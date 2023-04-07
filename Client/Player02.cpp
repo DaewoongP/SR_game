@@ -36,10 +36,11 @@ _int CPlayer02::Update_Too(const _float & fTimeDelta)
 }
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
 {
-	Key_Input(0.02f);
-	PlayerMove(0.02f);
+	Key_Input(fTimeDelta);
+	Move(fTimeDelta);
+	PlayerState(fTimeDelta);
 
-	__super::Update_GameObject(0.02f);
+	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
 void CPlayer02::LateUpdate_GameObject(void)
@@ -132,13 +133,12 @@ void CPlayer02::Free(void)
 
 void CPlayer02::Key_Input(const _float & fTimeDelta)
 {
-	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
+	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
-		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
-	{
+		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)&&
+		m_eState == TD_MOVE)
 		m_bIsMoving = true;
-	}
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_byPlayerInputDir |= 8;
@@ -163,6 +163,15 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
 		m_byPlayerInputDir ^= 1;
+
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN)
+		m_eState = TD_FINDING;
+
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP)
+		m_eState = TD_MOVE;
+
+	if (m_byPlayerInputDir != 0)
+		m_byLookDir = m_byPlayerInputDir;
 
 	RayDiskey();
 }
@@ -207,53 +216,115 @@ void CPlayer02::RayDiskey()
 	}
 }
 
-void CPlayer02::PlayerMove(const _float& fTimeDelta)
+void CPlayer02::PlayerState(const _float& fTimeDelta)
 {
-	if (m_bIsMoving)
-		if (IsMoveDone(fTimeDelta))
-			return;
-		else
+	int x = 0; int y = 0;
+	switch (m_eState)
+	{
+	case Engine::TD_MOVE:
+		if (!m_bIsMoving)
 		{
-			
-			if (prePos == m_pTransform->m_vInfo[INFO_POS])
-			{
-				m_MovetoPos = prePos;
-			}
-			int x = 0;
-			int y = 0;
-
-			m_byPlayerMoveDir = m_byPlayerInputDir;
-			if (m_byPlayerMoveDir & 1)
-				y-=2;
-			if (m_byPlayerMoveDir & 2)
-				y+=2;
-			if (m_byPlayerMoveDir & 4)
-				x+=2;
-			if (m_byPlayerMoveDir & 8)
-				x-=2;
+			if (m_byPlayerInputDir & 1)
+				y -= 2;
+			if (m_byPlayerInputDir & 2)
+				y += 2;
+			if (m_byPlayerInputDir & 4)
+				x += 2;
+			if (m_byPlayerInputDir & 8)
+				x -= 2;
 
 			m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + x, m_pTransform->m_vInfo[INFO_POS].y + y, m_pTransform->m_vInfo[INFO_POS].z);
 			m_bIsMoving = false;
 		}
+		break;
+	case Engine::TD_FINDING:
+	{
+		if (m_byLookDir & 1)
+			y -= 2;
+		if (m_byLookDir & 2)
+			y += 2;
+		if (m_byLookDir & 4)
+			x += 2;
+		if (m_byLookDir & 8)
+			x -= 2;
+		_vec3 maindir;
+		D3DXVec3Normalize(&maindir, &_vec3(x, y, 0));
+		//inputdir기반으로 레이를 발사함.
+		if (m_pGrabObj == nullptr)
+		{
+			CCollider* col = nullptr;
+			_vec3 dir[8] = { {1,1,0},{0,1,0},{-1,1,0},{1,0,0},{-1,0,0},{1,-1,0},{0,-1,0},{-1,-1,0}};
+
+			//보는 방향 1순위
+			if (CheckCubeExist(_vec3(x,y,0), &col))
+			{
+				if (dynamic_cast<CMoveBox*>(col->m_pGameObject)->GetHandleState())
+				{
+					m_pGrabObj = col->m_pGameObject;
+					dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+				}
+			}
+
+			//나머지
+			for (int i = 0; i < 8; i++)
+			{
+				if (maindir == dir[i])
+					return;
+				if (CheckCubeExist(dir[i], &col))
+				{
+					if (dynamic_cast<CMoveBox*>(col->m_pGameObject)->GetHandleState())
+					{
+						m_pGrabObj = col->m_pGameObject;
+						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+					}
+				}
+			}
+			
+		}
+		else 
+		{
+			if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+			{
+				dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), nullptr);
+				m_pGrabObj = nullptr;
+			}
+		}
+		break;
+	}
+	}
 }
 
 //실제 움직이는 코드
-_bool CPlayer02::IsMoveDone(const _float& fTimeDelta)
+void CPlayer02::Move(const _float& fTimeDelta)
 {
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 	
 	if (prePos == m_pTransform->m_vInfo[INFO_POS])
-	{
 		m_MovetoPos = prePos;
-	}
+
 	prePos = m_pTransform->m_vInfo[INFO_POS];
-	//거리 이용 도달했는지 알려주는 코드
-	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.2f)
+	//만약 도달했다면?
+	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.3f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
-		return false;
+		m_bIsMoving = false;
 	}
-	return true;
+}
+
+_bool CPlayer02::CheckCubeExist(_vec3 dir,CCollider** col)
+{
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 2.5f), m_pCollider);
+
+	if (_detectedCOL.size() >= 1)
+	{
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		{
+			*col = _detectedCOL[0].col;
+			return true;
+		}
+	}
+	return false;
 }
