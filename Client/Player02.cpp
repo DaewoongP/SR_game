@@ -37,6 +37,7 @@ _int CPlayer02::Update_Too(const _float & fTimeDelta)
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
+	if(m_bIsMoving)
 	Move(fTimeDelta);
 	PlayerState(fTimeDelta);
 
@@ -164,10 +165,10 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
 		m_byPlayerInputDir ^= 1;
 
-	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN)
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN&&!m_bIsMoving)
 		m_eState = TD_FINDING;
 
-	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP)
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP&&m_eState!=TD_SOMETHING)
 		m_eState = TD_MOVE;
 
 	if (m_byPlayerInputDir != 0)
@@ -233,7 +234,7 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 			if (m_byPlayerInputDir & 8)
 				x -= 2;
 
-			m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + x, m_pTransform->m_vInfo[INFO_POS].y + y, m_pTransform->m_vInfo[INFO_POS].z);
+			m_MovetoPos = _vec3((int)m_pTransform->m_vInfo[INFO_POS].x + x, (int)m_pTransform->m_vInfo[INFO_POS].y + y, (int)m_pTransform->m_vInfo[INFO_POS].z);
 			m_bIsMoving = false;
 		}
 		break;
@@ -262,6 +263,7 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 				{
 					m_pGrabObj = col->m_pGameObject;
 					dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+					return;
 				}
 			}
 
@@ -276,6 +278,7 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 					{
 						m_pGrabObj = col->m_pGameObject;
 						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+						return;
 					}
 				}
 			}
@@ -283,10 +286,34 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 		}
 		else 
 		{
-			if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+			CCollider* col = nullptr;
+			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
+
+			//보는 방향 1순위
+			if (!CheckAnythingExist(_vec3(x, y, 0), &col))
 			{
-				dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), nullptr);
-				m_pGrabObj = nullptr;
+				if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+				{
+					dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), this);
+					m_pGrabObj = nullptr;
+					return;
+				}
+			}
+
+			//나머지
+			for (int i = 0; i < 8; i++)
+			{
+				if (maindir == dir[i])
+					return;
+				if (!CheckAnythingExist(dir[i], &col))
+				{
+					if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+					{
+						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x*2, (int)dir[i].y*2, -1)), this);
+						m_pGrabObj = nullptr;
+						return;
+					}
+				}
 			}
 		}
 		break;
@@ -310,13 +337,14 @@ void CPlayer02::Move(const _float& fTimeDelta)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
+		return;
 	}
 }
 
 _bool CPlayer02::CheckCubeExist(_vec3 dir,CCollider** col)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 2.5f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)
 	{
@@ -325,6 +353,18 @@ _bool CPlayer02::CheckCubeExist(_vec3 dir,CCollider** col)
 			*col = _detectedCOL[0].col;
 			return true;
 		}
+	}
+	return false;
+}
+
+_bool CPlayer02::CheckAnythingExist(_vec3 dir, CCollider ** col)
+{
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
+
+	if (_detectedCOL.size() >= 1)
+	{
+		return true;
 	}
 	return false;
 }

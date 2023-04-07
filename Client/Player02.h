@@ -35,6 +35,7 @@ private:
 	void		PlayerState(const _float& fTimeDelta);
 	void		Move(const _float& fTimeDelta);
 	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
+	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
@@ -56,6 +57,8 @@ private:
 
 	_vec3					prePos;
 
+public:
+	void Player02StateChange(TOPDEESTATE state) { m_eState = state; }
 public:
 	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 

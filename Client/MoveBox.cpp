@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MoveBox.h"
 
+#include "Player02.h"
 #include "Export_Function.h"
 CMoveBox::CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev)
@@ -301,11 +302,14 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	case Engine::CH_START:
 		//머리위로
 	{
+		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
 		{
 			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
 			m_handleState = CH_ING;
+			return;
 		}
 		D3DXVec3Normalize(&vec, &vec);
 		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;
@@ -319,11 +323,14 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	}
 	case Engine::CH_END:
 	{
+		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
 		{
 			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
 			m_handleState = CH_NONE;
+			return;
 		}
 		D3DXVec3Normalize(&vec, &vec);
 		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;

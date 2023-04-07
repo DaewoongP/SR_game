@@ -64,7 +64,8 @@ namespace Engine
 	{
 		TD_IDLE,
 		TD_MOVE,
-		TD_FINDING
+		TD_FINDING,
+		TD_SOMETHING
 	};
 
 	enum CUBE_HANDING
