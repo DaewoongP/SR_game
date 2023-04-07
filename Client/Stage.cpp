@@ -82,21 +82,21 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
 
-	//Key
-	pGameObject = CKey::Create(m_pGraphicDev);
-	
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
+	////Key
+	//pGameObject = CKey::Create(m_pGraphicDev);
+	//
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Key", pGameObject), E_FAIL);
 
 	//KeyBox
-	pGameObject = CKeyBox::Create(m_pGraphicDev);
+	/*pGameObject = CKeyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KeyBox", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KeyBox", pGameObject), E_FAIL);*/
   
-	//Pig
-	pGameObject = CPig::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+	////Pig
+	//pGameObject = CPig::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
   
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
@@ -121,6 +121,16 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
 	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(30, 20, 10);
+
+	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(32, 30, 10);
+
+	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(12, 10, 10);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)

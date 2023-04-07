@@ -38,7 +38,12 @@ private:
 	HRESULT		Add_Component(void);
 	void		Move(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
-	_bool		ShootRay();
+	
+	//벽충돌감지용
+	void		ShootRay();
+	void		CheckColAble(_vec3 vdir,float len, COL_DIR edir);
+
+	//이동용
 	_bool		DoRayToDir(COL_DIR dir);
 	void		SetMovePos(COL_DIR dir);
 

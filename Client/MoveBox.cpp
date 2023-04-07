@@ -46,9 +46,9 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 	ShootRay();
-	Move(fTimeDelta);
+	Move(0.02f);
 
-	__super::Update_GameObject(fTimeDelta);
+	__super::Update_GameObject(0.02f);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -71,9 +71,12 @@ void CMoveBox::LateUpdate_Top()
 
 void CMoveBox::Render_GameObject(void)
 {
-	_vec3 v1 = m_pTransform->m_vInfo[INFO_POS];
-	_vec3 v2 = m_pTransform->m_vInfo[INFO_POS] + _vec3(5,0,0);
+	_vec3 v1 = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 0); // origin
+	_vec3 v2 = v1+ _vec3(2.5,0,0); // dir
 
+	_vec3 v3 = v1 + _vec3(-2.5, 0, 0);
+	_vec3 v4 = v1 + _vec3(0, 2.5, 0);
+	_vec3 v5 = v1 + _vec3(0, -2.5, 0);
 
 	_matrix matView, matProj;
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
@@ -82,6 +85,13 @@ void CMoveBox::Render_GameObject(void)
 	D3DXMatrixIdentity(&matworld);
 	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
 	m_pLine->Draw_Line(matworld, matView, matProj);
+	m_pLine->Set_Line(v1, v3, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	m_pLine->Draw_Line(matworld, matView, matProj);
+	m_pLine->Set_Line(v1, v4, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	m_pLine->Draw_Line(matworld, matView, matProj);
+	m_pLine->Set_Line(v1, v5, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
+	m_pLine->Draw_Line(matworld, matView, matProj);
+	
 }
 
 void CMoveBox::Render_Too()
@@ -187,92 +197,64 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 	return true;
 }
 
-_bool CMoveBox::ShootRay()
+void CMoveBox::ShootRay()
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(-1, 0, 0);
-	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 3.5f));
-	if (_detectedCOL01.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL01[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_LEFT] = true;
-			m_MoveVec.x = 0; //return true;
-		}
-	}
+	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
+	CheckColAble(_vec3(-1, 0, 0), 3.5f, DIR_RIGHT);
+	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_UP);
+	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
+}
 
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(1, 0, 0);
-	vector<RayCollision> _detectedCOL02 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 3.5f));
-	if (_detectedCOL02.size() >= 2)
+void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
+{
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
+	if (_detectedCOL.size() >= 1)
 	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL02[1].tag, L"MapCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
 		{
-			m_bIsCol[DIR_RIGHT] = true;
-			m_MoveVec.x = 0; //return true;
+			m_bIsCol[edir] = true;
 		}
-	}
+		else
+			m_bIsCol[edir] = false;
 
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, -1, 0);
-	vector<RayCollision> _detectedCOL03 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 3.5f));
-	if (_detectedCOL03.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL03[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_UP] = true;
-			m_MoveVec.y = 0; //return true;
-		}
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir])
+				m_bIsCol[edir] = true;
 	}
-
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 1, 0);
-	vector<RayCollision> _detectedCOL04 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 3.5f));
-	if (_detectedCOL04.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL04[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_DOWN] = true;
-			m_MoveVec.y = 0; //return true;
-		}
-	}
-	return false;
+	else
+		m_bIsCol[edir] = false;
 }
 
 _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 {
 	//들어온 방향으로 레이를 쏩니다.
-	_vec3 centerpos;
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
 	case DIR_UP:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 1, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_DOWN:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, -1, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_LEFT:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(-1, 0, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_RIGHT:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(1, 0, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider);
 		break;
 	}
 	//거기에 movecube 검출되면 그 친구에게 드로우 레이를 쏩니다.
-	if (_detectedCOL.size() >= 2)
+	if (_detectedCOL.size() == 1)
 	{
-		if (!lstrcmp(_detectedCOL[1].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 		{
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[1].col->m_pGameObject)->DoRayToDir(dir))
+			m_bIsCol[dir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+				
+			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
 			{
-				//만약 참이라면? ... 뭐가 검출이 안됐으면 이동을 합니다
-				//여기에 이동로직 삽입
-				//방향을 얻어와서 밀어준다.
 				SetMovePos(dir);
 				return true;
 			}
@@ -280,9 +262,8 @@ _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 			return false;
 		}
 	}
-	//방향을 얻어와서 밀어준다.
+
 	SetMovePos(dir);	
-	// 여기에 이동로직 삽입
 	return true;
 }
 
