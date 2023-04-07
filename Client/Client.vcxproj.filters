@@ -86,6 +86,9 @@
     <Filter Include="GameObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Cube\CrackBlock">
+      <UniqueIdentifier>{76c5ec89-287a-40fd-aa50-cf83eb6344c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -194,9 +197,6 @@
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClInclude>
-    <ClInclude Include="PigTail.h">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultCube.h">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
     </ClInclude>
@@ -217,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CrackBlock.h">
+      <Filter>GameObject\Cube\CrackBlock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +313,6 @@
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
     </ClCompile>
-    <ClCompile Include="PigTail.cpp">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultCube.cpp">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
     </ClCompile>
@@ -333,6 +333,9 @@
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CrackBlock.cpp">
+      <Filter>GameObject\Cube\CrackBlock</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

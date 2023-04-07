@@ -13,6 +13,7 @@
 #include "Bat.h"
 #include"Key.h"
 #include"KeyBox.h"
+#include"CrackBlock.h"
 #include "StageBG.h"
 
 
@@ -92,7 +93,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CKeyBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"KeyBox", pGameObject), E_FAIL);
-  
+	//CrackBlock
+	pGameObject = CCrackBlock::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+	pGameObject = CCrackBlock::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(12.f, 3.f, 10.f);
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -115,7 +123,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CMoveBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(20, 10, 10);
+	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(20+20, 10, 10);
 
 	pGameObject = CMoveBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

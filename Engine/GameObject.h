@@ -50,6 +50,7 @@ public:
 	
 public:
 	 _int m_iKey_Count =1;
+	 _bool m_bCrackDead;
 	 _int Get_KeyCount() { return m_iKey_Count; }
 	 _int Dis_KeyCount() { return --m_iKey_Count; }
 	 //스테이지에 열쇠갯수만큼 추가
