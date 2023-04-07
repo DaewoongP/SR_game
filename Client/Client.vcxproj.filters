@@ -215,9 +215,6 @@
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="BoxHole.h">
-      <Filter>GameObject\Cube</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -330,9 +327,6 @@
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxHole.cpp">
-      <Filter>GameObject\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

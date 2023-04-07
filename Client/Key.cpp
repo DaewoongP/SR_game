@@ -52,7 +52,7 @@ void CKey::Render_GameObject(void)
 void CKey::OnCollisionEnter(const Collision* collision)
 {	
 	//CGameObject* pKeyBox= Engine::Get_GameObject(L"Layer_GameLogic", L"KeyBox");
-	m_bDead = true;
+	
 	__super::OnCollisionEnter(collision);
 }
 
@@ -79,8 +79,7 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_BoundingBox({1.f, 1.f, 2.f});
-	m_pCollider->Set_Group(COL_ENV);
+	m_pCollider->Set_Options({ 1.f, 1.f, 2.f }, COL_ENV, true);
 
 	return S_OK;
 }

@@ -159,6 +159,7 @@ struct Collision
 	//		이전프레임에 충돌중이였는지 확인
 	_bool	_bPreCol = false;
 	_bool	_bCurCol = false;
+
 	// 충돌한 방향
 	COL_DIR		_dir;
 	// 현재 enter, stay, exit 판단
