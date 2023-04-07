@@ -97,6 +97,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CPig::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+
+	//Bat
+	pGameObject = CBat::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
   
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev);
@@ -203,6 +208,35 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
+	return S_OK;
+}
+
+HRESULT CStage::Ready_LightInfo(void)
+{
+	D3DLIGHT9		tLightInfo;
+	ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+	// 점조명, 스포트라이트조명, 방향성조명 중 선택할 수 있다.
+	tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
+	// 그냥 반사 할 빛
+	tLightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	// 하이라이트 반사할 빛
+	tLightInfo.Specular = D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f);
+	// 환경광에 반사할 빛
+	tLightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//조명의 방향 벡터 : 스포트라이트조명 및 방향성조명의 방향을 준다. 점조명 일때는 의미가 없다.
+	tLightInfo.Direction = _vec3(0.0f, 0.0f, 1.0f);
+
+	//조명의 위치 : 점조명 및 스포트라이트조명의 위치를 결정한다. 방향성 조명에는 영향이 없다.
+	/*tLightInfo.Position = _vec3(-10.0f, 100.0f, -10.0f);
+
+	tLightInfo.Range = 200.0f;
+
+	tLightInfo.Theta = 0.0f;
+	tLightInfo.Phi = D3DXToRadian(180.0f);*/
+
+	FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+
 	return S_OK;
 }
 

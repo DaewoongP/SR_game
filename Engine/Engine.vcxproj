@@ -40,6 +40,8 @@
     <ClInclude Include="GraphicDev.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightMgr.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MyFont.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -78,6 +80,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicDev.cpp" />
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightMgr.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MyFont.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />

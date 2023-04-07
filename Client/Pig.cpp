@@ -194,7 +194,7 @@ void CPig::OnCollisionEnter(const Collision * collision)
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
-	__super::OnCollisionStay(collision);
+	/*__super::OnCollisionStay(collision);*/
 }
 
 HRESULT CPig::Add_Component(void)

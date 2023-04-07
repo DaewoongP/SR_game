@@ -21,6 +21,8 @@ CRigidbody::CRigidbody(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_bFreezeRot_X(false)
 	, m_bFreezeRot_Y(false)
 	, m_bFreezeRot_Z(false)
+	, m_bUseLimitVelocity(false)
+	, m_fLimitVelocity(0.0f)
 {
 }
 
@@ -42,6 +44,8 @@ CRigidbody::CRigidbody(const CRigidbody & rhs)
 	, m_bFreezeRot_Y(rhs.m_bFreezeRot_X)
 	, m_bFreezeRot_Z(rhs.m_bFreezeRot_Y)
 	, m_bFreezeRot_X(rhs.m_bFreezeRot_Z)
+	, m_bUseLimitVelocity(rhs.m_bUseLimitVelocity)
+	, m_fLimitVelocity(rhs.m_fLimitVelocity)
 {
 }
 
@@ -91,6 +95,15 @@ _int CRigidbody::Update_Component(const _float & fTimeDelta)
 
 void CRigidbody::LateUpdate_Component(void)
 {	
+	if (m_bUseLimitVelocity
+		&& D3DXVec3Length(&m_Velocity)>m_fLimitVelocity)
+	{
+		D3DXVec3Normalize(&m_Velocity, &m_Velocity);
+
+		m_Velocity *= m_fLimitVelocity;
+		return;
+	}
+
   //중력 f= m*g
 	if (m_bUseGrivaty)
 		AddForce(m_fGravity * m_fMass);
