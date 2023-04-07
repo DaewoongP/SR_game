@@ -80,8 +80,6 @@ public:
 
 	_bool		m_bMove;
 
-	_bool		m_bMove;
-
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent*		Clone(void);

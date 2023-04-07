@@ -18,7 +18,7 @@ private:
 	virtual ~CPortal();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
@@ -35,7 +35,7 @@ private:
 	Engine::CCollider* m_pCollider;
 
 public:
-	static CPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;
