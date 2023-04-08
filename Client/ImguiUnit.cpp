@@ -184,7 +184,7 @@ HRESULT CImguiUnit::LoadMonster()
 		if (0 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);			
+			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);	
 		}
 
 		// 박쥐

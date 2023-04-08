@@ -194,7 +194,7 @@ void CPig::OnCollisionEnter(const Collision * collision)
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
-	/*__super::OnCollisionStay(collision);*/
+	__super::OnCollisionStay(collision);
 }
 
 HRESULT CPig::Add_Component(void)
@@ -226,7 +226,7 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.0f, 2.f, 0.1f });
+	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 0.2f }, {0.f, -1.f, 0.f});
 
 	m_pTransform->m_bIsStatic = false;
 

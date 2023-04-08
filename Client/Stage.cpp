@@ -104,36 +104,21 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
-  
+
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
-	// PLAYER
+	// PLAYER2
 	pGameObject = CPlayer02::Create(m_pGraphicDev, _vec3(16.f, 10.f, 11.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
 
-	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(20, 10, 10));
+	//Pig
+	pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-
-	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(30, 20, 10));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-
-	pGameObject = CPortal::Create(m_pGraphicDev, _vec3(10, 20, 10));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Portal", pGameObject), E_FAIL);
-
-	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(32, 30, 10));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-
-	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(12, 10, 10));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
