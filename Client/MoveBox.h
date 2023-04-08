@@ -38,9 +38,25 @@ private:
 	HRESULT		Add_Component(void);
 	void		Move(const _float& fTimeDelta);
 	_bool		IsMoveDone(const _float& fTimeDelta);
-	_bool		ShootRay();
+	
+	//벽충돌감지용
+	void		ShootRay();
+	void		CheckColAble(_vec3 vdir,float len, COL_DIR edir);
+
+	//이동용
 	_bool		DoRayToDir(COL_DIR dir);
 	void		SetMovePos(COL_DIR dir);
+
+	//들기용
+	void		MoveToPos(const _float& fTimeDelta);
+
+public:
+	void		SetTarget(_vec3 pos, CGameObject* obj);
+	_bool		GetHandleState() {	
+		int a = 0;
+		return (((m_handleState == CH_ING) || (m_handleState == CH_NONE))&& !m_bIsMoving); 
+	
+	}
 
 private:
 	Engine::CCubeTex*	m_pBufferCom;
@@ -53,7 +69,11 @@ private:
 	_bool					m_bIsMoving = false;
 	_vec3					prePos;
 	_vec3					m_MoveVec;
-	
+
+	_vec3					m_TargetPos; //들때 올 위치
+	CGameObject*			m_Target;
+	CUBE_HANDING			m_handleState = CH_NONE;
+
 public:
 	_bool					m_bIsCol[DIR_END] = { 0 };
 

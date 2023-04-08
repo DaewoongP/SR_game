@@ -38,7 +38,7 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 
 	m_pRigid->m_bUseGrivaty = true;
 	Key_Input(fTimeDelta);
-
+	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
 	
 	m_pTextureCom->Update_Anim(fTimeDelta);
@@ -202,4 +202,16 @@ void CPlayer::DoFlip()
 	else if (m_eKeyState == DIR_RIGHT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
 
+}
+
+void CPlayer::DoStrech()
+{
+	if (-1.f > m_pRigid->m_Velocity.y)
+	{
+		if (m_pTransform->m_vScale.y > 2.0f)
+			return;
+		m_pTransform->m_vScale.y *= 1.02f;
+	}
+	else
+		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
 }
