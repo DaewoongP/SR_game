@@ -10,6 +10,7 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	, m_pMesh(nullptr)
 	, m_eGroup(COL_OBJ)
 	, m_bIsTrigger(false)
+	, m_pBoundingBox(nullptr)
 {
 }
 
@@ -143,8 +144,8 @@ void CCollider::OnCollisionExit(const Collision * collision)
 	m_pGameObject->OnCollisionExit(collision);
 }
 
-// 가로, 세로, 깊이 사이즈 넣어주면 됨.
-void CCollider::Set_BoundingBox(const _vec3 & vSize)
+// 가로, 세로, 깊이 사이즈 / 오프셋 좌표값 (객체 중점부터 상대좌표)
+void CCollider::Set_BoundingBox(const _vec3 & vSize, const _vec3& vOffsetPos)
 {
 	D3DXCreateBox(m_pGraphicDev,
 		vSize.x,
@@ -154,16 +155,19 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 
 	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixTranslation(&m_matWorld, vOffsetPos.x, vOffsetPos.y, vOffsetPos.z);
   
 	if (nullptr == m_pBoundingBox)
-		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2);
+		m_pBoundingBox = new BoundingBox(-vSize / 2, vSize / 2, vOffsetPos);
 	else
 	{
+		m_pBoundingBox->Set_Offset(vOffsetPos);
 		m_pBoundingBox->_offsetMax = vSize / 2;
 		m_pBoundingBox->_offsetMin = -vSize / 2;
 		_vec3 offsetPoint;
 		m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 		m_pBoundingBox->Offset(offsetPoint);
+		
 	}
 }
 

@@ -159,6 +159,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="CrackBlock.h" />
     <ClInclude Include="DefaultCube.h" />
+    <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultMonster.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InstallCube.h" />
+    <ClInclude Include="InstallGrid.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="KeyBox.h" />
     <ClInclude Include="Loading.h" />
@@ -194,6 +196,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TempBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
@@ -201,6 +204,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CrackBlock.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
+    <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="DefaultMonster.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
@@ -217,6 +221,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="InstallCube.cpp" />
+    <ClCompile Include="InstallGrid.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="KeyBox.cpp" />
     <ClCompile Include="Loading.cpp" />
@@ -235,6 +240,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SwallowPortal.cpp" />
+    <ClCompile Include="TempBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

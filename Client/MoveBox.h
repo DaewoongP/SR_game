@@ -52,11 +52,8 @@ private:
 
 public:
 	void		SetTarget(_vec3 pos, CGameObject* obj);
-	_bool		GetHandleState() {	
-		int a = 0;
-		return (((m_handleState == CH_ING) || (m_handleState == CH_NONE))&& !m_bIsMoving); 
-	
-	}
+	_bool		GetHandleState() {return (((m_handleState == CH_ING) || (m_handleState == CH_NONE))&& !m_bIsMoving); }
+	void		DoFallingStart();
 
 private:
 	Engine::CCubeTex*	m_pBufferCom;
@@ -76,6 +73,8 @@ private:
 
 public:
 	_bool					m_bIsCol[DIR_END] = { 0 };
+	_bool					m_bIsStone=false;
+	_bool					m_bIsFall = false;
 
 public:
 	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
