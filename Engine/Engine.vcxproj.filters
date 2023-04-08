@@ -131,6 +131,12 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="Light.h">
+      <Filter>Manager\LightMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="LightMgr.h">
+      <Filter>Manager\LightMgr</Filter>
+    </ClInclude>
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
@@ -242,6 +248,12 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="WindParticle.cpp" />
+    <ClCompile Include="Light.cpp">
+      <Filter>Manager\LightMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="LightMgr.cpp">
+      <Filter>Manager\LightMgr</Filter>
+    </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>Componnent\Line</Filter>
     </ClCompile>
@@ -314,6 +326,9 @@
     </Filter>
     <Filter Include="Componnent\Texture">
       <UniqueIdentifier>{3923373d-3387-4c2b-b8fe-d8d82a24d934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\LightMgr">
+      <UniqueIdentifier>{0ac11664-4145-4bf9-ac12-3eb326be3e6c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Componnent\Animation">
       <UniqueIdentifier>{f7b64550-f977-4ff3-a8f4-31e5a1673dae}</UniqueIdentifier>

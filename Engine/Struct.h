@@ -57,7 +57,7 @@ struct Anim_Info
 {
 	_int iStartIdx;
 	_int iEndIdx;
-	_ulong dwCycle;
+	_float fCycle;
 	bool bisLoop;
 };
 
