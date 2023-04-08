@@ -125,6 +125,12 @@
     <Filter Include="01. Scene\Stages">
       <UniqueIdentifier>{627e2365-507d-4ba9-b8d1-addb89192073}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss">
+      <UniqueIdentifier>{d8b2bab9-66d0-467a-b8d3-cb619470bd0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss\FireBall">
+      <UniqueIdentifier>{06610006-bb98-4f94-a1f6-836539ed7637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -272,6 +278,9 @@
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages</Filter>
     </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -309,9 +318,6 @@
     </ClCompile>
     <ClCompile Include="Player02.cpp">
       <Filter>00. GameObject\00. Player\Top</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
@@ -402,6 +408,10 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp" />
+    <ClCompile Include="Fireball.cpp">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

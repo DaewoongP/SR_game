@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Hadouken.h"
+#include "Fireball.h"
 
 #include"..\Engine\Export_Function.h"
 CHadouKen::CHadouKen(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
@@ -63,7 +63,8 @@ void CHadouKen::OnCollisionEnter(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Player"))
 		m_bDead = true;
-
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02"))
+		m_bDead = true;
 	
 }
 

@@ -161,6 +161,7 @@
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultMonster.h" />
+    <ClInclude Include="Fireball.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
     <ClInclude Include="GroundGrid.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="DefaultMonster.cpp" />
+    <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
