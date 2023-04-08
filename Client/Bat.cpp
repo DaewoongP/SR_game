@@ -30,6 +30,7 @@ _int CBat::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	m_pTextureCom_Back->Update_Anim(fTimeDelta);

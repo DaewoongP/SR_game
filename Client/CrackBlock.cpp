@@ -98,7 +98,7 @@ HRESULT CCrackBlock::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
+	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
 	return S_OK;
 }
 

@@ -239,6 +239,7 @@
     <ClInclude Include="DefaultGrid.h">
       <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClInclude>
+    <ClInclude Include="TempBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -364,5 +365,6 @@
     <ClCompile Include="DefaultGrid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClCompile>
+    <ClCompile Include="TempBox.cpp" />
   </ItemGroup>
 </Project>

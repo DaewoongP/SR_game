@@ -85,12 +85,24 @@ struct Bound
 
 struct BoundingBox : public Bound
 {
-	BoundingBox(const _vec3& offsetMin = { -1.f, -1.f, -1.f }, const _vec3& offsetMax = { 1.f, 1.f, 1.f })
+	BoundingBox(const _vec3& offsetMin = { -1.f, -1.f, -1.f }, 
+		const _vec3& offsetMax = { 1.f, 1.f, 1.f },
+		const _vec3& offsetPos = {0.f,0.f,0.f})
 	{
 		_offsetMin = offsetMin;
 		_offsetMax = offsetMax;
 		_min = { 0.f,0.f,0.f };
 		_max = { 0.f,0.f,0.f };
+		_offPos = offsetPos;
+	}
+	_vec3	Get_Offset()
+	{
+		return _offPos;
+	}
+
+	void	Set_Offset(const _vec3& vOffset)
+	{
+		_offPos = vOffset;
 	}
 
 	_vec3	Get_Center()
@@ -120,8 +132,8 @@ struct BoundingBox : public Bound
 	// 오리진 위치를 받아와서 offsetMin 이랑 offsetMax만큼 더해줌 그 이유는 게임오브젝트가 움직였을때 범위가 달라져야 하기때문.
 	virtual void Offset(const _vec3& origin) override
 	{
-		_min = origin + _offsetMin;
-		_max = origin + _offsetMax;
+		_min = origin + _offsetMin + _offPos;
+		_max = origin + _offsetMax + _offPos;
 	}
 
 	// origin + 큐브의 크기 (큐브 월드 좌표)
@@ -131,6 +143,9 @@ struct BoundingBox : public Bound
 	// 큐브의 크기 (큐브 로컬 좌표)
 	_vec3 _offsetMin;
 	_vec3 _offsetMax;
+
+	// 현재 객체 중점에서 콜라이더 중점까지의 오프셋
+	_vec3	_offPos;
 };
 
 struct Collision
