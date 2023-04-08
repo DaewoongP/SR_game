@@ -23,7 +23,6 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 10.0f;
 	m_pRigid->m_bFreezePos_Z = true;
-
 	return S_OK;
 }
 
