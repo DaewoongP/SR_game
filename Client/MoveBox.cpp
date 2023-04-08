@@ -54,7 +54,12 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 	}
 	else
 	{
-		ShootRay();
+		if (m_bIsStone)
+		{
+
+		}
+		else 
+			ShootRay();
 		Move(fTimeDelta);
 	}
 	__super::Update_GameObject(fTimeDelta);
@@ -323,6 +328,13 @@ void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
 	m_TargetPos = pos;
 	m_Target = obj;
 	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
+}
+
+void CMoveBox::DoFallingStart()
+{
+	m_bIsFall = true;
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 2.1)); 
+	m_bIsMoving = true; 
 }
 
 CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)

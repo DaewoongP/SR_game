@@ -16,6 +16,7 @@
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
+#include "TempBox.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -80,6 +81,29 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+
+	//CrackBlock
+	pGameObject = CCrackBlock::Create(m_pGraphicDev, _vec3(10.f, 3.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+	pGameObject = CCrackBlock::Create(m_pGraphicDev, _vec3(12.f, 3.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+
+	//임시박스임 없앨거
+	pGameObject = CTempBox::Create(m_pGraphicDev, _vec3(12.f, 14.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TempBox", pGameObject), E_FAIL);
+
+	////Pig
+	//pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+
+	////Bat
+	//pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
 
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));
