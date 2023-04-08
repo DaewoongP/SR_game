@@ -285,13 +285,13 @@ void CImguiUnit::MapObjectInstall()
 
 		if (0 == m_iMapObjectType) // 키
 		{
-			_stprintf_s(strMapObjectIndex, _T("Key%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("Key_%d"), m_iMapObjectIndex);
 			pGameObject = CKey::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (1 == m_iMapObjectType) // 키 박스
 		{
-			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("KeyBox_%d"), m_iMapObjectIndex);
 			pGameObject = CKeyBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
@@ -303,13 +303,13 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (3 == m_iMapObjectType) // 포탈
 		{
-			_stprintf_s(strMapObjectIndex, _T("Portal%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("Portal_%d"), m_iMapObjectIndex);
 			pGameObject = CPortal::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (4 == m_iMapObjectType) // 밟으면 없어지는 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("CrackBlock%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("CrackBlock_%d"), m_iMapObjectIndex);
 			pGameObject = CCrackBlock::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
