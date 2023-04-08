@@ -37,6 +37,7 @@ private:
 	void		Key_Input(const _float& fTimeDelta);
 	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
 	void		DoFlip();
+	void		DoStrech();
 
 private:
 	Engine::CRcTex*			m_pBufferCom;

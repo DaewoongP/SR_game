@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MoveBox.h"
 
+#include "Player02.h"
 #include "Export_Function.h"
 CMoveBox::CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev)
@@ -15,6 +16,7 @@ HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_handleState = CH_NONE;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
@@ -45,9 +47,16 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	ShootRay();
-	Move(fTimeDelta);
-
+	MoveToPos(fTimeDelta);
+	if(m_handleState == CH_START || m_handleState == CH_END)
+	{
+		
+	}
+	else
+	{
+		ShootRay();
+		Move(fTimeDelta);
+	}
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
@@ -71,18 +80,6 @@ void CMoveBox::LateUpdate_Top()
 
 void CMoveBox::Render_GameObject(void)
 {
-	_vec3 v1 = m_pTransform->m_vInfo[INFO_POS];
-	_vec3 v2 = m_pTransform->m_vInfo[INFO_POS] + _vec3(5,0,0);
-
-
-	_matrix matView, matProj;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
-	_matrix matworld;
-	D3DXMatrixIdentity(&matworld);
-
-	m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	m_pLine->Draw_Line(matworld, matView, matProj);
 }
 
 void CMoveBox::Render_Too()
@@ -114,7 +111,7 @@ void CMoveBox::OnCollisionEnter(const Collision * collision)
 		DoRayToDir(collision->_dir);
 	}
 
-	//√ÊµπΩ√ ∑π¿Ã πﬂª˝! 
+	//Ï∂©ÎèåÏãú Î†àÏù¥ Î∞úÏÉù! 
 	__super::OnCollisionEnter(collision);
 }
 
@@ -159,13 +156,6 @@ void CMoveBox::Move(const _float & fTimeDelta)
 	if (m_bIsMoving)
 		if (IsMoveDone(fTimeDelta))
 			return;
-		else
-		{
-			if (prePos == m_pTransform->m_vInfo[INFO_POS])
-			{
-				m_MovetoPos = prePos;
-			}
-		}
 }
 
 _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
@@ -179,111 +169,83 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 		m_MovetoPos = prePos;
 	}
 	prePos = m_pTransform->m_vInfo[INFO_POS];
-	//∞≈∏Æ ¿ÃøÎ µµ¥ﬁ«ﬂ¥¬¡ˆ æÀ∑¡¡÷¥¬ ƒ⁄µÂ
+	//Í±∞Î¶¨ Ïù¥Ïö© ÎèÑÎã¨ÌñàÎäîÏßÄ ÏïåÎ†§Ï£ºÎäî ÏΩîÎìú
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
+		m_bIsMoving = false;
+
 		return false;
 	}
 	return true;
 }
 
-_bool CMoveBox::ShootRay()
+void CMoveBox::ShootRay()
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(-1, 0, 0);
-	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 3.5f));
-	if (_detectedCOL01.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL01[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_LEFT] = true;
-			m_MoveVec.x = 0; //return true;
-		}
-	}
+	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
+	CheckColAble(_vec3(-1, 0, 0), 2.5f, DIR_RIGHT);
+	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_UP);
+	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
+}
 
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(1, 0, 0);
-	vector<RayCollision> _detectedCOL02 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 3.5f));
-	if (_detectedCOL02.size() >= 2)
+void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
+{
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
+	if (_detectedCOL.size() == 1)
 	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL02[1].tag, L"MapCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
 		{
-			m_bIsCol[DIR_RIGHT] = true;
-			m_MoveVec.x = 0; //return true;
+			m_bIsCol[edir] = true;
 		}
-	}
+		else
+			m_bIsCol[edir] = false;
 
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, -1, 0);
-	vector<RayCollision> _detectedCOL03 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 3.5f));
-	if (_detectedCOL03.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL03[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_UP] = true;
-			m_MoveVec.y = 0; //return true;
-		}
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+			m_bIsCol[edir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
-
-	centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 1, 0);
-	vector<RayCollision> _detectedCOL04 = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 3.5f));
-	if (_detectedCOL04.size() >= 2)
-	{
-		int a = 0;
-		if (!lstrcmp(_detectedCOL04[1].tag, L"MapCube"))
-		{
-			m_bIsCol[DIR_DOWN] = true;
-			m_MoveVec.y = 0; //return true;
-		}
-	}
-	return false;
+	else
+		m_bIsCol[edir] = false;
 }
 
 _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 {
-	//µÈæÓø¬ πÊ«‚¿∏∑Œ ∑π¿Ã∏¶ Ωı¥œ¥Ÿ.
-	_vec3 centerpos;
+	//Îì§Ïñ¥Ïò® Î∞©Ìñ•ÏúºÎ°ú Î†àÏù¥Î•º Ïè©ÎãàÎã§.
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
 	case DIR_UP:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 1, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_DOWN:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, -1, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_LEFT:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(-1, 0, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider);
 		break;
 	case DIR_RIGHT:
-		centerpos = m_pTransform->m_vInfo[INFO_POS] + _vec3(1, 0, 0);
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 3.5f));
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider);
 		break;
 	}
-	//∞≈±‚ø° movecube ∞À√‚µ«∏È ±◊ ƒ£±∏ø°∞‘ µÂ∑ŒøÏ ∑π¿Ã∏¶ Ωı¥œ¥Ÿ.
-	if (_detectedCOL.size() >= 2)
+	//Í±∞Í∏∞Ïóê movecube Í≤ÄÏ∂úÎêòÎ©¥ Í∑∏ ÏπúÍµ¨ÏóêÍ≤å ÎìúÎ°úÏö∞ Î†àÏù¥Î•º Ïè©ÎãàÎã§.
+	if (_detectedCOL.size() == 1)
 	{
-		if (!lstrcmp(_detectedCOL[1].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 		{
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[1].col->m_pGameObject)->DoRayToDir(dir))
+			m_bIsCol[dir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+				
+			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
 			{
-				//∏∏æ‡ ¬¸¿Ã∂Û∏È? ... ππ∞° ∞À√‚¿Ã æ»µ∆¿∏∏È ¿Ãµø¿ª «’¥œ¥Ÿ
-				//ø©±‚ø° ¿Ãµø∑Œ¡˜ ª¿‘
-				//πÊ«‚¿ª æÚæÓøÕº≠ π–æÓ¡ÿ¥Ÿ.
 				SetMovePos(dir);
 				return true;
 			}
-			//∞≈¡˛¿Ã∂Û∏È æœ∞Õµµ æ»«’¥œ¥Ÿ.
+			//Í±∞ÏßìÏù¥ÎùºÎ©¥ ÏïîÍ≤ÉÎèÑ ÏïàÌï©ÎãàÎã§.
 			return false;
 		}
 	}
-	//πÊ«‚¿ª æÚæÓøÕº≠ π–æÓ¡ÿ¥Ÿ.
+
 	SetMovePos(dir);	
-	// ø©±‚ø° ¿Ãµø∑Œ¡˜ ª¿‘
 	return true;
 }
 
@@ -307,6 +269,60 @@ void CMoveBox::SetMovePos(COL_DIR dir)
 	m_bIsMoving = true;
 	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
 
+}
+
+void CMoveBox::MoveToPos(const _float& fTimeDelta)
+{
+	switch (m_handleState)
+	{
+	case Engine::CH_NONE:
+		//ÏïîÍ≤ÉÎèÑ ÏóÜÏùå
+		break;
+	case Engine::CH_START:
+		//Î®∏Î¶¨ÏúÑÎ°ú
+	{
+		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
+		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
+		if (D3DXVec3Length(&vec)<0.3f)
+		{
+			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
+			m_handleState = CH_ING;
+			return;
+		}
+		D3DXVec3Normalize(&vec, &vec);
+		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;
+		break;
+	}
+		
+	case Engine::CH_ING:
+	{//ÌîåÎ†àÏù¥Ïñ¥ Î®∏Î¶¨ÏúÑ ÏúÑÏπòÎ°ú Í≥†Ï†ï
+		m_pTransform->m_vInfo[INFO_POS] = m_Target->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-4);
+		break;
+	}
+	case Engine::CH_END:
+	{
+		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
+		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
+		if (D3DXVec3Length(&vec)<0.3f)
+		{
+			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
+			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
+			m_handleState = CH_NONE;
+			return;
+		}
+		D3DXVec3Normalize(&vec, &vec);
+		m_pTransform->m_vInfo[INFO_POS] += vec*m_fSpeed*fTimeDelta;
+		break;
+		}
+	}
+}
+
+void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
+{
+	m_TargetPos = pos;
+	m_Target = obj;
+	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
 }
 
 CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
