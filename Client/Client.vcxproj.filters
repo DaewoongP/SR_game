@@ -50,14 +50,8 @@
     <Filter Include="Imgui\Imgui_Object">
       <UniqueIdentifier>{7b2f1257-2e0e-43bc-a2e4-72cfad90399e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd">
-      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube">
       <UniqueIdentifier>{e3d76586-808e-480e-a3b4-ec6029fc5efc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
-      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
       <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
@@ -95,10 +89,16 @@
     <Filter Include="GameObject\Spike">
       <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
+    <Filter Include="Imgui\Imgui_Object\Grid">
+      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Grid\GroundGrid">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Grid\InstallGrid">
       <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
+    <Filter Include="Imgui\Imgui_Object\Grid\DefaultGrid">
       <UniqueIdentifier>{52af855d-514f-4122-b0d6-317902eac34c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -192,10 +192,10 @@
       <Filter>GameObject\Cube\Box</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+      <Filter>Imgui\Imgui_Object\Grid</Filter>
     </ClInclude>
     <ClInclude Include="GroundGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
@@ -240,10 +240,10 @@
       <Filter>GameObject\Spike</Filter>
     </ClInclude>
     <ClInclude Include="InstallGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\InstallGrid</Filter>
     </ClInclude>
     <ClInclude Include="DefaultGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClInclude>
     <ClInclude Include="TempBox.h" />
   </ItemGroup>
@@ -318,10 +318,10 @@
       <Filter>GameObject\Cube\Box</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+      <Filter>Imgui\Imgui_Object\Grid</Filter>
     </ClCompile>
     <ClCompile Include="GroundGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd</Filter>
@@ -369,10 +369,10 @@
       <Filter>GameObject\Spike</Filter>
     </ClCompile>
     <ClCompile Include="InstallGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\InstallGrid</Filter>
     </ClCompile>
     <ClCompile Include="DefaultGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClCompile>
     <ClCompile Include="TempBox.cpp" />
   </ItemGroup>

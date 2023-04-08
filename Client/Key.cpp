@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Key.h"
 
-#include"..\Engine\Export_Function.h"
+#include"Export_Function.h"
+
+size_t CKey::iKeyCnt = 0;
+
 CKey::CKey(LPDIRECT3DDEVICE9 pGraphicDev) 
 	:CGameObject(pGraphicDev)
 {
-	
 }
 
 CKey::~CKey()
@@ -18,15 +20,18 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
-
+	++iKeyCnt;
 	return S_OK;
 }
 
 _int CKey::Update_GameObject(const _float& fTimeDelta)
 {	
 	if (m_bDead)
+	{
+		if (iKeyCnt > 0)
+			--iKeyCnt;
 		return OBJ_DEAD;
-
+	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
@@ -51,8 +56,7 @@ void CKey::Render_GameObject(void)
 
 void CKey::OnCollisionEnter(const Collision* collision)
 {	
-	//CGameObject* pKeyBox= Engine::Get_GameObject(L"Layer_GameLogic", L"KeyBox");
-	
+	m_bDead = true;
 	__super::OnCollisionEnter(collision);
 }
 
