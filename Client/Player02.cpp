@@ -3,11 +3,8 @@
 #include "MoveBox.h"
 #include "Export_Function.h"
 
-#include "Portal.h"
-
 CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev),
-	m_pPortal(nullptr)
+	: CGameObject(pGraphicDev)
 {
 }
 
@@ -40,8 +37,8 @@ _int CPlayer02::Update_Too(const _float & fTimeDelta)
 _int CPlayer02::Update_Top(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
-	if(m_bIsMoving)
-	Move(fTimeDelta);
+	if (m_bIsMoving)
+		Move(fTimeDelta);
 	PlayerState(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
@@ -86,18 +83,11 @@ void CPlayer02::OnCollisionEnter(const Collision * collision)
 
 void CPlayer02::OnCollisionStay(const Collision * collision)
 {
-	if (m_pPortal == collision->otherObj)
-		collision->otherCol->m_bIsTrigger = true;
-
 	__super::OnCollisionStay(collision);
 }
 
 void CPlayer02::OnCollisionExit(const Collision * collision)
 {
-	if (m_pPortal == collision->otherObj)
-		collision->otherCol->m_bIsTrigger = false;
-
-	dynamic_cast<CPortal*>(m_pPortal)->Set_TopCol(false);
 }
 
 HRESULT CPlayer02::Add_Component(void)
@@ -146,7 +136,7 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
-		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)&&
+		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS) &&
 		m_eState == TD_MOVE)
 		m_bIsMoving = true;
 
@@ -154,7 +144,7 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 		m_byPlayerInputDir |= 8;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
-		m_byPlayerInputDir |= 4; 
+		m_byPlayerInputDir |= 4;
 
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
 		m_byPlayerInputDir |= 2;
@@ -177,7 +167,7 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN&&!m_bIsMoving)
 		m_eState = TD_FINDING;
 
-	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP&&m_eState!=TD_SOMETHING)
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP&&m_eState != TD_SOMETHING)
 		m_eState = TD_MOVE;
 
 	if (m_byPlayerInputDir != 0)
@@ -188,12 +178,12 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 
 void CPlayer02::RayDiskey()
 {
-	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f),m_pCollider);
+	vector<RayCollision> _detectedCOL01 = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f), m_pCollider);
 	if (_detectedCOL01.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL01[0].tag, L"MapCube")) m_byPlayerInputDir &= 11;
-		if(!lstrcmp(_detectedCOL01[0].tag, L"MoveCube")) 
-			if(dynamic_cast<CMoveBox*>(_detectedCOL01[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
+		if (!lstrcmp(_detectedCOL01[0].tag, L"MoveCube"))
+			if (dynamic_cast<CMoveBox*>(_detectedCOL01[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
 				m_byPlayerInputDir &= 11;
 	}
 
@@ -201,7 +191,7 @@ void CPlayer02::RayDiskey()
 	if (_detectedCOL02.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL02[0].tag, L"MapCube")) m_byPlayerInputDir &= 7;
-		if (!lstrcmp(_detectedCOL02[0].tag, L"MoveCube")) 
+		if (!lstrcmp(_detectedCOL02[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL02[0].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
 				m_byPlayerInputDir &= 7;
 	}
@@ -219,7 +209,7 @@ void CPlayer02::RayDiskey()
 	if (_detectedCOL04.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL04[0].tag, L"MapCube")) m_byPlayerInputDir &= 14;
-		if (!lstrcmp(_detectedCOL04[0].tag, L"MoveCube")) 
+		if (!lstrcmp(_detectedCOL04[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL04[0].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
 				m_byPlayerInputDir &= 14;
 
@@ -263,10 +253,10 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 		if (m_pGrabObj == nullptr)
 		{
 			CCollider* col = nullptr;
-			_vec3 dir[8] = { {1,1,0},{0,1,0},{-1,1,0},{1,0,0},{-1,0,0},{1,-1,0},{0,-1,0},{-1,-1,0}};
+			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
 
 			//보는 방향 1순위
-			if (CheckCubeExist(_vec3(x,y,0), &col))
+			if (CheckCubeExist(_vec3(x, y, 0), &col))
 			{
 				if (dynamic_cast<CMoveBox*>(col->m_pGameObject)->GetHandleState())
 				{
@@ -291,9 +281,9 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 					}
 				}
 			}
-			
+
 		}
-		else 
+		else
 		{
 			CCollider* col = nullptr;
 			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
@@ -318,7 +308,7 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 				{
 					if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
 					{
-						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x*2, (int)dir[i].y*2, -1)), this);
+						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x * 2, (int)dir[i].y * 2, -1)), this);
 						m_pGrabObj = nullptr;
 						return;
 					}
@@ -336,7 +326,7 @@ void CPlayer02::Move(const _float& fTimeDelta)
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
-	
+
 	if (prePos == m_pTransform->m_vInfo[INFO_POS])
 		m_MovetoPos = prePos;
 
@@ -350,7 +340,7 @@ void CPlayer02::Move(const _float& fTimeDelta)
 	}
 }
 
-_bool CPlayer02::CheckCubeExist(_vec3 dir,CCollider** col)
+_bool CPlayer02::CheckCubeExist(_vec3 dir, CCollider** col)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);

@@ -22,7 +22,7 @@ HRESULT CPortal::Ready_GameObject(_vec3& vPos)
 
 	m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_bIsStatic	 = false;
+	m_pTransform->m_bIsStatic = false;
 
 	return S_OK;
 }
@@ -32,8 +32,10 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
 	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	NULL_CHECK_RETURN(m_pPlayer1, );
+	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+	NULL_CHECK_RETURN(m_pPlayer2, );
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -45,15 +47,11 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 
 _int CPortal::Update_Too(const _float & fTimeDelta)
 {
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-
 	return 0;
 }
 
 _int CPortal::Update_Top(const _float & fTimeDelta)
 {
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
-
 	return 0;
 }
 
@@ -82,7 +80,7 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 	{
 		this->m_pCollider->m_bIsTrigger = true;
 		m_bTopCol = true;
-	}		
+	}
 }
 
 void CPortal::OnCollisionStay(const Collision * collision)
