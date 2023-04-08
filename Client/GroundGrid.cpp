@@ -12,9 +12,11 @@ CGroundGrid::~CGroundGrid()
 {
 }
 
-HRESULT CGroundGrid::Ready_GameObject(void)
+HRESULT CGroundGrid::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 
 	return S_OK;
 }
@@ -81,11 +83,11 @@ HRESULT CGroundGrid::Add_Component(void)
 	return S_OK;
 }
 
-CGroundGrid * CGroundGrid::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CGroundGrid * CGroundGrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CGroundGrid* pInstance = new CGroundGrid(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		pInstance = nullptr;

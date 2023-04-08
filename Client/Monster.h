@@ -17,7 +17,6 @@ protected:
 	virtual ~CMonster();
 
 public:
-	virtual HRESULT Ready_GameObject(void) PURE;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;

@@ -10,7 +10,6 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Transform", m_pTransform });
-	//m_iKey_Count = 1;
 }
 
 CGameObject::~CGameObject()
@@ -71,9 +70,11 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 {
 	if (!m_pTransform->m_bIsStatic)
 		return;
+	
  	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
-
+	if (collider_other->m_bIsTrigger)
+		return;
 	//현재 게임 오브젝트의 콜라이더를 가져옵니다.
   	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
 
@@ -151,17 +152,6 @@ void CGameObject::OnCollisionExit(const Collision * collision)
 {
 }
 
-void CGameObject::OnTriggerEnter(const CCollider * other)
-{
-}
-
-void CGameObject::OnTriggerStay(const CCollider * other)
-{
-}
-
-void CGameObject::OnTirggerExit(const CCollider * other)
-{
-}
 
 CComponent * CGameObject::Find_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {

@@ -20,6 +20,7 @@ CDynamiCamera::~CDynamiCamera()
 
 HRESULT CDynamiCamera::Ready_GameObject(void)
 {
+	Rotation_View();
 	_matrix matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 1000.0f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);

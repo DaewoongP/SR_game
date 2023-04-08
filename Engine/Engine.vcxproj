@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
@@ -42,6 +44,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightMgr.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MyFont.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -67,6 +70,7 @@
     <ClInclude Include="WindParticle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
@@ -82,6 +86,7 @@
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightMgr.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MyFont.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />

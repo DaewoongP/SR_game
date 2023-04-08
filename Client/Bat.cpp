@@ -12,7 +12,7 @@ CBat::~CBat()
 {
 }
 
-HRESULT CBat::Ready_GameObject(void)
+HRESULT CBat::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 10.0f;
@@ -23,7 +23,6 @@ HRESULT CBat::Ready_GameObject(void)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 10.0f;
 	m_pRigid->m_bFreezePos_Z = true;
-
 
 	return S_OK;
 }
@@ -78,13 +77,13 @@ _int CBat::Update_Top(const _float & fTimeDelta)
 	//=================================================
 	if (1.0f >= m_fZRatio)
 	{
-		//°íµµ ºñÀ²
+		//ï¿½ï¿½ ï¿½ï¿½ï¿½
 		m_fZRatio += fTimeDelta * 4.0f;
 	}
 	else
 		m_fZRatio = 1.0f;
 
-	//°íµµ ³ôÀÌ±â
+	//ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½
 	m_pTransform->m_vInfo[INFO_POS].z = Lerp(BATTOOZ, BATTOPZ, m_fZRatio);
 	//=================================================
 
@@ -226,12 +225,11 @@ HRESULT CBat::Add_Component(void)
 	return S_OK;
 }
 
-
-CBat * CBat::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBat * CBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CBat*		pInstance = new CBat(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

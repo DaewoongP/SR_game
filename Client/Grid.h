@@ -17,7 +17,7 @@ protected:
 	virtual ~CGrid();
 
 public:
-	virtual HRESULT Ready_GameObject(void)  PURE;
+	virtual HRESULT Ready_GameObject(_vec3& vPos)  PURE;
 	virtual _int Update_GameObject(const _float& fTimeDelta) PURE;
 	virtual void LateUpdate_GameObject(void)  PURE;
 	virtual void Render_GameObject(void) PURE;
