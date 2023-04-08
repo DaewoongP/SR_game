@@ -131,9 +131,6 @@
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="WindParticle.h" />
-    <ClInclude Include="AbstractFactory.h">
-      <Filter>Manager\AbstractFactory</Filter>
-    </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>Componnent\Line</Filter>
     </ClInclude>
@@ -317,9 +314,6 @@
     </Filter>
     <Filter Include="Componnent\Animation">
       <UniqueIdentifier>{f7b64550-f977-4ff3-a8f4-31e5a1673dae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\AbstractFactory">
-      <UniqueIdentifier>{c76fc5ab-7dcb-49b2-9cde-19f72c86c3ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Componnent\Line">
       <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
