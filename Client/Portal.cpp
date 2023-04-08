@@ -45,11 +45,15 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 
 _int CPortal::Update_Too(const _float & fTimeDelta)
 {
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+
 	return 0;
 }
 
 _int CPortal::Update_Top(const _float & fTimeDelta)
 {
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+
 	return 0;
 }
 
@@ -93,7 +97,6 @@ void CPortal::OnCollisionStay(const Collision * collision)
 		pGameObject = CSwallowPortal::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Swallow_Portal", pGameObject), );
-
 		m_bCreateSwallowPortal = false;
 	}
 }

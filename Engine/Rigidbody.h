@@ -90,6 +90,10 @@ public:
 	_bool m_bFreezeRot_Y;
 	_bool m_bFreezeRot_Z;
 
+	//벨로시티 최대치 사용할지 여부
+	_bool m_bUseLimitVelocity;
+	//벨로시티 최대치
+	_float m_fLimitVelocity;
 public:
 	static CRigidbody* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent * Clone(void) override;

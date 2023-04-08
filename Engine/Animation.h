@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Export_Utility.h"
-
 BEGIN(Engine)
 
 //clip에 저장될 하나의 이동 정보 입니다.

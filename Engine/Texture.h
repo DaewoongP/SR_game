@@ -14,7 +14,7 @@ private:
 
 public:
 	HRESULT			Ready_Texture(TEXTYPE eTextype, const _tchar* pPath, const _uint& iCnt = 1);
-	void			Add_Anim(_tchar* name, int startIdx, int endIdx, _ulong dwCycle,bool loop);
+	void			Add_Anim(_tchar* name, int startIdx, int endIdx, _float dwCycle,bool loop);
 	void			Switch_Anim(_tchar* name);
 	void			Update_Anim(const _float & fTimeDelta);
 	void			Set_Texture(const _uint& iIndex = 0);
@@ -30,7 +30,7 @@ private:
 	_tchar* m_CurrentAnimName;
 	_int m_CurIdx;
 	bool m_bisLoop;
-	_float m_dwTimer;
+	_float m_fTimer;
 
 public:
 	static CTexture*		Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTYPE eTextype, const _tchar* pPath, const _uint& iCnt = 1);
