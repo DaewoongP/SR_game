@@ -11,12 +11,12 @@
 #include "Player02.h"
 #include "Pig.h"
 #include "Bat.h"
-#include"CrackBlock.h"
+#include "CrackBlock.h"
 #include "Key.h"
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
-#include"Spike.h"
+#include "Spike.h"
 #include "TempBox.h"
 #include "AbstractFactory.h"
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -52,7 +52,6 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
-
 }
 
 
@@ -82,7 +81,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CPlayer>::Create(m_pGraphicDev, this, pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPlayer02>::Create(m_pGraphicDev, this, pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(m_pGraphicDev, this, pLayer, _vec3(45.f, 7.f, 10.f)), E_FAIL);
-	
+
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{
@@ -117,7 +116,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
