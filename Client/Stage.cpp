@@ -100,7 +100,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	pGameObject = CCrackBlock::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
-	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(12.f, 3.f, 10.f);
+	pGameObject->m_pTransform->Set_Pos(12.f, 3.f, 10.f);
+		//m_vInfo[INFO_POS] = _vec3(12.f, 3.f, 10.f);
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

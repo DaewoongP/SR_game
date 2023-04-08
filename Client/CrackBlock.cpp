@@ -5,6 +5,7 @@
 
 CCrackBlock::CCrackBlock(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
 {
+	
 }
 
 CCrackBlock::~CCrackBlock()
@@ -24,23 +25,29 @@ HRESULT CCrackBlock::Ready_GameObject(void)
 
 _int CCrackBlock::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+	
 	return S_OK();
 }
 
 _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 {
-	if (m_bCrackDead)
+	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
+	// 왜 m_bdead로는안되는걸까
+	if (pCrackBox->m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
 		_vec3 ShakePos;
 		ShakePos = m_pTransform->m_vInfo[INFO_POS];
 		Shaking(ShakePos, fTimeDelta);
-		m_pTransform->m_vInfo[INFO_POS];
-		//m_pTransform->m_vInfo[INFO_POS]=Shaking(fTimeDelta);
-
 		if (m_fBlockTime <= 0.f)
+		{
+			m_bDead = true;
 			return OBJ_DEAD;
+		}
 	}
+
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -50,6 +57,7 @@ _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 
 _int CCrackBlock::Update_Top(const _float& fTimeDelta)
 {
+	
 	if (m_fBlockTime <= 0.f)
 		return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
@@ -100,27 +108,15 @@ void CCrackBlock::Render_Top()
 
 void CCrackBlock::OnCollisionEnter(const Collision* collision)
 {
-
-	//부딪힌게 2d인지 topd인지 판단할것이 필요 layer에 map object사용하면좋을듯
-	//CGameObject* pPlayer = Get_GameObject(L"Layer_GameLogic", L"Player");
-	
-	
-	/*for (auto& iter : m_uMapComponent[ID_DYNAMIC])
-			if(iter.first == L"Player")*/
-				m_bCrackDead = true;
-
-		//m_uMapComponent[ID_DYNAMIC].-> == L"Player")
-		
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Player"))
+		m_bCrackDead = true;
+	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackBlock"))
+		m_bCrackDead = true;
+	__super::OnCollisionEnter(collision);
 
 }
 
-void CCrackBlock::OnCollisionStay(const Collision* collision)
-{
-}
 
-void CCrackBlock::OnCollisionExit(const Collision* collision)
-{
-}
 
 HRESULT CCrackBlock::Add_Component(void)
 {
@@ -138,7 +134,7 @@ HRESULT CCrackBlock::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 1.99f,1.99f,1.99f });
-	
+	m_pCollider->Set_Group(COL_OBJ);
 	return S_OK;
 }
 
@@ -150,31 +146,20 @@ void CCrackBlock::Shaking(_vec3& vPos, const _float& fTimeDelta)
 	fTime += fTimeDelta;
 
 	vPos;
-	if (fTime > 0.03f)
+	if (fTime > 0.01f)
 	{
 		fTime = 0.f;
 
 		_float fRandomX = (_float)(rand() % 100) / 100.f;
+		
 		_float fRandomY = (_float)(rand() % 100) / 100.f;
-		
-		_vec3 i = { vPos.x + 0.15f * (fRandomX - 0.5f),
-					vPos.y ,
-						  10.f };
-		m_pTransform->Set_Pos(i.x,	i.y, 10.f);
-		_matrix			matTrans;
-		D3DXMatrixTranslation(&matTrans, m_pTransform->m_vInfo[INFO_POS].x, m_pTransform->m_vInfo[INFO_POS].y,10.f);
-		
-		//return i;
-
+		//y값랜덤주게되면 점프가 잘 안됨
+		_vec3 ShakePos = {vPos.x + 0.075f * (fRandomX - 0.5f),
+					vPos.y /*+0.05f*(fRandomY-0.5f)*/ ,  10.f};
+		m_pTransform->Set_Pos(ShakePos.x,ShakePos.y,10.f);
 	}
 }
-void CCrackBlock::Link()
-{
-	if (m_bDead);
-	
 
-
-}
 CCrackBlock* CCrackBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CCrackBlock* pInstance = new CCrackBlock(pGraphicDev);

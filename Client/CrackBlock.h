@@ -1,5 +1,4 @@
 #pragma once
-
 #include"Cube.h"
 BEGIN(Engine)
 class CCubeTex;
@@ -26,14 +25,14 @@ public:
 	virtual void Render_Too() override;
 	virtual void Render_Top() override;
 	virtual void OnCollisionEnter(const class Collision* collision);
-	virtual void OnCollisionStay(const class Collision* collision);
-	virtual void OnCollisionExit(const class Collision* collision);
+	/*virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);*/
 
 	
 	
 private:
 	HRESULT Add_Component(void);
-
+	_bool m_bRealDead;
 private:
 	Engine::CCubeTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
@@ -43,7 +42,7 @@ private:
 	//블럭이 사라지는 시간 *.*초
 	_float m_fBlockTime =2.5f;
 	void Shaking(_vec3& vPos,const _float& fTimeDelta);
-	void Link();
+	
 public:
 	static CCrackBlock* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
