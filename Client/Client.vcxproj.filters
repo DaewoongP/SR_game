@@ -92,6 +92,9 @@
     <Filter Include="GameObject\Portal\SwallowPortal">
       <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Spike">
+      <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
       <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
     </Filter>
@@ -233,6 +236,9 @@
     <ClInclude Include="SwallowPortal.h">
       <Filter>GameObject\Portal\SwallowPortal</Filter>
     </ClInclude>
+    <ClInclude Include="Spike.h">
+      <Filter>GameObject\Spike</Filter>
+    </ClInclude>
     <ClInclude Include="InstallGrid.h">
       <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
     </ClInclude>
@@ -358,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="SwallowPortal.cpp">
       <Filter>GameObject\Portal\SwallowPortal</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>GameObject\Spike</Filter>
     </ClCompile>
     <ClCompile Include="InstallGrid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>

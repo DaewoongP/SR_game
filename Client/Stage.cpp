@@ -16,6 +16,7 @@
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
+#include"Spike.h"
 #include "TempBox.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -118,8 +119,20 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+  FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+	
+	pGameObject = CSpike::Create(m_pGraphicDev, _vec3(6, 2, 10));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+  FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike", pGameObject), E_FAIL);
+	
+  pGameObject = CSpike::Create(m_pGraphicDev, _vec3(8, 2, 10));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike", pGameObject), E_FAIL);
 
+	pGameObject = CSpike::Create(m_pGraphicDev, _vec3(10, 2, 10));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike", pGameObject), E_FAIL);
+	
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{

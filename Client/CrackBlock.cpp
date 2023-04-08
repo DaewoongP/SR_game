@@ -34,7 +34,7 @@ _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 {
 	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
 
-	// ¿Ö m_bdead·Î´Â¾ÈµÇ´Â°É±î
+	// ì™œ m_bdeadë¡œëŠ”ì•ˆë˜ëŠ”ê±¸ê¹Œ
 	if (dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
@@ -114,7 +114,7 @@ void CCrackBlock::Shaking(_vec3& vPos, const _float& fTimeDelta)
 		_float fRandomX = (_float)(rand() % 100) / 100.f;
 		
 		_float fRandomY = (_float)(rand() % 100) / 100.f;
-		//y°ª·£´ıÁÖ°ÔµÇ¸é Á¡ÇÁ°¡ Àß ¾ÈµÊ
+		//yê°’ëœë¤ì£¼ê²Œë˜ë©´ ì í”„ê°€ ì˜ ì•ˆë¨
 		_vec3 ShakePos = {vPos.x + 0.075f * (fRandomX - 0.5f),
 					vPos.y /*+0.05f*(fRandomY-0.5f)*/ ,  10.f};
 		m_pTransform->Set_Pos(ShakePos.x,ShakePos.y,10.f);
