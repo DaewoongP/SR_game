@@ -310,9 +310,6 @@
     <ClCompile Include="Player02.cpp">
       <Filter>00. GameObject\00. Player\Top</Filter>
     </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClCompile>
@@ -402,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
