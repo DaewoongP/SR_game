@@ -97,21 +97,21 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_float max_x = center_this.x + (size_this.x*0.5f + size_other.x*0.5f);
 
 
-	if ((collision->_dir == DIR_LEFT&&center_other.x <= min_x) ||
-		(collision->_dir == DIR_RIGHT&&center_other.x >= max_x) ||
-		(collision->_dir == DIR_DOWN&&center_other.y <= min_y) ||
-		(collision->_dir == DIR_UP&&center_other.y >= max_y)
+	if ((collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x + offset_other.x <= min_x) ||
+		(collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x + offset_other.x >= max_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y + offset_other.y <= min_y) ||
+		(collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y + offset_other.y >= max_y)
 		)
 		return;
 
 	if (collision->_dir == DIR_UP &&center_other.y > min_y)
-		trans_other->m_vInfo[INFO_POS].y = _float(max_y - offset_other.y);
+		trans_other->m_vInfo[INFO_POS].y = max_y - offset_other.y;
 	else if (collision->_dir == DIR_DOWN&&center_other.y < max_y)
-		trans_other->m_vInfo[INFO_POS].y = _float(min_y - offset_other.y);
+		trans_other->m_vInfo[INFO_POS].y = min_y - offset_other.y;
 	else if (collision->_dir == DIR_LEFT&&center_other.x < max_x)
-		trans_other->m_vInfo[INFO_POS].x = _float(min_x - offset_other.x);
+		trans_other->m_vInfo[INFO_POS].x = min_x - offset_other.x;
 	else if (collision->_dir == DIR_RIGHT&&center_other.x > min_x)
-		trans_other->m_vInfo[INFO_POS].x = _float(max_x - offset_other.x);
+		trans_other->m_vInfo[INFO_POS].x = max_x - offset_other.x;
 		
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;
