@@ -33,6 +33,7 @@ _int CCrackBlock::Update_GameObject(const _float& fTimeDelta)
 _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 {
 	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
+	NULL_CHECK_RETURN(pCrackBox, E_FAIL);
 	// 왜 m_bdead로는안되는걸까
 	if (dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)
 	{
