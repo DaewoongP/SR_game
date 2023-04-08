@@ -32,17 +32,19 @@ public:
 		wcsncpy_s(cpyStr, wcslen(tcName) - 1, tcName, _TRUNCATE);
 		_tchar revStr[MAX_STR] = L"";
 		wcsncpy_s(revStr, wcslen(tcName) - 2, _wcsrev(cpyStr), _TRUNCATE);
-		wcsncpy_s(cpyStr, wcslen(tcName) - 2, _wcsrev(revStr), _TRUNCATE);
-		// 씬의 클래스 개수 반환
-		size_t cnt = pScene->Find_ClassName(cpyStr);
+		// 래핑구조체 동적할당 (문자열 자체 동적할당하면 해제불가능)
+		Mytchar* mytchar = new Mytchar;
+		wcsncpy_s(mytchar->str, wcslen(tcName) - 2, _wcsrev(revStr), _TRUNCATE);
 
-		wcsncat_s(cpyStr, wcslen(tcName), L"_", wcslen(tcName));
+		// 씬의 클래스 개수 반환
+		size_t cnt = pScene->Find_ClassName(mytchar);
+		// 클래스 개수에 따른 네이밍
+		wcsncat_s(mytchar->str, wcslen(tcName), L"_", wcslen(tcName));
 		_tchar strCnt[MAX_STR] = L"";
 		_stprintf_s(strCnt, L"%d", (cnt));
-		wcsncat_s(cpyStr, wcslen(tcName) + wcslen(strCnt), strCnt, wcslen(tcName) + wcslen(strCnt));
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(cpyStr, pGameObject), E_FAIL);
-
-		return S_OK;
+		wcsncat_s(mytchar->str, wcslen(tcName) + wcslen(strCnt), strCnt, wcslen(tcName) + wcslen(strCnt));
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(mytchar->str, pGameObject), E_FAIL);
+		return  S_OK;
 	}
 
 	static HRESULT	Create(
@@ -65,18 +67,18 @@ public:
 		wcsncpy_s(cpyStr, wcslen(tcName) - 1, tcName, _TRUNCATE);
 		_tchar revStr[MAX_STR] = L"";
 		wcsncpy_s(revStr, wcslen(tcName) - 2, _wcsrev(cpyStr), _TRUNCATE);
-		
-		_tchar* str = new _tchar[wcslen(revStr) + 1];
-		wcsncpy_s(str, wcslen(tcName) - 2, _wcsrev(revStr), _TRUNCATE);
+		// 래핑구조체 동적할당 (문자열 자체 동적할당하면 해제불가능)
+		Mytchar* mytchar = new Mytchar;
+		wcsncpy_s(mytchar->str, wcslen(tcName) - 2, _wcsrev(revStr), _TRUNCATE);
 
 		// 씬의 클래스 개수 반환
-		size_t cnt = pScene->Find_ClassName(str);
-
-		wcsncat_s(str, wcslen(tcName), L"_", wcslen(tcName));
+		size_t cnt = pScene->Find_ClassName(mytchar);
+		// 클래스 개수에 따른 네이밍
+		wcsncat_s(mytchar->str, wcslen(tcName), L"_", wcslen(tcName));
 		_tchar strCnt[MAX_STR] = L"";
 		_stprintf_s(strCnt, L"%d", (cnt));
-		wcsncat_s(str, wcslen(tcName) + wcslen(strCnt), strCnt, wcslen(tcName) + wcslen(strCnt));
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(str, pGameObject), E_FAIL);
+		wcsncat_s(mytchar->str, wcslen(tcName) + wcslen(strCnt), strCnt, wcslen(tcName) + wcslen(strCnt));
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(mytchar->str, pGameObject), E_FAIL);
 		return S_OK;
 	}
 };
