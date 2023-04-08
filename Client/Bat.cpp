@@ -17,7 +17,7 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 10.0f;
 	m_pTransform->m_vScale = { -BATSCALE, BATSCALE, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 20.f, 11.f);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_bUseLimitVelocity = true;
