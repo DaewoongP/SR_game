@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Animation.h"
 
-
 CAnimation::CAnimation()
 	: m_AnimState(0)
 {
@@ -107,7 +106,7 @@ CComponent * CAnimation::Clone(void)
 void CAnimation::Free(void)
 {
 	//할당해줬던 맵을해제해줍니다.
-	for_each(m_clipMap.begin(), m_clipMap.end(), CDeleteMap());
-	m_clipMap.clear();
+	/*for_each(m_clipMap.begin(), m_clipMap.end(), CDeleteMap());
+	m_clipMap.clear();*/
 	__super::Free();
 }

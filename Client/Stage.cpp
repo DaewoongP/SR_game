@@ -11,8 +11,8 @@
 #include "Player02.h"
 #include "Pig.h"
 #include "Bat.h"
-#include"Key.h"
-#include"KeyBox.h"
+#include "Key.h"
+#include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
 
@@ -81,11 +81,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	//CAMERA
-	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
-
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -113,15 +108,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Portal", pGameObject), E_FAIL);
 
-	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(32, 30, 10));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(32, 30, 10);
 
-	pGameObject = CMoveBox::Create(m_pGraphicDev);
+	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(12, 10, 10));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-	pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3(12, 10, 10);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
