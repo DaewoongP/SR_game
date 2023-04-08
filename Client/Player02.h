@@ -57,6 +57,8 @@ private:
 
 	_vec3					prePos;
 
+	CGameObject*			m_pPortal;
+
 public:
 	void Player02StateChange(TOPDEESTATE state) { m_eState = state; }
 public:

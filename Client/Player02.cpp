@@ -3,8 +3,11 @@
 #include "MoveBox.h"
 #include "Export_Function.h"
 
+#include "Portal.h"
+
 CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev),
+	m_pPortal(nullptr)
 {
 }
 
@@ -83,11 +86,18 @@ void CPlayer02::OnCollisionEnter(const Collision * collision)
 
 void CPlayer02::OnCollisionStay(const Collision * collision)
 {
+	if (m_pPortal == collision->otherObj)
+		collision->otherCol->m_bIsTrigger = true;
+
 	__super::OnCollisionStay(collision);
 }
 
 void CPlayer02::OnCollisionExit(const Collision * collision)
 {
+	if (m_pPortal == collision->otherObj)
+		collision->otherCol->m_bIsTrigger = false;
+
+	dynamic_cast<CPortal*>(m_pPortal)->Set_TopCol(false);
 }
 
 HRESULT CPlayer02::Add_Component(void)

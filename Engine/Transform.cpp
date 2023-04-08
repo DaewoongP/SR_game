@@ -63,6 +63,7 @@ const _matrix* Engine::CTransform::Compute_Lookattarget(const _vec3* pTargetPos)
 												    D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
 
+
 HRESULT CTransform::Ready_Transform(void)
 {
 	D3DXMatrixIdentity(&m_matWorld);

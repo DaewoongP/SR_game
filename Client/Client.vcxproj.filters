@@ -86,6 +86,9 @@
     <Filter Include="GameObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Cube\CrackBlock">
+      <UniqueIdentifier>{76c5ec89-287a-40fd-aa50-cf83eb6344c5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameObject\Portal\SwallowPortal">
       <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
     </Filter>
@@ -212,6 +215,9 @@
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="CrackBlock.h">
+      <Filter>GameObject\Cube\CrackBlock</Filter>
+    </ClInclude>
     <ClInclude Include="DefaultMonster.h">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClInclude>
@@ -327,6 +333,9 @@
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CrackBlock.cpp">
+      <Filter>GameObject\Cube\CrackBlock</Filter>
     </ClCompile>
     <ClCompile Include="DefaultMonster.cpp">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>

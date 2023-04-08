@@ -18,6 +18,10 @@ private:
 	virtual ~CPortal();
 
 public:
+	void Set_TopCol(bool _tf) { m_bTopCol = _tf; }
+	void Set_TooCol(bool _tf) { m_bTooCol = _tf; }
+
+public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
