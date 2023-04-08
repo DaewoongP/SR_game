@@ -12,12 +12,12 @@ CPig::~CPig()
 {
 }
 
-HRESULT CPig::Ready_GameObject(void)
+HRESULT CPig::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 5.0f;
 	m_pTransform->m_vScale = { -PIGSCALE, PIGSCALE, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(50.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	
 	return S_OK;
@@ -194,7 +194,7 @@ void CPig::OnCollisionEnter(const Collision * collision)
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
-	__super::OnCollisionStay(collision);
+	/*__super::OnCollisionStay(collision);*/
 }
 
 HRESULT CPig::Add_Component(void)
@@ -234,11 +234,11 @@ HRESULT CPig::Add_Component(void)
 }
 
 
-CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPig * CPig::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CPig*		pInstance = new CPig(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

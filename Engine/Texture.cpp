@@ -6,7 +6,7 @@
 CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CComponent(pGraphicDev)
 	, m_bUseFrameAnimation(false)
-	, m_dwTimer(0)
+	, m_fTimer(0)
 	, m_CurIdx(0)
 	, m_bisLoop(false)
 {
@@ -17,7 +17,7 @@ CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 CTexture::CTexture(const CTexture & rhs)
 	:CComponent(rhs)
 	, m_bUseFrameAnimation(rhs.m_bUseFrameAnimation)
-	, m_dwTimer(rhs.m_dwTimer)
+	, m_fTimer(rhs.m_fTimer)
 	, m_CurrentAnim(rhs.m_CurrentAnim)
 	, m_CurIdx(rhs.m_CurIdx)
 	, m_AnimMap(rhs.m_AnimMap)
@@ -61,14 +61,13 @@ HRESULT CTexture::Ready_Texture(TEXTYPE eTextype, const _tchar * pPath, const _u
 	
 		m_vecTexture.push_back(pTexture);
 	}
-
-
+	
 	return S_OK;
 }
 
-void CTexture::Add_Anim(_tchar * name, int startIdx, int endIdx, _ulong dwCycle,bool loop)
+void CTexture::Add_Anim(_tchar * name, int startIdx, int endIdx, _float fCycle,bool loop)
 {
-	m_AnimMap.insert({ name,Anim_Info{startIdx,endIdx,dwCycle,loop} });
+	m_AnimMap.insert({ name,Anim_Info{startIdx,endIdx,fCycle,loop} });
 }
 
 void CTexture::Switch_Anim(_tchar * name)
@@ -81,22 +80,22 @@ void CTexture::Switch_Anim(_tchar * name)
 	if (iter == m_AnimMap.end())
 		return;
 	m_CurrentAnimName = name;
-	m_dwTimer = 0;
+	m_fTimer = 0;
 	m_CurrentAnim = iter->second;
 	m_bisLoop = m_CurrentAnim.bisLoop;
 }
 
 void CTexture::Update_Anim(const _float & fTimeDelta)
 {
-	m_dwTimer += fTimeDelta;
+	m_fTimer += fTimeDelta;
 
-	if (m_dwTimer > m_CurrentAnim.dwCycle)
+	if (m_fTimer > m_CurrentAnim.fCycle)
 		if (m_bisLoop)
-			m_dwTimer = 0;
+			m_fTimer = 0;
 		else
-			m_dwTimer = m_CurrentAnim.dwCycle;
+			m_fTimer = m_CurrentAnim.fCycle;
 
-	int iIndex = (m_CurrentAnim.iEndIdx - m_CurrentAnim.iStartIdx) * (m_dwTimer/ m_CurrentAnim.dwCycle) + m_CurrentAnim.iStartIdx;
+	int iIndex = (m_CurrentAnim.iEndIdx - m_CurrentAnim.iStartIdx) * (m_fTimer/ m_CurrentAnim.fCycle) + m_CurrentAnim.iStartIdx;
 	m_CurIdx = iIndex;
 }
 

@@ -2,11 +2,13 @@
 #include "Player.h"
 
 #include "Export_Function.h"
+#include "Portal.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpalbe(false)
-	, m_eKeyState(DIR_END)
+	, m_eKeyState(DIR_END),
+	m_pPortal(nullptr)
 {
 
 }
@@ -15,12 +17,12 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Ready_GameObject(void)
+HRESULT CPlayer::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
@@ -36,11 +38,11 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 
 	m_pRigid->m_bUseGrivaty = true;
 	Key_Input(fTimeDelta);
-
+	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
 	
 	m_pTextureCom->Update_Anim(fTimeDelta);
-
+	
 	DoFlip();
 	return 0;
 }
@@ -86,6 +88,11 @@ void CPlayer::Render_Top()
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
+	m_pPortal = Engine::Get_GameObject(L"Layer_GameLogic", L"Portal");
+
+	if (m_pPortal == collision->otherObj)
+		dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(true);
+
 	__super::OnCollisionEnter(collision);
 }
 
@@ -109,6 +116,8 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
+	dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(false);
+
 	m_bJumpalbe = false;
 	__super::OnCollisionExit(collision);
 }
@@ -144,11 +153,11 @@ HRESULT CPlayer::Add_Component(void)
 }
 
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CPlayer*		pInstance = new CPlayer(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -193,4 +202,16 @@ void CPlayer::DoFlip()
 	else if (m_eKeyState == DIR_RIGHT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
 
+}
+
+void CPlayer::DoStrech()
+{
+	if (-1.f > m_pRigid->m_Velocity.y)
+	{
+		if (m_pTransform->m_vScale.y > 2.0f)
+			return;
+		m_pTransform->m_vScale.y *= 1.02f;
+	}
+	else
+		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
 }

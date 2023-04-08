@@ -29,8 +29,6 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		return;
 	if (m_ColliderList[eGroup2].empty())
 		return;
-	if (eGroup1 == eGroup2 && m_ColliderList[eGroup1].size() < 2)
-		return;
 	for (auto& iter = m_ColliderList[eGroup1].begin();
 	iter != m_ColliderList[eGroup1].end(); ++iter)
 	{
@@ -109,7 +107,7 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 
 	_float fDistance;
 	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	// 異⑸룎 ?먯젙 ???대?
+	
 	if (fDistance <= fSrcLong + fDstLong)
 		return true;
 
@@ -122,14 +120,16 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY|| fX>0.4f)
+  		if (fX > fY)
 		{
+			// src 상충돌
 			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
 				return true;
 			}
+			// src 하충돌
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
@@ -139,12 +139,14 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 		}
 		else
 		{
+			// src 우충돌
 			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
 				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
 				return true;
 			}
+			// src 좌충돌
 			else
 			{
 				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
@@ -200,7 +202,7 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
-vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
+vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* shootObj)
 {
 	//obj와 거리만 저장하고, 거리에따라 정렬해주면 될듯.
 
@@ -216,6 +218,9 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray)
 		for (auto& iter = m_ColliderList[i].begin();
 		iter != m_ColliderList[i].end(); ++iter)
 		{
+			if (shootObj == *iter)
+				continue;
+
 			if (Collision_Ray(ray, *iter, &pDist))
 				colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
 		}
@@ -234,8 +239,8 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 
 	//ray를 각 오브젝트의 local좌표로 움직여줌.
 	RAYCAST __ray = ray;
-	_matrix matWorld = pDest->m_pGameObject->m_pTransform->m_matWorld;
-	D3DXMatrixInverse(&matWorld, 0, &matWorld);
+	_matrix matWorld;
+	D3DXMatrixInverse(&matWorld, 0, &(pDest->m_pGameObject->m_pTransform->m_matWorld));
 	D3DXVec3TransformCoord(&__ray._origin, &ray._origin, &matWorld);
 	D3DXVec3TransformNormal(&__ray._direction, &ray._direction, &matWorld);
 
