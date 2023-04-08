@@ -11,6 +11,7 @@
 #include "Player02.h"
 #include "Pig.h"
 #include "Bat.h"
+#include"CrackBlock.h"
 #include "Key.h"
 #include "KeyBox.h"
 #include "StageBG.h"
@@ -80,6 +81,16 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+
+	//CrackBlock
+	pGameObject = CCrackBlock::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+	pGameObject = CCrackBlock::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CrackBlock", pGameObject), E_FAIL);
+	pGameObject->m_pTransform->Set_Pos(12.f, 3.f, 10.f);
+		//m_vInfo[INFO_POS] = _vec3(12.f, 3.f, 10.f);
 
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));

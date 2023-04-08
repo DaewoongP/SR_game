@@ -23,7 +23,16 @@ HRESULT CKeyBox::Ready_GameObject(_vec3& vPos)
 
 _int CKeyBox::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 
+	return S_OK();
+}
+
+_int CKeyBox::Update_Too(const _float& fTimeDelta)
+{
+	if (m_bDead)
+		return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
