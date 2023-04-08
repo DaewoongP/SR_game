@@ -37,7 +37,7 @@ _int CSpike::Update_Too(const _float& fTimeDelta)
 	m_pTextureCom->Switch_Anim(L"Goto2D");
 	if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.5))
 		m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x,
-			m_pTransform->m_vInfo[INFO_POS].y + 0.15,
+			m_pTransform->m_vInfo[INFO_POS].y + 0.2,
 			m_pTransform->m_vInfo[INFO_POS].z + 0.125f);
 	return S_OK;
 }
@@ -47,7 +47,7 @@ _int CSpike::Update_Top(const _float& fTimeDelta)
 	m_pTextureCom->Switch_Anim(L"GotoTop");
 	if (!(m_pTransform->m_vInfo[INFO_POS].z == 8.5))
 		m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x,
-			m_pTransform->m_vInfo[INFO_POS].y-0.15,
+			m_pTransform->m_vInfo[INFO_POS].y - 0.2,
 			m_pTransform->m_vInfo[INFO_POS].z - 0.125f);
 	return S_OK;
 }
@@ -68,8 +68,8 @@ void CSpike::Render_GameObject(void)
 
 void CSpike::OnCollisionEnter(const Collision* collision)
 {
-	//CGameObject* pKeyBox= Engine::Get_GameObject(L"Layer_GameLogic", L"KeyBox");
-
+	if (collision->otherObj != nullptr)
+		collision->otherObj->m_bDead = true;
 	__super::OnCollisionEnter(collision);
 }
 

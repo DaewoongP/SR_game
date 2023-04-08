@@ -76,11 +76,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(10.f, 10.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(m_pGraphicDev, this, pLayer, _vec3(50.f, 20.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPlayer>::Create(m_pGraphicDev, this, pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPlayer02>::Create(m_pGraphicDev, this, pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(m_pGraphicDev, this, pLayer, _vec3(45.f, 7.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(m_pGraphicDev, this, pLayer, _vec3(20.f, 2.f, 10.f)), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
