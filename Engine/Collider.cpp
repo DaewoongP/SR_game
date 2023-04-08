@@ -54,7 +54,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-	//m_pMesh->DrawSubset(0);
+	m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
@@ -127,13 +127,13 @@ _bool CCollider::Delete_OtherCollider(CCollider * pOtherCol)
 
 void CCollider::OnCollisionEnter(const Collision * collision)
 {
-	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
+	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
 	m_pGameObject->OnCollisionEnter(collision);
 }
 
 void CCollider::OnCollisionStay(const Collision * collision)
 {
-	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
+	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
 	m_pGameObject->OnCollisionStay(collision);
 }
 
@@ -152,7 +152,7 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize)
 		vSize.z,
 		&m_pMesh, NULL);
 
-	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
+	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
 	D3DXMatrixIdentity(&m_matWorld);
   
 	if (nullptr == m_pBoundingBox)

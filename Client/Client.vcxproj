@@ -188,6 +188,7 @@
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Spike.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Player02.cpp" />
     <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Spike.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StageBG.cpp" />
     <ClCompile Include="stdafx.cpp">

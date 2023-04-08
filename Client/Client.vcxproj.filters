@@ -92,6 +92,9 @@
     <Filter Include="GameObject\Portal\SwallowPortal">
       <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Spike">
+      <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -227,6 +230,9 @@
     <ClInclude Include="SwallowPortal.h">
       <Filter>GameObject\Portal\SwallowPortal</Filter>
     </ClInclude>
+    <ClInclude Include="Spike.h">
+      <Filter>GameObject\Spike</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -345,6 +351,9 @@
     </ClCompile>
     <ClCompile Include="SwallowPortal.cpp">
       <Filter>GameObject\Portal\SwallowPortal</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>GameObject\Spike</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
