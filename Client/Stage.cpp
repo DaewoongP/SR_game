@@ -18,7 +18,7 @@
 #include "Portal.h"
 #include"Spike.h"
 #include "TempBox.h"
-
+#include "AbstractFactory.h"
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -83,7 +83,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	////Bat
+	FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(10.f, 10.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(12.f, 10.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(14.f, 10.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(16.f, 10.f, 10.f)), E_FAIL);
+	//Bat
 	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);

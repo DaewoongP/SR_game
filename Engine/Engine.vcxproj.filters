@@ -142,6 +142,9 @@
     <ClInclude Include="WindParticle.h">
       <Filter>Etc</Filter>
     </ClInclude>
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>Manager\AbstractFactory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -339,6 +342,9 @@
     </Filter>
     <Filter Include="Framework\04. Renderer">
       <UniqueIdentifier>{5119021d-4bb1-4044-80ac-6b32ee4c7fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\AbstractFactory">
+      <UniqueIdentifier>{85627165-7aa3-40d3-9af7-e880cf876576}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

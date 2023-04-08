@@ -40,6 +40,29 @@ CGameObject * CScene::Get_GameObject(const _tchar * pLayerTag, const _tchar * pO
 
 	return iter->second->Get_GameObject(pObjTag);
 }
+size_t CScene::Find_ClassName(const _tchar* pName)
+{
+	size_t cnt = 0;
+	// 앞의 클래스이름만 비교해서 찾아야함
+	auto iter = find_if(m_mapClassName.begin(), m_mapClassName.end(), [&](auto& pair) {
+		_tchar temp[MAX_STR] = L"";
+		wcsncpy_s(temp, wcslen(pair.first) - 1, pair.first, _TRUNCATE);
+		return !lstrcmpW(pName, temp);
+	});
+
+	if (iter == m_mapClassName.end())
+	{
+		m_mapClassName.insert({ pName, cnt });
+		return cnt;
+	}
+	else
+	{
+		cnt = iter->second;
+		m_mapClassName.erase(iter);
+		m_mapClassName.insert({ pName, ++cnt });
+		return cnt;
+	}
+}
 
 HRESULT CScene::Ready_Scene(void)
 {
@@ -71,6 +94,8 @@ void Engine::CScene::Free(void)
 {
 	for_each(m_uMapLayer.begin(), m_uMapLayer.end(), CDeleteMap());
 	m_uMapLayer.clear();
-
+	/*for_each(m_mapClassName.begin(), m_mapClassName.end(), [](auto& pair) {
+		delete pair.first;
+	});*/
 	Safe_Release(m_pGraphicDev);
 }
