@@ -21,6 +21,11 @@ HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	m_bIsCol[DIR_END] = { 0 };
+	m_bIsStone = false;
+	m_bIsFall = false;
+
 	return S_OK;
 }
 

@@ -34,8 +34,7 @@ _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 {
 	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
 
-	// 왜 m_bdead로는안되는걸까
-	if (dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)
+	if (nullptr != pCrackBox && dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
 		_vec3 ShakePos;

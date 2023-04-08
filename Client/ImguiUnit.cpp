@@ -297,7 +297,7 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (2 == m_iMapObjectType) // 무브 박스
 		{
-			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("MoveCube_%d"), m_iMapObjectIndex);
 			pGameObject = CMoveBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 

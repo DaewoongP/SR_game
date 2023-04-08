@@ -83,15 +83,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	////Pig
-	//pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
-
 	////Bat
-	//pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
+	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
 
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));
@@ -106,11 +101,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	//Pig
 	pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-  FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
-	
-	/*pGameObject = CSpike::Create(m_pGraphicDev, _vec3(6, 2, 10));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike", pGameObject), E_FAIL);*/
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+
 
 	
 	int cubeCnt = 0;
