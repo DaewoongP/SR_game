@@ -20,11 +20,18 @@ protected:
 	// 현재 충돌중인 상대 콜라이더와의 정보 -> 복사생성시 복사할 필요 없음. 실시간 정보
 	map<CCollider*, Collision*>	m_Colmap;
 public:
+	_bool	m_bIsTrigger;
+public:
 	HRESULT	Ready_Collider();
 	virtual _int Update_Component(const _float& fTimeDelta) override;
 	virtual void LateUpdate_Component() override;
 	virtual void Render_Component() override;
 public:
+	// 콜라이더 옵션설정 
+	// 1. 충돌범위 사이즈 vec3type(width, height, depth)
+	// 2. 콜라이더 그룹 설정 기본값 OBJ
+	// 3. 트리거 설정 기본값 false
+	HRESULT Set_Options(const _vec3& vSize = { 2.f, 2.f, 2.f }, COLGROUP eGroup = COL_OBJ, _bool isTrigger = false);
 	void Set_Group(COLGROUP eGroup);
 	COLGROUP Get_Group() { return m_eGroup; }
 	void Get_Point(_vec3* MinPoint, _vec3* MaxPoint)

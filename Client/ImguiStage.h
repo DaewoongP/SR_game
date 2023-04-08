@@ -15,13 +15,6 @@ public:
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
 
-	// 큐브 저장을 위한 구조체
-	typedef struct CubeInfo
-	{
-		_vec3	vCubePos;					// 큐브 위치
-		int		iCubeTextureNumber;			// 큐브 스타일 번호
-	}CUBEINFO;
-
 	// 그리드 관련
 	vector<CGameObject*> m_vecGroundGrid;	// 그리드 모음
 	bool m_bGridON;							// 그리드 on / off
@@ -29,7 +22,7 @@ private:
 
 	// 큐브 관련
 	CGameObject* m_pDefaultCube;			// 디폴트 큐브
-	vector<CUBEINFO> m_vecCubeInfo;			// 큐브 모음(저장 용도)
+	vector<OBJINFO> m_vecCubeInfo;			// 큐브 모음(저장 용도)
 
 	bool m_bCubePlaced;						// 디폴트 큐브 생성 
 	int m_iCubeTextureNumber;				// 큐브 스타일 번호
@@ -38,15 +31,15 @@ private:
 private:
 	// 그리드 메뉴
 	HRESULT GridMeun();
-	HRESULT GroundGridON(vector<CGameObject*>& vecGrid);
+	HRESULT GroundGridON();
 
 	// 큐브 메뉴
 	HRESULT CubeMeun();
 	CGameObject* CreateDefaultCube();
-	void	CubeInstall(CGameObject* pDefaultCube, vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex, int iCubeTextureNumber);
+	void	CubeInstall();
 
-	HRESULT SaveData(vector<CUBEINFO>& vecCubeInfo);
-	HRESULT LoadData(vector<CUBEINFO>& vecCubeInfo, int& iCubeIndex);
+	HRESULT SaveCube();
+	HRESULT LoadCube();
 	
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);

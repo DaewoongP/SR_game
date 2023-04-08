@@ -12,7 +12,7 @@ CMoveBox::~CMoveBox()
 {
 }
 
-HRESULT CMoveBox::Ready_GameObject(void)
+HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -20,7 +20,7 @@ HRESULT CMoveBox::Ready_GameObject(void)
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
 
@@ -80,27 +80,6 @@ void CMoveBox::LateUpdate_Top()
 
 void CMoveBox::Render_GameObject(void)
 {
-	//_vec3 v1 = m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 0); // origin
-	//_vec3 v2 = v1+ _vec3(2.5,0,0); // dir
-
-	//_vec3 v3 = v1 + _vec3(-2.5, 0, 0);
-	//_vec3 v4 = v1 + _vec3(0, 2.5, 0);
-	//_vec3 v5 = v1 + _vec3(0, -2.5, 0);
-
-	//_matrix matView, matProj;
-	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-	//m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
-	//_matrix matworld;
-	//D3DXMatrixIdentity(&matworld);
-	//m_pLine->Set_Line(v1, v2, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	//m_pLine->Draw_Line(matworld, matView, matProj);
-	//m_pLine->Set_Line(v1, v3, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	//m_pLine->Draw_Line(matworld, matView, matProj);
-	//m_pLine->Set_Line(v1, v4, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	//m_pLine->Draw_Line(matworld, matView, matProj);
-	//m_pLine->Set_Line(v1, v5, D3DXCOLOR(1.f, 1.f, 0.f, 1.f));
-	//m_pLine->Draw_Line(matworld, matView, matProj);
-	
 }
 
 void CMoveBox::Render_Too()
@@ -132,7 +111,7 @@ void CMoveBox::OnCollisionEnter(const Collision * collision)
 		DoRayToDir(collision->_dir);
 	}
 
-	//Ãæµ¹½Ã ·¹ÀÌ ¹ß»ı! 
+	//ì¶©ëŒì‹œ ë ˆì´ ë°œìƒ! 
 	__super::OnCollisionEnter(collision);
 }
 
@@ -190,7 +169,7 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 		m_MovetoPos = prePos;
 	}
 	prePos = m_pTransform->m_vInfo[INFO_POS];
-	//°Å¸® ÀÌ¿ë µµ´ŞÇß´ÂÁö ¾Ë·ÁÁÖ´Â ÄÚµå
+	//ê±°ë¦¬ ì´ìš© ë„ë‹¬í–ˆëŠ”ì§€ ì•Œë ¤ì£¼ëŠ” ì½”ë“œ
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
@@ -231,7 +210,7 @@ void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 
 _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 {
-	//µé¾î¿Â ¹æÇâÀ¸·Î ·¹ÀÌ¸¦ ½õ´Ï´Ù.
+	//ë“¤ì–´ì˜¨ ë°©í–¥ìœ¼ë¡œ ë ˆì´ë¥¼ ì©ë‹ˆë‹¤.
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
@@ -249,7 +228,7 @@ _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider);
 		break;
 	}
-	//°Å±â¿¡ movecube °ËÃâµÇ¸é ±× Ä£±¸¿¡°Ô µå·Î¿ì ·¹ÀÌ¸¦ ½õ´Ï´Ù.
+	//ê±°ê¸°ì— movecube ê²€ì¶œë˜ë©´ ê·¸ ì¹œêµ¬ì—ê²Œ ë“œë¡œìš° ë ˆì´ë¥¼ ì©ë‹ˆë‹¤.
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
@@ -261,7 +240,7 @@ _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 				SetMovePos(dir);
 				return true;
 			}
-			//°ÅÁşÀÌ¶ó¸é ¾Ï°Íµµ ¾ÈÇÕ´Ï´Ù.
+			//ê±°ì§“ì´ë¼ë©´ ì•”ê²ƒë„ ì•ˆí•©ë‹ˆë‹¤.
 			return false;
 		}
 	}
@@ -297,10 +276,10 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	switch (m_handleState)
 	{
 	case Engine::CH_NONE:
-		//¾Ï°Íµµ ¾øÀ½
+		//ì•”ê²ƒë„ ì—†ìŒ
 		break;
 	case Engine::CH_START:
-		//¸Ó¸®À§·Î
+		//ë¨¸ë¦¬ìœ„ë¡œ
 	{
 		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
@@ -317,7 +296,7 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	}
 		
 	case Engine::CH_ING:
-	{//ÇÃ·¹ÀÌ¾î ¸Ó¸®À§ À§Ä¡·Î °íÁ¤
+	{//í”Œë ˆì´ì–´ ë¨¸ë¦¬ìœ„ ìœ„ì¹˜ë¡œ ê³ ì •
 		m_pTransform->m_vInfo[INFO_POS] = m_Target->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-4);
 		break;
 	}
@@ -346,11 +325,11 @@ void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
 	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
 }
 
-CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CMoveBox*		pInstance = new CMoveBox(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

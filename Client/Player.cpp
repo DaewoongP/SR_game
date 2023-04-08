@@ -15,12 +15,12 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Ready_GameObject(void)
+HRESULT CPlayer::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
-	m_pTransform->m_vInfo[INFO_POS] = _vec3(10.f, 7.f, 10.f);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
@@ -40,7 +40,7 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 	
 	m_pTextureCom->Update_Anim(fTimeDelta);
-
+	
 	DoFlip();
 	return 0;
 }
@@ -144,11 +144,11 @@ HRESULT CPlayer::Add_Component(void)
 }
 
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
 	CPlayer*		pInstance = new CPlayer(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

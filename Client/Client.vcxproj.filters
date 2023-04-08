@@ -59,12 +59,6 @@
     <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
       <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
-      <UniqueIdentifier>{fa025452-b800-47b6-b999-7e7141b476bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
-      <UniqueIdentifier>{7d2e26fc-a89d-4b77-9171-a5a459c50919}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
       <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
     </Filter>
@@ -82,6 +76,12 @@
     </Filter>
     <Filter Include="GameObject\Key">
       <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\DefaultMonster">
+      <UniqueIdentifier>{82c722ae-dfdd-49b7-97bb-37a529872c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Portal">
+      <UniqueIdentifier>{fc218ae6-2353-4c26-b2ce-c733916ec993}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
@@ -182,20 +182,11 @@
     <ClInclude Include="GroundGrid.h">
       <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
     </ClInclude>
-    <ClInclude Include="InstallGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
-    </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>GameObject\Monster\Pig</Filter>
-    </ClInclude>
-    <ClInclude Include="PigTail.h">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClInclude>
     <ClInclude Include="DefaultCube.h">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
@@ -217,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="StageBG.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultMonster.h">
+      <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>GameObject\Portal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,20 +295,11 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd</Filter>
     </ClCompile>
-    <ClCompile Include="InstallGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
-    </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Pig.cpp">
       <Filter>GameObject\Monster\Pig</Filter>
-    </ClCompile>
-    <ClCompile Include="PigTail.cpp">
-      <Filter>GameObject\Monster\Pig\Pig_Parts</Filter>
     </ClCompile>
     <ClCompile Include="DefaultCube.cpp">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
@@ -333,6 +321,12 @@
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultMonster.cpp">
+      <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>GameObject\Portal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

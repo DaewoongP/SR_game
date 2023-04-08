@@ -133,6 +133,12 @@
     <ClInclude Include="WindParticle.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>Manager\AbstractFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Componnent\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -234,6 +240,9 @@
     <ClCompile Include="WindParticle.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Line.cpp">
+      <Filter>Componnent\Line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -300,6 +309,12 @@
     </Filter>
     <Filter Include="Componnent\Animation">
       <UniqueIdentifier>{f7b64550-f977-4ff3-a8f4-31e5a1673dae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\AbstractFactory">
+      <UniqueIdentifier>{c76fc5ab-7dcb-49b2-9cde-19f72c86c3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Line">
+      <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
