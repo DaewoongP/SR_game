@@ -81,11 +81,6 @@ void CPlayer02::Render_Top()
 
 void CPlayer02::OnCollisionEnter(const Collision * collision)
 {
-	m_pPortal = Engine::Get_GameObject(L"Layer_GameLogic", L"Portal");
-	
-	if (m_pPortal == collision->otherObj)
-		dynamic_cast<CPortal*>(m_pPortal)->Set_TopCol(true);
-
 	__super::OnCollisionEnter(collision);
 }
 
