@@ -86,6 +86,9 @@
     <Filter Include="GameObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Portal\SwallowPortal">
+      <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -215,6 +218,9 @@
     <ClInclude Include="Portal.h">
       <Filter>GameObject\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="SwallowPortal.h">
+      <Filter>GameObject\Portal\SwallowPortal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -327,6 +333,9 @@
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="SwallowPortal.cpp">
+      <Filter>GameObject\Portal\SwallowPortal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

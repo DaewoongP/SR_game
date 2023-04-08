@@ -3,7 +3,8 @@
 #include "Export_Function.h"
 
 CDefaultMonster::CDefaultMonster(PDIRECT3DDEVICE9 pGraphicDev)
-	:CMonster(pGraphicDev)
+	:CMonster(pGraphicDev),
+	m_iDefaultIndex(0)
 {
 }
 
@@ -43,7 +44,12 @@ void CDefaultMonster::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture();
+	// 몬스터
+	if (DMonster == m_iDefaultIndex)
+		m_pTextureCom->Set_Texture();
+
+	else if(DMapObject == m_iDefaultIndex)
+		m_pTextureCom2->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
@@ -58,9 +64,15 @@ HRESULT CDefaultMonster::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
 
+	// 디폴트 몬스터
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Default_Monster_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Default_Monster_Texture", pComponent });
+
+	// 디폴트 맵 오브젝트
+	pComponent = m_pTextureCom2 = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Default_MapObject_Texture", this));
+	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
+	m_uMapComponent[ID_STATIC].insert({ L"Default_MapObject_Texture", pComponent });
 
 	return S_OK;
 }
@@ -80,8 +92,11 @@ void CDefaultMonster::Mouse_Move()
 	float Gridx = pt.x / nx / (1.3f) - 1.f;
 	float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
 
-	m_pTransform->m_vInfo[INFO_POS].x = Gridx;
-	m_pTransform->m_vInfo[INFO_POS].y = Gridy;
+	int installx = Gridx / 2;
+	int instally = Gridy / 2;
+
+	m_pTransform->m_vInfo[INFO_POS].x = installx * 2;
+	m_pTransform->m_vInfo[INFO_POS].y = instally * 2;
 	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 }
 

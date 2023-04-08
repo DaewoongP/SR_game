@@ -7,13 +7,19 @@
 
 #include "DefaultMonster.h"
 #include "Pig.h"
+#include "Bat.h"
+#include "Portal.h"
+#include "Key.h"
+#include "KeyBox.h"
+#include "MoveBox.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
-	m_iMonsterType(0), m_iMapObjectType(0), m_iMonsterindex(0)
+	m_iMonsterType(0), m_iMonsterindex(0), m_iMapObjectType(0), m_iMapObjectIndex(0)
 {
 	m_pDefaultMonster = nullptr;
+	m_pDefaultMapObject = nullptr;
 }
 
 CImguiUnit::~CImguiUnit()
@@ -36,33 +42,38 @@ HRESULT CImguiUnit::MonsterMenu()
 {
 	if (ImGui::TreeNode("Monster"))
 	{
-		// ¸ó½ºÅÍ ¼³Ä¡ Ã¼Å© ¹Ú½º
+		// ëª¬ìŠ¤í„° ì„¤ì¹˜ ì²´í¬ ë°•ìŠ¤
 		ImGui::Checkbox("Monster Placed", &m_bMonsterON);
 
-		// ¸ó½ºÅÍ Á¾·ù ¼±ÅÃ ÄÞº¸ ¹Ú½º
+		// ëª¬ìŠ¤í„° ì¢…ë¥˜ ì„ íƒ ì½¤ë³´ ë°•ìŠ¤
 		const char* items[] = { "PIG", "BAT" };
 		ImGui::Combo("Monster Type", &m_iMonsterType, items, IM_ARRAYSIZE(items));
 
-		// Ã¼Å© ¹Ú½º°¡ ÄÑÁ³À» ¶§ µðÆúÆ® ¸ó½ºÅÍ »ý¼º
+		// ì²´í¬ ë°•ìŠ¤ê°€ ì¼œì¡Œì„ ë•Œ ë””í´íŠ¸ ëª¬ìŠ¤í„° ìƒì„±
 		if (m_bMonsterON && nullptr == m_pDefaultMonster)
+		{
 			m_pDefaultMonster = CreateDefaultMonster();
 
-		// Ã¼Å© ¹Ú½º È°¼ºÈ­ ½Ã ¸ó½ºÅÍ ¼³Ä¡ ºÎºÐ
+			if (m_bMapObjectON)
+				m_bMapObjectON = false;
+		}			
+
+		// ì²´í¬ ë°•ìŠ¤ í™œì„±í™” ì‹œ ëª¬ìŠ¤í„° ì„¤ì¹˜ ë¶€ë¶„
 		if (m_bMonsterON && nullptr != m_pDefaultMonster)
 			MonsterInstall();
 
-		// Ã¼Å© ¹Ú½º°¡ ²¨Á³À» ¶§ µðÆúÆ® ¸ó½ºÅÍ »ç¸Á Ã³¸®
+		// ì²´í¬ ë°•ìŠ¤ê°€ êº¼ì¡Œì„ ë•Œ ë””í´íŠ¸ ëª¬ìŠ¤í„° ì‚¬ë§ ì²˜ë¦¬
 		if (!m_bMonsterON && nullptr != m_pDefaultMonster)
 		{
 			m_pDefaultMonster->m_bDead = true;
 			m_pDefaultMonster = nullptr;
 		}
 
-		// ÀúÀå ±â´É
+		// ì €ìž¥ ê¸°ëŠ¥
 		if (ImGui::Button("Monster Save"))
 			FAILED_CHECK_RETURN(SaveMonster(), E_FAIL);
 
-		// ·Îµå ±â´É
+		// ë¡œë“œ ê¸°ëŠ¥
 		ImGui::SameLine();
 		if (ImGui::Button("Monster Load"))
 			FAILED_CHECK_RETURN(LoadMonster(), E_FAIL);
@@ -80,7 +91,8 @@ CGameObject * CImguiUnit::CreateDefaultMonster()
 
 	CGameObject* pGameObject = nullptr;
 
-	pGameObject = CDefaultMonster::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+	pGameObject = CDefaultMonster::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f });
+	dynamic_cast<CDefaultMonster*>(pGameObject)->Set_DefaultIndex(CDefaultMonster::DMonster);
 
 	NULL_CHECK_RETURN(pGameObject, nullptr);
 	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Monster_Default", pGameObject), nullptr);
@@ -100,10 +112,16 @@ void CImguiUnit::MonsterInstall()
 		OBJINFO tMonsterInfo = {};
 		_tchar strCubeIndex[64] = { 0 };
 
-		if (0 == m_iMonsterType) // µÅÁö
+		if (0 == m_iMonsterType) // ë¼ì§€
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
 			pGameObject = CPig::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (1 == m_iMonsterType) // ë°•ì¥
+		{
+			_stprintf_s(strCubeIndex, _T("Bat%d"), m_iMonsterindex);
+			pGameObject = CBat::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
@@ -162,14 +180,19 @@ HRESULT CImguiUnit::LoadMonster()
 	{
 		_tchar strCubeIndex[64] = { 0 };
 
-		// µÅÁö
+		// ë¼ì§€
 		if (0 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
 			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);			
 		}
 
-		pGameObject->m_pTransform->m_vInfo[INFO_POS] = iter.vObjPos;
+		// ë°•ì¥
+		else if (1 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
+			pGameObject = CBat::Create(m_pGraphicDev, iter.vObjPos);
+		}
 
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
@@ -185,14 +208,189 @@ HRESULT CImguiUnit::MapObjectMenu()
 {
 	if (ImGui::TreeNode("Map Object"))
 	{
-		// ¸Ê ¿ÀºêÁ§Æ® ¼³Ä¡ Ã¼Å© ¹Ú½º
+		// ë§µ ì˜¤ë¸Œì íŠ¸ ì„¤ì¹˜ ì²´í¬ ë°•ìŠ¤
 		ImGui::Checkbox("Map Object Placed", &m_bMapObjectON);
 
-		// ¸Ê ¿ÀºêÁ§Æ® Á¾·ù ¼±ÅÃ ÄÞº¸ ¹Ú½º
-		const char* items[] = { "KEY", "PADLICK BOX", "BOX" };
+		// ë§µ ì˜¤ë¸Œì íŠ¸ ì¢…ë¥˜ ì„ íƒ ì½¤ë³´ ë°•ìŠ¤
+		const char* items[] = { "KEY", "KEY BOX", "MOVE BOX", "PORTAL" };
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
+		// ì²´í¬ ë°•ìŠ¤ê°€ ì¼œì¡Œì„ ë•Œ ë””í´íŠ¸ ë§µ ì˜¤ë¸Œì íŠ¸ ìƒì„±
+		if (m_bMapObjectON && nullptr == m_pDefaultMapObject)
+		{
+			m_pDefaultMapObject = CreateDefaultMapObject();
+
+			if (m_bMonsterON)
+				m_bMonsterON = false;
+		}			
+
+		// ì²´í¬ ë°•ìŠ¤ í™œì„±í™” ì‹œ ë§µ ì˜¤ë¸Œì íŠ¸ ì„¤ì¹˜ ë¶€ë¶„
+		if (m_bMapObjectON && nullptr != m_pDefaultMapObject)
+			MapObjectInstall();
+
+		// ì²´í¬ ë°•ìŠ¤ê°€ êº¼ì¡Œì„ ë•Œ ë””í´íŠ¸ ë§µ ì˜¤ë¸Œì íŠ¸ ì‚¬ë§ ì²˜ë¦¬
+		if (!m_bMapObjectON && nullptr != m_pDefaultMapObject)
+		{
+			m_pDefaultMapObject->m_bDead = true;
+			m_pDefaultMapObject = nullptr;
+		}
+
+		// ì €ìž¥ ê¸°ëŠ¥
+		if (ImGui::Button("MapObject Save"))
+			FAILED_CHECK_RETURN(SaveMapObject(), E_FAIL);
+
+		// ë¡œë“œ ê¸°ëŠ¥
+		ImGui::SameLine();
+		if (ImGui::Button("MapObject Load"))
+			FAILED_CHECK_RETURN(LoadMapObject(), E_FAIL);
+
 		ImGui::TreePop();
+	}
+
+	return S_OK;
+}
+
+CGameObject * CImguiUnit::CreateDefaultMapObject()
+{
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, nullptr);
+
+	CGameObject* pGameObject = nullptr;
+
+	pGameObject = CDefaultMonster::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f });
+	dynamic_cast<CDefaultMonster*>(pGameObject)->Set_DefaultIndex(CDefaultMonster::DMapObject);
+
+	NULL_CHECK_RETURN(pGameObject, nullptr);
+	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"MapObject_Default", pGameObject), nullptr);
+
+	return pGameObject;
+}
+
+void CImguiUnit::MapObjectInstall()
+{
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, );
+
+	CGameObject* pGameObject = nullptr;
+
+	if (Engine::Get_DIKeyState(DIK_F3) == Engine::KEYDOWN)
+	{
+		OBJINFO tMapObjectInfo = {};
+		_tchar strMapObjectIndex[64] = { 0 };
+
+		if (0 == m_iMapObjectType) // í‚¤
+		{
+			_stprintf_s(strMapObjectIndex, _T("Key%d"), m_iMapObjectIndex);
+			pGameObject = CKey::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (1 == m_iMapObjectType) // í‚¤ ë°•ìŠ¤
+		{
+			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
+			pGameObject = CKeyBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (2 == m_iMapObjectType) // ë¬´ë¸Œ ë°•ìŠ¤
+		{
+			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
+			pGameObject = CMoveBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (3 == m_iMapObjectType) // í¬íƒˆ
+		{
+			_stprintf_s(strMapObjectIndex, _T("Portal%d"), m_iMapObjectIndex);
+			pGameObject = CPortal::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		tMapObjectInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+		tMapObjectInfo.iObjTypeNumber = m_iMapObjectType;
+
+		NULL_CHECK_RETURN(pGameObject, );
+		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strMapObjectIndex, pGameObject), );
+		pGameObject->m_pTransform->m_bIsStatic = true;
+		m_vecMapObjectInfo.push_back(tMapObjectInfo);
+		++m_iMapObjectIndex;
+	}
+}
+
+HRESULT CImguiUnit::SaveMapObject()
+{
+	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	DWORD	dwByte = 0;
+
+	for (auto& iter : m_vecMapObjectInfo)
+		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
+
+	CloseHandle(hFile);
+	return S_OK;
+}
+
+HRESULT CImguiUnit::LoadMapObject()
+{
+	m_vecMonsterInfo.clear();
+
+	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	DWORD	dwByte = 0;
+	OBJINFO vMapObjectInfo = {};
+
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+	CGameObject* pGameObject = nullptr;
+
+	while (true)
+	{
+		ReadFile(hFile, &vMapObjectInfo, sizeof(OBJINFO), &dwByte, nullptr);
+		if (dwByte == 0)
+			break;
+		m_vecMapObjectInfo.push_back(vMapObjectInfo);
+	}
+	CloseHandle(hFile);
+
+	for (auto& iter : m_vecMapObjectInfo)
+	{
+		_tchar strMapObjectIndex[64] = { 0 };
+
+		// í‚¤
+		if (0 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strMapObjectIndex, _T("Key%d"), m_iMapObjectIndex);
+			pGameObject = CKey::Create(m_pGraphicDev, iter.vObjPos);
+		}
+
+		// í‚¤ë°•ìŠ¤
+		else if (1 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
+			pGameObject = CKeyBox::Create(m_pGraphicDev, iter.vObjPos);
+		}
+
+		// ë¬´ë¸Œ ë°•ìŠ¤
+		else if (2 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
+			pGameObject = CMoveBox::Create(m_pGraphicDev, iter.vObjPos);
+		}
+
+		// í¬íƒˆ
+		else if (3 == iter.iObjTypeNumber)
+		{
+			_stprintf_s(strMapObjectIndex, _T("Portal%d"), m_iMapObjectIndex);
+			pGameObject = CPortal::Create(m_pGraphicDev, iter.vObjPos);
+		}
+
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strMapObjectIndex, pGameObject), E_FAIL);
+
+		pGameObject->m_pTransform->m_bIsStatic = false;
+		++m_iMapObjectIndex;
 	}
 
 	return S_OK;

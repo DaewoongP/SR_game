@@ -18,6 +18,10 @@ private:
 	virtual ~CPortal();
 
 public:
+	void Set_TopCol(bool _tf) { m_bTopCol = _tf; }
+	void Set_TooCol(bool _tf) { m_bTooCol = _tf; }
+
+public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
@@ -33,6 +37,12 @@ private:
 	Engine::CRcTex*    m_pBufferCom;
 	Engine::CTexture*  m_pTextureCom;
 	Engine::CCollider* m_pCollider;
+
+	CGameObject* m_pPlayer1;
+	CGameObject* m_pPlayer2;
+
+	bool m_bTooCol;
+	bool m_bTopCol;
 
 public:
 	static CPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
