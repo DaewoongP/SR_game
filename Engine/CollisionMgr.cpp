@@ -214,11 +214,14 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* s
 			continue;
 
 		_float pDist;
-		//모든 리스트를 순회
+		//거리 안에 있는 모든 리스트를 순회
 		for (auto& iter = m_ColliderList[i].begin();
 		iter != m_ColliderList[i].end(); ++iter)
 		{
 			if (shootObj == *iter)
+				continue;
+
+			if (ray._Length * 3 <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
 				continue;
 
 			if (Collision_Ray(ray, *iter, &pDist))
