@@ -25,8 +25,8 @@ _int CKeyBox::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
-	return S_OK();
+	
+	return S_OK;
 }
 
 _int CKeyBox::Update_Too(const _float& fTimeDelta)

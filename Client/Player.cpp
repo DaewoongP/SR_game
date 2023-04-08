@@ -117,7 +117,7 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
 	dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(false);
-
+	
 	m_bJumpalbe = false;
 	__super::OnCollisionExit(collision);
 }
