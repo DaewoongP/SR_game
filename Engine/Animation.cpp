@@ -18,7 +18,7 @@ HRESULT CAnimation::Ready_Animation(void)
 
 _int CAnimation::Update_Component(const _float & fTimeDelta)
 {
-	//¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ½ÇÁ¦ µ¿ÀÛºÎÀÔ´Ï´Ù.
+	//ì• ë‹ˆë©”ì´ì…˜ì˜ ì‹¤ì œ ë™ì‘ë¶€ì…ë‹ˆë‹¤.
 	DoUpdateClip(fTimeDelta);
 
 	return 0;
@@ -30,55 +30,55 @@ void CAnimation::LateUpdate_Component(void)
 
 HRESULT CAnimation::SetAnimation(_tchar * Name)
 {
-	//¸¸¾à Ã£´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é FALSE¸¦ ¸®ÅÏÇØÁİ´Ï´Ù.
+	//ë§Œì•½ ì°¾ëŠ” ì• ë‹ˆë©”ì´ì…˜ì´ ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ FALSEë¥¼ ë¦¬í„´í•´ì¤ë‹ˆë‹¤.
 	if (m_clipMap.at(Name))
 		return E_NOTIMPL;
 
-	//¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ÇöÀç »óÅÂ¸¦ ¹ŞÀº ¸Å°³º¯¼ö·Î ÁöÁ¤ÇØÁİ´Ï´Ù.
+	//ì• ë‹ˆë©”ì´ì…˜ì˜ í˜„ì¬ ìƒíƒœë¥¼ ë°›ì€ ë§¤ê°œë³€ìˆ˜ë¡œ ì§€ì •í•´ì¤ë‹ˆë‹¤.
 	m_AnimState = Name;
-	//°æ°ú ½Ã°£À» ÃÊ±âÈ­ÇØÁİ´Ï´Ù.
+	//ê²½ê³¼ ì‹œê°„ì„ ì´ˆê¸°í™”í•´ì¤ë‹ˆë‹¤.
 	m_CurrentTime = 0;
 	return S_OK;
 }
 
 HRESULT CAnimation::AddClip(_tchar * Name, ANIMCLIP* clip)
 {
-	//¸¸¾à ÇØ´ç ÀÌ¸§ÀÇ ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ÀÌ¹Ì Á¸ÀçÇÑ´Ù¸é false¸¦ ¸®ÅÏÇØÁİ´Ï´Ù.
+	//ë§Œì•½ í•´ë‹¹ ì´ë¦„ì˜ ì• ë‹ˆë©”ì´ì…˜ì´ ì´ë¯¸ ì¡´ì¬í•œë‹¤ë©´ falseë¥¼ ë¦¬í„´í•´ì¤ë‹ˆë‹¤.
 	if (m_clipMap.at(Name))
 		return E_NOTIMPL;
 
-	//¾Æ´Ï¸é ¸Ê¿¡ Á¤º¸¸¦ Ãß°¡ÇØÁİ´Ï´Ù.
+	//ì•„ë‹ˆë©´ ë§µì— ì •ë³´ë¥¼ ì¶”ê°€í•´ì¤ë‹ˆë‹¤.
 	m_clipMap.insert({ Name ,clip });
 	return S_OK;
 }
 
 void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 {
-	//¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ÇÏ³ªµµ ¾ø´Ù¸é ¾÷µ¥ÀÌÆ®¸¦ ÇÏÁö ¾Ê½À´Ï´Ù.
+	//ì• ë‹ˆë©”ì´ì…˜ì´ í•˜ë‚˜ë„ ì—†ë‹¤ë©´ ì—…ë°ì´íŠ¸ë¥¼ í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
 	if (m_clipMap.empty())
 		return;
 
-	//¾Ö´Ï¸ŞÀÌ¼ÇÀÇ °æ°ú½Ã°£ÀÔ´Ï´Ù.
+	//ì• ë‹ˆë©”ì´ì…˜ì˜ ê²½ê³¼ì‹œê°„ì…ë‹ˆë‹¤.
 	m_CurrentTime += fTimeDelta;
 
-	//¾Ö´Ï¸ŞÀÌ¼ÇÀÇ Å¬¸³Á¤º¸¸¦ °¡Á®¿É´Ï´Ù.
+	//ì• ë‹ˆë©”ì´ì…˜ì˜ í´ë¦½ì •ë³´ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	ANIMCLIP* clip= m_clipMap.at(m_AnimState);
 
-	//°æ°ú½Ã°£ÀÌ clipÀÇ ÃÑ ½Ã°£À» ³Ñ¾ú´Ù¸é? ´Ù½Ã 0À¸·Î ÃÊ±âÈ­ÇØÁİ´Ï´Ù.
+	//ê²½ê³¼ì‹œê°„ì´ clipì˜ ì´ ì‹œê°„ì„ ë„˜ì—ˆë‹¤ë©´? ë‹¤ì‹œ 0ìœ¼ë¡œ ì´ˆê¸°í™”í•´ì¤ë‹ˆë‹¤.
 	if (m_CurrentTime > clip->TotalTime)
 		m_CurrentTime = 0;
-	//clip ÀÇ °¢ ÆÄÃ÷¸¦ ¼øÈ¸ÇÕ´Ï´Ù.
+	//clip ì˜ ê° íŒŒì¸ ë¥¼ ìˆœíšŒí•©ë‹ˆë‹¤.
 	for (int i = 0; i < clip->parts.size(); i++)
 	{
-		//ÆÄÃ÷¿¡ µî·ÏµÈ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» °¡Á®¿É´Ï´Ù.
+		//íŒŒì¸ ì— ë“±ë¡ëœ ì• ë‹ˆë©”ì´ì…˜ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		for (int j = 0; j < clip->source[i].size(); j++)
 		{
-			//Ã£¾Æ¿Â infoÀÇ ¹ßµ¿ ½Ã°£ÀÌ Áö±İ ½Ã°£º¸´Ù ¾Æ·¡¶ó¸é?
+			//ì°¾ì•„ì˜¨ infoì˜ ë°œë™ ì‹œê°„ì´ ì§€ê¸ˆ ì‹œê°„ë³´ë‹¤ ì•„ë˜ë¼ë©´?
 			if (clip->source[i][j].ActionTime < m_CurrentTime)
 			{
-				//Çàµ¿À» ÁøÇàÇØÁà¾ß°ÚÁÒ
-				//ÇØ´çµÈ ÆÄÃ÷¸¦ dwTime±îÁö º¯È¯½ÃÄÑÁÖ´Â Çàµ¿À» ÇÕ´Ï´Ù. 
-				//ºÎ¸ğÀÇ world matrix¿¡¼­
+				//í–‰ë™ì„ ì§„í–‰í•´ì¤˜ì•¼ê² ì£ 
+				//í•´ë‹¹ëœ íŒŒì¸ ë¥¼ dwTimeê¹Œì§€ ë³€í™˜ì‹œì¼œì£¼ëŠ” í–‰ë™ì„ í•©ë‹ˆë‹¤. 
+				//ë¶€ëª¨ì˜ world matrixì—ì„œ
 				//clip->parts[i]
 			}
 		}
@@ -105,7 +105,7 @@ CComponent * CAnimation::Clone(void)
 
 void CAnimation::Free(void)
 {
-	//ÇÒ´çÇØÁá´ø ¸ÊÀ»ÇØÁ¦ÇØÁİ´Ï´Ù.
+	//í• ë‹¹í•´ì¤¬ë˜ ë§µì„í•´ì œí•´ì¤ë‹ˆë‹¤.
 	/*for_each(m_clipMap.begin(), m_clipMap.end(), CDeleteMap());
 	m_clipMap.clear();*/
 	__super::Free();

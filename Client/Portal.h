@@ -30,6 +30,7 @@ public:
 	virtual void Render_GameObject(void) override;
 
 	virtual void OnCollisionEnter(const Collision* collision);
+	virtual void OnCollisionStay(const Collision* collision);
 
 private:
 	HRESULT		Add_Component(void);
@@ -43,6 +44,7 @@ private:
 
 	bool m_bTooCol;
 	bool m_bTopCol;
+	bool m_bCreateSwallowPortal;
 
 public:
 	static CPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

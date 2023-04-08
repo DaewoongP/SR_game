@@ -8,7 +8,7 @@
 
 CPortal::CPortal(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
-	m_bTooCol(false), m_bTopCol(false)
+	m_bTooCol(false), m_bTopCol(false), m_bCreateSwallowPortal(true)
 {
 }
 
@@ -31,6 +31,9 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -72,7 +75,19 @@ void CPortal::Render_GameObject(void)
 
 void CPortal::OnCollisionEnter(const Collision * collision)
 {
-	if (m_bTooCol && m_bTopCol)
+	if (m_pPlayer1 == collision->otherObj)
+		m_bTooCol = true;
+
+	if (m_pPlayer2 == collision->otherObj)
+	{
+		this->m_pCollider->m_bIsTrigger = true;
+		m_bTopCol = true;
+	}		
+}
+
+void CPortal::OnCollisionStay(const Collision * collision)
+{
+	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, );
@@ -82,6 +97,7 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 		pGameObject = CSwallowPortal::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Swallow_Portal", pGameObject), );
+		m_bCreateSwallowPortal = false;
 	}
 }
 
