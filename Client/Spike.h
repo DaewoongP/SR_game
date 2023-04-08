@@ -32,7 +32,6 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
-
 public:
 	static CSpike* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

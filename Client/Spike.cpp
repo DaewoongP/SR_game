@@ -25,10 +25,7 @@ HRESULT CSpike::Ready_GameObject(_vec3& vPos)
 
 _int CSpike::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-
-
+	
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	m_pTextureCom->Update_Anim(fTimeDelta);
@@ -38,7 +35,10 @@ _int CSpike::Update_GameObject(const _float& fTimeDelta)
 _int CSpike::Update_Too(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"Goto2D");
-
+	if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.5))
+		m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x,
+			m_pTransform->m_vInfo[INFO_POS].y + 0.15,
+			m_pTransform->m_vInfo[INFO_POS].z + 0.125f);
 	return S_OK;
 }
 
@@ -46,9 +46,9 @@ _int CSpike::Update_Top(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"GotoTop");
 	if (!(m_pTransform->m_vInfo[INFO_POS].z == 8.5))
-			m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x,
-			m_pTransform->m_vInfo[INFO_POS].y,
-			m_pTransform->m_vInfo[INFO_POS].z - 0.5f);
+		m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x,
+			m_pTransform->m_vInfo[INFO_POS].y-0.15,
+			m_pTransform->m_vInfo[INFO_POS].z - 0.125f);
 	return S_OK;
 }
 
@@ -91,14 +91,14 @@ HRESULT CSpike::Add_Component(void)
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
 	m_pTextureCom->Add_Anim(L"Idle", 0,0, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Goto2D", 7, 12, 1.f, false);
-	m_pTextureCom->Add_Anim(L"GotoTop", 0, 6, 1.f, false);
+	m_pTextureCom->Add_Anim(L"GotoTop", 0, 4, 1.f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_Options({ 1.f, 1.f, 2.f }, COL_ENV, true);
+	m_pCollider->Set_Options({ 1.f, 0.8f, 2.f }, COL_ENV, true);
 
 	return S_OK;
 }
