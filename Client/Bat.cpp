@@ -176,17 +176,13 @@ void CBat::OnCollisionEnter(const Collision * collision)
 		}
 	}
 	if (g_Is2D)
-	{
 		__super::OnCollisionEnter(collision);
-	}
 }
 
 void CBat::OnCollisionStay(const Collision * collision)
 {
 	if (g_Is2D)
-	{
 		__super::OnCollisionStay(collision);
-	}
 }
 
 HRESULT CBat::Add_Component(void)
@@ -218,7 +214,8 @@ HRESULT CBat::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.0f, 2.f, 0.1f });
+	m_pCollider->Set_Options({2.f, 2.f, BATTOPZ}, COL_OBJ, true);
+	m_pCollider->m_bIsTrigger = true;
 
 	m_pTransform->m_bIsStatic = false;
 
