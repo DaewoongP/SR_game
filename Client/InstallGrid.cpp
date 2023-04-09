@@ -55,11 +55,14 @@ void CInstallGrid::OnCollisionEnter(const Collision * collision)
 
 void CInstallGrid::OnCollisionStay(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube")||
+		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube"))
 	{
 		//내 위치랑 같다면.
-		if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
-			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)
+		/*if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
+			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)*/
+		if (!g_Is2D&&
+			D3DXVec3Length(&_vec3(collision->otherObj->m_pTransform->m_vInfo[INFO_POS]- m_pTransform->m_vInfo[INFO_POS]))<1.4f)
 		{
 			//그 친구는 돌멩이가 되고
 			dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsStone = true;
@@ -67,7 +70,7 @@ void CInstallGrid::OnCollisionStay(const Collision * collision)
 				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
 			//낙하를 트루로 바까준다.
-			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart();
+			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]+_vec3(0,0,1.0f)));
 			//나는 죽는다.
 			m_bDead = true;
 		}

@@ -18,8 +18,6 @@ public:
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
-	virtual void LateUpdate_Too() override;
-	virtual void LateUpdate_Top() override;
 	virtual void Render_GameObject(void) override;
 
 	virtual void OnCollisionEnter(const class Collision* collision);
