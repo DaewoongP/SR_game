@@ -9,10 +9,7 @@ private:
 	virtual ~CInstallCube();
 
 public:
-	void	Set_CubeIndex(int _iIndex) { m_iCubeIndex = _iIndex; }
-
-public:
-	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
+	virtual HRESULT Ready_GameObject(_vec3& vPos, int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
@@ -27,7 +24,7 @@ private:
 	int m_iCubeIndex;
 
 public:
-	static CInstallCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CInstallCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int iIndex);
 
 private:
 	virtual void Free(void) override;

@@ -1,6 +1,15 @@
 #pragma once
-#include "Grid.h"
-class CDefaultGrid : public CGrid
+#include "GameObject.h"
+
+BEGIN(Engine)
+
+class CCollider;
+class CRcTex;
+class CTexture;
+
+END
+
+class CDefaultGrid : public CGameObject
 {
 public:
 	explicit CDefaultGrid(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -16,10 +25,15 @@ public:
 	virtual void Render_GameObject(void) override;
 
 private:
-	virtual HRESULT Add_Component(void) override;
+	HRESULT Add_Component(void);
 	void	Key_Input();
 
 private:
+	Engine::CCollider * m_pCollider;
+	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pTextureCom;
+	bool m_bGridON;
+
 	int m_iStageTileIndex;
 
 public:

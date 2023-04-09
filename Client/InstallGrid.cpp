@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 
 CInstallGrid::CInstallGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGrid(pGraphicDev),
+	:CGameObject(pGraphicDev),
 	m_iStageTileIndex(0)
 {
 }
