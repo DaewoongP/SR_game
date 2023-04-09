@@ -157,6 +157,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackBlock.h" />
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="MoveBox.h" />
+    <ClInclude Include="PinkCloud.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Portal.h" />
@@ -203,6 +205,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackBlock.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
@@ -232,6 +235,7 @@
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Pig.cpp" />
+    <ClCompile Include="PinkCloud.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player02.cpp" />
     <ClCompile Include="MoveBox.cpp" />

@@ -10,6 +10,7 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 class CSnow;
+
 END
 class CPlayer : public Engine::CGameObject
 {

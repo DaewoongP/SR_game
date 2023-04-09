@@ -16,11 +16,11 @@
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
+#include "PinkCloud.h"
 #include "Spike.h"
 #include "InstallGrid.h"
 #include "GravityCube.h"
 #include"Spike.h"
-#include "TempBox.h"
 #include"Fireball.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -86,10 +86,20 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	//////Bat
-	//pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
+	//Pig
+	pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+
+	//Bat
+	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 8.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
+
+	//Cloud
+	pGameObject = CPinkCloud::Create(m_pGraphicDev, _vec3(6.f, 30.f, 10.5f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cloud_0", pGameObject), E_FAIL);
 
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));

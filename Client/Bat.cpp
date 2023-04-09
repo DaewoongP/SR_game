@@ -16,7 +16,7 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 10.0f;
-	m_pTransform->m_vScale = { -BATSCALE, BATSCALE, 1.f };
+	m_pTransform->m_vScale = { -BATSCALE, BATSCALE, 5.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	m_pRigid->m_bUseGrivaty = false;
@@ -34,13 +34,17 @@ _int CBat::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
+	
+	//X제한
+	Value_Range(1.0f, 2.0f * (CUBEX - 1)+1, &m_pTransform->m_vInfo[INFO_POS].x);
+
+	//Y제한
+	Value_Range(1.0f, 2.0f * (CUBEY - 1), &m_pTransform->m_vInfo[INFO_POS].y);
 	return 0;
 }
 
 _int CBat::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_vAngle.z = 0.0f;
-	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 	m_bBackSprite = false;
 
 	m_pRigid->m_Velocity = { 0.0f, 0.0f, 0.0f };
@@ -59,6 +63,7 @@ _int CBat::Update_Too(const _float & fTimeDelta)
 
 	m_pTransform->Move_Pos(&MoveDir, fTimeDelta, m_fSpeed);
 
+
 	return 0;
 }
 
@@ -66,7 +71,6 @@ _int CBat::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player02", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
 
@@ -136,11 +140,24 @@ void CBat::OnCollisionEnter(const Collision * collision)
 			m_pTransform->m_vScale.x = BATSCALE;
 		}
 	}
-	__super::OnCollisionEnter(collision);
+		__super::OnCollisionEnter(collision);
 }
 
 void CBat::OnCollisionStay(const Collision * collision)
 {
+	if (2.0f > m_pTransform->m_vInfo[INFO_POS].x && !m_bMoveLeft)
+	{m_bMoveLeft = true;
+		m_pTransform->m_vScale.x = BATSCALE;
+		
+		m_pTransform->m_vInfo[INFO_POS].x = 2.0f;
+	}
+	if (2.0f * (CUBEX - 1) < m_pTransform->m_vInfo[INFO_POS].x && m_bMoveLeft)
+	{m_bMoveLeft = false;
+		m_pTransform->m_vScale.x = -BATSCALE;
+		
+		m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
+	}
+
 	__super::OnCollisionStay(collision);
 }
 

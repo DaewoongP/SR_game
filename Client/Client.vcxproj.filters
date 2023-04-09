@@ -143,6 +143,9 @@
     <Filter Include="GameObject\Cube\Box\GravityCube">
       <UniqueIdentifier>{b4db29ee-1f17-4275-ad0f-2554e4a129cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Cloud">
+      <UniqueIdentifier>{d2e88d26-a6fc-4cb6-812d-541aadea2ed8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -297,8 +300,24 @@
     <ClInclude Include="GravityCube.h">
       <Filter>GameObject\Cube\Box\GravityCube</Filter>
     </ClInclude>
+    <ClInclude Include="Cloud.h">
+      <Filter>GameObject\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="PinkCloud.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Loading.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -435,6 +454,13 @@
     </ClCompile>
     <ClCompile Include="GravityCube.cpp">
       <Filter>GameObject\Cube\Box\GravityCube</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloud.cpp">
+      <Filter>GameObject\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="PinkCloud.cpp" />
+    <ClCompile Include="BackGround.cpp">
+      <Filter>GameObject\Portal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
