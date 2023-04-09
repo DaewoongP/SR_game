@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Cube.h"
-
 #include "Export_Function.h"
+#include "GravityCube.h"
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
@@ -57,11 +57,21 @@ void CCube::OnCollisionEnter(const Collision * collision)
 void CCube::OnCollisionStay(const Collision * collision)
 {
 	__super::OnCollisionStay(collision);
+	if (dynamic_cast<CGravityCube*>(collision->otherObj) &&
+		collision->_dir == DIR_UP)
+	{
+		collision->otherObj->m_pTransform->m_bIsStatic = true;
+	}
 }
 
 void CCube::OnCollisionExit(const Collision * collision)
 {
 	__super::OnCollisionExit(collision);
+	if (dynamic_cast<CGravityCube*>(collision->otherObj) &&
+		collision->_dir == DIR_UP)
+	{
+		collision->otherObj->m_pTransform->m_bIsStatic = false;
+	}
 }
 
 HRESULT CCube::Add_Component(void)

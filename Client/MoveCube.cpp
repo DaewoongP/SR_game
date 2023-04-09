@@ -43,7 +43,8 @@ _int CMoveCube::Update_GameObject(const _float & fTimeDelta)
 _int CMoveCube::Update_Top(const _float & fTimeDelta)
 {
 	MoveToPos(fTimeDelta);
-	if (m_handleState == CH_START || m_handleState == CH_END|| m_bIsStone)
+
+	if (m_handleState == CH_START || m_handleState == CH_END)
 		return 0;
 
 	ShootRay();
@@ -63,7 +64,7 @@ void CMoveCube::Render_GameObject(void)
 
 void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
+	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 		DoRayToDir(collision->_dir);
 
 	//충돌시 레이 발생! 
@@ -127,8 +128,8 @@ void CMoveCube::ShootRay()
 {
 	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
 	CheckColAble(_vec3(-1, 0, 0), 2.5f, DIR_RIGHT);
-	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_UP);
-	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
+	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_DOWN);
+	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_UP);
 }
 
 void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
@@ -142,7 +143,8 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 		else
 			m_bIsCol[edir] = false;
 
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
 	else
@@ -172,7 +174,8 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	//거기에 movecube 검출되면 그 친구에게 드로우 레이를 쏩니다.
 	if (_detectedCOL.size() == 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 				
@@ -266,10 +269,10 @@ void CMoveCube::SetTarget(_vec3 pos, CGameObject * obj)
 	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
 }
 
-void CMoveCube::DoFallingStart()
+void CMoveCube::DoFallingStart(_vec3 pos)
 {
 	m_bIsFall = true;
-	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, 2.1f)); 
+	m_MovetoPos = pos;
 	m_bIsMoving = true; 
 }
 

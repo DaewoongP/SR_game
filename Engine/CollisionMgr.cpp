@@ -242,7 +242,7 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
-vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* shootObj)
+vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* shootObj,_tchar* tagName)
 {
 	//obj와 거리만 저장하고, 거리에따라 정렬해주면 될듯.
 
@@ -258,11 +258,19 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* s
 		for (auto& iter = m_ColliderList[i].begin();
 		iter != m_ColliderList[i].end(); ++iter)
 		{
+			//자기 자신이면 탐색에서 제외
 			if (shootObj == *iter)
 				continue;
 
+			//일정거리 밖이면 탐색에서 제외
 			if (ray._Length * 3 <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
 				continue;
+
+			//입력된 태그가 빈칸이 아니고
+			if (lstrcmp(tagName, L""))
+				//태그가 등록된 태그와 다르면 제외
+				if (lstrcmp(tagName, (*iter)->m_pGameObject->m_pTag))
+					continue;
 
 			if (Collision_Ray(ray, *iter, &pDist))
 				colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });

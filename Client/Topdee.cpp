@@ -49,14 +49,6 @@ void CTopdee::LateUpdate_GameObject(void)
 	__super::LateUpdate_GameObject();
 }
 
-void CTopdee::LateUpdate_Too()
-{
-}
-
-void CTopdee::LateUpdate_Top()
-{
-}
-
 void CTopdee::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
@@ -68,14 +60,6 @@ void CTopdee::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CTopdee::Render_Too()
-{
-}
-
-void CTopdee::Render_Top()
-{
-}
-
 void CTopdee::OnCollisionEnter(const Collision * collision)
 {
 	__super::OnCollisionEnter(collision);
@@ -84,10 +68,6 @@ void CTopdee::OnCollisionEnter(const Collision * collision)
 void CTopdee::OnCollisionStay(const Collision * collision)
 {
 	__super::OnCollisionStay(collision);
-}
-
-void CTopdee::OnCollisionExit(const Collision * collision)
-{
 }
 
 HRESULT CTopdee::Add_Component(void)
@@ -177,45 +157,36 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 
 void CTopdee::RayDiskey()
 {
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f), m_pCollider);
-	if (_detectedCOL.size() >= 1)
+	for (int i = 0; i < DIR_END; i++)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 11;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
-				m_byPlayerInputDir &= 11;
+		RayDisKey_part((COL_DIR)i);
 	}
-	_detectedCOL.clear();
+}
 
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 0, 0), 1.5f), m_pCollider);
+void CTopdee::RayDisKey_part(COL_DIR dir)
+{
+	_vec3 vdir[DIR_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
+	_int fdir[DIR_END] = {13,14,7,11};
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], vdir[dir], 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 7;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
-				m_byPlayerInputDir &= 7;
-	}
-	_detectedCOL.clear();
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") ||
+			!lstrcmp(_detectedCOL[0].tag, L"InstallGrid") ||
+			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")
+			) m_byPlayerInputDir &= fdir[dir];
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+		{
+			COL_DIR destdir;
+			if (dir % 2 == 0)
+				destdir = (COL_DIR)(dir + 1);
+			else
+				destdir = (COL_DIR)(dir - 1);
 
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0), 1.5f), m_pCollider);
-	if (_detectedCOL.size() >= 1)
-	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 13;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_UP])
-				m_byPlayerInputDir &= 13;
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
+				m_byPlayerInputDir &= fdir[dir];
+		}
 	}
-	_detectedCOL.clear();
-
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.5f), m_pCollider);
-	if (_detectedCOL.size() >= 1)
-	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||(!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 14;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
-				m_byPlayerInputDir &= 14;
-	}
-	_detectedCOL.clear();
 }
 
 void CTopdee::PlayerState(const _float& fTimeDelta)
@@ -226,34 +197,17 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 	case Engine::TD_MOVE:
 		if (!m_bIsMoving)
 		{
-			if (m_byPlayerInputDir & 1)
-				y -= 2;
-			if (m_byPlayerInputDir & 2)
-				y += 2;
-			if (m_byPlayerInputDir & 4)
-				x += 2;
-			if (m_byPlayerInputDir & 8)
-				x -= 2;
-
-			m_MovetoPos = _vec3(_float((_int)m_pTransform->m_vInfo[INFO_POS].x + x), 
-				_float((_int)m_pTransform->m_vInfo[INFO_POS].y + y), 
-				_float((_int)m_pTransform->m_vInfo[INFO_POS].z));
+			DirApply(m_byPlayerInputDir, x, y);
+			m_MovetoPos = _vec3((int)m_pTransform->m_vInfo[INFO_POS].x + x, (int)m_pTransform->m_vInfo[INFO_POS].y + y, (int)m_pTransform->m_vInfo[INFO_POS].z);
 			m_bIsMoving = false;
 		}
 		break;
 	case Engine::TD_FINDING:
 	{
-		if (m_byLookDir & 1)
-			y -= 2;
-		if (m_byLookDir & 2)
-			y += 2;
-		if (m_byLookDir & 4)
-			x += 2;
-		if (m_byLookDir & 8)
-			x -= 2;
+		DirApply(m_byLookDir,x,y);
+
 		_vec3 maindir;
-		D3DXVec3Normalize(&maindir, &_vec3((_float)x, (_float)y, 0));
-		//inputdir기반으로 레이를 발사함.
+		D3DXVec3Normalize(&maindir, &_vec3(x, y, 0));
 		if (m_pGrabObj == nullptr)
 		{
 			CCollider* col = nullptr;
@@ -351,7 +305,8 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
 			*col = _detectedCOL[0].col;
 			return true;
@@ -373,3 +328,17 @@ _bool CTopdee::CheckAnythingExist(_vec3 dir, CCollider ** col)
 	}
 	return false;
 }
+
+void CTopdee::DirApply(_int dir, _int & x, _int & y)
+{
+	if (dir & 1)
+		y -= 2;
+	if (dir & 2)
+		y += 2;
+	if (dir & 4)
+		x += 2;
+	if (dir & 8)
+		x -= 2;
+}
+
+
