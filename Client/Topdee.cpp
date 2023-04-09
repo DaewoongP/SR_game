@@ -26,17 +26,17 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
+	Key_Input(fTimeDelta);
+	RayDiskey();
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 _int CTopdee::Update_Too(const _float & fTimeDelta)
 {
-	Key_Input(fTimeDelta);
 	return 0;
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
-	Key_Input(fTimeDelta);
 	if (m_bIsMoving)
 		Move(fTimeDelta);
 	PlayerState(fTimeDelta);
@@ -132,16 +132,16 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 		m_byPlayerInputDir |= 1;
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_byPlayerInputDir ^= 8;
+		m_byPlayerInputDir &= 7;
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_byPlayerInputDir ^= 4;
+		m_byPlayerInputDir &= 11;
 
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
-		m_byPlayerInputDir ^= 2;
+		m_byPlayerInputDir &= 13;
 
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
-		m_byPlayerInputDir ^= 1;
+		m_byPlayerInputDir &= 14;
 
 	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN&&!m_bIsMoving)
 		m_eState = TD_FINDING;
@@ -151,8 +151,6 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 
 	if (m_byPlayerInputDir != 0)
 		m_byLookDir = m_byPlayerInputDir;
-
-	RayDiskey();
 }
 
 void CTopdee::RayDiskey()
@@ -285,10 +283,6 @@ void CTopdee::Move(const _float& fTimeDelta)
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 
-	if (prePos == m_pTransform->m_vInfo[INFO_POS])
-		m_MovetoPos = prePos;
-
-	prePos = m_pTransform->m_vInfo[INFO_POS];
 	//만약 도달했다면?
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.3f)
 	{
