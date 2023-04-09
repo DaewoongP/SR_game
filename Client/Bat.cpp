@@ -127,7 +127,7 @@ void CBat::Render_Top()
 
 void CBat::OnCollisionEnter(const Collision * collision)
 {
-	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && dynamic_cast<CCube*>(collision->otherObj))
+	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && !lstrcmp(collision->otherObj->m_pTag, L"MapCube"))
 	{
 		if (m_bMoveLeft)
 		{
