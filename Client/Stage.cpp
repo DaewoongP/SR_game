@@ -66,7 +66,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
-
 	pGameObject = CStageBG::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StageBG", pGameObject), E_FAIL);
