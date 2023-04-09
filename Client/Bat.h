@@ -8,6 +8,7 @@
 BEGIN(Engine)
 
 class CTexture;
+class CShadow;
 
 END
 
@@ -41,6 +42,7 @@ private:
 
 private:
 	Engine::CTexture* m_pTextureCom_Back;
+	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
 

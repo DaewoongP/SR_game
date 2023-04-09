@@ -145,6 +145,9 @@
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Componnent\Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -255,6 +258,9 @@
     <ClCompile Include="WindParticle.cpp">
       <Filter>Etc</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Componnent\Shadow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -345,6 +351,9 @@
     </Filter>
     <Filter Include="Manager\AbstractFactory">
       <UniqueIdentifier>{85627165-7aa3-40d3-9af7-e880cf876576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Shadow">
+      <UniqueIdentifier>{f48b964d-bd76-4782-8840-9e2670a1ac34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -39,7 +39,8 @@ private:
 	virtual void Free(void) override;
 
 private:
-	CTexture* m_pTextureCom_Back;
+	Engine::CTexture* m_pTextureCom_Back;
+	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
 

@@ -21,6 +21,8 @@
 #include "Line.h"
 #include "Snow.h"
 
+#include "Shadow.h"
+
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

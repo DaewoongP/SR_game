@@ -52,6 +52,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Snow.h" />
     <ClInclude Include="stdafx.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="stdafx.cpp">

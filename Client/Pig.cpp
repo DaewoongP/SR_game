@@ -144,6 +144,8 @@ void CPig::Render_Too()
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -157,6 +159,8 @@ void CPig::Render_Top()
 	}
 	else
 		m_pTextureCom->Set_Texture(0);
+
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 }
@@ -215,6 +219,10 @@ HRESULT CPig::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 0.2f }, {0.f, -1.f, 0.f});
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
 
 	m_pTransform->m_bIsStatic = false;
 

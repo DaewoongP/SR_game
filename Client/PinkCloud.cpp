@@ -57,6 +57,8 @@ void CPinkCloud::Render_Too()
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -65,6 +67,8 @@ void CPinkCloud::Render_Top()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
+
+	m_pShadow->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 }
@@ -89,6 +93,10 @@ HRESULT CPinkCloud::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x+2,2.f,1.0f });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
 }
 
 CPinkCloud * CPinkCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
