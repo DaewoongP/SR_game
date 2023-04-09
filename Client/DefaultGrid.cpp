@@ -4,8 +4,9 @@
 #include "Export_Function.h"
 
 CDefaultGrid::CDefaultGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGrid(pGraphicDev),
-	m_iStageTileIndex(0)
+	:CGameObject(pGraphicDev),
+	m_iStageTileIndex(0), 
+	m_bGridON(true)
 {
 }
 

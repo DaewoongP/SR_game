@@ -4,6 +4,7 @@
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 #include "Export_Function.h"
+#include "AbstractFactory.h"
 
 #include "GroundGrid.h"
 #include "DefaultCube.h"
@@ -14,7 +15,7 @@
 CImguiStage::CImguiStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bGridON(false), m_bGridCreate(true), m_bCubePlaced(false), m_bDefaultGridCreate(false),
-	m_iCubeTextureNumber(0), m_iCubeIndex(0), m_iInstallGridIndex(0)
+	m_iCubeTextureNumber(0)
 {
 	m_pDefaultCube = nullptr;
 	m_pDefaultGrid = nullptr;
@@ -28,8 +29,8 @@ CImguiStage::~CImguiStage()
 
 _int CImguiStage::Update_Imgui_Stage()
 {
-	GridMeun();
-	CubeMeun();
+	GridMenu();
+	CubeMenu();
 
 	return S_OK;
 }
@@ -43,7 +44,7 @@ void CImguiStage::Release()
 	m_vecCubeInfo.shrink_to_fit();
 }
 
-HRESULT CImguiStage::GridMeun()
+HRESULT CImguiStage::GridMenu()
 {
 	if (ImGui::TreeNode("Grid"))
 	{
@@ -79,7 +80,7 @@ HRESULT CImguiStage::GridMeun()
 		// 디폴트 그리드 설치
 		if (m_bDefaultGridCreate && nullptr == m_pDefaultGrid)
 		{
-			m_pDefaultGrid = CreateDefaultGrid();
+			CreateDefaultGrid();
 			m_bCubePlaced = false;
 		}			
 
@@ -116,39 +117,38 @@ HRESULT CImguiStage::GroundGridON()
 
 	CGameObject* pGameObject = nullptr;
 
-	int iGridIndex = 0;
+	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; ++i)
 	{
 		for (int j = 0; j < CUBEX; ++j)
 		{
-			iGridIndex = i * CUBEX + j;
-
 			TCHAR objName[128] = { 0 };
-			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
+			_stprintf_s(objName, _T("GroundGrid%d"), (cubeCnt));
+
 			pGameObject = CGroundGrid::Create(m_pGraphicDev, _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f });
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
+
+			dynamic_cast<CGroundGrid*>(pGameObject)->Set_GridOn(true);
 			m_vecGroundGrid.push_back(pGameObject);
+			++cubeCnt;
 		}
 	}
 
 	return S_OK;
 }
 
-CGameObject * CImguiStage::CreateDefaultGrid()
+void CImguiStage::CreateDefaultGrid()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, nullptr);
+	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
+	FAILED_CHECK_RETURN(FACTORY<CGroundGrid>::Create(L"DefaultGrid", pStageLayer,
+		_vec3{ 0.f, 0.f, 0.f}), );
 
-	pGameObject = CDefaultGrid::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 10.f });
+	m_pDefaultGrid =  Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultGrid");
 
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Grid_Default", pGameObject), nullptr);
-	pGameObject->m_pTransform->m_bIsStatic = false;
-
-	return pGameObject;
+	return;
 }
 
 void CImguiStage::GridInstall()
@@ -156,24 +156,17 @@ void CImguiStage::GridInstall()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
-
 	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
 		OBJINFO tGrid = {};
 
-		_tchar strGridIndex[64] = { 0 };
-		_stprintf_s(strGridIndex, _T("Install_Grid%d"), m_iInstallGridIndex);
-		pGameObject = CInstallGrid::Create(m_pGraphicDev, m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS]);
+		FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pStageLayer,
+			m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS]), );
 
-		tGrid.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
-		tGrid.iObjTypeNumber = m_iInstallGridIndex;
+		tGrid.vObjPos = m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS];
+		tGrid.iObjTypeNumber = 0;
 
-		NULL_CHECK_RETURN(pGameObject, );
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strGridIndex, pGameObject), );
-		pGameObject->m_pTransform->m_bIsStatic = true;
 		m_vecInstallGrid.push_back(tGrid); // 저장을 위함
-		++m_iInstallGridIndex;
 	}
 }
 
@@ -207,8 +200,6 @@ HRESULT CImguiStage::LoadGrid()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-	CGameObject* pGameObject = nullptr;
-
 	while (true)
 	{
 		ReadFile(hFile, &vGrodInfo, sizeof(OBJINFO), &dwByte, nullptr);
@@ -220,21 +211,14 @@ HRESULT CImguiStage::LoadGrid()
 
 	for (auto& iter : m_vecInstallGrid)
 	{
-		_tchar strGridIndex[64] = { 0 };
-		_stprintf_s(strGridIndex, _T("GridIndex%d"), m_iInstallGridIndex);
-		pGameObject = CInstallGrid::Create(m_pGraphicDev, iter.vObjPos);
-
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strGridIndex, pGameObject), E_FAIL);
-
-		pGameObject->m_pTransform->m_bIsStatic = true;
-		++m_iInstallGridIndex;
+		FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pStageLayer,
+			iter.vObjPos), E_FAIL);
 	}
 
 	return S_OK;
 }
 
-HRESULT CImguiStage::CubeMeun()
+HRESULT CImguiStage::CubeMenu()
 {
 	if (ImGui::TreeNode("Cube"))
 	{
@@ -246,7 +230,7 @@ HRESULT CImguiStage::CubeMeun()
 		// 디폴트 큐브 설치
 		if (m_bCubePlaced && nullptr == m_pDefaultCube)
 		{
-			m_pDefaultCube = CreateDefaultCube();
+			CreateDefaultCube();
 			m_bDefaultGridCreate = false;
 		}			
 
@@ -284,20 +268,17 @@ HRESULT CImguiStage::CubeMeun()
 	return S_OK;
 }
 
-CGameObject * CImguiStage::CreateDefaultCube()
+void CImguiStage::CreateDefaultCube()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, nullptr);
+	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
+	FAILED_CHECK_RETURN(FACTORY<CDefaultCube>::Create(L"DefaultCube", pStageLayer,
+		_vec3{ 0.f, 0.f, 0.f }), );
 
-	pGameObject = CDefaultCube::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 10.f });
+	m_pDefaultGrid = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultCube");
 
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Cube_Default", pGameObject), nullptr);
-	pGameObject->m_pTransform->m_bIsStatic = true;
-
-	return pGameObject;
+	return;
 }
 
 void CImguiStage::CubeInstall()
@@ -305,25 +286,17 @@ void CImguiStage::CubeInstall()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
-
 	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
 		OBJINFO tCube = {};
 
-		_tchar strCubeIndex[64] = { 0 };
-		_stprintf_s(strCubeIndex, _T("Cube%d"), m_iCubeIndex);
-		pGameObject = CInstallCube::Create(m_pGraphicDev, m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS]);
+		FAILED_CHECK_RETURN(FACTORY<CInstallCube>::Create(L"InstallCube", pStageLayer,
+			m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS], m_iCubeTextureNumber), );
 
-		tCube.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+		tCube.vObjPos = m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
 		tCube.iObjTypeNumber = m_iCubeTextureNumber;
-		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(tCube.iObjTypeNumber);
 
-		NULL_CHECK_RETURN(pGameObject, );
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
-		pGameObject->m_pTransform->m_bIsStatic = true;
 		m_vecCubeInfo.push_back(tCube); // 저장을 위함
-		++m_iCubeIndex;
 	}
 }
 
@@ -357,8 +330,6 @@ HRESULT CImguiStage::LoadCube()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-	CGameObject* pGameObject = nullptr;
-
 	while (true)
 	{
 		ReadFile(hFile, &vCubeInfo, sizeof(OBJINFO), &dwByte, nullptr);
@@ -370,17 +341,9 @@ HRESULT CImguiStage::LoadCube()
 
 	for (auto& iter : m_vecCubeInfo)
 	{
-		_tchar strCubeIndex[64] = { 0 };
-		_stprintf_s(strCubeIndex, _T("CubeIndex%d"), m_iCubeIndex);
-		pGameObject = CInstallCube::Create(m_pGraphicDev, iter.vObjPos);
 
-		dynamic_cast<CInstallCube*>(pGameObject)->Set_CubeIndex(iter.iObjTypeNumber);
-
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
-
-		pGameObject->m_pTransform->m_bIsStatic = true;
-		++m_iCubeIndex;
+		FAILED_CHECK_RETURN(FACTORY<CInstallCube>::Create(L"InstallCube", pStageLayer,
+			iter.vObjPos, iter.iObjTypeNumber), E_FAIL);
 	}
 
 	return S_OK;

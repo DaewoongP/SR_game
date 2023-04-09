@@ -1,7 +1,15 @@
 #pragma once
-#include "Grid.h"
+#include "GameObject.h"
 
-class CGroundGrid : public CGrid
+BEGIN(Engine)
+
+class CCollider;
+class CRcTex;
+class CTexture;
+
+END
+
+class CGroundGrid : public CGameObject
 {
 private:
 	explicit CGroundGrid(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -17,7 +25,13 @@ public:
 	virtual void Render_GameObject(void) override;
 
 private:
-	virtual HRESULT Add_Component(void) override;
+	HRESULT Add_Component(void);
+
+private:
+	Engine::CCollider * m_pCollider;
+	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pTextureCom;
+	bool m_bGridON;
 
 public:
 	static	CGroundGrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

@@ -12,12 +12,14 @@ CInstallCube::~CInstallCube()
 {
 }
 
-HRESULT CInstallCube::Ready_GameObject(_vec3& vPos)
+HRESULT CInstallCube::Ready_GameObject(_vec3& vPos, int iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_iCubeIndex = iIndex;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	
 	return S_OK;
 }
 
@@ -85,11 +87,11 @@ HRESULT CInstallCube::Add_Component(void)
 	return S_OK;
 }
 
-CInstallCube * CInstallCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CInstallCube * CInstallCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int iIndex)
 {
 	CInstallCube*		pInstance = new CInstallCube(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, iIndex)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
