@@ -2,8 +2,6 @@
 #include "Stage.h"
 
 #include "Export_Function.h"
-#include "Monster.h"
-#include "SkyBox.h"
 #include "Cube.h"
 #include "Grid.h"
 #include "DynamiCamera.h"
@@ -54,7 +52,6 @@ void CStage::Render_Scene(void)
 {
 }
 
-
 HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
@@ -88,19 +85,19 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 
 			//사이 첫줄
 			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 
 			//사이 마지막줄
 			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}
 	}
 
