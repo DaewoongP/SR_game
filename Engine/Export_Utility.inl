@@ -24,6 +24,11 @@ HRESULT			Set_Scene(CScene* pScene)
 	return CManagement::GetInstance()->Set_Scene(pScene);
 }
 
+CScene*			Get_Scene(void)
+{
+	return CManagement::GetInstance()->Get_Scene();
+}
+
 CGameObject*	Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
 {
 	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);

@@ -2,67 +2,46 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Base.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Componnent</Filter>
     </ClInclude>
     <ClInclude Include="Define.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Enum.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Export_Function.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Export_System.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Export_Utility.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Include.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Reference</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>GameObject</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Typedef.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Struct.h">
-      <Filter>Reference</Filter>
-    </ClInclude>
-    <ClInclude Include="Layer.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Management.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Framework</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Function.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Componnent\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicDev.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Componnent\Collider</Filter>
@@ -130,10 +109,6 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>Componnent\Rigidbody</Filter>
     </ClInclude>
-    <ClInclude Include="WindParticle.h" />
-    <ClInclude Include="AbstractFactory.h">
-      <Filter>Manager\AbstractFactory</Filter>
-    </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>Componnent\Line</Filter>
     </ClInclude>
@@ -143,37 +118,43 @@
     <ClInclude Include="Line.h">
       <Filter>Componnent\Line</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicDev.h">
+      <Filter>Manager\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="Management.h">
+      <Filter>Framework\00. Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
+      <Filter>Framework\02. Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Framework\01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Framework\03. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Framework\04. Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="WindParticle.h">
+      <Filter>Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>Manager\AbstractFactory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
       <Filter>Componnent</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="SkyBox.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Management.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Layer.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Componnent\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicDev.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Componnent\Collider</Filter>
@@ -241,7 +222,6 @@
     <ClCompile Include="Rigidbody.cpp">
       <Filter>Componnent\Rigidbody</Filter>
     </ClCompile>
-    <ClCompile Include="WindParticle.cpp" />
     <ClCompile Include="Line.cpp">
       <Filter>Componnent\Line</Filter>
     </ClCompile>
@@ -251,30 +231,48 @@
     <ClCompile Include="Line.cpp">
       <Filter>Componnent\Line</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicDev.cpp">
+      <Filter>Manager\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="Management.cpp">
+      <Filter>Framework\00. Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Framework\02. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Framework\01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Framework\03. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Framework\04. Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="WindParticle.cpp">
+      <Filter>Etc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </None>
     <None Include="Export_System.inl">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </None>
     <None Include="Export_Utility.inl">
-      <Filter>Reference</Filter>
+      <Filter>Includes / Exports</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{762f7423-f0af-47e2-b111-5b95cf282be2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent">
       <UniqueIdentifier>{f61d561a-522d-49e9-b924-0a38e62a3ee9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager">
       <UniqueIdentifier>{a9a6cae6-55df-4998-8162-6add0c2121cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Reference">
-      <UniqueIdentifier>{861937ba-68a7-4f68-926e-ade248cc7386}</UniqueIdentifier>
     </Filter>
     <Filter Include="Framework">
       <UniqueIdentifier>{18f0efa2-d6ec-43ea-a20b-62f879697839}</UniqueIdentifier>
@@ -315,14 +313,38 @@
     <Filter Include="Componnent\Animation">
       <UniqueIdentifier>{f7b64550-f977-4ff3-a8f4-31e5a1673dae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\AbstractFactory">
-      <UniqueIdentifier>{c76fc5ab-7dcb-49b2-9cde-19f72c86c3ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\Line">
       <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager\FontMgr\CollisionMgr">
       <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Device">
+      <UniqueIdentifier>{c8480d5b-ac13-4cc8-9c8b-af99633f45cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes / Exports">
+      <UniqueIdentifier>{861937ba-68a7-4f68-926e-ade248cc7386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Etc">
+      <UniqueIdentifier>{85211221-3efb-44e5-be4f-b5bcaa4e3238}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\00. Management">
+      <UniqueIdentifier>{cec2c38a-f315-4d00-9ffd-78c40d7df64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\01. Scene">
+      <UniqueIdentifier>{6184e9a0-46bf-4748-aa04-d61d99ca8c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\02. Layer">
+      <UniqueIdentifier>{0b31608a-ee88-4706-8d04-e642c55739cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\03. GameObject">
+      <UniqueIdentifier>{ca651eb3-0508-4c3d-936c-b8a4ceb30412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\04. Renderer">
+      <UniqueIdentifier>{5119021d-4bb1-4044-80ac-6b32ee4c7fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\AbstractFactory">
+      <UniqueIdentifier>{85627165-7aa3-40d3-9af7-e880cf876576}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

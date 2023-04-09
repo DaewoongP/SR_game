@@ -2,13 +2,11 @@
 #include "Player.h"
 
 #include "Export_Function.h"
-#include "Portal.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpalbe(false)
-	, m_eKeyState(DIR_END),
-	m_pPortal(nullptr)
+	, m_eKeyState(DIR_END)
 {
 
 }
@@ -40,9 +38,13 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
-	
+
 	m_pTextureCom->Update_Anim(fTimeDelta);
-	
+
+	//텍스쳐컴의 애니가 die고 완료됐다면?
+	if (m_pTextureCom->IsAnimationEnd(L"Die"))
+		m_bDead = true;
+
 	DoFlip();
 	return 0;
 }
@@ -73,7 +75,7 @@ void CPlayer::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-	
+
 	__super::Render_GameObject();
 
 }
@@ -88,36 +90,40 @@ void CPlayer::Render_Top()
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
-	m_pPortal = Engine::Get_GameObject(L"Layer_GameLogic", L"Portal");
-
-	if (m_pPortal == collision->otherObj)
-		dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(true);
+	//스파이크랑 충돌시 본인 데드 트루
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
+		collision->_dir == DIR_DOWN)
+	{
+		m_pTextureCom->Switch_Anim(L"Die");
+	}
 
 	__super::OnCollisionEnter(collision);
 }
 
 void CPlayer::OnCollisionStay(const Collision * collision)
 {
-	if (collision->_dir == DIR_DOWN)
-		m_bJumpalbe = true;
-
-	if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
+	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
 	{
-		m_bJumpalbe = false;
-		m_pTextureCom->Switch_Anim(L"Jump");
+		if (collision->_dir == DIR_DOWN)
+			m_bJumpalbe = true;
+
+		if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
+		{
+			m_bJumpalbe = false;
+			m_pTextureCom->Switch_Anim(L"Jump");
+		}
+		else if (m_bJumpalbe)
+			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
+				m_pTextureCom->Switch_Anim(L"Walk");
+			else
+				m_pTextureCom->Switch_Anim(L"Idle");
 	}
-	else if (m_bJumpalbe)
-		if ((fabsf(m_pRigid->m_Velocity.x)>1.f))
-			m_pTextureCom->Switch_Anim(L"Walk");
-		else
-			m_pTextureCom->Switch_Anim(L"Idle");
+	
 	__super::OnCollisionStay(collision);
 }
 
 void CPlayer::OnCollisionExit(const Collision * collision)
 {
-	dynamic_cast<CPortal*>(m_pPortal)->Set_TooCol(false);
-
 	m_bJumpalbe = false;
 	__super::OnCollisionExit(collision);
 }
@@ -137,6 +143,7 @@ HRESULT CPlayer::Add_Component(void)
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
@@ -191,7 +198,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
-    		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 
 }
 

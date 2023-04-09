@@ -1,0 +1,41 @@
+#pragma once
+#include "MoveBox.h"
+
+BEGIN(Engine)
+class CRigidbody;
+END
+
+class CGravityCube :
+	public CMoveBox
+{
+public:
+	explicit CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CGravityCube();
+
+public:
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
+	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual _int Update_Too(const _float& fTimeDelta) override;
+	virtual _int Update_Top(const _float& fTimeDelta) override;
+	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Too() override;
+	virtual void LateUpdate_Top() override;
+	virtual void Render_GameObject(void) override;
+
+	virtual void OnCollisionEnter(const class Collision* collision);
+	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
+
+public:
+	static CGravityCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+
+private:
+	virtual void Free(void) override;
+
+private:
+	HRESULT		Add_Component(void);
+
+private:
+	CRigidbody* m_pRigid;
+};
+

@@ -8,7 +8,7 @@
 
 CPortal::CPortal(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
-	m_bTooCol(false), m_bTopCol(false)
+	m_bTooCol(false), m_bTopCol(false), m_bCreateSwallowPortal(true)
 {
 }
 
@@ -22,7 +22,7 @@ HRESULT CPortal::Ready_GameObject(_vec3& vPos)
 
 	m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_bIsStatic	 = false;
+	m_pTransform->m_bIsStatic = false;
 
 	return S_OK;
 }
@@ -32,24 +32,15 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	NULL_CHECK_RETURN(m_pPlayer1, );
+	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+	NULL_CHECK_RETURN(m_pPlayer2, );
+
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
-
-	return 0;
-}
-
-_int CPortal::Update_Too(const _float & fTimeDelta)
-{
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
-
-	return 0;
-}
-
-_int CPortal::Update_Top(const _float & fTimeDelta)
-{
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
 
 	return 0;
 }
@@ -72,7 +63,19 @@ void CPortal::Render_GameObject(void)
 
 void CPortal::OnCollisionEnter(const Collision * collision)
 {
-	if (m_bTooCol && m_bTopCol)
+	if (m_pPlayer1 == collision->otherObj)
+		m_bTooCol = true;
+
+	if (m_pPlayer2 == collision->otherObj)
+	{
+		m_pCollider->m_bIsTrigger = true;
+		m_bTopCol = true;
+	}
+}
+
+void CPortal::OnCollisionStay(const Collision * collision)
+{
+	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, );
@@ -82,6 +85,7 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 		pGameObject = CSwallowPortal::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
 		NULL_CHECK_RETURN(pGameObject, );
 		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Swallow_Portal", pGameObject), );
+		m_bCreateSwallowPortal = false;
 	}
 }
 

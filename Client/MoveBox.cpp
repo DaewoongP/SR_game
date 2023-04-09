@@ -14,102 +14,62 @@ CMoveBox::~CMoveBox()
 
 HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 {
+	__super::Ready_GameObject(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	
 	m_handleState = CH_NONE;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	m_bIsCol[DIR_END] = { 0 };
+	m_bIsStone = false;
+	m_bIsFall = false;
+
 	return S_OK;
 }
 
 _int CMoveBox::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 
 _int CMoveBox::Update_Too(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-	if (m_pTag)
-		int a = 1;
-
 	__super::Update_GameObject(fTimeDelta);
-
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	
 	return 0;
 }
 
 _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
 	MoveToPos(fTimeDelta);
-	if(m_handleState == CH_START || m_handleState == CH_END)
-	{
-		
-	}
-	else
-	{
-		ShootRay();
-		Move(fTimeDelta);
-	}
-	__super::Update_GameObject(fTimeDelta);
+	if (m_handleState == CH_START || m_handleState == CH_END|| m_bIsStone)
+		return 0;
 
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	ShootRay();
+	Move(fTimeDelta);
 	return 0;
 }
 
 void CMoveBox::LateUpdate_GameObject(void)
 {
-	
-}
-
-void CMoveBox::LateUpdate_Too()
-{
-	CGameObject::LateUpdate_GameObject();
-}
-
-void CMoveBox::LateUpdate_Top()
-{
-	CGameObject::LateUpdate_GameObject();
+	__super::LateUpdate_GameObject();
 }
 
 void CMoveBox::Render_GameObject(void)
 {
-}
-
-void CMoveBox::Render_Too()
-{
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
-	m_pTextureCom->Set_Texture();
-
-	m_pBufferCom->Render_Buffer();
-
-	CGameObject::Render_GameObject();
-}
-
-void CMoveBox::Render_Top()
-{
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
-	m_pTextureCom->Set_Texture();
-
-	m_pBufferCom->Render_Buffer();
-
-	CGameObject::Render_GameObject();
+	__super::Render_GameObject();
 }
 
 void CMoveBox::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02"))
-	{
 		DoRayToDir(collision->_dir);
-	}
 
 	//충돌시 레이 발생! 
 	__super::OnCollisionEnter(collision);
@@ -130,24 +90,14 @@ HRESULT CMoveBox::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Engine::Clone_Proto(L"CubeTex", this));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
-
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });
 
-	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
-	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.0f,2.0f,2.0f });
-	m_pCollider->Set_Group(COL_ENV);
-
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pLine, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Line", pComponent });
-
+	
 	return S_OK;
 }
 
@@ -165,9 +115,7 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 
 	if (prePos == m_pTransform->m_vInfo[INFO_POS])
-	{
 		m_MovetoPos = prePos;
-	}
 	prePos = m_pTransform->m_vInfo[INFO_POS];
 	//거리 이용 도달했는지 알려주는 코드
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
@@ -195,9 +143,7 @@ void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
-		{
 			m_bIsCol[edir] = true;
-		}
 		else
 			m_bIsCol[edir] = false;
 
@@ -322,7 +268,14 @@ void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
 {
 	m_TargetPos = pos;
 	m_Target = obj;
-	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
+	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
+}
+
+void CMoveBox::DoFallingStart()
+{
+	m_bIsFall = true;
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 2.1)); 
+	m_bIsMoving = true; 
 }
 
 CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)

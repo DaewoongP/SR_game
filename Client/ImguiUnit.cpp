@@ -12,6 +12,7 @@
 #include "Key.h"
 #include "KeyBox.h"
 #include "MoveBox.h"
+#include "CrackBlock.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
@@ -42,6 +43,8 @@ HRESULT CImguiUnit::MonsterMenu()
 {
 	if (ImGui::TreeNode("Monster"))
 	{
+		ImGui::Text("Install : F2");
+
 		// 몬스터 설치 체크 박스
 		ImGui::Checkbox("Monster Placed", &m_bMonsterON);
 
@@ -184,7 +187,7 @@ HRESULT CImguiUnit::LoadMonster()
 		if (0 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);			
+			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);	
 		}
 
 		// 박쥐
@@ -208,11 +211,13 @@ HRESULT CImguiUnit::MapObjectMenu()
 {
 	if (ImGui::TreeNode("Map Object"))
 	{
+		ImGui::Text("Install : F3");
+
 		// 맵 오브젝트 설치 체크 박스
 		ImGui::Checkbox("Map Object Placed", &m_bMapObjectON);
 
 		// 맵 오브젝트 종류 선택 콤보 박스
-		const char* items[] = { "KEY", "KEY BOX", "MOVE BOX", "PORTAL" };
+		const char* items[] = { "KEY", "KEY BOX", "MOVE BOX", "PORTAL" , "CRACK BLOCK"};
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
@@ -280,26 +285,32 @@ void CImguiUnit::MapObjectInstall()
 
 		if (0 == m_iMapObjectType) // 키
 		{
-			_stprintf_s(strMapObjectIndex, _T("Key%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("Key_%d"), m_iMapObjectIndex);
 			pGameObject = CKey::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (1 == m_iMapObjectType) // 키 박스
 		{
-			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("KeyBox_%d"), m_iMapObjectIndex);
 			pGameObject = CKeyBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (2 == m_iMapObjectType) // 무브 박스
 		{
-			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("MoveCube_%d"), m_iMapObjectIndex);
 			pGameObject = CMoveBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (3 == m_iMapObjectType) // 포탈
 		{
-			_stprintf_s(strMapObjectIndex, _T("Portal%d"), m_iMapObjectIndex);
+			_stprintf_s(strMapObjectIndex, _T("Portal_%d"), m_iMapObjectIndex);
 			pGameObject = CPortal::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+		}
+
+		else if (4 == m_iMapObjectType) // 밟으면 없어지는 큐브
+		{
+			_stprintf_s(strMapObjectIndex, _T("CrackBlock_%d"), m_iMapObjectIndex);
+			pGameObject = CCrackBlock::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		tMapObjectInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];

@@ -47,8 +47,6 @@ private:
 	Engine::CRigidbody*		m_pRigid;
 	//Engine::CSnow * m_praticle;
 
-	CGameObject*				m_pPortal;
-
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpalbe;
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.

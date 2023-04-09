@@ -5,12 +5,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{e52a0183-f91f-42a5-89c3-87ef976111e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{493da810-209f-4978-ad05-d997e6ebcb9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{e3cfa13b-ee92-4c4f-8a26-3baf0aefc692}</UniqueIdentifier>
     </Filter>
@@ -20,44 +14,11 @@
     <Filter Include="Imgui\Imgui_Resource">
       <UniqueIdentifier>{063a6c3c-66e7-4084-b47e-6d2c86206026}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Player">
-      <UniqueIdentifier>{e1b87ab7-9a26-4ba9-b03f-757c123c1993}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player\Too">
-      <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player\Top">
-      <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Player\Shadow">
-      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Monster">
-      <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Monster\Pig">
-      <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Monster\Bat">
-      <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Cube">
-      <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Cube\Box">
-      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object">
       <UniqueIdentifier>{7b2f1257-2e0e-43bc-a2e4-72cfad90399e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd">
-      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube">
       <UniqueIdentifier>{e3d76586-808e-480e-a3b4-ec6029fc5efc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
-      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
       <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
@@ -74,20 +35,113 @@
     <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
       <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Key">
-      <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\DefaultMonster">
       <UniqueIdentifier>{82c722ae-dfdd-49b7-97bb-37a529872c20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Portal">
-      <UniqueIdentifier>{fc218ae6-2353-4c26-b2ce-c733916ec993}</UniqueIdentifier>
+    <Filter Include="Imgui\Imgui_Object\Grid">
+      <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Cube\KeyBox">
+    <Filter Include="Imgui\Imgui_Object\Grid\GroundGrid">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Grid\InstallGrid">
+      <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\Grid\DefaultGrid">
+      <UniqueIdentifier>{52af855d-514f-4122-b0d6-317902eac34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\MainApp">
+      <UniqueIdentifier>{20341fff-bbd9-4cb3-b656-78e932121d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject">
+      <UniqueIdentifier>{e52a0183-f91f-42a5-89c3-87ef976111e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player">
+      <UniqueIdentifier>{e1b87ab7-9a26-4ba9-b03f-757c123c1993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\Too">
+      <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\Top">
+      <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\Shadow">
+      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster">
+      <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Pig">
+      <UniqueIdentifier>{e9aec24d-c483-46fb-bb0a-a7c26fb16c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Bat">
+      <UniqueIdentifier>{92161462-0cd2-4ecb-b57a-d26da0505797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject">
+      <UniqueIdentifier>{90492726-7aa6-4467-85e6-25158cfb49e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube">
+      <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\Box">
+      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Portal\SwallowPortal">
+    <Filter Include="00. GameObject\02. MapObject\Cube\CrackBlock">
+      <UniqueIdentifier>{76c5ec89-287a-40fd-aa50-cf83eb6344c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\TempBox">
+      <UniqueIdentifier>{76b00f30-28f3-461b-bdb2-6ed115e72654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Key">
+      <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Portal">
+      <UniqueIdentifier>{fc218ae6-2353-4c26-b2ce-c733916ec993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Portal\SwallowPortal">
       <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Spike">
+      <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
+      <UniqueIdentifier>{52af855d-514f-4122-b0d6-317902eac34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. Etc">
+      <UniqueIdentifier>{9163a1fd-8629-4881-bd24-809e01b849c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. Etc\BackGround">
+      <UniqueIdentifier>{6b52c980-3a99-4eb1-9e87-2f4d65d543db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. Etc\Camera">
+      <UniqueIdentifier>{6f60e620-5749-4699-a3f4-4516b0b9fc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene">
+      <UniqueIdentifier>{493da810-209f-4978-ad05-d997e6ebcb9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Loading">
+      <UniqueIdentifier>{c7ff4b7f-8ab1-4bd4-a022-1106b40152ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages">
+      <UniqueIdentifier>{627e2365-507d-4ba9-b8d1-addb89192073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss">
+      <UniqueIdentifier>{d8b2bab9-66d0-467a-b8d3-cb619470bd0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss\FireBall">
+      <UniqueIdentifier>{06610006-bb98-4f94-a1f6-836539ed7637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\InstallGrid">
+      <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\Box\GravityCube">
+      <UniqueIdentifier>{b4db29ee-1f17-4275-ad0f-2554e4a129cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Cloud">
       <UniqueIdentifier>{d2e88d26-a6fc-4cb6-812d-541aadea2ed8}</UniqueIdentifier>
@@ -107,25 +161,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackGround.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Loading.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Client.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="MainApp.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -161,38 +200,32 @@
     <ClInclude Include="ImguiMgr.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="DynamiCamera.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>GameObject\Player\Too</Filter>
+      <Filter>00. GameObject\00. Player\Too</Filter>
     </ClInclude>
     <ClInclude Include="Player02.h">
-      <Filter>GameObject\Player\Top</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>GameObject\Monster</Filter>
+      <Filter>00. GameObject\00. Player\Top</Filter>
     </ClInclude>
     <ClInclude Include="Bat.h">
-      <Filter>GameObject\Monster\Bat</Filter>
+      <Filter>00. GameObject\01. Monster\Bat</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
-      <Filter>GameObject\Cube</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube</Filter>
     </ClInclude>
     <ClInclude Include="MoveBox.h">
-      <Filter>GameObject\Cube\Box</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+      <Filter>Imgui\Imgui_Object\Grid</Filter>
     </ClInclude>
     <ClInclude Include="GroundGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Pig.h">
-      <Filter>GameObject\Monster\Pig</Filter>
+      <Filter>00. GameObject\01. Monster\Pig</Filter>
     </ClInclude>
     <ClInclude Include="DefaultCube.h">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
@@ -207,22 +240,65 @@
       <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
     </ClInclude>
     <ClInclude Include="Key.h">
-      <Filter>GameObject\Key</Filter>
+      <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClInclude>
     <ClInclude Include="KeyBox.h">
-      <Filter>GameObject\Cube\KeyBox</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClInclude>
-    <ClInclude Include="StageBG.h">
-      <Filter>GameObject</Filter>
+    <ClInclude Include="CrackBlock.h">
+      <Filter>00. GameObject\02. MapObject\Cube\CrackBlock</Filter>
     </ClInclude>
     <ClInclude Include="DefaultMonster.h">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">
-      <Filter>GameObject\Portal</Filter>
+      <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClInclude>
     <ClInclude Include="SwallowPortal.h">
-      <Filter>GameObject\Portal\SwallowPortal</Filter>
+      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.h">
+      <Filter>00. GameObject\02. MapObject\Spike</Filter>
+    </ClInclude>
+    <ClInclude Include="InstallGrid.h">
+      <Filter>GameObject\Cube\InstallGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\InstallGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultGrid.h">
+      <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="TempBox.h">
+      <Filter>00. GameObject\02. MapObject\Cube\TempBox</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBG.h">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamiCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
+      <Filter>Main\MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>01. Scene\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>00. GameObject\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityCube.h">
+      <Filter>GameObject\Cube\Box\GravityCube</Filter>
     </ClInclude>
     <ClInclude Include="Cloud.h">
       <Filter>GameObject\Cloud</Filter>
@@ -272,35 +348,29 @@
     <ClCompile Include="ImguiMgr.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>GameObject\Player\Too</Filter>
+      <Filter>00. GameObject\00. Player\Too</Filter>
     </ClCompile>
     <ClCompile Include="Player02.cpp">
-      <Filter>GameObject\Player\Top</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>GameObject</Filter>
+      <Filter>00. GameObject\00. Player\Top</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
-      <Filter>GameObject\Monster</Filter>
+      <Filter>00. GameObject\01. Monster</Filter>
     </ClCompile>
     <ClCompile Include="Bat.cpp">
-      <Filter>GameObject\Monster\Bat</Filter>
+      <Filter>00. GameObject\01. Monster\Bat</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>GameObject\Cube</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube</Filter>
     </ClCompile>
     <ClCompile Include="MoveBox.cpp">
-      <Filter>GameObject\Cube\Box</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd</Filter>
+      <Filter>Imgui\Imgui_Object\Grid</Filter>
     </ClCompile>
     <ClCompile Include="GroundGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\GroundGird</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd</Filter>
@@ -309,7 +379,7 @@
       <Filter>GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Pig.cpp">
-      <Filter>GameObject\Monster\Pig</Filter>
+      <Filter>00. GameObject\01. Monster\Pig</Filter>
     </ClCompile>
     <ClCompile Include="DefaultCube.cpp">
       <Filter>Imgui\Imgui_Object\Cube\DefaultCube</Filter>
@@ -324,22 +394,66 @@
       <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
     </ClCompile>
     <ClCompile Include="Key.cpp">
-      <Filter>GameObject\Key</Filter>
+      <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClCompile>
     <ClCompile Include="KeyBox.cpp">
-      <Filter>GameObject\Cube\KeyBox</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClCompile>
-    <ClCompile Include="StageBG.cpp">
-      <Filter>GameObject</Filter>
+    <ClCompile Include="CrackBlock.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\CrackBlock</Filter>
     </ClCompile>
     <ClCompile Include="DefaultMonster.cpp">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
-      <Filter>GameObject\Portal</Filter>
+      <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClCompile>
     <ClCompile Include="SwallowPortal.cpp">
-      <Filter>GameObject\Portal\SwallowPortal</Filter>
+      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>00. GameObject\02. MapObject\Spike</Filter>
+    </ClCompile>
+    <ClCompile Include="InstallGrid.cpp">
+      <Filter>GameObject\Cube\InstallGrid</Filter>
+      <Filter>Imgui\Imgui_Object\Grid\InstallGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultGrid.cpp">
+      <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="TempBox.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\TempBox</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBG.cpp">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Main\MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>01. Scene\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp" />
+    <ClCompile Include="Fireball.cpp">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>00. GameObject\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GravityCube.cpp">
+      <Filter>GameObject\Cube\Box\GravityCube</Filter>
     </ClCompile>
     <ClCompile Include="Cloud.cpp">
       <Filter>GameObject\Cloud</Filter>

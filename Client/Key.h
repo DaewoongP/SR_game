@@ -37,7 +37,6 @@ public:
 private:
 	virtual void Free(void) override;
 
+public:
+	static size_t iKeyCnt;
 };
-
-// create _vec추가
-// ready 생성

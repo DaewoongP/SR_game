@@ -158,8 +158,12 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
+    <ClInclude Include="CrackBlock.h" />
     <ClInclude Include="DefaultCube.h" />
+    <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultMonster.h" />
+    <ClInclude Include="GravityCube.h" />
+    <ClInclude Include="Fireball.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
     <ClInclude Include="GroundGrid.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InstallCube.h" />
+    <ClInclude Include="InstallGrid.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="KeyBox.h" />
     <ClInclude Include="Loading.h" />
@@ -189,6 +194,7 @@
     <ClInclude Include="Player02.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Spike.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
@@ -200,8 +206,12 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
+    <ClCompile Include="CrackBlock.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
+    <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="DefaultMonster.cpp" />
+    <ClCompile Include="GravityCube.cpp" />
+    <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
@@ -217,6 +227,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="InstallCube.cpp" />
+    <ClCompile Include="InstallGrid.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="KeyBox.cpp" />
     <ClCompile Include="Loading.cpp" />
@@ -229,6 +240,7 @@
     <ClCompile Include="Player02.cpp" />
     <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Spike.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StageBG.cpp" />
     <ClCompile Include="stdafx.cpp">

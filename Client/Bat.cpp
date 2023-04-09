@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 
 CBat::CBat(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CMonster(pGraphicDev), m_bMoveLeft(false), m_bBackSprite(false), m_fZRatio(0.0f)
+	: CMonster(pGraphicDev), m_bMoveLeft(false), m_bBackSprite(false)
 {
 }
 
@@ -23,7 +23,6 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 10.0f;
 	m_pRigid->m_bFreezePos_Z = true;
-
 	return S_OK;
 }
 
@@ -31,9 +30,9 @@ _int CBat::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
-	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
 	
 	//X제한
@@ -51,13 +50,6 @@ _int CBat::Update_Too(const _float & fTimeDelta)
 	m_pRigid->m_Velocity = { 0.0f, 0.0f, 0.0f };
 
 	_vec3 MoveDir = { 1.0f,0.0f,0.0f };
-
-	if (m_pTransform->m_vScale.y > BATSCALE)
-	{
-		m_pTransform->m_vScale.y -= BATSCALE * 0.1f;
-	}
-	else
-		m_pTransform->m_vScale.y = BATSCALE;
 
 	if (m_bMoveLeft)
 	{
@@ -79,52 +71,33 @@ _int CBat::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
-	
-
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player02", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
 
 	_vec3	vPlayerPos;
-
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
-	if (vPlayerPos.y > m_pTransform->Get_WorldMatrixPointer()->_42)
-	{
+	if (vPlayerPos.y > m_pTransform->m_vInfo[INFO_POS].y)
 		m_bBackSprite = true;
-	}
 	else
 		m_bBackSprite = false;
 
-	if (vPlayerPos.x < m_pTransform->Get_WorldMatrixPointer()->_41)
-	{
+	if (vPlayerPos.x < m_pTransform->m_vInfo[INFO_POS].x)
 		m_pTransform->m_vScale.x = -BATSCALE;
-	}
 	else
 		m_pTransform->m_vScale.x = BATSCALE;
 
-	vPlayerPos = vPlayerPos - m_pTransform->m_vInfo[INFO_POS];
+	_vec3 vDir;
+	D3DXVec3Normalize(&vDir, &(vPlayerPos - m_pTransform->m_vInfo[INFO_POS]));
 
-	D3DXVec3Normalize(&vPlayerPos, &vPlayerPos);
-
-	m_pRigid->AddForce(vPlayerPos, m_fSpeed * 10.0f, FORCE, fTimeDelta);
-
+	m_pRigid->AddForce(vDir, m_fSpeed * 10.f, FORCE, fTimeDelta);
+	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	return 0;
 }
 
 void CBat::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-}
-
-void CBat::LateUpdate_Too()
-{
-
-}
-
-void CBat::LateUpdate_Top()
-{
-
 }
 
 void CBat::Render_GameObject(void)
@@ -135,16 +108,13 @@ void CBat::Render_GameObject(void)
 void CBat::Render_Too()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
 	m_pTextureCom->Set_Texture(0);
-
 	m_pBufferCom->Render_Buffer();
 }
 
 void CBat::Render_Top()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
 	if (m_bBackSprite)
 	{
 		m_pTextureCom_Back->Set_Texture(0);
@@ -187,7 +157,7 @@ void CBat::OnCollisionStay(const Collision * collision)
 		
 		m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
 	}
-	
+
 	__super::OnCollisionStay(collision);
 }
 
@@ -221,7 +191,6 @@ HRESULT CBat::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	m_pCollider->Set_Options({2.f, 2.f, BATTOPZ}, COL_OBJ, true);
-	m_pCollider->m_bIsTrigger = true;
 
 	m_pTransform->m_bIsStatic = false;
 

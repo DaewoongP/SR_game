@@ -55,10 +55,10 @@ void CGameObject::LateUpdate_GameObject(void)
 
 void CGameObject::Render_GameObject(void)
 {
+	m_pGraphicDev->SetTexture(0, nullptr);
 	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
 	{
 		iter.second->Render_Component();
-		m_pGraphicDev->SetTexture(0, nullptr);
 	}
 }
 
@@ -68,8 +68,8 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	if (!m_pTransform->m_bIsStatic)
-		return;
+	/*if (!m_pTransform->m_bIsStatic)
+		return;*/
 	
  	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
@@ -87,6 +87,9 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_vec3 center_other = collider_other->Get_BoundCenter();
 	_vec3 size_other = collider_other->Get_BoundSize();
 
+	// 콜라이더 자체 오프셋
+	_vec3 offset_other = collider_other->Get_BoundOffset();
+
 	//충돌 영역을 이용한 위치 보정값
 	_float min_x = center_this.x - (size_this.x*0.5f + size_other.x*0.5f);
 	_float min_y = center_this.y - (size_this.y*0.5f + size_other.y*0.5f);
@@ -94,21 +97,21 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	_float max_x = center_this.x + (size_this.x*0.5f + size_other.x*0.5f);
 
 
-	if ((collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x <= min_x) ||
-		(collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x >= max_x) ||
-		(collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y <= min_y) ||
-		(collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y >= max_y)
+	if ((collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x + offset_other.x <= min_x) ||
+		(collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x + offset_other.x >= max_x) ||
+		(collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y + offset_other.y <= min_y) ||
+		(collision->_dir == DIR_UP&&trans_other->m_vInfo[INFO_POS].y + offset_other.y >= max_y)
 		)
 		return;
 
-	if (collision->_dir == DIR_UP &&trans_other->m_vInfo[INFO_POS].y > min_y)
-		trans_other->m_vInfo[INFO_POS].y = max_y;
-	else if (collision->_dir == DIR_DOWN&&trans_other->m_vInfo[INFO_POS].y < max_y)
-		trans_other->m_vInfo[INFO_POS].y = min_y;
-	else if (collision->_dir == DIR_LEFT&&trans_other->m_vInfo[INFO_POS].x < max_x)
-		trans_other->m_vInfo[INFO_POS].x = min_x;
-	else if (collision->_dir == DIR_RIGHT&&trans_other->m_vInfo[INFO_POS].x > min_x)
-		trans_other->m_vInfo[INFO_POS].x = max_x;
+	if (collision->_dir == DIR_UP &&center_other.y > min_y)
+		trans_other->m_vInfo[INFO_POS].y = max_y - offset_other.y;
+	else if (collision->_dir == DIR_DOWN&&center_other.y < max_y)
+		trans_other->m_vInfo[INFO_POS].y = min_y - offset_other.y;
+	else if (collision->_dir == DIR_LEFT&&center_other.x < max_x)
+		trans_other->m_vInfo[INFO_POS].x = min_x - offset_other.x;
+	else if (collision->_dir == DIR_RIGHT&&center_other.x > min_x)
+		trans_other->m_vInfo[INFO_POS].x = max_x - offset_other.x;
 		
 	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
 	CRigidbody* _rigid;

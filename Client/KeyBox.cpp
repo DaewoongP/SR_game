@@ -2,6 +2,7 @@
 #include "KeyBox.h"
 
 #include "Export_Function.h"
+#include "Key.h"
 
 CKeyBox::CKeyBox(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
 {
@@ -23,13 +24,16 @@ HRESULT CKeyBox::Ready_GameObject(_vec3& vPos)
 
 _int CKeyBox::Update_GameObject(const _float& fTimeDelta)
 {
-
+	if (m_bDead)
+		return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
-	return 0;
+	return S_OK;
 }
 
 void CKeyBox::LateUpdate_GameObject(void)
 {
+	if (CKey::iKeyCnt == 0)
+		m_bDead = true;
 	__super::LateUpdate_GameObject();
 }
 
@@ -40,6 +44,7 @@ void CKeyBox::Render_GameObject(void)
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
+
 	CGameObject::Render_GameObject();
 }
 

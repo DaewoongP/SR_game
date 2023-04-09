@@ -48,6 +48,8 @@ public:
 	_bool Delete_OtherCollider(CCollider* pOtherCol);
 
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }
+	void Set_BoundOffset(_vec3& pOffset) { m_pBoundingBox->Set_Offset(pOffset); }
+	_vec3 Get_BoundOffset() { return m_pBoundingBox->Get_Offset(); }
 	_vec3 Get_BoundCenter() { return m_pBoundingBox->Get_Center(); }
 	_vec3 Get_BoundSize() { return _vec3(	m_pBoundingBox->Get_Size().x,	m_pBoundingBox->Get_Size().y,
 		m_pBoundingBox->Get_Size().z);}
@@ -55,7 +57,7 @@ public:
 	void OnCollisionStay(const Collision* collision);
 	void OnCollisionExit(const Collision* collision);
 
-	void Set_BoundingBox(const _vec3& vSize = {2.f, 2.f, 2.f});
+	void Set_BoundingBox(const _vec3& vSize = { 2.f, 2.f, 2.f }, const _vec3& vOffsetPos = {0.f, 0.f, 0.f});
 	LPD3DXMESH Get_Mesh() { return m_pMesh; }
 
 public:
