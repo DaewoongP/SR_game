@@ -25,6 +25,8 @@ public:
 private:
 	multimap<const _tchar*, CGameObject*>	m_uMapObject;
 
+	_bool		bPreState;
+
 public:
 	static CLayer*		Create(void);
 
