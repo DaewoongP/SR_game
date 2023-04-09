@@ -37,19 +37,6 @@ public:
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}
-
-	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos, int iIndex)
-	{
-		// 초기화
-		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
-		CScene*	pScene = Get_Scene();
-		NULL_CHECK_RETURN(pScene, E_FAIL);
-		// 생성
-		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, iIndex);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
-		return S_OK;
-	}
 };
 
 END
