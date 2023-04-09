@@ -20,11 +20,11 @@ HRESULT CPig::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
-	// �⺻ �ؽ�ó
+	// ±âº» ÅØ½ºÃ³
 	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
-	// �� �ؽ�ó
+	// ¹é ÅØ½ºÃ³
 	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
@@ -155,6 +155,8 @@ void CPig::Render_Too()
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -168,6 +170,8 @@ void CPig::Render_Top()
 	}
 	else
 		m_pTextureCom->Set_Texture(0);
+
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 }
@@ -219,6 +223,12 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+
+	m_pTransform->m_bIsStatic = false;
 
 	return S_OK;
 }

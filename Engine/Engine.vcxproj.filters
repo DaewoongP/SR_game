@@ -145,6 +145,9 @@
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Componnent\Shadow</Filter>
+    </ClInclude>
     <ClInclude Include="SoundMgr.h">
       <Filter>Manager\SoundMgr</Filter>
     </ClInclude>
@@ -261,6 +264,9 @@
     <ClCompile Include="WindParticle.cpp">
       <Filter>Etc</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Componnent\Shadow</Filter>
+    </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
@@ -351,6 +357,9 @@
     </Filter>
     <Filter Include="Manager\AbstractFactory">
       <UniqueIdentifier>{85627165-7aa3-40d3-9af7-e880cf876576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Shadow">
+      <UniqueIdentifier>{f48b964d-bd76-4782-8840-9e2670a1ac34}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager\SoundMgr">
       <UniqueIdentifier>{4ac68d62-d6b0-4e4b-b12c-0997c6b9749f}</UniqueIdentifier>

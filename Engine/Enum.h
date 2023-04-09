@@ -29,6 +29,8 @@ namespace Engine
 		DIR_DOWN,
 		DIR_LEFT,
 		DIR_RIGHT,
+		DIR_FRONT,
+		DIR_BACK,
 		DIR_END
 	};
 

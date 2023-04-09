@@ -120,6 +120,9 @@ void CBat::Render_Too()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
+
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -132,6 +135,9 @@ void CBat::Render_Top()
 	}
 	else
 		m_pTextureCom->Set_Texture(0);
+
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 
 	m_pBufferCom->Render_Buffer();
 }
@@ -195,7 +201,12 @@ HRESULT CBat::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+
+	m_pTransform->m_bIsStatic = false;
 	return S_OK;
 }
 

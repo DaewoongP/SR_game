@@ -55,20 +55,24 @@ void CInstallGrid::OnCollisionEnter(const Collision * collision)
 
 void CInstallGrid::OnCollisionStay(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube")||
+		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube"))
 	{
-		//³» À§Ä¡¶û °°´Ù¸é.
-		if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
-			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)
+		//ë‚´ ìœ„ì¹˜ëž‘ ê°™ë‹¤ë©´.
+		/*if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
+			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)*/
+		if (!g_Is2D&&
+			!dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsFall&&
+			D3DXVec3Length(&_vec3(collision->otherObj->m_pTransform->m_vInfo[INFO_POS]- m_pTransform->m_vInfo[INFO_POS]))<1.4f)
 		{
-			//±× Ä£±¸´Â µ¹¸æÀÌ°¡ µÇ°í
+			//ê·¸ ì¹œêµ¬ëŠ” ëŒë©©ì´ê°€ ë˜ê³ 
 			dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsStone = true;
 			for (int i = 0; i < DIR_END; i++)
 				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
-			//³«ÇÏ¸¦ Æ®·ç·Î ¹Ù±îÁØ´Ù.
-			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart();
-			//³ª´Â Á×´Â´Ù.
+			//ë‚™í•˜ë¥¼ íŠ¸ë£¨ë¡œ ë°”ê¹Œì¤€ë‹¤.
+			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]));
+			//ë‚˜ëŠ” ì£½ëŠ”ë‹¤.
 			m_bDead = true;
 		}
 	}

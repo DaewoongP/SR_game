@@ -11,6 +11,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CShadow;
 
 END
 
@@ -30,6 +31,7 @@ protected:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
+	Engine::CShadow*		m_pShadow;
 
 	_float m_fZRatio;
 };
