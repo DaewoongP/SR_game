@@ -38,7 +38,6 @@ HRESULT CStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 	return S_OK;
 }
 
@@ -94,6 +93,8 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
+	
+	FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pLayer, _vec3(40.f, 10.f, 11.f)), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
@@ -103,7 +104,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			//맨 윗줄
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-
 			//사이 첫줄
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);

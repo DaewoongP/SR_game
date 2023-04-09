@@ -37,19 +37,16 @@ _int CPinkCloud::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
+	return 0;
 }
 
 _int CPinkCloud::Update_Too(const _float & fTimeDelta)
 {
-	__super::Update_Too(fTimeDelta);
-
 	return S_OK;
 }
 
 _int CPinkCloud::Update_Top(const _float & fTimeDelta)
 {
-	__super::Update_Top(fTimeDelta);
-
 	return S_OK;
 }
 
@@ -87,6 +84,7 @@ HRESULT CPinkCloud::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	return S_OK;
 }
 
 CPinkCloud * CPinkCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

@@ -1,7 +1,7 @@
 #pragma once
 #include "Monster.h"
 
-class CDefaultMonster : public CMonster
+class CDefaultUnit : public CMonster
 {
 public:
 	enum DefaultObject
@@ -11,8 +11,8 @@ public:
 	};
 
 private:
-	explicit CDefaultMonster(PDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CDefaultMonster();
+	explicit CDefaultUnit(PDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CDefaultUnit();
 
 public:
 	void	Set_DefaultIndex(DefaultObject _iIndex) { m_iDefaultIndex = _iIndex; }
@@ -34,7 +34,7 @@ private:
 	int m_iDefaultIndex; // 디폴트 종류 선택
 
 public:
-	static CDefaultMonster*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CDefaultUnit*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

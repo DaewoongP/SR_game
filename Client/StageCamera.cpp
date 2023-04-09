@@ -80,10 +80,12 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYDOWN && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 	{
+		// 2D -> 3D
 		if (g_Is2D)
 		{
 			g_Is2D = false;
 		}
+		// 3D -> 2D
 		else if (!g_Is2D)
 		{
 			g_Is2D = true;

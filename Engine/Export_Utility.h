@@ -10,6 +10,7 @@
 #include "RcTex.h"
 #include "TerrainTex.h"
 #include "Collider.h"
+#include "Collision.h"
 
 #include "GameObject.h"
 

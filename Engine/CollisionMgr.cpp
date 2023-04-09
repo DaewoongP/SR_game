@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
+#include "Collision.h"
 
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
@@ -117,41 +118,80 @@ _bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;
-	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY)
+  		if (fX >= fY)
 		{
-			// src 상충돌
-			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
+			if (fZ > fY) // Y값이 제일작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
-				return true;
+				// src 상충돌
+				if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
+					return true;
+				}
+				// src 하충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
+					return true;
+				}
 			}
-			// src 하충돌
-			else
+			else // Z값이 제일 작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
-				return true;
+				// src 후면충돌
+				if (pSrc->Get_BoundCenter().z < pDest->Get_BoundCenter().z)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_BACK);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_FRONT);
+					return true;
+				}
+				// src 전면충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_FRONT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_BACK);
+					return true;
+				}
 			}
 		}
-		else
+		else if (fY > fX)
 		{
-			// src 우충돌
-			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
+			if (fZ > fX) // X값이 제일작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
-				return true;
+				// src 우충돌
+				if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
+					return true;
+				}
+				// src 좌충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
+					return true;
+				}
 			}
-			// src 좌충돌
-			else
+			else // Z값 제일 작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
-				return true;
+				// src 후면충돌
+				if (pSrc->Get_BoundCenter().z < pDest->Get_BoundCenter().z)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_BACK);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_FRONT);
+					return true;
+				}
+				// src 전면충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_FRONT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_BACK);
+					return true;
+				}
 			}
 		}
 	}
