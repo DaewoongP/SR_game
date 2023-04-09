@@ -10,7 +10,7 @@
 #include "Bat.h"
 #include "Portal.h"
 #include "Key.h"
-#include "KeyBox.h"
+#include "KeyCube.h"
 #include "MoveCube.h"
 #include "CrackCube.h"
 
@@ -292,7 +292,7 @@ void CImguiUnit::MapObjectInstall()
 		else if (1 == m_iMapObjectType) // 키 박스
 		{
 			_stprintf_s(strMapObjectIndex, _T("KeyBox_%d"), m_iMapObjectIndex);
-			pGameObject = CKeyBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			pGameObject = CKeyCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (2 == m_iMapObjectType) // 무브 박스
@@ -380,7 +380,7 @@ HRESULT CImguiUnit::LoadMapObject()
 		else if (1 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
-			pGameObject = CKeyBox::Create(m_pGraphicDev, iter.vObjPos);
+			pGameObject = CKeyCube::Create(m_pGraphicDev, iter.vObjPos);
 		}
 
 		// 무브 박스

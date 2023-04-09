@@ -13,7 +13,7 @@
 #include "Bat.h"
 #include "CrackCube.h"
 #include "Key.h"
-#include "KeyBox.h"
+#include "KeyCube.h"
 #include "StageBG.h"
 #include "Portal.h"
 #include "PinkCloud.h"

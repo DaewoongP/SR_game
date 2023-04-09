@@ -7,11 +7,11 @@ class CTexture;
 class CCollider;
 END
 
-class CKeyBox : public CCube
+class CKeyCube : public CCube
 {
 private:
-	explicit CKeyBox(LPDIRECT3DDEVICE9 pGraphicDev);
-    virtual ~CKeyBox();
+	explicit CKeyCube(LPDIRECT3DDEVICE9 pGraphicDev);
+    virtual ~CKeyCube();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -22,7 +22,7 @@ private:
 	HRESULT		Add_Component(void);
 
 public:
-	static CKeyBox* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CKeyCube* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 	
 private:
 	virtual void Free() override;

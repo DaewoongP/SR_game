@@ -215,9 +215,6 @@
     <ClInclude Include="Key.h">
       <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClInclude>
-    <ClInclude Include="KeyBox.h">
-      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultMonster.h">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClInclude>
@@ -279,6 +276,9 @@
     </ClInclude>
     <ClInclude Include="CrackCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -354,9 +354,6 @@
     <ClCompile Include="Key.cpp">
       <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClCompile>
-    <ClCompile Include="KeyBox.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultMonster.cpp">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClCompile>
@@ -428,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="CrackCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,19 +1,19 @@
 #include "stdafx.h"
-#include "KeyBox.h"
+#include "KeyCube.h"
 
 #include "Export_Function.h"
 #include "Key.h"
 
-CKeyBox::CKeyBox(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
+CKeyCube::CKeyCube(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
 {
 
 }
 
-CKeyBox::~CKeyBox()
+CKeyCube::~CKeyCube()
 {
 }
 
-HRESULT CKeyBox::Ready_GameObject(_vec3& vPos)
+HRESULT CKeyCube::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
@@ -22,7 +22,7 @@ HRESULT CKeyBox::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
-_int CKeyBox::Update_GameObject(const _float& fTimeDelta)
+_int CKeyCube::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -30,14 +30,14 @@ _int CKeyBox::Update_GameObject(const _float& fTimeDelta)
 	return S_OK;
 }
 
-void CKeyBox::LateUpdate_GameObject(void)
+void CKeyCube::LateUpdate_GameObject(void)
 {
 	if (CKey::iKeyCnt == 0)
 		m_bDead = true;
 	__super::LateUpdate_GameObject();
 }
 
-void CKeyBox::Render_GameObject(void)
+void CKeyCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -48,7 +48,7 @@ void CKeyBox::Render_GameObject(void)
 	CGameObject::Render_GameObject();
 }
 
-HRESULT CKeyBox::Add_Component(void)
+HRESULT CKeyCube::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 	
@@ -69,9 +69,9 @@ HRESULT CKeyBox::Add_Component(void)
 	return S_OK;
 }
 
-CKeyBox* CKeyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CKeyCube* CKeyCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CKeyBox* pInstance = new CKeyBox(pGraphicDev);
+	CKeyCube* pInstance = new CKeyCube(pGraphicDev);
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
@@ -81,7 +81,7 @@ CKeyBox* CKeyBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CKeyBox::Free()
+void CKeyCube::Free()
 {
 	__super::Free();
 }
