@@ -84,6 +84,10 @@ _uint CLoading::Loading_ForStage(void)
 	// 포탈 진입 애니메이션
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Swallow_Portal_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/portalSpr/SwallowportalSpr/spriteportal_%d.png", 17)), E_FAIL);
 
+	//구름
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Cloud_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/cloudSpr/Cloud_%d.png", 6)), E_FAIL);
+
+
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);

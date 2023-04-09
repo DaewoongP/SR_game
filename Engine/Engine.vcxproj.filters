@@ -101,7 +101,7 @@
       <Filter>Componnent\Texture</Filter>
     </ClInclude>
     <ClInclude Include="CollisionMgr.h">
-      <Filter>Manager\CollisionMgr</Filter>
+      <Filter>Manager\FontMgr\CollisionMgr</Filter>
     </ClInclude>
     <ClInclude Include="DInputMgr.h">
       <Filter>Manager\InputMgr</Filter>
@@ -212,7 +212,7 @@
       <Filter>Componnent\Texture</Filter>
     </ClCompile>
     <ClCompile Include="CollisionMgr.cpp">
-      <Filter>Manager\CollisionMgr</Filter>
+      <Filter>Manager\FontMgr\CollisionMgr</Filter>
     </ClCompile>
     <ClCompile Include="DInputMgr.cpp">
       <Filter>Manager\InputMgr</Filter>
@@ -294,9 +294,6 @@
     <Filter Include="Componnent\Transform">
       <UniqueIdentifier>{5863d0d2-b596-4b09-94e2-85040dd09eed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\CollisionMgr">
-      <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\InputMgr">
       <UniqueIdentifier>{c6d3e922-c22e-4571-bbf4-10a967944300}</UniqueIdentifier>
     </Filter>
@@ -323,6 +320,9 @@
     </Filter>
     <Filter Include="Componnent\Line">
       <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\FontMgr\CollisionMgr">
+      <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

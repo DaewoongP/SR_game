@@ -143,3 +143,17 @@ static float Lerp(float A, float B, float Alpha)
 {
 	return A * (1 - Alpha) + B * Alpha;
 }
+
+template <typename T>
+static void Value_Range(T Min, T Max, T* Value)
+{
+	NULL_CHECK_RETURN(Value);
+	if (Max < *Value)
+	{
+		*Value = Max;
+	}
+	else if (Min > *Value)
+	{
+		*Value = Min;
+	}
+}
