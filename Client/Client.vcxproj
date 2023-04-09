@@ -92,7 +92,6 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../Imgui/Header/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,6 +190,7 @@
     <ClInclude Include="MoveCube.h" />
     <ClInclude Include="PinkCloud.h" />
     <ClInclude Include="SwallowPortal.h" />
+    <ClInclude Include="Switch.h" />
     <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
@@ -235,6 +235,7 @@
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="PinkCloud.cpp" />
     <ClCompile Include="SwallowPortal.cpp" />
+    <ClCompile Include="Switch.cpp" />
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveCube.cpp" />

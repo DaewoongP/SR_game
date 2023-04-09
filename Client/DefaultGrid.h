@@ -9,7 +9,7 @@ class CTexture;
 
 END
 
-class CDefaultGrid : public CGameObject
+class CDefaultGrid : public Engine::CGameObject
 {
 public:
 	explicit CDefaultGrid(LPDIRECT3DDEVICE9 pGraphicDev);
