@@ -10,11 +10,11 @@ class CTexture;
 class CCollider;
 
 END
-class CHadouKen : public Engine::CGameObject
+class CFireball : public Engine::CGameObject
 {
 private:
-	explicit CHadouKen(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CHadouKen();
+	explicit CFireball(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFireball();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -31,7 +31,7 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
 public:
-	static CHadouKen* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CFireball* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

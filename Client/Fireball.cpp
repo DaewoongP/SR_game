@@ -2,16 +2,16 @@
 #include "Fireball.h"
 
 #include"..\Engine\Export_Function.h"
-CHadouKen::CHadouKen(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
+CFireball::CFireball(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
 {
 
 }
 
-CHadouKen::~CHadouKen()
+CFireball::~CFireball()
 {
 }
 
-HRESULT CHadouKen::Ready_GameObject(_vec3& vPos)
+HRESULT CFireball::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = { vPos.x, vPos.y,vPos.z };
@@ -22,7 +22,7 @@ HRESULT CHadouKen::Ready_GameObject(_vec3& vPos)
 
 }
 
-_int CHadouKen::Update_GameObject(const _float& fTimeDelta)
+_int CFireball::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -33,24 +33,24 @@ _int CHadouKen::Update_GameObject(const _float& fTimeDelta)
 	return 0;
 }
 
-_int CHadouKen::Update_Too(const _float& fTimeDelta)
+_int CFireball::Update_Too(const _float& fTimeDelta)
 {
 
 	return S_OK();
 }
 
-_int CHadouKen::Update_Top(const _float& fTimeDelta)
+_int CFireball::Update_Top(const _float& fTimeDelta)
 {
 	return S_OK();
 }
 
-void CHadouKen::LateUpdate_GameObject(void)
+void CFireball::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 
 }
 
-void CHadouKen::Render_GameObject(void)
+void CFireball::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -59,17 +59,17 @@ void CHadouKen::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CHadouKen::OnCollisionEnter(const Collision* collision)
+void CFireball::OnCollisionEnter(const Collision* collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Player"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Player")&& (g_Is2D == true))
 		m_bDead = true;
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02")&& (g_Is2D == false))
 		m_bDead = true;
 	
 }
 
 
-HRESULT CHadouKen::Add_Component(void)
+HRESULT CFireball::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -80,22 +80,22 @@ HRESULT CHadouKen::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Fireball_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 0.5f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_Options({ 4.f, 3.8f, 4.f }, COL_ENV, true);
+	m_pCollider->Set_Options({ 8.5f, 3.8f, 4.f }, COL_ENV, true);
 
 
 	return S_OK;
 }
 
-CHadouKen* CHadouKen::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CFireball* CFireball::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CHadouKen* pInstance = new CHadouKen(pGraphicDev);
+	CFireball* pInstance = new CFireball(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -105,7 +105,7 @@ CHadouKen* CHadouKen::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CHadouKen::Free(void)
+void CFireball::Free(void)
 {
 	__super::Free();
 }

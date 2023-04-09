@@ -191,9 +191,6 @@
     <ClInclude Include="Player02.h">
       <Filter>00. GameObject\00. Player\Top</Filter>
     </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>00. GameObject\01. Monster</Filter>
-    </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>00. GameObject\01. Monster\Bat</Filter>
     </ClInclude>
@@ -281,6 +278,9 @@
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>00. GameObject\01. Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -318,9 +318,6 @@
     </ClCompile>
     <ClCompile Include="Player02.cpp">
       <Filter>00. GameObject\00. Player\Top</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>00. GameObject\01. Monster</Filter>
     </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>00. GameObject\01. Monster\Bat</Filter>
@@ -394,9 +391,6 @@
     <ClCompile Include="StageBG.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>Main\MainApp</Filter>
     </ClCompile>
@@ -412,6 +406,12 @@
     <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>00. GameObject\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
