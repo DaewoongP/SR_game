@@ -55,8 +55,8 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 _uint CLoading::Loading_ForStage(void)
 {
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
-	Set_String(L"Sound/Bgm Loading..........");
-	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
+	//Set_String(L"Sound/Bgm Loading..........");
+	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
 	
@@ -79,7 +79,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"KeyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png", 11)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Key_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png",21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spike_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/spikesSpr/spikesSpr_%d.png", 13)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fireball_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/b1FireballSpr/b1FireballSpr_%d.png", 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fireball_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/b1FireballSpr/b1FireballSpr_%d.png", 9)), E_FAIL);
 
 	//박쥐
 	//앞

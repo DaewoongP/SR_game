@@ -36,6 +36,9 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	m_pTransform->m_vInfo[INFO_POS].x -= 0.5f;
+	m_pTransform->m_vScale = { m_pTransform->m_vScale.x + 0.1f,
+	m_pTransform->m_vScale.y,
+	m_pTransform->m_vScale.z };
 	return 0;
 }
 
