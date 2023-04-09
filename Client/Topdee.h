@@ -53,8 +53,6 @@ private:
 
 	TOPDEESTATE				m_eState = TD_MOVE;
 
-	_vec3					prePos;
-
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:

@@ -62,6 +62,7 @@ void CInstallGrid::OnCollisionStay(const Collision * collision)
 		/*if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
 			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)*/
 		if (!g_Is2D&&
+			!dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsFall&&
 			D3DXVec3Length(&_vec3(collision->otherObj->m_pTransform->m_vInfo[INFO_POS]- m_pTransform->m_vInfo[INFO_POS]))<1.4f)
 		{
 			//그 친구는 돌멩이가 되고
@@ -70,7 +71,7 @@ void CInstallGrid::OnCollisionStay(const Collision * collision)
 				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
 			//낙하를 트루로 바까준다.
-			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]+_vec3(0,0,1.0f)));
+			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]));
 			//나는 죽는다.
 			m_bDead = true;
 		}

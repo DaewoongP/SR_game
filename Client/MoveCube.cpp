@@ -47,7 +47,8 @@ _int CMoveCube::Update_Top(const _float & fTimeDelta)
 	if (m_handleState == CH_START || m_handleState == CH_END)
 		return 0;
 
-	ShootRay();
+	if(!m_bIsFall)
+		ShootRay();
 	Move(fTimeDelta);
 	return 0;
 }
@@ -110,12 +111,16 @@ _bool CMoveCube::IsMoveDone(const _float & fTimeDelta)
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 
-	if (prePos == m_pTransform->m_vInfo[INFO_POS])
-		m_MovetoPos = prePos;
-	prePos = m_pTransform->m_vInfo[INFO_POS];
 	//거리 이용 도달했는지 알려주는 코드
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
 	{
+		if (m_bIsStone&&!m_bIsFall)
+		{
+			m_bIsFall = true;
+			m_MovetoPos = m_MovetoPos + _vec3(0, 0, 1);
+			m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
+			return false;
+		}
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
 
@@ -179,7 +184,7 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 				
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir)&&!m_bIsStone)
 			{
 				SetMovePos(dir);
 				return true;
@@ -188,8 +193,8 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 			return false;
 		}
 	}
-
-	SetMovePos(dir);	
+	if(!m_bIsStone)
+		SetMovePos(dir);	
 	return true;
 }
 
@@ -271,7 +276,7 @@ void CMoveCube::SetTarget(_vec3 pos, CGameObject * obj)
 
 void CMoveCube::DoFallingStart(_vec3 pos)
 {
-	m_bIsFall = true;
+	m_bIsStone = true;
 	m_MovetoPos = pos;
 	m_bIsMoving = true; 
 }
