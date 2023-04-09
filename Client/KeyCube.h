@@ -1,12 +1,6 @@
 #pragma once
 #include "Cube.h"
 
-BEGIN(Engine)
-class CCubeTex;
-class CTexture;
-class CCollider;
-END
-
 class CKeyCube : public CCube
 {
 private:

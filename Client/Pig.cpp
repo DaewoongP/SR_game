@@ -19,6 +19,17 @@ HRESULT CPig::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { -PIGSCALE, PIGSCALE, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
+
+	// 기본 텍스처
+	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
+	// 백 텍스처
+	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
+	m_pTextureCom_Back->Switch_Anim(L"Idle");
+	m_pTextureCom_Back->m_bUseFrameAnimation = true;
+
+	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 0.2f }, { 0.f, -1.f, 0.f });
 	
 	return S_OK;
 }
@@ -196,16 +207,10 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pTextureCom_Back = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Back_Pig_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom_Back, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Back_Pig_Texture", pComponent });
-	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
-	m_pTextureCom_Back->Switch_Anim(L"Idle");
-	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Pig_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Pig_Texture", pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
@@ -214,9 +219,6 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 0.2f }, {0.f, -1.f, 0.f});
-
-	m_pTransform->m_bIsStatic = false;
 
 	return S_OK;
 }

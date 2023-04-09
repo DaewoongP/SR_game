@@ -20,8 +20,8 @@
 #include "Spike.h"
 #include "InstallGrid.h"
 #include "GravityCube.h"
-#include"Spike.h"
-#include"Fireball.h"
+#include "Fireball.h"
+#include "Spike.h"
 
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -96,37 +96,18 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-			}
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 
 			//사이 첫줄
 			if (i == CUBEY - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-			}
-
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			//사이 마지막줄
 			if (j == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 				cubeCnt++;
-			}
-
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-				cubeCnt++;
-			}
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 		}
 	}
 

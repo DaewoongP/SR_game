@@ -18,8 +18,8 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_bIsStatic = true;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,0.2f });
 
 	__super::Update_GameObject(0.01f);
 	return S_OK;
@@ -107,7 +107,6 @@ HRESULT CTopdee::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,0.2f });
 	return S_OK;
 }
 

@@ -21,6 +21,16 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_bIsStatic = false;
+	// 애니메이션
+	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
+
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
 	return S_OK;
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
@@ -131,7 +141,6 @@ void CToodee::OnCollisionExit(const Collision * collision)
 HRESULT CToodee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-	m_pTransform->m_bIsStatic = false;
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
@@ -140,12 +149,6 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
-	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
@@ -154,7 +157,6 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
 
 	return S_OK;
 }

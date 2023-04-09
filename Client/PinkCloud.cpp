@@ -20,9 +20,11 @@ HRESULT CPinkCloud::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 
-	m_pTransform->m_bIsStatic = true;
-
+	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
 	
 	return S_OK;
@@ -81,14 +83,10 @@ HRESULT CPinkCloud::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Cloud_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x+2,2.f,1.0f });
 }
 
 CPinkCloud * CPinkCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

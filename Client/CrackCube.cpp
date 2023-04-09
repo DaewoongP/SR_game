@@ -18,6 +18,7 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_fBlockTime = CRACKTIME;
+	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
 	return S_OK;
 }
 
@@ -99,7 +100,6 @@ HRESULT CCrackCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
 	return S_OK;
 }
 

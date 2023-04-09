@@ -18,6 +18,12 @@ HRESULT CFireball::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = {5.5f,3.f,3.f };
 	m_pTransform->m_bIsStatic = false;
 
+	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 0.5f, true);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
+
+	m_pCollider->Set_Options({ 8.5f, 3.8f, 4.f }, COL_ENV, true);
+
 	return S_OK;
 
 }
@@ -80,16 +86,10 @@ HRESULT CFireball::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Fireball_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 0.5f, true);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider",pComponent });
-	m_pCollider->Set_Options({ 8.5f, 3.8f, 4.f }, COL_ENV, true);
-
-
 	return S_OK;
 }
 
