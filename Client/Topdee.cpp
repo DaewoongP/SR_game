@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "Player02.h"
+#include "Topdee.h"
 #include "MoveBox.h"
 #include "Export_Function.h"
 
-CPlayer02::CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev)
+CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
 }
 
-CPlayer02::~CPlayer02()
+CTopdee::~CTopdee()
 {
 }
 
-HRESULT CPlayer02::Ready_GameObject(_vec3& vPos)
+HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -24,17 +24,17 @@ HRESULT CPlayer02::Ready_GameObject(_vec3& vPos)
 	__super::Update_GameObject(0.01f);
 	return S_OK;
 }
-_int CPlayer02::Update_GameObject(const _float& fTimeDelta)
+_int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
-_int CPlayer02::Update_Too(const _float & fTimeDelta)
+_int CTopdee::Update_Too(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 	return 0;
 }
-_int CPlayer02::Update_Top(const _float & fTimeDelta)
+_int CTopdee::Update_Top(const _float & fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 	if (m_bIsMoving)
@@ -44,20 +44,20 @@ _int CPlayer02::Update_Top(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
-void CPlayer02::LateUpdate_GameObject(void)
+void CTopdee::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CPlayer02::LateUpdate_Too()
+void CTopdee::LateUpdate_Too()
 {
 }
 
-void CPlayer02::LateUpdate_Top()
+void CTopdee::LateUpdate_Top()
 {
 }
 
-void CPlayer02::Render_GameObject(void)
+void CTopdee::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -68,29 +68,29 @@ void CPlayer02::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CPlayer02::Render_Too()
+void CTopdee::Render_Too()
 {
 }
 
-void CPlayer02::Render_Top()
+void CTopdee::Render_Top()
 {
 }
 
-void CPlayer02::OnCollisionEnter(const Collision * collision)
+void CTopdee::OnCollisionEnter(const Collision * collision)
 {
 	__super::OnCollisionEnter(collision);
 }
 
-void CPlayer02::OnCollisionStay(const Collision * collision)
+void CTopdee::OnCollisionStay(const Collision * collision)
 {
 	__super::OnCollisionStay(collision);
 }
 
-void CPlayer02::OnCollisionExit(const Collision * collision)
+void CTopdee::OnCollisionExit(const Collision * collision)
 {
 }
 
-HRESULT CPlayer02::Add_Component(void)
+HRESULT CTopdee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -113,9 +113,9 @@ HRESULT CPlayer02::Add_Component(void)
 
 
 
-CPlayer02* CPlayer02::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CTopdee* CTopdee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CPlayer02*		pInstance = new CPlayer02(pGraphicDev);
+	CTopdee*		pInstance = new CTopdee(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -126,12 +126,12 @@ CPlayer02* CPlayer02::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CPlayer02::Free(void)
+void CTopdee::Free(void)
 {
 	__super::Free();
 }
 
-void CPlayer02::Key_Input(const _float & fTimeDelta)
+void CTopdee::Key_Input(const _float & fTimeDelta)
 {
 	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
@@ -176,7 +176,7 @@ void CPlayer02::Key_Input(const _float & fTimeDelta)
 	RayDiskey();
 }
 
-void CPlayer02::RayDiskey()
+void CTopdee::RayDiskey()
 {
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
@@ -219,7 +219,7 @@ void CPlayer02::RayDiskey()
 	_detectedCOL.clear();
 }
 
-void CPlayer02::PlayerState(const _float& fTimeDelta)
+void CTopdee::PlayerState(const _float& fTimeDelta)
 {
 	int x = 0; int y = 0;
 	switch (m_eState)
@@ -324,7 +324,7 @@ void CPlayer02::PlayerState(const _float& fTimeDelta)
 }
 
 //실제 움직이는 코드
-void CPlayer02::Move(const _float& fTimeDelta)
+void CTopdee::Move(const _float& fTimeDelta)
 {
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
@@ -343,7 +343,7 @@ void CPlayer02::Move(const _float& fTimeDelta)
 	}
 }
 
-_bool CPlayer02::CheckCubeExist(_vec3 dir, CCollider** col)
+_bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
@@ -359,7 +359,7 @@ _bool CPlayer02::CheckCubeExist(_vec3 dir, CCollider** col)
 	return false;
 }
 
-_bool CPlayer02::CheckAnythingExist(_vec3 dir, CCollider ** col)
+_bool CTopdee::CheckAnythingExist(_vec3 dir, CCollider ** col)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);

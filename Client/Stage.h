@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "Player.h"
+#include "Toodee.h"
 
 class CStage : public Engine::CScene
 {

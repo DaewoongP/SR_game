@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "Player.h"
+#include "Toodee.h"
 
 #include "Export_Function.h"
 
-CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
+CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpalbe(false)
 	, m_eKeyState(DIR_END)
@@ -11,11 +11,11 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 }
 
-CPlayer::~CPlayer()
+CToodee::~CToodee()
 {
 }
 
-HRESULT CPlayer::Ready_GameObject(_vec3& vPos)
+HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -23,13 +23,13 @@ HRESULT CPlayer::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
-_int CPlayer::Update_GameObject(const _float& fTimeDelta)
+_int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }
-_int CPlayer::Update_Too(const _float & fTimeDelta)
+_int CToodee::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -48,27 +48,27 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 	DoFlip();
 	return 0;
 }
-_int CPlayer::Update_Top(const _float & fTimeDelta)
+_int CToodee::Update_Top(const _float & fTimeDelta)
 {
 	m_pRigid->m_bUseGrivaty = false;
 
 	return 0;
 }
 
-void CPlayer::LateUpdate_GameObject(void)
+void CToodee::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CPlayer::LateUpdate_Too()
+void CToodee::LateUpdate_Too()
 {
 }
 
-void CPlayer::LateUpdate_Top()
+void CToodee::LateUpdate_Top()
 {
 }
 
-void CPlayer::Render_GameObject(void)
+void CToodee::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -80,15 +80,15 @@ void CPlayer::Render_GameObject(void)
 
 }
 
-void CPlayer::Render_Too()
+void CToodee::Render_Too()
 {
 }
 
-void CPlayer::Render_Top()
+void CToodee::Render_Top()
 {
 }
 
-void CPlayer::OnCollisionEnter(const Collision * collision)
+void CToodee::OnCollisionEnter(const Collision * collision)
 {
 	//스파이크랑 충돌시 본인 데드 트루
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
@@ -100,7 +100,7 @@ void CPlayer::OnCollisionEnter(const Collision * collision)
 	__super::OnCollisionEnter(collision);
 }
 
-void CPlayer::OnCollisionStay(const Collision * collision)
+void CToodee::OnCollisionStay(const Collision * collision)
 {
 	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
 	{
@@ -122,13 +122,13 @@ void CPlayer::OnCollisionStay(const Collision * collision)
 	__super::OnCollisionStay(collision);
 }
 
-void CPlayer::OnCollisionExit(const Collision * collision)
+void CToodee::OnCollisionExit(const Collision * collision)
 {
 	m_bJumpalbe = false;
 	__super::OnCollisionExit(collision);
 }
 
-HRESULT CPlayer::Add_Component(void)
+HRESULT CToodee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 	m_pTransform->m_bIsStatic = false;
@@ -160,9 +160,9 @@ HRESULT CPlayer::Add_Component(void)
 }
 
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CToodee* CToodee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CPlayer*		pInstance = new CPlayer(pGraphicDev);
+	CToodee*		pInstance = new CToodee(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -173,12 +173,12 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CPlayer::Free(void)
+void CToodee::Free(void)
 {
 	__super::Free();
 }
 
-void CPlayer::Key_Input(const _float & fTimeDelta)
+void CToodee::Key_Input(const _float & fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_LEFT;
@@ -202,7 +202,7 @@ void CPlayer::Key_Input(const _float & fTimeDelta)
 
 }
 
-void CPlayer::DoFlip()
+void CToodee::DoFlip()
 {
 	if (m_eKeyState == DIR_LEFT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
@@ -211,7 +211,7 @@ void CPlayer::DoFlip()
 
 }
 
-void CPlayer::DoStrech()
+void CToodee::DoStrech()
 {
 	if (-1.f > m_pRigid->m_Velocity.y)
 	{

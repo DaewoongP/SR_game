@@ -3,8 +3,8 @@
 
 #include"Export_Function.h"
 #include "SwallowPortal.h"
-#include "Player.h"
-#include "Player02.h"
+#include "Toodee.h"
+#include "Topdee.h"
 
 CPortal::CPortal(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
@@ -32,9 +32,9 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player");
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
 	NULL_CHECK_RETURN(m_pPlayer1, );
-	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Player02");
+	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(m_pPlayer2, );
 
 	__super::Update_GameObject(fTimeDelta);

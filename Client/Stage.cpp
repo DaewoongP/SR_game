@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Stage.h"
-
+#include "AbstractFactory.h"
 #include "Export_Function.h"
 #include "Monster.h"
 #include "SkyBox.h"
@@ -8,7 +8,7 @@
 #include "Grid.h"
 #include "DynamiCamera.h"
 #include "MoveBox.h"
-#include "Player02.h"
+#include "Topdee.h"
 #include "Pig.h"
 #include "Bat.h"
 #include "CrackBlock.h"
@@ -22,6 +22,7 @@
 #include "GravityCube.h"
 #include"Spike.h"
 #include"Fireball.h"
+
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -66,13 +67,9 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	//CAMERA
-	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
-	pGameObject = CStageBG::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StageBG", pGameObject), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CDynamiCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStageBG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -85,44 +82,12 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"Cloud_0", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
 
-	//Pig
-	pGameObject = CPig::Create(m_pGraphicDev, _vec3(50.f, 7.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
-
-	//Bat
-	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 8.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
-
-	//Cloud
-	pGameObject = CPinkCloud::Create(m_pGraphicDev, _vec3(6.f, 30.f, 10.5f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Cloud_0", pGameObject), E_FAIL);
-
-	// PLAYER
-	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
-
-	// PLAYER2
-	pGameObject = CPlayer02::Create(m_pGraphicDev, _vec3(16.f, 10.f, 11.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
-
-	////Pig
-	//pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
-
-	/*pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(20.f, 20.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
-	
-	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(26.f, 20.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
@@ -134,11 +99,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev, _vec3{ (float)j * 2,(float)i * 2,10.f });
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				pGameObject->m_pTransform->m_bIsStatic = true;
-				cubeCnt++;
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			}
 
 			//사이 첫줄
@@ -146,11 +107,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev, _vec3{ (float)j * 2,(float)i * 2,10.f });
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				pGameObject->m_pTransform->m_bIsStatic = true;
-				cubeCnt++;
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			}
 
 			//사이 마지막줄
@@ -158,10 +115,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev, _vec3{ (float)j * 2,(float)i * 2,10.f });
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				pGameObject->m_pTransform->m_bIsStatic = true;
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 				cubeCnt++;
 			}
 
@@ -170,20 +124,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev, _vec3{ (float)j * 2,(float)i * 2,10.f });
-				NULL_CHECK_RETURN(pGameObject, E_FAIL);
-				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-				pGameObject->m_pTransform->m_bIsStatic = true;
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 				cubeCnt++;
 			}
-
-			/*TCHAR objName[128] = {0};
-			_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-			pGameObject = CCube::Create(m_pGraphicDev);
-			pGameObject->m_pTransform->m_vInfo[INFO_POS] = _vec3{ (float)j * 2,(float)i * 2,12.f };
-			NULL_CHECK_RETURN(pGameObject, E_FAIL);
-			FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-			cubeCnt++;*/
 		}
 	}
 

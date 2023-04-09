@@ -190,8 +190,8 @@
     <ClInclude Include="Pig.h" />
     <ClInclude Include="MoveBox.h" />
     <ClInclude Include="PinkCloud.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Player02.h" />
+    <ClInclude Include="Toodee.h" />
+    <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Spike.h" />
@@ -236,8 +236,8 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="PinkCloud.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Player02.cpp" />
+    <ClCompile Include="Toodee.cpp" />
+    <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveBox.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Spike.cpp" />

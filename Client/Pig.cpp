@@ -95,7 +95,7 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	m_pTransform->m_vScale.y = PIGSCALE;
 
-	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Player02", L"Transform", ID_DYNAMIC));
+	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
 
 	m_pRigid->m_Velocity = { 0.0f, 0.0f, 0.0f };

@@ -12,11 +12,11 @@ class CRigidbody;
 class CSnow;
 
 END
-class CPlayer : public Engine::CGameObject
+class CToodee : public Engine::CGameObject
 {
 private:
-	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CPlayer();
+	explicit CToodee(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CToodee();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -52,7 +52,7 @@ private:
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
 	COL_DIR					m_eKeyState;
 public:
-	static CPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CToodee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

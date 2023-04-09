@@ -76,7 +76,7 @@ void CCrackBlock::Render_GameObject(void)
 
 void CCrackBlock::OnCollisionEnter(const Collision* collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Player"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
 		m_bCrackDead = true;
 	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackBlock"))
 		m_bCrackDead = true;

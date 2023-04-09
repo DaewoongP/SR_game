@@ -8,11 +8,11 @@ class CRcTex;
 class CTexture;
 class CCollider;
 END
-class CPlayer02 : public Engine::CGameObject
+class CTopdee : public Engine::CGameObject
 {
 private:
-	explicit CPlayer02(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CPlayer02();
+	explicit CTopdee(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CTopdee();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -58,9 +58,9 @@ private:
 	_vec3					prePos;
 
 public:
-	void Player02StateChange(TOPDEESTATE state) { m_eState = state; }
+	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:
-	static CPlayer02*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CTopdee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

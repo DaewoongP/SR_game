@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MoveBox.h"
 
-#include "Player02.h"
+#include "Topdee.h"
 #include "Export_Function.h"
 CMoveBox::CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev)
@@ -35,15 +35,10 @@ _int CMoveBox::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
 
-_int CMoveBox::Update_Too(const _float & fTimeDelta)
-{
-	__super::Update_GameObject(fTimeDelta);
-	
-	return 0;
-}
 
 _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
@@ -68,7 +63,7 @@ void CMoveBox::Render_GameObject(void)
 
 void CMoveBox::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Player02"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 		DoRayToDir(collision->_dir);
 
 	//충돌시 레이 발생! 
@@ -227,12 +222,12 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	case Engine::CH_START:
 		//머리위로
 	{
-		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
+		dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
 		{
 			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
-			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
+			dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_MOVE);
 			m_handleState = CH_ING;
 			return;
 		}
@@ -248,12 +243,12 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	}
 	case Engine::CH_END:
 	{
-		dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_SOMETHING);
+		dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
 		{
 			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
-			dynamic_cast<CPlayer02*>(m_Target)->Player02StateChange(TD_MOVE);
+			dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_MOVE);
 			m_handleState = CH_NONE;
 			return;
 		}

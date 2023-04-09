@@ -59,12 +59,6 @@
     <Filter Include="00. GameObject\00. Player">
       <UniqueIdentifier>{e1b87ab7-9a26-4ba9-b03f-757c123c1993}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\00. Player\Too">
-      <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\00. Player\Top">
-      <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\00. Player\Shadow">
       <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
     </Filter>
@@ -107,9 +101,6 @@
     <Filter Include="00. GameObject\02. MapObject\Spike">
       <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
-      <UniqueIdentifier>{52af855d-514f-4122-b0d6-317902eac34c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\03. Etc">
       <UniqueIdentifier>{9163a1fd-8629-4881-bd24-809e01b849c3}</UniqueIdentifier>
     </Filter>
@@ -134,17 +125,11 @@
     <Filter Include="00. GameObject\01. Monster\Boss\FireBall">
       <UniqueIdentifier>{06610006-bb98-4f94-a1f6-836539ed7637}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
-      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    <Filter Include="00. GameObject\00. Player\Toodee">
+      <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Cube\InstallGrid">
-      <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Cube\Box\GravityCube">
-      <UniqueIdentifier>{b4db29ee-1f17-4275-ad0f-2554e4a129cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Cloud">
-      <UniqueIdentifier>{d2e88d26-a6fc-4cb6-812d-541aadea2ed8}</UniqueIdentifier>
+    <Filter Include="00. GameObject\00. Player\Topdee">
+      <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -200,12 +185,6 @@
     <ClInclude Include="ImguiMgr.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>00. GameObject\00. Player\Too</Filter>
-    </ClInclude>
-    <ClInclude Include="Player02.h">
-      <Filter>00. GameObject\00. Player\Top</Filter>
-    </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>00. GameObject\01. Monster\Bat</Filter>
     </ClInclude>
@@ -220,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="GroundGrid.h">
       <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Pig.h">
       <Filter>00. GameObject\01. Monster\Pig</Filter>
@@ -267,9 +243,6 @@
     <ClInclude Include="DefaultGrid.h">
       <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClInclude>
-    <ClInclude Include="TempBox.h">
-      <Filter>00. GameObject\02. MapObject\Cube\TempBox</Filter>
-    </ClInclude>
     <ClInclude Include="BackGround.h">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClInclude>
@@ -297,24 +270,18 @@
     <ClInclude Include="Monster.h">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="GravityCube.h">
-      <Filter>GameObject\Cube\Box\GravityCube</Filter>
-    </ClInclude>
-    <ClInclude Include="Cloud.h">
-      <Filter>GameObject\Cloud</Filter>
-    </ClInclude>
     <ClInclude Include="PinkCloud.h" />
+    <ClInclude Include="Cloud.h" />
+    <ClInclude Include="GravityCube.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Toodee.h">
+      <Filter>00. GameObject\00. Player\Toodee</Filter>
+    </ClInclude>
+    <ClInclude Include="Topdee.h">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Loading.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -347,12 +314,6 @@
     </ClCompile>
     <ClCompile Include="ImguiMgr.cpp">
       <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>00. GameObject\00. Player\Too</Filter>
-    </ClCompile>
-    <ClCompile Include="Player02.cpp">
-      <Filter>00. GameObject\00. Player\Top</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
@@ -421,9 +382,6 @@
     <ClCompile Include="DefaultGrid.cpp">
       <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClCompile>
-    <ClCompile Include="TempBox.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\TempBox</Filter>
-    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
@@ -452,15 +410,24 @@
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="GravityCube.cpp">
-      <Filter>GameObject\Cube\Box\GravityCube</Filter>
-    </ClCompile>
-    <ClCompile Include="Cloud.cpp">
-      <Filter>GameObject\Cloud</Filter>
-    </ClCompile>
     <ClCompile Include="PinkCloud.cpp" />
     <ClCompile Include="BackGround.cpp">
       <Filter>GameObject\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloud.cpp" />
+    <ClCompile Include="GravityCube.cpp" />
+    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="Toodee.cpp">
+      <Filter>00. GameObject\00. Player\Toodee</Filter>
+    </ClCompile>
+    <ClCompile Include="Topdee.cpp">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
