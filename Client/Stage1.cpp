@@ -2,8 +2,7 @@
 #include "Stage1.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
-#include "Monster.h"
-#include "SkyBox.h"
+
 #include "Cube.h"
 #include "Grid.h"
 #include "StageCamera.h"
@@ -22,7 +21,6 @@
 #include "GravityCube.h"
 #include "Fireball.h"
 #include "Spike.h"
-
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -57,9 +55,7 @@ void CStage1::LateUpdate_Scene(void)
 
 void CStage1::Render_Scene(void)
 {
-
 }
-
 
 HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
@@ -96,18 +92,18 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 
 			//사이 첫줄
 			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			//사이 마지막줄
 			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 				cubeCnt++;
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"Cube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 		}
 	}
 
