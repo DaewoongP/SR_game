@@ -11,11 +11,14 @@
 #include "Player02.h"
 #include "Pig.h"
 #include "Bat.h"
-#include"CrackBlock.h"
+#include "CrackBlock.h"
 #include "Key.h"
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
+#include "Spike.h"
+#include "InstallGrid.h"
+#include "GravityCube.h"
 #include"Spike.h"
 #include "TempBox.h"
 #include"Fireball.h"
@@ -83,10 +86,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	////Bat
-	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
+	//////Bat
+	//pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
 
 	// PLAYER
 	pGameObject = CPlayer::Create(m_pGraphicDev, _vec3(10.f, 7.f, 10.f));
@@ -98,14 +101,18 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player02", pGameObject), E_FAIL);
 
-	//Pig
-	pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
+	////Pig
+	//pGameObject = CPig::Create(m_pGraphicDev, _vec3(45.f, 7.f, 10.f));
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
 
-	pGameObject = CSpike::Create(m_pGraphicDev, _vec3(20.f, 2.f, 10.f));
+	/*pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(20.f, 20.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike_0", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
+	
+	pGameObject = CMoveBox::Create(m_pGraphicDev, _vec3(26.f, 20.f, 10.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MoveCube", pGameObject), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)

@@ -41,6 +41,10 @@ _int CPlayer::Update_Too(const _float & fTimeDelta)
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
+	//텍스쳐컴의 애니가 die고 완료됐다면?
+	if (m_pTextureCom->IsAnimationEnd(L"Die"))
+		m_bDead = true;
+
 	DoFlip();
 	return 0;
 }
@@ -86,24 +90,35 @@ void CPlayer::Render_Top()
 
 void CPlayer::OnCollisionEnter(const Collision * collision)
 {
+	//스파이크랑 충돌시 본인 데드 트루
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
+		collision->_dir == DIR_DOWN)
+	{
+		m_pTextureCom->Switch_Anim(L"Die");
+	}
+
 	__super::OnCollisionEnter(collision);
 }
 
 void CPlayer::OnCollisionStay(const Collision * collision)
 {
-	if (collision->_dir == DIR_DOWN)
-		m_bJumpalbe = true;
-
-	if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
+	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
 	{
-		m_bJumpalbe = false;
-		m_pTextureCom->Switch_Anim(L"Jump");
+		if (collision->_dir == DIR_DOWN)
+			m_bJumpalbe = true;
+
+		if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
+		{
+			m_bJumpalbe = false;
+			m_pTextureCom->Switch_Anim(L"Jump");
+		}
+		else if (m_bJumpalbe)
+			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
+				m_pTextureCom->Switch_Anim(L"Walk");
+			else
+				m_pTextureCom->Switch_Anim(L"Idle");
 	}
-	else if (m_bJumpalbe)
-		if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
-			m_pTextureCom->Switch_Anim(L"Walk");
-		else
-			m_pTextureCom->Switch_Anim(L"Idle");
+	
 	__super::OnCollisionStay(collision);
 }
 
@@ -128,6 +143,7 @@ HRESULT CPlayer::Add_Component(void)
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 

@@ -68,8 +68,8 @@ void CGameObject::OnCollisionEnter(const Collision * collision)
 
 void CGameObject::OnCollisionStay(const Collision * collision)
 {
-	if (!m_pTransform->m_bIsStatic)
-		return;
+	/*if (!m_pTransform->m_bIsStatic)
+		return;*/
 	
  	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;

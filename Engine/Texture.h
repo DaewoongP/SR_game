@@ -18,6 +18,8 @@ public:
 	void			Switch_Anim(_tchar* name);
 	void			Update_Anim(const _float & fTimeDelta);
 	void			Set_Texture(const _uint& iIndex = 0);
+	_bool			IsAnimationEnd(_tchar* name);
+	_tchar*			Get_AnimState() { return m_CurrentAnimName; }
 
 public:
 	_bool			m_bUseFrameAnimation;

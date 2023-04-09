@@ -161,6 +161,7 @@
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultMonster.h" />
+    <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="DynamiCamera.h" />
@@ -197,7 +198,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TempBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
@@ -207,6 +207,7 @@
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="DefaultMonster.cpp" />
+    <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="DynamiCamera.cpp" />
@@ -242,7 +243,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SwallowPortal.cpp" />
-    <ClCompile Include="TempBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

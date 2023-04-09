@@ -181,8 +181,8 @@ void CPlayer02::RayDiskey()
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(1, 0, 0), 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"Cube") || (!lstrcmp(_detectedCOL[0].tag, L"TempBox"))) m_byPlayerInputDir &= 11;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveBox"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 11;
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
 				m_byPlayerInputDir &= 11;
 	}
@@ -191,8 +191,8 @@ void CPlayer02::RayDiskey()
 	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 0, 0), 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"Cube") || (!lstrcmp(_detectedCOL[0].tag, L"TempBox"))) m_byPlayerInputDir &= 7;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveBox"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 7;
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
 				m_byPlayerInputDir &= 7;
 	}
@@ -201,8 +201,8 @@ void CPlayer02::RayDiskey()
 	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0), 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"Cube") || (!lstrcmp(_detectedCOL[0].tag, L"TempBox"))) m_byPlayerInputDir &= 13;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveBox"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 13;
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_UP])
 				m_byPlayerInputDir &= 13;
 	}
@@ -211,8 +211,8 @@ void CPlayer02::RayDiskey()
 	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"Cube")||(!lstrcmp(_detectedCOL[0].tag, L"TempBox"))) m_byPlayerInputDir &= 14;
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveBox"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||(!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 14;
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
 				m_byPlayerInputDir &= 14;
 	}
@@ -364,8 +364,10 @@ _bool CPlayer02::CheckAnythingExist(_vec3 dir, CCollider ** col)
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
 
-	if (_detectedCOL.size() >= 1)
+	if (_detectedCOL.size() >= 1 )
 	{
+		if (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))
+			return false;
 		return true;
 	}
 	return false;
