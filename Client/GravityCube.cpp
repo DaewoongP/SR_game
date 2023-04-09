@@ -33,7 +33,6 @@ _int CGravityCube::Update_Too(const _float & fTimeDelta)
 	m_pTransform->m_bIsStatic = false;
 	m_pRigid->m_bUseGrivaty = true;
 
-	__super::Update_Too(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }

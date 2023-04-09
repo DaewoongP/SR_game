@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
+#include "Collision.h"
 
 IMPLEMENT_SINGLETON(CCollisionMgr)
 

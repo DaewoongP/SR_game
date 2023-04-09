@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "DefaultMonster.h"
+#include "DefaultUnit.h"
 #include "Export_Function.h"
 
-CDefaultMonster::CDefaultMonster(PDIRECT3DDEVICE9 pGraphicDev)
+CDefaultUnit::CDefaultUnit(PDIRECT3DDEVICE9 pGraphicDev)
 	:CMonster(pGraphicDev),
 	m_iDefaultIndex(0)
 {
 }
 
-CDefaultMonster::~CDefaultMonster()
+CDefaultUnit::~CDefaultUnit()
 {
 }
 
-HRESULT CDefaultMonster::Ready_GameObject(_vec3& vPos)
+HRESULT CDefaultUnit::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -21,7 +21,7 @@ HRESULT CDefaultMonster::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
-_int CDefaultMonster::Update_GameObject(const _float & fTimeDelta)
+_int CDefaultUnit::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -35,12 +35,12 @@ _int CDefaultMonster::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-void CDefaultMonster::LateUpdate_GameObject(void)
+void CDefaultUnit::LateUpdate_GameObject(void)
 {
 	CGameObject::LateUpdate_GameObject();
 }
 
-void CDefaultMonster::Render_GameObject(void)
+void CDefaultUnit::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -48,7 +48,7 @@ void CDefaultMonster::Render_GameObject(void)
 	if (DMonster == m_iDefaultIndex)
 		m_pTextureCom->Set_Texture();
 
-	else if(DMapObject == m_iDefaultIndex)
+	else if (DMapObject == m_iDefaultIndex)
 		m_pTextureCom2->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
@@ -56,7 +56,7 @@ void CDefaultMonster::Render_GameObject(void)
 	CGameObject::Render_GameObject();
 }
 
-HRESULT CDefaultMonster::Add_Component(void)
+HRESULT CDefaultUnit::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -77,32 +77,32 @@ HRESULT CDefaultMonster::Add_Component(void)
 	return S_OK;
 }
 
-void CDefaultMonster::Mouse_Move()
+void CDefaultUnit::Mouse_Move()
 {
 	POINT	pt{};
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	int x = 1366 / CUBEX * 2;
-	int y = 768 / CUBEY * 2;
+	_int x = 1366 / CUBEX * 2;
+	_int y = 768 / CUBEY * 2;
 
-	int nx = 1366 / x;
-	int ny = 768 / y;
+	_int nx = 1366 / x;
+	_int ny = 768 / y;
 
-	float Gridx = pt.x / nx / (1.3f) - 1.f;
-	float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
+	_float Gridx = pt.x / nx / (1.3f) - 1.f;
+	_float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
 
-	int installx = Gridx / 2;
-	int instally = Gridy / 2;
+	_int installx = _int(Gridx / 2);
+	_int instally = _int(Gridy / 2);
 
-	m_pTransform->m_vInfo[INFO_POS].x = installx * 2;
-	m_pTransform->m_vInfo[INFO_POS].y = instally * 2;
+	m_pTransform->m_vInfo[INFO_POS].x = installx * 2.f;
+	m_pTransform->m_vInfo[INFO_POS].y = instally * 2.f;
 	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 }
 
-CDefaultMonster * CDefaultMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CDefaultUnit * CDefaultUnit::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CDefaultMonster*		pInstance = new CDefaultMonster(pGraphicDev);
+	CDefaultUnit*		pInstance = new CDefaultUnit(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -113,7 +113,7 @@ CDefaultMonster * CDefaultMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& 
 	return pInstance;
 }
 
-void CDefaultMonster::Free(void)
+void CDefaultUnit::Free(void)
 {
 	CGameObject::Free();
 }

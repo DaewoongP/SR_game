@@ -85,9 +85,9 @@ HRESULT CMoveCube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Move_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });
+	m_uMapComponent[ID_STATIC].insert({ L"Move_Cube", pComponent });
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pLine, E_FAIL);
@@ -269,7 +269,7 @@ void CMoveCube::SetTarget(_vec3 pos, CGameObject * obj)
 void CMoveCube::DoFallingStart()
 {
 	m_bIsFall = true;
-	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 2.1)); 
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, 2.1f)); 
 	m_bIsMoving = true; 
 }
 

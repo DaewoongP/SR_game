@@ -19,10 +19,21 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { -BATSCALE, BATSCALE, 5.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
+	// 리지드 바디
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 10.0f;
 	m_pRigid->m_bFreezePos_Z = true;
+	// 기본 텍스처
+	m_pTextureCom->Add_Anim(L"Idle", 0, 6, 0.6f, true);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
+	// back 텍스처
+	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 6, 0.6f, true);
+	m_pTextureCom_Back->Switch_Anim(L"Idle");
+	m_pTextureCom_Back->m_bUseFrameAnimation = true;
+
+	m_pCollider->Set_Options({ 2.f, 2.f, BATTOPZ }, COL_OBJ, true);
 	return S_OK;
 }
 
@@ -172,16 +183,10 @@ HRESULT CBat::Add_Component(void)
 	pComponent = m_pTextureCom_Back = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bat_Back_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom_Back, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Bat_Back_Texture", pComponent });
-	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 6, 0.6f, true);
-	m_pTextureCom_Back->Switch_Anim(L"Idle");
-	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bat_Front_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Bat_Front_Texture", pComponent });
-	m_pTextureCom->Add_Anim(L"Idle", 0, 6, 0.6f, true);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
@@ -190,10 +195,7 @@ HRESULT CBat::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_Options({2.f, 2.f, BATTOPZ}, COL_OBJ, true);
-
-	m_pTransform->m_bIsStatic = false;
-
+	
 	return S_OK;
 }
 

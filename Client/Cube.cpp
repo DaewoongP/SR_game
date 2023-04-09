@@ -16,6 +16,9 @@ HRESULT CCube::Ready_GameObject(_vec3& vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+
+	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
+	m_pCollider->Set_Group(COL_ENV);
 	return S_OK;
 }
 
@@ -76,8 +79,6 @@ HRESULT CCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
-	m_pCollider->Set_Group(COL_ENV);
 
 	return S_OK;
 }

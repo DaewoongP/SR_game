@@ -16,7 +16,7 @@ HRESULT CStage1BG::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale = { CUBEX,CUBEY,1 };
-	m_pTransform->Set_Pos(CUBEX, CUBEY, 11.101);
+	m_pTransform->Set_Pos(CUBEX, CUBEY, _float(11.101));
 	return S_OK;
 }
 _int CStage1BG::Update_GameObject(const _float& fTimeDelta)

@@ -25,6 +25,7 @@ HRESULT CLogo::Ready_Scene(void)
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
 	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	
 	return S_OK;
 }
 

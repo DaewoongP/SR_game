@@ -18,6 +18,7 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_fBlockTime = CRACKTIME;
+	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
 	return S_OK;
 }
 
@@ -34,7 +35,7 @@ _int CCrackCube::Update_Too(const _float& fTimeDelta)
 {
 	// 레이충돌필요함 철민출동 십자로 쏴야댐 
 	// 태그 안에서 레이충돌 시전 -> 최적화
-	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
+	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackCube");
 
 	if (nullptr != pCrackBox && dynamic_cast<CCrackCube*>(pCrackBox)->m_bCrackDead)
 	{
@@ -78,7 +79,7 @@ void CCrackCube::OnCollisionEnter(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
 		m_bCrackDead = true;
-	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackBlock"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackCube"))
 		m_bCrackDead = true;
 	__super::OnCollisionEnter(collision);
 
@@ -99,7 +100,6 @@ HRESULT CCrackCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
 	return S_OK;
 }
 

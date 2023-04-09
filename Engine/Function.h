@@ -147,7 +147,7 @@ static float Lerp(float A, float B, float Alpha)
 template <typename T>
 static void Value_Range(T Min, T Max, T* Value)
 {
-	NULL_CHECK_RETURN(Value);
+	NULL_CHECK(Value);
 	if (Max < *Value)
 	{
 		*Value = Max;
