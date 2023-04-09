@@ -83,6 +83,38 @@ void			Update_DInput(void)
 	CDInputMgr::GetInstance()->Update_DInput();
 }
 
+//Sound
+void Ready_Sound()
+{
+	return CSoundMgr::GetInstance()->Ready_Sound();
+}
+
+void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlaySound(pSoundKey, eID, fVolume);
+}
+
+void PlayBGM(TCHAR* pSoundKey, float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);
+}
+
+void StopSound(CHANNELID eID)
+{
+	return CSoundMgr::GetInstance()->StopSound(eID);
+}
+
+void StopAll()
+{
+	return CSoundMgr::GetInstance()->StopAll();
+}
+
+void SetChannelVolume(CHANNELID eID, float fVolume)
+{
+	return CSoundMgr::GetInstance()->SetChannelVolume(eID, fVolume);
+}
+
+
 
 void	Release_System(void)
 {
