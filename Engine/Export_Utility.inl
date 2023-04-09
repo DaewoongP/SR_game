@@ -90,9 +90,9 @@ void		Delete_Collider(CGameObject* pGameObject)
 	CCollisionMgr::GetInstance()->Delete_Collider(pGameObject);
 }
 
-inline vector<RayCollision>  Check_Collision_Ray(RAYCAST ray, CCollider* shootObj)
+inline vector<RayCollision>  Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, _tchar* tagName)
 {
-	return CCollisionMgr::GetInstance()->Check_Collision_Ray(ray,shootObj);
+	return CCollisionMgr::GetInstance()->Check_Collision_Ray(ray,shootObj, tagName);
 }
 
 void						Release_Utility(void)
