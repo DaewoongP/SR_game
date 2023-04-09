@@ -75,9 +75,10 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"Cloud_0", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(6.f, 10.f, 10.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
@@ -93,7 +94,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			//맨 윗줄
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-
 			//사이 첫줄
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
