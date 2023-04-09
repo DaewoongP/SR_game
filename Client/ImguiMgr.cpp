@@ -11,8 +11,8 @@
 IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
-	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr),
-	m_bStageTool(false), m_bUnitTool(false)
+	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pToodee(nullptr),
+	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true)
 {
 }
 
@@ -92,7 +92,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiUnit->SaveMapObject();
 			m_pImguiUnit->SaveMonster();
 		}
-		
+
 		// 전부 로드 버튼
 		ImGui::SameLine();
 		if (ImGui::Button("LOAD ALL"))
@@ -101,6 +101,17 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiStage->LoadGrid();
 			m_pImguiUnit->LoadMapObject();
 			m_pImguiUnit->LoadMonster();
+		}
+
+		// 프로그램 시작하자 마자 로딩
+		m_pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		if (m_pToodee && m_bOnceLoad)
+		{
+			m_pImguiStage->LoadCube();
+			m_pImguiStage->LoadGrid();
+			m_pImguiUnit->LoadMapObject();
+			m_pImguiUnit->LoadMonster();
+			m_bOnceLoad = false;
 		}
 
 		// 마우스 커서 위치

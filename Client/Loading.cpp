@@ -99,6 +99,9 @@ _uint CLoading::Loading_ForStage(void)
 	//구름
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Cloud_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/cloudSpr/Cloud_%d.png", 6)), E_FAIL);
 
+	// 스위치 큐브
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
+
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);
