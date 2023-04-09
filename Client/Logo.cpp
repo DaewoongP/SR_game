@@ -3,7 +3,7 @@
 
 #include "Export_Function.h"
 #include "BackGround.h"
-#include "Stage.h"
+#include "Stage1.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev), m_pLoading(nullptr)
@@ -36,7 +36,7 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 	{
 		if (GetAsyncKeyState(VK_RETURN))
 		{
-			CScene*	pScene = CStage::Create(m_pGraphicDev);
+			CScene*	pScene = CStage1::Create(m_pGraphicDev);
 			NULL_CHECK_RETURN(pScene, -1);
 
 			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);

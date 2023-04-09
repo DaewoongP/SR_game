@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "DynamiCamera.h"
+#include "StageCamera.h"
 #include "Export_Function.h"
 
-CDynamiCamera::CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1Camera::CStage1Camera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev),
 	m_fTime(0.0f),
@@ -14,11 +14,11 @@ CDynamiCamera::CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 }
 
-CDynamiCamera::~CDynamiCamera()
+CStage1Camera::~CStage1Camera()
 {
 }
 
-HRESULT CDynamiCamera::Ready_GameObject(void)
+HRESULT CStage1Camera::Ready_GameObject(void)
 {
 	Rotation_View();
 	_matrix matProj;
@@ -28,7 +28,7 @@ HRESULT CDynamiCamera::Ready_GameObject(void)
 	return S_OK;
 }
 
-_int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
+_int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 {
 	Rotation_View();
 
@@ -41,12 +41,12 @@ _int CDynamiCamera::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-void CDynamiCamera::LateUpdate_GameObject(void)
+void CStage1Camera::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CDynamiCamera::Rotation_View()
+void CStage1Camera::Rotation_View()
 {
 	_float fRadian;
 
@@ -76,7 +76,7 @@ void CDynamiCamera::Rotation_View()
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &viewMatrix);
 }
 
-void CDynamiCamera::Key_Input(const _float & fTimeDelta)
+void CStage1Camera::Key_Input(const _float & fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYDOWN && (m_fTop <= m_pTransform->m_vAngle.x || m_fToo >= m_pTransform->m_vAngle.x))
 	{
@@ -91,7 +91,7 @@ void CDynamiCamera::Key_Input(const _float & fTimeDelta)
 	}
 }
 
-void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
+void CStage1Camera::Move_Camera(const _float & fTimeDelta)
 {
 	//투디 일때
 	if (g_Is2D)
@@ -139,9 +139,9 @@ void CDynamiCamera::Move_Camera(const _float & fTimeDelta)
 	}
 }
 
-CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1Camera * CStage1Camera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CDynamiCamera*		pInstance = new CDynamiCamera(pGraphicDev);
+	CStage1Camera*		pInstance = new CStage1Camera(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
@@ -152,7 +152,7 @@ CDynamiCamera * CDynamiCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CDynamiCamera::Free()
+void CStage1Camera::Free()
 {
 	__super::Free();
 }

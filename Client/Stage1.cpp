@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "Stage.h"
+#include "Stage1.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
 #include "Monster.h"
 #include "SkyBox.h"
 #include "Cube.h"
 #include "Grid.h"
-#include "DynamiCamera.h"
+#include "StageCamera.h"
 #include "MoveCube.h"
 #include "Topdee.h"
 #include "Pig.h"
@@ -24,17 +24,17 @@
 #include"Fireball.h"
 
 
-CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
 }
 
 
-CStage::~CStage()
+CStage1::~CStage1()
 {
 }
 
-HRESULT CStage::Ready_Scene(void)
+HRESULT CStage1::Ready_Scene(void)
 {
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
@@ -45,38 +45,38 @@ HRESULT CStage::Ready_Scene(void)
 	return S_OK;
 }
 
-_int CStage::Update_Scene(const _float & fTimeDelta)
+_int CStage1::Update_Scene(const _float & fTimeDelta)
 {
 	return __super::Update_Scene(fTimeDelta);
 }
 
-void CStage::LateUpdate_Scene(void)
+void CStage1::LateUpdate_Scene(void)
 {
 	__super::LateUpdate_Scene();
 }
 
-void CStage::Render_Scene(void)
+void CStage1::Render_Scene(void)
 {
 
 }
 
 
-HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
+HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CDynamiCamera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStageBG>::Create(L"StageBG", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
 }
 
-HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
+HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -135,7 +135,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
+HRESULT CStage1::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -147,9 +147,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-CStage * CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1 * CStage1::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CStage *	pInstance = new CStage(pGraphicDev);
+	CStage1 *	pInstance = new CStage1(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Scene()))
 	{
@@ -160,7 +160,7 @@ CStage * CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CStage::Free(void)
+void CStage1::Free(void)
 {
 	__super::Free();
 }

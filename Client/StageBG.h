@@ -9,11 +9,11 @@ class CRcTex;
 class CTexture;
 
 END
-class CStageBG : public Engine::CGameObject
+class CStage1BG : public Engine::CGameObject
 {
 private:
-	explicit CStageBG(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStageBG();
+	explicit CStage1BG(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStage1BG();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -30,7 +30,7 @@ private:
 
 
 public:
-	static CStageBG*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CStage1BG*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void Free(void) override;

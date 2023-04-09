@@ -3,23 +3,23 @@
 
 #include "Export_Function.h"
 
-CStageBG::CStageBG(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1BG::CStage1BG(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
 }
 
-CStageBG::~CStageBG()
+CStage1BG::~CStage1BG()
 {
 }
 
-HRESULT CStageBG::Ready_GameObject(void)
+HRESULT CStage1BG::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale = { CUBEX,CUBEY,1 };
 	m_pTransform->Set_Pos(CUBEX, CUBEY, 11.101);
 	return S_OK;
 }
-_int CStageBG::Update_GameObject(const _float& fTimeDelta)
+_int CStage1BG::Update_GameObject(const _float& fTimeDelta)
 {
 
 	__super::Update_GameObject(fTimeDelta);
@@ -28,12 +28,12 @@ _int CStageBG::Update_GameObject(const _float& fTimeDelta)
 
 	return 0;
 }
-void CStageBG::LateUpdate_GameObject(void)
+void CStage1BG::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CStageBG::Render_GameObject(void)
+void CStage1BG::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
@@ -41,7 +41,7 @@ void CStageBG::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 }
 
-HRESULT CStageBG::Add_Component(void)
+HRESULT CStage1BG::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -59,9 +59,9 @@ HRESULT CStageBG::Add_Component(void)
 
 
 
-CStageBG* CStageBG::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CStage1BG* CStage1BG::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CStageBG*		pInstance = new CStageBG(pGraphicDev);
+	CStage1BG*		pInstance = new CStage1BG(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject()))
 	{
@@ -72,7 +72,7 @@ CStageBG* CStageBG::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CStageBG::Free(void)
+void CStage1BG::Free(void)
 {
 	__super::Free();
 }

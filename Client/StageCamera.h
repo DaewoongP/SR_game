@@ -2,11 +2,11 @@
 #include "Include.h"
 #include "GameObject.h"
 
-class CDynamiCamera : public Engine::CGameObject
+class CStage1Camera : public Engine::CGameObject
 {
 public:
-	explicit CDynamiCamera(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CDynamiCamera();
+	explicit CStage1Camera(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStage1Camera();
 
 public:
 	virtual HRESULT Ready_GameObject(void) override;
@@ -26,7 +26,7 @@ private:
 	_float m_fToo, m_fTop;
 
 public:
-	static CDynamiCamera*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CStage1Camera*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void Free();
 };

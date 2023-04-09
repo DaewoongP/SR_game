@@ -77,12 +77,6 @@
     <Filter Include="00. GameObject\02. MapObject\Cube">
       <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\02. MapObject\Cube\KeyBox">
-      <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\02. MapObject\Cube\TempBox">
-      <UniqueIdentifier>{76b00f30-28f3-461b-bdb2-6ed115e72654}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\02. MapObject\Key">
       <UniqueIdentifier>{b72399c7-30f3-4545-845e-8ce139d6c0a1}</UniqueIdentifier>
     </Filter>
@@ -130,6 +124,15 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Cube\MoveCube">
       <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cloud">
+      <UniqueIdentifier>{9a20748b-5a06-498f-b870-9de2a46d73d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\GravityCube">
+      <UniqueIdentifier>{5ce03629-8ff6-45b7-8bee-60c6ee516970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\KeyCube">
+      <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,17 +243,11 @@
     <ClInclude Include="StageBG.h">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="DynamiCamera.h">
-      <Filter>00. GameObject\03. Etc\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="MainApp.h">
       <Filter>Main\MainApp</Filter>
     </ClInclude>
     <ClInclude Include="Loading.h">
       <Filter>01. Scene\Loading</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>01. Scene\Stages</Filter>
     </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages</Filter>
@@ -261,10 +258,6 @@
     <ClInclude Include="Monster.h">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="PinkCloud.h" />
-    <ClInclude Include="Cloud.h" />
-    <ClInclude Include="GravityCube.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="Toodee.h">
       <Filter>00. GameObject\00. Player\Toodee</Filter>
     </ClInclude>
@@ -278,7 +271,25 @@
       <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
     </ClInclude>
     <ClInclude Include="KeyCube.h">
-      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\KeyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="StageCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Cloud.h">
+      <Filter>00. GameObject\02. MapObject\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="PinkCloud.h">
+      <Filter>00. GameObject\02. MapObject\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\GravityCube</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -391,7 +402,6 @@
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
     </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp" />
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
     </ClCompile>
@@ -401,21 +411,14 @@
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="PinkCloud.cpp" />
     <ClCompile Include="BackGround.cpp">
       <Filter>GameObject\Portal</Filter>
     </ClCompile>
-    <ClCompile Include="Cloud.cpp" />
-    <ClCompile Include="GravityCube.cpp" />
-    <ClCompile Include="Loading.cpp" />
     <ClCompile Include="Toodee.cpp">
       <Filter>00. GameObject\00. Player\Toodee</Filter>
     </ClCompile>
     <ClCompile Include="Topdee.cpp">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
@@ -427,7 +430,25 @@
       <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
     </ClCompile>
     <ClCompile Include="KeyCube.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\KeyCube</Filter>
+    </ClCompile>
+    <ClCompile Include="StageCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloud.cpp">
+      <Filter>00. GameObject\02. MapObject\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="PinkCloud.cpp">
+      <Filter>00. GameObject\02. MapObject\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="GravityCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\GravityCube</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>01. Scene\Loading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

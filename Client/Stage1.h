@@ -3,11 +3,11 @@
 #include "Scene.h"
 #include "Toodee.h"
 
-class CStage : public Engine::CScene
+class CStage1 : public Engine::CScene
 {
 private:
-	explicit CStage(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStage();
+	explicit CStage1(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStage1();
 
 public:
 	// CScene을(를) 통해 상속됨
@@ -21,7 +21,7 @@ private:
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 public:
-	static CStage*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CStage1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	
 
 private:
