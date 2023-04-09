@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "InstallGrid.h"
-
+#include "MoveBox.h"
 #include "Export_Function.h"
 
 CInstallGrid::CInstallGrid(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -18,6 +18,8 @@ HRESULT CInstallGrid::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vInfo[INFO_POS].z = 11.1;
+	m_pTransform->m_vScale = { 1.f,1.f,1.f };
+	m_pCollider->m_bIsTrigger = true;
 	return S_OK;
 }
 
@@ -45,6 +47,35 @@ void CInstallGrid::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(m_iStageTileIndex);
 
 	m_pBufferCom->Render_Buffer();
+}
+
+void CInstallGrid::OnCollisionEnter(const Collision * collision)
+{
+}
+
+void CInstallGrid::OnCollisionStay(const Collision * collision)
+{
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube"))
+	{
+		//내 위치랑 같다면.
+		if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
+			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)
+		{
+			//그 친구는 돌멩이가 되고
+			dynamic_cast<CMoveBox*>(collision->otherObj)->m_bIsStone = true;
+			for (int i = 0; i < DIR_END; i++)
+				dynamic_cast<CMoveBox*>(collision->otherObj)->m_bIsCol[i] = true;
+
+			//낙하를 트루로 바까준다.
+			dynamic_cast<CMoveBox*>(collision->otherObj)->DoFallingStart();
+			//나는 죽는다.
+			m_bDead = true;
+		}
+	}
+}
+
+void CInstallGrid::OnCollisionExit(const Collision * collision)
+{
 }
 
 HRESULT CInstallGrid::Add_Component(void)

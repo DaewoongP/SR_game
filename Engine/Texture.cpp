@@ -109,6 +109,19 @@ void CTexture::Set_Texture(const _uint & iIndex)
 		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
 }
 
+_bool CTexture::IsAnimationEnd(_tchar* name)
+{
+	auto iter = find_if(m_AnimMap.begin(), m_AnimMap.end(), CTag_Finder(name));
+
+	if (iter == m_AnimMap.end())
+		return false;
+
+	if (iter->second.iEndIdx == m_CurIdx)
+		return true;
+
+	return false;
+}
+
 CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTYPE eTextype, const _tchar * pPath, const _uint & iCnt)
 {
 	CTexture *	pInstance = new	CTexture(pGraphicDev);

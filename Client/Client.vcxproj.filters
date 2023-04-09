@@ -56,9 +56,6 @@
     <Filter Include="Imgui\Imgui_Object\Cube">
       <UniqueIdentifier>{e3d76586-808e-480e-a3b4-ec6029fc5efc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
-      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\Cube\DefaultCube">
       <UniqueIdentifier>{fbbcb3f0-dd9c-4946-af40-a6b9ac71cfb0}</UniqueIdentifier>
     </Filter>
@@ -95,11 +92,17 @@
     <Filter Include="GameObject\Spike">
       <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\GIrd\InstallGrid">
-      <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\GIrd\DefaultGrid">
       <UniqueIdentifier>{52af855d-514f-4122-b0d6-317902eac34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\GIrd\GroundGird">
+      <UniqueIdentifier>{3c5d0edd-a000-4c33-97fb-2ed67d1dc37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\InstallGrid">
+      <UniqueIdentifier>{16e365e5-bd94-45c0-90d9-b9ccd160b1b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Cube\Box\GravityCube">
+      <UniqueIdentifier>{b4db29ee-1f17-4275-ad0f-2554e4a129cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,12 +243,14 @@
       <Filter>GameObject\Spike</Filter>
     </ClInclude>
     <ClInclude Include="InstallGrid.h">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+      <Filter>GameObject\Cube\InstallGrid</Filter>
     </ClInclude>
     <ClInclude Include="DefaultGrid.h">
       <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClInclude>
-    <ClInclude Include="TempBox.h" />
+    <ClInclude Include="GravityCube.h">
+      <Filter>GameObject\Cube\Box\GravityCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp">
@@ -369,11 +374,13 @@
       <Filter>GameObject\Spike</Filter>
     </ClCompile>
     <ClCompile Include="InstallGrid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd\InstallGrid</Filter>
+      <Filter>GameObject\Cube\InstallGrid</Filter>
     </ClCompile>
     <ClCompile Include="DefaultGrid.cpp">
       <Filter>Imgui\Imgui_Object\GIrd\DefaultGrid</Filter>
     </ClCompile>
-    <ClCompile Include="TempBox.cpp" />
+    <ClCompile Include="GravityCube.cpp">
+      <Filter>GameObject\Cube\Box\GravityCube</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
