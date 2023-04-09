@@ -22,6 +22,15 @@ void CSoundMgr::Ready_Sound()
 
 	LoadSoundFile();
 }
+void CSoundMgr::Ready_Sound_Effect()
+{// 사운드를 담당하는 대표객체를 생성하는 함수
+	FMOD_System_Create(&m_pSystem);
+
+	// 1. 시스템 포인터, 2. 사용할 가상채널 수 , 초기화 방식) 
+	FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
+
+	LoadSoundFile_Effect();
+}
 
 void CSoundMgr::PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
@@ -132,7 +141,52 @@ void CSoundMgr::LoadSoundFile()
 
 	_findclose(handle);
 }
+void CSoundMgr::LoadSoundFile_Effect()
+{// _finddata_t : <io.h>에서 제공하며 파일 정보를 저장하는 구조체
+	_finddata_t fd;
 
+	// _findfirst : <io.h>에서 제공하며 사용자가 설정한 경로 내에서 가장 첫 번째 파일을 찾는 함수
+	long handle = _findfirst("../Resource/Sound/Effect/*.*", &fd);
+
+	if (handle == -1)
+		return;
+
+	int iResult = 0;
+
+	char szCurPath[128] = "../Resource/Sound/Effect/";
+	char szFullPath[128] = "";
+
+	while (iResult != -1)
+	{
+		strcpy_s(szFullPath, szCurPath);
+
+		// "../ Sound/Success.wav"
+		strcat_s(szFullPath, fd.name);
+
+		FMOD_SOUND* pSound = nullptr;
+
+		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, szFullPath, FMOD_HARDWARE, 0, &pSound);
+
+		if (eRes == FMOD_OK)
+		{
+			int iLength = strlen(fd.name) + 1;
+
+			TCHAR* pSoundKey = new TCHAR[iLength];
+			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
+
+			// 아스키 코드 문자열을 유니코드 문자열로 변환시켜주는 함수
+			MultiByteToWideChar(CP_ACP, 0, fd.name, iLength, pSoundKey, iLength);
+
+			m_mapSound.emplace(pSoundKey, pSound);
+		}
+		//_findnext : <io.h>에서 제공하며 다음 위치의 파일을 찾는 함수, 더이상 없다면 -1을 리턴
+		iResult = _findnext(handle, &fd);
+	}
+
+	FMOD_System_Update(m_pSystem);
+
+	_findclose(handle);
+}
 void CSoundMgr::Free()
 {
 	for (auto& Mypair : m_mapSound)

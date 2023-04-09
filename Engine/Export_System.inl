@@ -89,6 +89,10 @@ void Ready_Sound()
 	return CSoundMgr::GetInstance()->Ready_Sound();
 }
 
+void Ready_Sound_Effect()
+{
+	return CSoundMgr::GetInstance()->Ready_Sound_Effect();
+}
 void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
 	return CSoundMgr::GetInstance()->PlaySound(pSoundKey, eID, fVolume);
@@ -122,5 +126,6 @@ void	Release_System(void)
 	CFontMgr::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
 	CTimerMgr::GetInstance()->DestroyInstance();
+	CSoundMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

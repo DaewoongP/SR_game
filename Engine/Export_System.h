@@ -48,6 +48,7 @@ inline void			Update_DInput(void);
 
 //Sound
 inline void Ready_Sound();
+inline void Ready_Sound_Effect();
 
 inline void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 inline void PlayBGM(TCHAR* pSoundKey, float fVolume);

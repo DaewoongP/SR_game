@@ -13,7 +13,7 @@ private:
 
 public:
     void Ready_Sound();
-
+	void Ready_Sound_Effect();
 	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 	void PlayBGM(TCHAR* pSoundKey, float fVolume);
 	void StopSound(CHANNELID eID);
@@ -30,10 +30,12 @@ private:
 
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem;
+	FMOD_SYSTEM* m_pSystem_Effect;
 
 
 private:
 	void LoadSoundFile();
+	void LoadSoundFile_Effect();
 
 public:
     virtual void Free();
