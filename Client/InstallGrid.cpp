@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 
 CInstallGrid::CInstallGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGrid(pGraphicDev),
+	:CGameObject(pGraphicDev),
 	m_iStageTileIndex(0)
 {
 }
@@ -17,7 +17,7 @@ HRESULT CInstallGrid::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_vInfo[INFO_POS].z = 11.1;
+	m_pTransform->m_vInfo[INFO_POS].z = 11.1f;
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pCollider->m_bIsTrigger = true;
 	return S_OK;
@@ -58,21 +58,21 @@ void CInstallGrid::OnCollisionStay(const Collision * collision)
 	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube")||
 		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube"))
 	{
-		//³» À§Ä¡¶û °°´Ù¸é.
+		//ë‚´ ìœ„ì¹˜ëž‘ ê°™ë‹¤ë©´.
 		/*if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
 			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)*/
 		if (!g_Is2D&&
 			!dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsFall&&
 			D3DXVec3Length(&_vec3(collision->otherObj->m_pTransform->m_vInfo[INFO_POS]- m_pTransform->m_vInfo[INFO_POS]))<1.4f)
 		{
-			//±× Ä£±¸´Â µ¹¸æÀÌ°¡ µÇ°í
+			//ê·¸ ì¹œêµ¬ëŠ” ëŒë©©ì´ê°€ ë˜ê³ 
 			dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsStone = true;
 			for (int i = 0; i < DIR_END; i++)
 				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
-			//³«ÇÏ¸¦ Æ®·ç·Î ¹Ù±îÁØ´Ù.
+			//ë‚™í•˜ë¥¼ íŠ¸ë£¨ë¡œ ë°”ê¹Œì¤€ë‹¤.
 			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]));
-			//³ª´Â Á×´Â´Ù.
+			//ë‚˜ëŠ” ì£½ëŠ”ë‹¤.
 			m_bDead = true;
 		}
 	}

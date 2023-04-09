@@ -82,6 +82,27 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			}
 		}
 
+		// 전부 세이브 버튼
+		ImGui::Text("All Save and Load");
+		
+		if (ImGui::Button("SAVE ALL"))
+		{
+			m_pImguiStage->SaveCube();
+			m_pImguiStage->SaveGrid();
+			m_pImguiUnit->SaveMapObject();
+			m_pImguiUnit->SaveMonster();
+		}
+		
+		// 전부 로드 버튼
+		ImGui::SameLine();
+		if (ImGui::Button("LOAD ALL"))
+		{
+			m_pImguiStage->LoadCube();
+			m_pImguiStage->LoadGrid();
+			m_pImguiUnit->LoadMapObject();
+			m_pImguiUnit->LoadMonster();
+		}
+
 		// 마우스 커서 위치
 		if (ImGui::IsMousePosValid())
 			ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);

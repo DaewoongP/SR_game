@@ -4,8 +4,9 @@
 #include "Export_Function.h"
 
 CDefaultGrid::CDefaultGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGrid(pGraphicDev),
-	m_iStageTileIndex(0)
+	:CGameObject(pGraphicDev),
+	m_iStageTileIndex(0), 
+	m_bGridON(true)
 {
 }
 
@@ -71,20 +72,20 @@ void CDefaultGrid::Key_Input()
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	int x = 1366 / CUBEX * 2;
-	int y = 768 / CUBEY * 2;
+	_int x = 1366 / CUBEX * 2;
+	_int y = 768 / CUBEY * 2;
 
-	int nx = 1366 / x;
-	int ny = 768 / y;
+	_int nx = 1366 / x;
+	_int ny = 768 / y;
 
-	float Gridx = pt.x / nx / (1.3f) - 1.f;
-	float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
+	_float Gridx = pt.x / nx / (1.3f) - 1.f;
+	_float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
 
-	int installx = Gridx / 2;
-	int instally = Gridy / 2;
+	_int installx = _int(Gridx / 2);
+	_int instally = _int(Gridy / 2);
 
-	m_pTransform->m_vInfo[INFO_POS].x = installx * 2;
-	m_pTransform->m_vInfo[INFO_POS].y = instally * 2;
+	m_pTransform->m_vInfo[INFO_POS].x = installx * 2.f;
+	m_pTransform->m_vInfo[INFO_POS].y = instally * 2.f;
 	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 }
 

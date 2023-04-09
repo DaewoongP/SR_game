@@ -4,7 +4,8 @@
 #include "Export_Function.h"
 
 CGroundGrid::CGroundGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGrid(pGraphicDev)
+	:CGameObject(pGraphicDev),
+	m_bGridON(true)
 {
 }
 

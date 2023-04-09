@@ -87,9 +87,9 @@ HRESULT CMoveCube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Move_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });
+	m_uMapComponent[ID_STATIC].insert({ L"Move_Cube", pComponent });
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pLine, E_FAIL);
