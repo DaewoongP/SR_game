@@ -2,7 +2,7 @@
 
 #include "Base.h"
 #include "Include.h"
-
+#include "Collision.h"
 BEGIN(Engine)
 
 class CComponent : public CBase

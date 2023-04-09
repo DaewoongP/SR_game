@@ -145,6 +145,9 @@
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Componnent\Collider\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -345,6 +348,9 @@
     </Filter>
     <Filter Include="Manager\AbstractFactory">
       <UniqueIdentifier>{85627165-7aa3-40d3-9af7-e880cf876576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Collider\Collision">
+      <UniqueIdentifier>{ae529a3b-905b-44db-acdf-280bd20fd4e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
