@@ -40,32 +40,6 @@ CGameObject * CScene::Get_GameObject(const _tchar * pLayerTag, const _tchar * pO
 
 	return iter->second->Get_GameObject(pObjTag);
 }
-size_t CScene::Find_ClassName(Mytchar* pName)
-{
-	size_t cnt = 0;
-	// 동적할당삭제하기 위해서 따로 벡터에 넣어둠.
-	vecDelete.push_back(pName);
-	// 앞의 클래스이름만 비교해서 찾아야함
-	auto iter = find_if(m_mapClassName.begin(), m_mapClassName.end(), [&](auto& pair) {
-		_tchar temp[MAX_STR] = L"";
-		wcsncpy_s(temp, wcslen(pair.first->str) + 1, wcschr(pair.first->str, '_'), _TRUNCATE);
-		wcsncpy_s(temp, wcslen(pair.first->str) - wcslen(temp) + 1, pair.first->str, _TRUNCATE);
-		return !lstrcmpW(pName->str, temp);
-	});
-
-	if (iter == m_mapClassName.end())
-	{
-		m_mapClassName.insert({ pName, cnt });
-		return cnt;
-	}
-	else
-	{
-		cnt = iter->second;
-		m_mapClassName.erase(iter);
-		m_mapClassName.insert({ pName, ++cnt });
-		return cnt;
-	}
-}
 
 HRESULT CScene::Ready_Scene(void)
 {
@@ -97,8 +71,5 @@ void Engine::CScene::Free(void)
 {
 	for_each(m_uMapLayer.begin(), m_uMapLayer.end(), CDeleteMap());
 	m_uMapLayer.clear();
-	for_each(vecDelete.begin(), vecDelete.end(), [](auto& iter) {
-		Safe_Delete(iter);
-	});
 	Safe_Release(m_pGraphicDev);
 }

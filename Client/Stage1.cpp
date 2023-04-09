@@ -2,27 +2,24 @@
 #include "Stage1.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
-#include "Monster.h"
-#include "SkyBox.h"
+
 #include "Cube.h"
-#include "Grid.h"
 #include "StageCamera.h"
 #include "MoveCube.h"
-#include "Topdee.h"
-#include "Pig.h"
-#include "Bat.h"
-#include "CrackCube.h"
+#include "StageBG.h"
 #include "Key.h"
 #include "KeyCube.h"
-#include "StageBG.h"
-#include "Portal.h"
+#include "CrackCube.h"
+#include "Pig.h"
+#include "Bat.h"
 #include "PinkCloud.h"
+#include "Topdee.h"
+#include "Spike.h"
+#include "GravityCube.h"
+#include "Portal.h"
+#include "Fireball.h"
 #include "Spike.h"
 #include "InstallGrid.h"
-#include "GravityCube.h"
-#include"Spike.h"
-#include"Fireball.h"
-
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -41,7 +38,6 @@ HRESULT CStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 	return S_OK;
 }
 
@@ -57,9 +53,7 @@ void CStage1::LateUpdate_Scene(void)
 
 void CStage1::Render_Scene(void)
 {
-
 }
-
 
 HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
@@ -85,9 +79,21 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(6.f, 8.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(8.f, 10.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(10.f, 12.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(18.f, 30.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(16.f, 28.f, 10.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(16.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(18.f, 22.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(18.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(16.f, 22.f, 10.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
+	
+	FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pLayer, _vec3(40.f, 10.f, 11.f)), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
@@ -96,37 +102,17 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-			}
-
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			//사이 첫줄
 			if (i == CUBEY - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-			}
-
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 			//사이 마지막줄
 			if (j == 0)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 				cubeCnt++;
-			}
-
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-			{
-				TCHAR objName[128] = { 0 };
-				_stprintf_s(objName, _T("MapCube"), (cubeCnt));
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(objName, pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-				cubeCnt++;
-			}
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
 		}
 	}
 

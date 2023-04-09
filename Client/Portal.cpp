@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Portal.h"
-
+#include "AbstractFactory.h"
 #include"Export_Function.h"
 #include "SwallowPortal.h"
 #include "Toodee.h"
@@ -32,11 +32,6 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-	NULL_CHECK_RETURN(m_pPlayer1, );
-	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-	NULL_CHECK_RETURN(m_pPlayer2, );
-
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -63,6 +58,14 @@ void CPortal::Render_GameObject(void)
 
 void CPortal::OnCollisionEnter(const Collision * collision)
 {
+	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+	FAILED_CHECK_RETURN(m_pPlayer1, );
+	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+	FAILED_CHECK_RETURN(m_pPlayer2, );
+
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, );
+
 	if (m_pPlayer1 == collision->otherObj)
 		m_bTooCol = true;
 
@@ -71,20 +74,10 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 		m_pCollider->m_bIsTrigger = true;
 		m_bTopCol = true;
 	}
-}
 
-void CPortal::OnCollisionStay(const Collision * collision)
-{
 	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{
-		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-		NULL_CHECK_RETURN(pStageLayer, );
-
-		CGameObject* pGameObject = nullptr;
-
-		pGameObject = CSwallowPortal::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
-		NULL_CHECK_RETURN(pGameObject, );
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Swallow_Portal", pGameObject), );
+		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );
 		m_bCreateSwallowPortal = false;
 	}
 }

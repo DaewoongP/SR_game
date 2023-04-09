@@ -4,6 +4,7 @@
 #include "Export_Function.h"
 
 CLayer::CLayer()
+	: bPreState(g_Is2D)
 {
 }
 
@@ -81,7 +82,13 @@ void CLayer::LateUpdate_Layer(void)
 		else
 			iter.second->LateUpdate_Top();
 		iter.second->LateUpdate_GameObject();
+		// 트리거 호출
+		if (bPreState != g_Is2D)
+		{
+			iter.second->SwapTrigger();
+		}
 	}
+	bPreState = g_Is2D;
 }
 
 

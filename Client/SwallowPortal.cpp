@@ -20,6 +20,10 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
+	m_pTextureCom->Add_Anim(L"Idle_Swallow", 0, 16, 1.f, false);
+	m_pTextureCom->Switch_Anim(L"Idle_Swallow");
+	m_pTextureCom->m_bUseFrameAnimation = true;
+
 	return S_OK;
 }
 
@@ -63,9 +67,6 @@ HRESULT CSwallowPortal::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Swallow_Portal_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
-	m_pTextureCom->Add_Anim(L"Idle_Swallow", 0, 16, 1.f, false);
-	m_pTextureCom->Switch_Anim(L"Idle_Swallow");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	return S_OK;
 }

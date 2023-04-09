@@ -59,7 +59,7 @@ void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 		return;
 
 	//애니메이션의 경과시간입니다.
-	m_CurrentTime += fTimeDelta;
+	m_CurrentTime += (_ulong)fTimeDelta;
 
 	//애니메이션의 클립정보를 가져옵니다.
 	ANIMCLIP* clip= m_clipMap.at(m_AnimState);
@@ -68,10 +68,10 @@ void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 	if (m_CurrentTime > clip->TotalTime)
 		m_CurrentTime = 0;
 	//clip 의 각 파츠를 순회합니다.
-	for (int i = 0; i < clip->parts.size(); i++)
+	for (size_t i = 0; i < clip->parts.size(); i++)
 	{
 		//파츠에 등록된 애니메이션을 가져옵니다.
-		for (int j = 0; j < clip->source[i].size(); j++)
+		for (size_t j = 0; j < clip->source[i].size(); j++)
 		{
 			//찾아온 info의 발동 시간이 지금 시간보다 아래라면?
 			if (clip->source[i][j].ActionTime < m_CurrentTime)

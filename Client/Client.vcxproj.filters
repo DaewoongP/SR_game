@@ -35,9 +35,6 @@
     <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
       <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Object\DefaultMonster">
-      <UniqueIdentifier>{82c722ae-dfdd-49b7-97bb-37a529872c20}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Object\Grid">
       <UniqueIdentifier>{13dfbe5f-a848-479c-a503-bcce600def75}</UniqueIdentifier>
     </Filter>
@@ -82,9 +79,6 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Portal">
       <UniqueIdentifier>{fc218ae6-2353-4c26-b2ce-c733916ec993}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\02. MapObject\Portal\SwallowPortal">
-      <UniqueIdentifier>{0760cdf9-2e29-4936-9412-7b3ddc1db4c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Spike">
       <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
@@ -133,6 +127,12 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Cube\KeyCube">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Object\DefaultUnit">
+      <UniqueIdentifier>{82c722ae-dfdd-49b7-97bb-37a529872c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Portal\SwallowPortal">
+      <UniqueIdentifier>{67d4cdd9-f82b-45ec-91fc-76e99a983226}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +194,6 @@
     <ClInclude Include="Cube.h">
       <Filter>00. GameObject\02. MapObject\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Imgui\Imgui_Object\Grid</Filter>
-    </ClInclude>
     <ClInclude Include="GroundGrid.h">
       <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
     </ClInclude>
@@ -218,14 +215,8 @@
     <ClInclude Include="Key.h">
       <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultMonster.h">
-      <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
-    </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
-    </ClInclude>
-    <ClInclude Include="SwallowPortal.h">
-      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
     </ClInclude>
     <ClInclude Include="Spike.h">
       <Filter>00. GameObject\02. MapObject\Spike</Filter>
@@ -291,6 +282,12 @@
     <ClInclude Include="Monster.h">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
+    <ClInclude Include="DefaultUnit.h">
+      <Filter>Imgui\Imgui_Object\DefaultUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="SwallowPortal.h">
+      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainApp.cpp">
@@ -335,14 +332,8 @@
     <ClCompile Include="Cube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Imgui\Imgui_Object\Grid</Filter>
-    </ClCompile>
     <ClCompile Include="GroundGrid.cpp">
       <Filter>Imgui\Imgui_Object\Grid\GroundGrid</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Imgui\Imgui_Object\GIrd</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>GameObject\Monster</Filter>
@@ -365,14 +356,8 @@
     <ClCompile Include="Key.cpp">
       <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClCompile>
-    <ClCompile Include="DefaultMonster.cpp">
-      <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
-    </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
-    </ClCompile>
-    <ClCompile Include="SwallowPortal.cpp">
-      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
     </ClCompile>
     <ClCompile Include="Spike.cpp">
       <Filter>00. GameObject\02. MapObject\Spike</Filter>
@@ -396,9 +381,6 @@
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
     </ClCompile>
@@ -407,9 +389,6 @@
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>GameObject\Portal</Filter>
@@ -449,6 +428,12 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Defaultunit.cpp">
+      <Filter>Imgui\Imgui_Object\DefaultUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="SwallowPortal.cpp">
+      <Filter>00. GameObject\02. MapObject\Portal\SwallowPortal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

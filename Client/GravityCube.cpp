@@ -24,17 +24,18 @@ HRESULT CGravityCube::Ready_GameObject(_vec3 & vPos)
 
 _int CGravityCube::Update_GameObject(const _float & fTimeDelta)
 {
+	__super::Update_GameObject(0.02f);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 
 _int CGravityCube::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_bIsStatic = false;
-	m_pRigid->m_bUseGrivaty = true;
-
 	__super::Update_Too(fTimeDelta);
-	__super::Update_GameObject(fTimeDelta);
+	if (!m_bIsStone)
+		m_pRigid->m_bUseGrivaty = true;
+	else
+		m_pRigid->m_bUseGrivaty = false;
 	return 0;
 }
 
@@ -42,22 +43,13 @@ _int CGravityCube::Update_Top(const _float & fTimeDelta)
 {
 	__super::Update_Top(fTimeDelta);
 	m_pRigid->m_bUseGrivaty = false;
-	m_pTransform->m_bIsStatic = true;
+	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	return 0;
 }
 
 void CGravityCube::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-}
-
-void CGravityCube::LateUpdate_Too()
-{
-	
-}
-
-void CGravityCube::LateUpdate_Top()
-{
 }
 
 void CGravityCube::Render_GameObject(void)
@@ -73,10 +65,21 @@ void CGravityCube::OnCollisionEnter(const Collision * collision)
 void CGravityCube::OnCollisionStay(const Collision * collision)
 {
 	__super::OnCollisionStay(collision);
+	if (dynamic_cast<CCube*>(collision->otherObj)&&
+		collision->_dir == DIR_DOWN)
+	{
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity = _vec3(0, 0, 0);
+	}
 }
 
 void CGravityCube::OnCollisionExit(const Collision * collision)
 {
+	if (dynamic_cast<CCube*>(collision->otherObj) &&
+		collision->_dir == DIR_DOWN)
+	{
+		//m_pTransform->m_bIsStatic = false;
+	}
 	__super::OnCollisionExit(collision);
 }
 

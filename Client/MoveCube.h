@@ -48,7 +48,7 @@ protected:
 public:
 	void		SetTarget(_vec3 pos, CGameObject* obj);
 	_bool		GetHandleState() {return (((m_handleState == CH_ING) || (m_handleState == CH_NONE))&& !m_bIsMoving); }
-	void		DoFallingStart();
+	void		DoFallingStart(_vec3 pos);
 
 protected:
 	Engine::CLine*			m_pLine;
@@ -56,7 +56,6 @@ protected:
 	_float					m_fSpeed = 16.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
-	_vec3					prePos;
 	_vec3					m_MoveVec;
 
 	_vec3					m_TargetPos; //들때 올 위치

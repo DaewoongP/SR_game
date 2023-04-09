@@ -20,22 +20,20 @@ public:
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
-	virtual void LateUpdate_Too() override;
-	virtual void LateUpdate_Top() override;
 	virtual void Render_GameObject(void) override;
-	virtual void Render_Too() override;
-	virtual void Render_Top() override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
-	virtual void OnCollisionExit(const class Collision* collision);
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
 	void		RayDiskey();
+	void		RayDisKey_part(COL_DIR dir);
 	void		PlayerState(const _float& fTimeDelta);
 	void		Move(const _float& fTimeDelta);
 	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
 	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
+	void		DirApply(_int dir,_int& x,_int& y);
+	void		FindPlace(_int x,_int y);
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
@@ -54,8 +52,6 @@ private:
 	CGameObject*			m_pGrabObj = nullptr;
 
 	TOPDEESTATE				m_eState = TD_MOVE;
-
-	_vec3					prePos;
 
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }

@@ -83,6 +83,42 @@ void			Update_DInput(void)
 	CDInputMgr::GetInstance()->Update_DInput();
 }
 
+//Sound
+HRESULT Ready_Sound()
+{
+	return CSoundMgr::GetInstance()->Ready_Sound();
+}
+
+HRESULT Ready_Sound_Effect()
+{
+	return CSoundMgr::GetInstance()->Ready_Sound_Effect();
+}
+void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlaySound(pSoundKey, eID, fVolume);
+}
+
+void PlayBGM(TCHAR* pSoundKey, float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);
+}
+
+void StopSound(CHANNELID eID)
+{
+	return CSoundMgr::GetInstance()->StopSound(eID);
+}
+
+void StopAll()
+{
+	return CSoundMgr::GetInstance()->StopAll();
+}
+
+void SetChannelVolume(CHANNELID eID, float fVolume)
+{
+	return CSoundMgr::GetInstance()->SetChannelVolume(eID, fVolume);
+}
+
+
 
 void	Release_System(void)
 {
@@ -90,5 +126,6 @@ void	Release_System(void)
 	CFontMgr::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
 	CTimerMgr::GetInstance()->DestroyInstance();
+	CSoundMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }
