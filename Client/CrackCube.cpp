@@ -35,7 +35,7 @@ _int CCrackCube::Update_Too(const _float& fTimeDelta)
 {
 	// 레이충돌필요함 철민출동 십자로 쏴야댐 
 	// 태그 안에서 레이충돌 시전 -> 최적화
-	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
+	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackCube");
 
 	if (nullptr != pCrackBox && dynamic_cast<CCrackCube*>(pCrackBox)->m_bCrackDead)
 	{
@@ -79,7 +79,7 @@ void CCrackCube::OnCollisionEnter(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
 		m_bCrackDead = true;
-	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackBlock"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackCube"))
 		m_bCrackDead = true;
 	__super::OnCollisionEnter(collision);
 
