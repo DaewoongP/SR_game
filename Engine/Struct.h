@@ -271,6 +271,11 @@ typedef struct tagRay
 
 }RAYCAST;
 
+typedef struct Mytchar
+{
+	_tchar	str[MAX_STR] = L"";
+};
+
 END
 
 // 위치값과 종류를 저장하기 위한 구조체

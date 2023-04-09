@@ -30,6 +30,21 @@ HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
+_int CMoveBox::Update_GameObject(const _float & fTimeDelta)
+{
+	if (m_bDead)
+		return OBJ_DEAD;
+	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	return 0;
+}
+
+_int CMoveBox::Update_Too(const _float & fTimeDelta)
+{
+	__super::Update_GameObject(fTimeDelta);
+	
+	return 0;
+}
+
 _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
 	MoveToPos(fTimeDelta);
@@ -38,7 +53,6 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 
 	ShootRay();
 	Move(fTimeDelta);
-	
 	return 0;
 }
 
@@ -254,7 +268,7 @@ void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
 {
 	m_TargetPos = pos;
 	m_Target = obj;
-	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
+	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
 }
 
 void CMoveBox::DoFallingStart()

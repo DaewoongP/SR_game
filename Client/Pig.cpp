@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Pig.h"
-#include "Cube.h"
+
 #include "Export_Function.h"
 
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -29,7 +29,6 @@ _int CPig::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
-	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
@@ -61,7 +60,7 @@ _int CPig::Update_Too(const _float & fTimeDelta)
 			}
 			else
 				m_pTransform->m_vScale.x = -PIGSCALE / m_fFallingScale*2.0f;
-
+			
 			m_pTransform->m_vScale.y = PIGSCALE + PIGSCALE - PIGSCALE / m_fFallingScale;
 		}
 	}
@@ -107,42 +106,31 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
-	if (vPlayerPos.y > m_pTransform->Get_WorldMatrixPointer()->_42)
+	if (vPlayerPos.y > m_pTransform->m_vInfo[INFO_POS].y)
 	{
 		m_bBackSprite = true;
 	}
 	else
 		m_bBackSprite = false;
 	
-	if (vPlayerPos.x < m_pTransform->Get_WorldMatrixPointer()->_41)
+	if (vPlayerPos.x < m_pTransform->m_vInfo[INFO_POS].x)
 	{
 		m_pTransform->m_vScale.x = -PIGSCALE;
 	}
 	else
 		m_pTransform->m_vScale.x = PIGSCALE;
 
+	_vec3	vDir;
+	D3DXVec3Normalize(&vDir, &(vPlayerPos - m_pTransform->m_vInfo[INFO_POS]));
 
-	vPlayerPos = vPlayerPos - m_pTransform->m_vInfo[INFO_POS];
-
-	D3DXVec3Normalize(&vPlayerPos, &vPlayerPos);
-
-	m_pTransform->Move_Pos(&vPlayerPos, fTimeDelta, m_fSpeed);
-	
+	m_pTransform->Move_Pos(&vDir, fTimeDelta, m_fSpeed);
+	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	return 0;
 }
 
 void CPig::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-}
-
-void CPig::LateUpdate_Too()
-{
-}
-
-void CPig::LateUpdate_Top()
-{
-	
 }
 
 void CPig::Render_GameObject(void)
@@ -175,7 +163,7 @@ void CPig::Render_Top()
 
 void CPig::OnCollisionEnter(const Collision * collision)
 {
-	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && dynamic_cast<CCube*>(collision->otherObj))
+	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && collision->otherObj->m_pTag == L"Cube")
 	{
 		if (m_bMoveLeft)
 		{
