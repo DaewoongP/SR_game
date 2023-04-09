@@ -20,6 +20,7 @@ public:
 
 public:
 	HRESULT			Set_Scene(CScene* pScene);
+	CScene*			Get_Scene() { return m_pScene; }
 
 	_int			Update_Management(const _float& fTimeDelta);
 	void			LateUpdate_Management();

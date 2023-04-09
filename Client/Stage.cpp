@@ -11,12 +11,12 @@
 #include "Player02.h"
 #include "Pig.h"
 #include "Bat.h"
-#include "CrackBlock.h"
+#include"CrackBlock.h"
 #include "Key.h"
 #include "KeyBox.h"
 #include "StageBG.h"
 #include "Portal.h"
-#include "Spike.h"
+#include"Spike.h"
 #include "TempBox.h"
 #include"Fireball.h"
 
@@ -53,6 +53,7 @@ void CStage::LateUpdate_Scene(void)
 
 void CStage::Render_Scene(void)
 {
+
 }
 
 
@@ -66,7 +67,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CDynamiCamera::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Camera", pGameObject), E_FAIL);
-
 	pGameObject = CStageBG::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StageBG", pGameObject), E_FAIL);
@@ -82,9 +82,8 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	//FAILED_CHECK_RETURN(FACTORY<CKey>::Create(m_pGraphicDev, this, pLayer, _vec3(10.f, 10.f, 10.f)), E_FAIL);
 
-	//Bat
+	////Bat
 	pGameObject = CBat::Create(m_pGraphicDev, _vec3(50.f, 20.f, 11.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bat_0", pGameObject), E_FAIL);
@@ -104,9 +103,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pig_0", pGameObject), E_FAIL);
 
-	pGameObject = CFireball::Create(m_pGraphicDev, _vec3(40.f, 10.f, 10.f));
+	pGameObject = CSpike::Create(m_pGraphicDev, _vec3(20.f, 2.f, 10.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Fireball", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spike_0", pGameObject), E_FAIL);
 
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
@@ -118,7 +117,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			{
 				TCHAR objName[128] = { 0 };
 				_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
-				pGameObject = CCube::Create(m_pGraphicDev ,_vec3{ (float)j * 2,(float)i * 2,10.f });
+				pGameObject = CCube::Create(m_pGraphicDev, _vec3{ (float)j * 2,(float)i * 2,10.f });
 				NULL_CHECK_RETURN(pGameObject, E_FAIL);
 				FAILED_CHECK_RETURN(pLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 				pGameObject->m_pTransform->m_bIsStatic = true;
@@ -160,7 +159,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				pGameObject->m_pTransform->m_bIsStatic = true;
 				cubeCnt++;
 			}
-      
+
 			/*TCHAR objName[128] = {0};
 			_stprintf_s(objName, _T("MapCube_%d"), (cubeCnt));
 			pGameObject = CCube::Create(m_pGraphicDev);
@@ -182,6 +181,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
