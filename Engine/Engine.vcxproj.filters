@@ -80,7 +80,7 @@
       <Filter>Componnent\Texture</Filter>
     </ClInclude>
     <ClInclude Include="CollisionMgr.h">
-      <Filter>Manager\FontMgr\CollisionMgr</Filter>
+      <Filter>Manager\CollisionMgr</Filter>
     </ClInclude>
     <ClInclude Include="DInputMgr.h">
       <Filter>Manager\InputMgr</Filter>
@@ -148,6 +148,9 @@
     <ClInclude Include="SoundMgr.h">
       <Filter>Manager\SoundMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Componnent\Collider\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -196,7 +199,7 @@
       <Filter>Componnent\Texture</Filter>
     </ClCompile>
     <ClCompile Include="CollisionMgr.cpp">
-      <Filter>Manager\FontMgr\CollisionMgr</Filter>
+      <Filter>Manager\CollisionMgr</Filter>
     </ClCompile>
     <ClCompile Include="DInputMgr.cpp">
       <Filter>Manager\InputMgr</Filter>
@@ -322,9 +325,6 @@
     <Filter Include="Componnent\Line">
       <UniqueIdentifier>{4800f1b8-e509-4ea3-b333-14edcb732713}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\FontMgr\CollisionMgr">
-      <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\Device">
       <UniqueIdentifier>{c8480d5b-ac13-4cc8-9c8b-af99633f45cc}</UniqueIdentifier>
     </Filter>
@@ -354,6 +354,12 @@
     </Filter>
     <Filter Include="Manager\SoundMgr">
       <UniqueIdentifier>{4ac68d62-d6b0-4e4b-b12c-0997c6b9749f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Collider\Collision">
+      <UniqueIdentifier>{ae529a3b-905b-44db-acdf-280bd20fd4e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CollisionMgr">
+      <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

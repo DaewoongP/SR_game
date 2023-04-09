@@ -33,9 +33,9 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 
 	m_pPlayer1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-	NULL_CHECK_RETURN(m_pPlayer1, );
+	NULL_CHECK_RETURN(m_pPlayer1, 0);
 	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-	NULL_CHECK_RETURN(m_pPlayer2, );
+	NULL_CHECK_RETURN(m_pPlayer2, 0);
 
 	__super::Update_GameObject(fTimeDelta);
 

@@ -45,12 +45,12 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 _int CFireball::Update_Too(const _float& fTimeDelta)
 {
 
-	return S_OK();
+	return S_OK;
 }
 
 _int CFireball::Update_Top(const _float& fTimeDelta)
 {
-	return S_OK();
+	return S_OK;
 }
 
 void CFireball::LateUpdate_GameObject(void)

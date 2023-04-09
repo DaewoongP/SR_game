@@ -125,7 +125,7 @@ HRESULT CImguiStage::GroundGridON()
 
 			TCHAR objName[128] = { 0 };
 			_stprintf_s(objName, _T("Grid%d"), (iGridIndex));
-			pGameObject = CGroundGrid::Create(m_pGraphicDev, _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f });
+			pGameObject = CGroundGrid::Create(m_pGraphicDev, _vec3{ (float)j * 2.f,(float)i * 2.f, 9.f });
 			NULL_CHECK_RETURN(pGameObject, E_FAIL);
 			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
 			m_vecGroundGrid.push_back(pGameObject);

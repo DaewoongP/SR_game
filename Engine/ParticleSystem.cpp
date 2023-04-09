@@ -147,8 +147,6 @@ bool CParticleSystem::IsEmpty()
 
 bool CParticleSystem::IsDead()
 {
-	bool ret;
-
 	for (const Particle& it : m_Particles)
 	{
 		if (it.bIsAlive == true) return false;

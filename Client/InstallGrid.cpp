@@ -17,7 +17,7 @@ HRESULT CInstallGrid::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_vInfo[INFO_POS].z = 11.1;
+	m_pTransform->m_vInfo[INFO_POS].z = 11.1f;
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pCollider->m_bIsTrigger = true;
 	return S_OK;

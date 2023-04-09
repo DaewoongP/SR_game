@@ -235,7 +235,9 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			if (m_byPlayerInputDir & 8)
 				x -= 2;
 
-			m_MovetoPos = _vec3((int)m_pTransform->m_vInfo[INFO_POS].x + x, (int)m_pTransform->m_vInfo[INFO_POS].y + y, (int)m_pTransform->m_vInfo[INFO_POS].z);
+			m_MovetoPos = _vec3(_float((_int)m_pTransform->m_vInfo[INFO_POS].x + x), 
+				_float((_int)m_pTransform->m_vInfo[INFO_POS].y + y), 
+				_float((_int)m_pTransform->m_vInfo[INFO_POS].z));
 			m_bIsMoving = false;
 		}
 		break;
@@ -250,7 +252,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 		if (m_byLookDir & 8)
 			x -= 2;
 		_vec3 maindir;
-		D3DXVec3Normalize(&maindir, &_vec3(x, y, 0));
+		D3DXVec3Normalize(&maindir, &_vec3((_float)x, (_float)y, 0));
 		//inputdir기반으로 레이를 발사함.
 		if (m_pGrabObj == nullptr)
 		{
@@ -258,7 +260,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
 
 			//보는 방향 1순위
-			if (CheckCubeExist(_vec3(x, y, 0), &col))
+			if (CheckCubeExist(_vec3((_float)x, (_float)y, 0.f), &col))
 			{
 				if (dynamic_cast<CMoveCube*>(col->m_pGameObject)->GetHandleState())
 				{
@@ -291,11 +293,11 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
 
 			//보는 방향 1순위
-			if (!CheckAnythingExist(_vec3(x, y, 0), &col))
+			if (!CheckAnythingExist(_vec3((_float)x, (_float)y, 0), &col))
 			{
 				if (dynamic_cast<CMoveCube*>(m_pGrabObj)->GetHandleState())
 				{
-					dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), this);
+					dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((_float)x, (_float)y, -1.f)), this);
 					m_pGrabObj = nullptr;
 					return;
 				}
@@ -310,7 +312,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 				{
 					if (dynamic_cast<CMoveCube*>(m_pGrabObj)->GetHandleState())
 					{
-						dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x * 2, (int)dir[i].y * 2, -1)), this);
+						dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((_int)dir[i].x * 2.f, (_int)dir[i].y * 2.f, -1.f)), this);
 						m_pGrabObj = nullptr;
 						return;
 					}
