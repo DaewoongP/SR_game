@@ -47,8 +47,8 @@ inline HRESULT		Ready_DInput(HINSTANCE hInst, HWND hWnd);
 inline void			Update_DInput(void);
 
 //Sound
-inline void Ready_Sound();
-inline void Ready_Sound_Effect();
+inline HRESULT Ready_Sound();
+inline HRESULT Ready_Sound_Effect();
 
 inline void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 inline void PlayBGM(TCHAR* pSoundKey, float fVolume);

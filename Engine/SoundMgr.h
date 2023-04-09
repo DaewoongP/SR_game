@@ -12,8 +12,8 @@ private:
     virtual ~CSoundMgr();
 
 public:
-    void Ready_Sound();
-	void Ready_Sound_Effect();
+	HRESULT Ready_Sound();
+	HRESULT Ready_Sound_Effect();
 	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 	void PlayBGM(TCHAR* pSoundKey, float fVolume);
 	void StopSound(CHANNELID eID);

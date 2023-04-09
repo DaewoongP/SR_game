@@ -13,7 +13,7 @@ CSoundMgr::~CSoundMgr()
 	Free();
 }
 
-void CSoundMgr::Ready_Sound()
+HRESULT CSoundMgr::Ready_Sound()
 {// 사운드를 담당하는 대표객체를 생성하는 함수
 	FMOD_System_Create(&m_pSystem);
 
@@ -21,8 +21,9 @@ void CSoundMgr::Ready_Sound()
 	FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
 
 	LoadSoundFile();
+	return S_OK;
 }
-void CSoundMgr::Ready_Sound_Effect()
+HRESULT CSoundMgr::Ready_Sound_Effect()
 {// 사운드를 담당하는 대표객체를 생성하는 함수
 	FMOD_System_Create(&m_pSystem);
 
@@ -30,6 +31,7 @@ void CSoundMgr::Ready_Sound_Effect()
 	FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
 
 	LoadSoundFile_Effect();
+	return S_OK;
 }
 
 void CSoundMgr::PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)

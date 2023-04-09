@@ -84,12 +84,12 @@ void			Update_DInput(void)
 }
 
 //Sound
-void Ready_Sound()
+HRESULT Ready_Sound()
 {
 	return CSoundMgr::GetInstance()->Ready_Sound();
 }
 
-void Ready_Sound_Effect()
+HRESULT Ready_Sound_Effect()
 {
 	return CSoundMgr::GetInstance()->Ready_Sound_Effect();
 }
