@@ -2,7 +2,7 @@
 #include "GravityCube.h"
 #include "Export_Function.h"
 
-CGravityCube::CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev):CMoveBox(pGraphicDev)
+CGravityCube::CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev):CMoveCube(pGraphicDev)
 {
 }
 

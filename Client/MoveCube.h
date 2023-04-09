@@ -10,12 +10,12 @@ class CCollider;
 class CLine;
 END
 
-class CMoveBox :
+class CMoveCube :
 	public CCube
 {
 protected:
-	explicit CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMoveBox();
+	explicit CMoveCube(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CMoveCube();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -69,7 +69,7 @@ public:
 	_bool					m_bIsFall = false;
 
 public:
-	static CMoveBox*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CMoveCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;

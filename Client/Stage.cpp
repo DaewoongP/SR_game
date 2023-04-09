@@ -7,7 +7,7 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "DynamiCamera.h"
-#include "MoveBox.h"
+#include "MoveCube.h"
 #include "Topdee.h"
 #include "Pig.h"
 #include "Bat.h"

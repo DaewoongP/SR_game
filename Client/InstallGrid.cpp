@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "InstallGrid.h"
-#include "MoveBox.h"
+#include "MoveCube.h"
 #include "Export_Function.h"
 
 CInstallGrid::CInstallGrid(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -62,12 +62,12 @@ void CInstallGrid::OnCollisionStay(const Collision * collision)
 			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)
 		{
 			//그 친구는 돌멩이가 되고
-			dynamic_cast<CMoveBox*>(collision->otherObj)->m_bIsStone = true;
+			dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsStone = true;
 			for (int i = 0; i < DIR_END; i++)
-				dynamic_cast<CMoveBox*>(collision->otherObj)->m_bIsCol[i] = true;
+				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
 			//낙하를 트루로 바까준다.
-			dynamic_cast<CMoveBox*>(collision->otherObj)->DoFallingStart();
+			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart();
 			//나는 죽는다.
 			m_bDead = true;
 		}

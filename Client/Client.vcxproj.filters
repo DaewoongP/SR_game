@@ -191,9 +191,6 @@
     <ClInclude Include="Cube.h">
       <Filter>00. GameObject\02. MapObject\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="MoveBox.h">
-      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
-    </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Imgui\Imgui_Object\Grid</Filter>
     </ClInclude>
@@ -280,6 +277,9 @@
     <ClInclude Include="Topdee.h">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
     </ClInclude>
+    <ClInclude Include="MoveCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainApp.cpp">
@@ -323,9 +323,6 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveBox.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Imgui\Imgui_Object\Grid</Filter>
@@ -428,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

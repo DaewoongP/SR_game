@@ -11,7 +11,7 @@
 #include "Portal.h"
 #include "Key.h"
 #include "KeyBox.h"
-#include "MoveBox.h"
+#include "MoveCube.h"
 #include "CrackBlock.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -298,7 +298,7 @@ void CImguiUnit::MapObjectInstall()
 		else if (2 == m_iMapObjectType) // 무브 박스
 		{
 			_stprintf_s(strMapObjectIndex, _T("MoveCube_%d"), m_iMapObjectIndex);
-			pGameObject = CMoveBox::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			pGameObject = CMoveCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		else if (3 == m_iMapObjectType) // 포탈
@@ -387,7 +387,7 @@ HRESULT CImguiUnit::LoadMapObject()
 		else if (2 == iter.iObjTypeNumber)
 		{
 			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
-			pGameObject = CMoveBox::Create(m_pGraphicDev, iter.vObjPos);
+			pGameObject = CMoveCube::Create(m_pGraphicDev, iter.vObjPos);
 		}
 
 		// 포탈

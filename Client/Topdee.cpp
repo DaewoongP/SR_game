@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Topdee.h"
-#include "MoveBox.h"
+#include "MoveCube.h"
 #include "Export_Function.h"
 
 CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -183,7 +183,7 @@ void CTopdee::RayDiskey()
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 11;
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_LEFT])
 				m_byPlayerInputDir &= 11;
 	}
 	_detectedCOL.clear();
@@ -193,7 +193,7 @@ void CTopdee::RayDiskey()
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 7;
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_RIGHT])
 				m_byPlayerInputDir &= 7;
 	}
 	_detectedCOL.clear();
@@ -203,7 +203,7 @@ void CTopdee::RayDiskey()
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") || (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 13;
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_UP])
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_UP])
 				m_byPlayerInputDir &= 13;
 	}
 	_detectedCOL.clear();
@@ -213,7 +213,7 @@ void CTopdee::RayDiskey()
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||(!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))) m_byPlayerInputDir &= 14;
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[DIR_DOWN])
 				m_byPlayerInputDir &= 14;
 	}
 	_detectedCOL.clear();
@@ -261,10 +261,10 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			//보는 방향 1순위
 			if (CheckCubeExist(_vec3(x, y, 0), &col))
 			{
-				if (dynamic_cast<CMoveBox*>(col->m_pGameObject)->GetHandleState())
+				if (dynamic_cast<CMoveCube*>(col->m_pGameObject)->GetHandleState())
 				{
 					m_pGrabObj = col->m_pGameObject;
-					dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+					dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
 					return;
 				}
 			}
@@ -276,10 +276,10 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 					return;
 				if (CheckCubeExist(dir[i], &col))
 				{
-					if (dynamic_cast<CMoveBox*>(col->m_pGameObject)->GetHandleState())
+					if (dynamic_cast<CMoveCube*>(col->m_pGameObject)->GetHandleState())
 					{
 						m_pGrabObj = col->m_pGameObject;
-						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
+						dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -4)), this);
 						return;
 					}
 				}
@@ -294,9 +294,9 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			//보는 방향 1순위
 			if (!CheckAnythingExist(_vec3(x, y, 0), &col))
 			{
-				if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+				if (dynamic_cast<CMoveCube*>(m_pGrabObj)->GetHandleState())
 				{
-					dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), this);
+					dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(x, y, -1)), this);
 					m_pGrabObj = nullptr;
 					return;
 				}
@@ -309,9 +309,9 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 					return;
 				if (!CheckAnythingExist(dir[i], &col))
 				{
-					if (dynamic_cast<CMoveBox*>(m_pGrabObj)->GetHandleState())
+					if (dynamic_cast<CMoveCube*>(m_pGrabObj)->GetHandleState())
 					{
-						dynamic_cast<CMoveBox*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x * 2, (int)dir[i].y * 2, -1)), this);
+						dynamic_cast<CMoveCube*>(m_pGrabObj)->SetTarget(_vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3((int)dir[i].x * 2, (int)dir[i].y * 2, -1)), this);
 						m_pGrabObj = nullptr;
 						return;
 					}

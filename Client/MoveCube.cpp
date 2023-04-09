@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "MoveBox.h"
+#include "MoveCube.h"
 
 #include "Topdee.h"
 #include "Export_Function.h"
-CMoveBox::CMoveBox(LPDIRECT3DDEVICE9 pGraphicDev)
+CMoveCube::CMoveCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev)
 {
 }
 
-CMoveBox::~CMoveBox()
+CMoveCube::~CMoveCube()
 {
 }
 
-HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
+HRESULT CMoveCube::Ready_GameObject(_vec3& vPos)
 {
 	__super::Ready_GameObject(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -30,7 +30,7 @@ HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
-_int CMoveBox::Update_GameObject(const _float & fTimeDelta)
+_int CMoveCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -40,7 +40,7 @@ _int CMoveBox::Update_GameObject(const _float & fTimeDelta)
 }
 
 
-_int CMoveBox::Update_Top(const _float & fTimeDelta)
+_int CMoveCube::Update_Top(const _float & fTimeDelta)
 {
 	MoveToPos(fTimeDelta);
 	if (m_handleState == CH_START || m_handleState == CH_END|| m_bIsStone)
@@ -51,17 +51,17 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 	return 0;
 }
 
-void CMoveBox::LateUpdate_GameObject(void)
+void CMoveCube::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CMoveBox::Render_GameObject(void)
+void CMoveCube::Render_GameObject(void)
 {
 	__super::Render_GameObject();
 }
 
-void CMoveBox::OnCollisionEnter(const Collision * collision)
+void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 		DoRayToDir(collision->_dir);
@@ -70,18 +70,18 @@ void CMoveBox::OnCollisionEnter(const Collision * collision)
 	__super::OnCollisionEnter(collision);
 }
 
-void CMoveBox::OnCollisionStay(const Collision * collision)
+void CMoveCube::OnCollisionStay(const Collision * collision)
 {
 	__super::OnCollisionStay(collision);
 }
 
-void CMoveBox::OnCollisionExit(const Collision * collision)
+void CMoveCube::OnCollisionExit(const Collision * collision)
 {
 	__super::OnCollisionExit(collision);
 }
 
 
-HRESULT CMoveBox::Add_Component(void)
+HRESULT CMoveCube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -96,14 +96,14 @@ HRESULT CMoveBox::Add_Component(void)
 	return S_OK;
 }
 
-void CMoveBox::Move(const _float & fTimeDelta)
+void CMoveCube::Move(const _float & fTimeDelta)
 {
 	if (m_bIsMoving)
 		if (IsMoveDone(fTimeDelta))
 			return;
 }
 
-_bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
+_bool CMoveCube::IsMoveDone(const _float & fTimeDelta)
 {
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
@@ -123,7 +123,7 @@ _bool CMoveBox::IsMoveDone(const _float & fTimeDelta)
 	return true;
 }
 
-void CMoveBox::ShootRay()
+void CMoveCube::ShootRay()
 {
 	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
 	CheckColAble(_vec3(-1, 0, 0), 2.5f, DIR_RIGHT);
@@ -131,7 +131,7 @@ void CMoveBox::ShootRay()
 	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
 }
 
-void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
+void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
@@ -143,13 +143,13 @@ void CMoveBox::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 			m_bIsCol[edir] = false;
 
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
-			m_bIsCol[edir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
+			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
 	else
 		m_bIsCol[edir] = false;
 }
 
-_bool CMoveBox::DoRayToDir(COL_DIR  dir)
+_bool CMoveCube::DoRayToDir(COL_DIR  dir)
 {
 	//들어온 방향으로 레이를 쏩니다.
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
@@ -174,9 +174,9 @@ _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
 		{
-			m_bIsCol[dir] = dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 				
-			if (dynamic_cast<CMoveBox*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
 			{
 				SetMovePos(dir);
 				return true;
@@ -190,7 +190,7 @@ _bool CMoveBox::DoRayToDir(COL_DIR  dir)
 	return true;
 }
 
-void CMoveBox::SetMovePos(COL_DIR dir)
+void CMoveCube::SetMovePos(COL_DIR dir)
 {
 	switch (dir)
 	{
@@ -212,7 +212,7 @@ void CMoveBox::SetMovePos(COL_DIR dir)
 
 }
 
-void CMoveBox::MoveToPos(const _float& fTimeDelta)
+void CMoveCube::MoveToPos(const _float& fTimeDelta)
 {
 	switch (m_handleState)
 	{
@@ -259,23 +259,23 @@ void CMoveBox::MoveToPos(const _float& fTimeDelta)
 	}
 }
 
-void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
+void CMoveCube::SetTarget(_vec3 pos, CGameObject * obj)
 {
 	m_TargetPos = pos;
 	m_Target = obj;
 	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
 }
 
-void CMoveBox::DoFallingStart()
+void CMoveCube::DoFallingStart()
 {
 	m_bIsFall = true;
 	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 2.1)); 
 	m_bIsMoving = true; 
 }
 
-CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CMoveCube * CMoveCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CMoveBox*		pInstance = new CMoveBox(pGraphicDev);
+	CMoveCube*		pInstance = new CMoveCube(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -286,7 +286,7 @@ CMoveBox * CMoveBox::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CMoveBox::Free(void)
+void CMoveCube::Free(void)
 {
 	__super::Free();
 }

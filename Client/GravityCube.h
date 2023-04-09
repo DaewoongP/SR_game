@@ -1,12 +1,12 @@
 #pragma once
-#include "MoveBox.h"
+#include "MoveCube.h"
 
 BEGIN(Engine)
 class CRigidbody;
 END
 
 class CGravityCube :
-	public CMoveBox
+	public CMoveCube
 {
 public:
 	explicit CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev);
