@@ -10,7 +10,7 @@ CTexture::CTexture(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_CurIdx(0)
 	, m_bisLoop(false)
 {
-	memset(&m_CurrentAnim, 0, sizeof(m_CurrentAnim));
+	ZeroMemory(&m_CurrentAnim, sizeof(Anim_Info));
 }
 
 

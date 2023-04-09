@@ -32,6 +32,8 @@ _int CCrackBlock::Update_GameObject(const _float& fTimeDelta)
 
 _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 {
+	// 레이충돌필요함 철민출동 십자로 쏴야댐 
+	// 태그 안에서 레이충돌 시전 -> 최적화
 	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
 
 	if (nullptr != pCrackBox && dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)

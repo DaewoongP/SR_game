@@ -45,6 +45,7 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_PRIORITY])
 	{
 		iter->Render_GameObject();
+		pGraphicDev->SetTexture(0, nullptr);
 		if (g_Is2D)
 			iter->Render_Too();
 		else
@@ -58,6 +59,7 @@ void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_NONALPHA])
 	{
 		iter->Render_GameObject();
+		pGraphicDev->SetTexture(0, nullptr);
 		if (g_Is2D)
 			iter->Render_Too();
 		else
@@ -76,14 +78,13 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_ALPHA])
 	{
 		iter->Render_GameObject();
+		pGraphicDev->SetTexture(0, nullptr);
 		if (g_Is2D)
 		{
-			pGraphicDev->SetTexture(0, nullptr);
 			iter->Render_Too();
 		}
 		else
 		{
-			pGraphicDev->SetTexture(0, nullptr);
 			iter->Render_Top();
 		}
 	}
@@ -97,6 +98,7 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
 	for (auto& iter : m_RenderGroup[RENDER_UI])
 	{
 		iter->Render_GameObject();
+		pGraphicDev->SetTexture(0, nullptr);
 		if (g_Is2D)
 			iter->Render_Too();
 		else

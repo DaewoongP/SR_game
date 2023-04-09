@@ -31,27 +31,21 @@ HRESULT CMoveBox::Ready_GameObject(_vec3& vPos)
 
 _int CMoveBox::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 
 _int CMoveBox::Update_Too(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-	if (m_pTag)
-		int a = 1;
-
 	__super::Update_GameObject(fTimeDelta);
-
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	
 	return 0;
 }
 
 _int CMoveBox::Update_Top(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
 	MoveToPos(fTimeDelta);
 	if(m_handleState == CH_START || m_handleState == CH_END)
 	{
@@ -68,42 +62,15 @@ _int CMoveBox::Update_Top(const _float & fTimeDelta)
 		Move(fTimeDelta);
 	}
 	__super::Update_GameObject(fTimeDelta);
-
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
 
 void CMoveBox::LateUpdate_GameObject(void)
 {
-	
-}
-
-void CMoveBox::LateUpdate_Too()
-{
-	CGameObject::LateUpdate_GameObject();
-}
-
-void CMoveBox::LateUpdate_Top()
-{
 	CGameObject::LateUpdate_GameObject();
 }
 
 void CMoveBox::Render_GameObject(void)
-{
-}
-
-void CMoveBox::Render_Too()
-{
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
-	m_pTextureCom->Set_Texture();
-
-	m_pBufferCom->Render_Buffer();
-
-	CGameObject::Render_GameObject();
-}
-
-void CMoveBox::Render_Top()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -332,7 +299,7 @@ void CMoveBox::SetTarget(_vec3 pos, CGameObject * obj)
 {
 	m_TargetPos = pos;
 	m_Target = obj;
-	m_handleState = static_cast<CUBE_HANDING>((int)(m_handleState)+1);
+	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
 }
 
 void CMoveBox::DoFallingStart()

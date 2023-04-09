@@ -45,16 +45,6 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-_int CPortal::Update_Too(const _float & fTimeDelta)
-{
-	return 0;
-}
-
-_int CPortal::Update_Top(const _float & fTimeDelta)
-{
-	return 0;
-}
-
 void CPortal::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
@@ -78,7 +68,7 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 
 	if (m_pPlayer2 == collision->otherObj)
 	{
-		this->m_pCollider->m_bIsTrigger = true;
+		m_pCollider->m_bIsTrigger = true;
 		m_bTopCol = true;
 	}
 }
