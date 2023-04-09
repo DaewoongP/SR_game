@@ -125,6 +125,12 @@
     <Filter Include="01. Scene\Stages">
       <UniqueIdentifier>{627e2365-507d-4ba9-b8d1-addb89192073}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss">
+      <UniqueIdentifier>{d8b2bab9-66d0-467a-b8d3-cb619470bd0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\Boss\FireBall">
+      <UniqueIdentifier>{06610006-bb98-4f94-a1f6-836539ed7637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -184,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Player02.h">
       <Filter>00. GameObject\00. Player\Top</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>00. GameObject\01. Monster\Bat</Filter>
@@ -271,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,9 +394,6 @@
     <ClCompile Include="StageBG.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>Main\MainApp</Filter>
     </ClCompile>
@@ -399,6 +405,13 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamiCamera.cpp" />
+    <ClCompile Include="Fireball.cpp">
+      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>00. GameObject\01. Monster</Filter>
     </ClCompile>
     <ClCompile Include="DynamiCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>

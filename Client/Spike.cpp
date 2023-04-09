@@ -90,8 +90,8 @@ HRESULT CSpike::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_uMapComponent[ID_STATIC].insert({ L"Texture",pComponent });
 	m_pTextureCom->Add_Anim(L"Idle", 0,0, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Goto2D", 7, 12, 1.f, false);
-	m_pTextureCom->Add_Anim(L"GotoTop", 0, 6, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Goto2D", 7, 12, 0.3f, false);
+	m_pTextureCom->Add_Anim(L"GotoTop", 0, 6, 0.3f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
