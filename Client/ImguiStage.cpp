@@ -276,7 +276,7 @@ void CImguiStage::CreateDefaultCube()
 	FAILED_CHECK_RETURN(FACTORY<CDefaultCube>::Create(L"DefaultCube", pStageLayer,
 		_vec3{ 0.f, 0.f, 0.f }), );
 
-	m_pDefaultGrid = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultCube");
+	m_pDefaultCube = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultCube");
 
 	return;
 }
