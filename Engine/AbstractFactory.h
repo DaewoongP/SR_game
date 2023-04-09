@@ -12,10 +12,12 @@ private:
 	~CAbstractFactory(){}
 
 public:
-	static HRESULT	Create(
-		LPDIRECT3DDEVICE9 pGraphicDev, CScene* pScene,
-		CLayer* pLayer)
+	static HRESULT	Create(CLayer* pLayer)
 	{
+		// 초기화
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		CScene*	pScene = Get_Scene();
+		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		T* nameT = nullptr;
 		CGameObject* pGameObject = T::Create(pGraphicDev);
@@ -47,10 +49,12 @@ public:
 		return  S_OK;
 	}
 
-	static HRESULT	Create(
-		LPDIRECT3DDEVICE9 pGraphicDev, CScene* pScene,
-		CLayer* pLayer, _vec3& vPos)
+	static HRESULT	Create(CLayer* pLayer, _vec3& vPos)
 	{
+		// 초기화
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		CScene*	pScene = Get_Scene();
+		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		T* nameT = nullptr;
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos);
