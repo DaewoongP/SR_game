@@ -54,11 +54,12 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 _uint CLoading::Loading_ForStage(void)
 {
+	//Sound 로딩오래걸릴경우 여기를 끄면됨
 	Set_String(L"Sound/Bgm Loading..........");
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
-	//Engine::Ready_Sound_Effect();
+	
 
 
 	Set_String(L"Texture Loading....");
