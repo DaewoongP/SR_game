@@ -77,14 +77,8 @@
     <Filter Include="00. GameObject\02. MapObject\Cube">
       <UniqueIdentifier>{9fdebcc2-6246-4055-9988-1858baba3f3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\02. MapObject\Cube\Box">
-      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\02. MapObject\Cube\KeyBox">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\02. MapObject\Cube\CrackBlock">
-      <UniqueIdentifier>{76c5ec89-287a-40fd-aa50-cf83eb6344c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Cube\TempBox">
       <UniqueIdentifier>{76b00f30-28f3-461b-bdb2-6ed115e72654}</UniqueIdentifier>
@@ -130,6 +124,12 @@
     </Filter>
     <Filter Include="00. GameObject\00. Player\Topdee">
       <UniqueIdentifier>{de5c4e7a-aa82-43b5-84b6-99db683be8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\CrackCube">
+      <UniqueIdentifier>{76c5ec89-287a-40fd-aa50-cf83eb6344c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\MoveCube">
+      <UniqueIdentifier>{c03003e1-e5f1-4343-8241-d1028e4ec0f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -218,9 +218,6 @@
     <ClInclude Include="KeyBox.h">
       <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClInclude>
-    <ClInclude Include="CrackBlock.h">
-      <Filter>00. GameObject\02. MapObject\Cube\CrackBlock</Filter>
-    </ClInclude>
     <ClInclude Include="DefaultMonster.h">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClInclude>
@@ -278,7 +275,10 @@
       <Filter>00. GameObject\00. Player\Topdee</Filter>
     </ClInclude>
     <ClInclude Include="MoveCube.h">
-      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\MoveCube</Filter>
+    </ClInclude>
+    <ClInclude Include="CrackCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +357,6 @@
     <ClCompile Include="KeyBox.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\KeyBox</Filter>
     </ClCompile>
-    <ClCompile Include="CrackBlock.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\CrackBlock</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultMonster.cpp">
       <Filter>Imgui\Imgui_Object\DefaultMonster</Filter>
     </ClCompile>
@@ -427,7 +424,10 @@
       <Filter>01. Scene\Stages</Filter>
     </ClCompile>
     <ClCompile Include="MoveCube.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\Box</Filter>
+      <Filter>00. GameObject\02. MapObject\Cube\MoveCube</Filter>
+    </ClCompile>
+    <ClCompile Include="CrackCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\CrackCube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,12 +8,12 @@ class CTexture;
 class CCollider;
 END	
 
-class CCrackBlock :
+class CCrackCube :
     public CCube
 {
 private:
-	explicit CCrackBlock(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CCrackBlock();
+	explicit CCrackCube(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CCrackCube();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -41,7 +41,7 @@ private:
 	_bool m_bCrackDead;
 	
 public:
-	static CCrackBlock* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CCrackCube* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

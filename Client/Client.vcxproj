@@ -158,7 +158,7 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
-    <ClInclude Include="CrackBlock.h" />
+    <ClInclude Include="CrackCube.h" />
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultMonster.h" />
@@ -206,7 +206,7 @@
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
-    <ClCompile Include="CrackBlock.cpp" />
+    <ClCompile Include="CrackCube.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="DefaultMonster.cpp" />

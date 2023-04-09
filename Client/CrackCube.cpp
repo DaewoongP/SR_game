@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "CrackBlock.h"
+#include "CrackCube.h"
 
 #include"Export_Function.h"
 
-CCrackBlock::CCrackBlock(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
+CCrackCube::CCrackCube(LPDIRECT3DDEVICE9 pGraphicDev):CCube(pGraphicDev)
 {
 	
 }
 
-CCrackBlock::~CCrackBlock()
+CCrackCube::~CCrackCube()
 {
 }
 
-HRESULT CCrackBlock::Ready_GameObject(_vec3& vPos)
+HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
@@ -21,7 +21,7 @@ HRESULT CCrackBlock::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
-_int CCrackBlock::Update_GameObject(const _float& fTimeDelta)
+_int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -30,13 +30,13 @@ _int CCrackBlock::Update_GameObject(const _float& fTimeDelta)
 	return OBJ_NOEVENT;
 }
 
-_int CCrackBlock::Update_Too(const _float& fTimeDelta)
+_int CCrackCube::Update_Too(const _float& fTimeDelta)
 {
 	// 레이충돌필요함 철민출동 십자로 쏴야댐 
 	// 태그 안에서 레이충돌 시전 -> 최적화
 	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackBlock");
 
-	if (nullptr != pCrackBox && dynamic_cast<CCrackBlock*>(pCrackBox)->m_bCrackDead)
+	if (nullptr != pCrackBox && dynamic_cast<CCrackCube*>(pCrackBox)->m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
 		_vec3 ShakePos;
@@ -51,7 +51,7 @@ _int CCrackBlock::Update_Too(const _float& fTimeDelta)
 	return 0;
 }
 
-_int CCrackBlock::Update_Top(const _float& fTimeDelta)
+_int CCrackCube::Update_Top(const _float& fTimeDelta)
 {
 	if (m_fBlockTime <= 0.f)
 		return OBJ_DEAD;
@@ -59,12 +59,12 @@ _int CCrackBlock::Update_Top(const _float& fTimeDelta)
 	return 0;
 }
 
-void CCrackBlock::LateUpdate_GameObject(void)
+void CCrackCube::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CCrackBlock::Render_GameObject(void)
+void CCrackCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -74,7 +74,7 @@ void CCrackBlock::Render_GameObject(void)
 	CGameObject::Render_GameObject();
 }
 
-void CCrackBlock::OnCollisionEnter(const Collision* collision)
+void CCrackCube::OnCollisionEnter(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
 		m_bCrackDead = true;
@@ -84,7 +84,7 @@ void CCrackBlock::OnCollisionEnter(const Collision* collision)
 
 }
 
-HRESULT CCrackBlock::Add_Component(void)
+HRESULT CCrackCube::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -103,7 +103,7 @@ HRESULT CCrackBlock::Add_Component(void)
 	return S_OK;
 }
 
-void CCrackBlock::Shaking(_vec3& vPos, const _float& fTimeDelta)
+void CCrackCube::Shaking(_vec3& vPos, const _float& fTimeDelta)
 {
 	static _float fTime = 0.f;
 	fTime += fTimeDelta;
@@ -122,9 +122,9 @@ void CCrackBlock::Shaking(_vec3& vPos, const _float& fTimeDelta)
 	}
 }
 
-CCrackBlock* CCrackBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CCrackCube* CCrackCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CCrackBlock* pInstance = new CCrackBlock(pGraphicDev);
+	CCrackCube* pInstance = new CCrackCube(pGraphicDev);
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
@@ -134,7 +134,7 @@ CCrackBlock* CCrackBlock::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CCrackBlock::Free(void)
+void CCrackCube::Free(void)
 {
 	__super::Free();
 }

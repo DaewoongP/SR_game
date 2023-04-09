@@ -12,7 +12,7 @@
 #include "Key.h"
 #include "KeyBox.h"
 #include "MoveCube.h"
-#include "CrackBlock.h"
+#include "CrackCube.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
@@ -310,7 +310,7 @@ void CImguiUnit::MapObjectInstall()
 		else if (4 == m_iMapObjectType) // 밟으면 없어지는 큐브
 		{
 			_stprintf_s(strMapObjectIndex, _T("CrackBlock_%d"), m_iMapObjectIndex);
-			pGameObject = CCrackBlock::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			pGameObject = CCrackCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
 		}
 
 		tMapObjectInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
