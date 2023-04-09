@@ -76,10 +76,9 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	/*FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"Cloud_0", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
-*/
+	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(6.f, 8.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(8.f, 10.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(10.f, 12.f, 10.f)), E_FAIL);
