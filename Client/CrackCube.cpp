@@ -20,6 +20,7 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_fBlockTime = CRACKTIME;
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
 	m_bCrackDead = false;
+	m_pCollider->Set_Group(COL_ENV);
 	return S_OK;
 }
 

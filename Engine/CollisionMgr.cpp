@@ -209,7 +209,7 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
-vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* shootObj,vector<_tchar*> tagName)
+vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, vector<_tchar*> tagName)
 {
 	//obj와 거리만 저장하고, 거리에따라 정렬해주면 될듯.
 
@@ -233,9 +233,12 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* s
 			if (ray._Length * 3 <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
 				continue;
 
-			//입력된 태그가 없으면 제외
 			if (tagName.size() == 0)
+			{
+				if (Collision_Ray(ray, *iter, &pDist))
+					colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
 				continue;
+			}
 
 			//for 문을 돌며 찾은 iter가 배열에 등록된 태그인지 확인
 			for (int i = 0; i < tagName.size(); i++)
@@ -246,11 +249,11 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* s
 						colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
 				}
 			}
-			
+
 		}
 	}
-	
-	sort(colList.begin(),colList.end(),[](RayCollision& iter, RayCollision& iter2)->_bool {
+
+	sort(colList.begin(), colList.end(), [](RayCollision& iter, RayCollision& iter2)->_bool {
 		return iter.dist < iter2.dist;
 	});
 

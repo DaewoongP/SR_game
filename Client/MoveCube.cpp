@@ -22,6 +22,7 @@ HRESULT CMoveCube::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pCollider->Set_BoundingBox();
 
 	m_bIsCol[DIR_END] = { 0 };
 	m_bIsStone = false;
@@ -144,14 +145,14 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	tagName.push_back(L"MoveCube");
 	tagName.push_back(L"GravityCube");
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
-	if (_detectedCOL.size() == 1)
+	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
 			m_bIsCol[edir] = true;
 		else
 			m_bIsCol[edir] = false;
 
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
