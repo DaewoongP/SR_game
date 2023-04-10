@@ -72,8 +72,8 @@ void CSpike::Render_GameObject(void)
 
 void CSpike::OnCollisionEnter(const Collision* collision)
 {
-	if (collision->otherObj != nullptr)
-		collision->otherObj->m_bDead = true;
+	/*if (collision->otherObj != nullptr)
+		collision->otherObj->m_bDead = true;*/
 	__super::OnCollisionEnter(collision);
 }
 

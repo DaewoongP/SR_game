@@ -164,6 +164,9 @@
     <ClInclude Include="DefaultUnit.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Lightning.h" />
+    <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -212,6 +215,9 @@
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Lightning.cpp" />
+    <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

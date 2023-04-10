@@ -13,6 +13,8 @@
 #include "Pig.h"
 #include "Bat.h"
 #include "PinkCloud.h"
+#include"LightningCloud.h"
+#include"Lightning.h"
 #include "Topdee.h"
 #include "Spike.h"
 #include "GravityCube.h"
@@ -22,6 +24,8 @@
 #include "Switch.h"
 #include "InstallGrid.h"
 #include "SwitchCube.h"
+
+
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -79,29 +83,19 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	//FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(6.f, 8.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(8.f, 10.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(10.f, 12.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(18.f, 30.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pLayer, _vec3(16.f, 28.f, 10.f)), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(16.f, 20.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(18.f, 22.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(18.f, 20.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pLayer, _vec3(16.f, 22.f, 10.f)), E_FAIL);
-
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 	
 	//FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pLayer, _vec3(40.f, 10.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
+	//for(_int i = -2 ; i < 4;i=i+2)
+	FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"Lightning", pLayer, _vec3(30.f, 10.f, 10.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(8.f, 12.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(16.f, 6.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(14.f, 6.f, 10.f)), E_FAIL);
 
+	
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{

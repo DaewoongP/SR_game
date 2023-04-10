@@ -70,6 +70,23 @@ void CTexture::Add_Anim(_tchar * name, int startIdx, int endIdx, _float fCycle,b
 	m_AnimMap.insert({ name,Anim_Info{startIdx,endIdx,fCycle,loop} });
 }
 
+void CTexture::Set_Loop(_tchar* name)
+{ 
+	if (m_CurrentAnimName == name)
+	{
+		auto iter = find_if(m_AnimMap.begin(), m_AnimMap.end(), CTag_Finder(name));
+		if (iter == m_AnimMap.end())
+			return;
+		m_CurrentAnim.iEndIdx = 0;
+		m_fTimer = 0;
+		m_CurrentAnim = iter->second;
+	}
+	else
+		return;
+
+
+}
+
 void CTexture::Switch_Anim(_tchar * name)
 {
 	if (m_CurrentAnimName == name)

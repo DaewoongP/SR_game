@@ -122,7 +122,7 @@
       <Filter>Manager\Device</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
-      <Filter>Etc</Filter>
+      <Filter>Framework\Etc</Filter>
     </ClInclude>
     <ClInclude Include="Management.h">
       <Filter>Framework\00. Management</Filter>
@@ -140,7 +140,7 @@
       <Filter>Framework\04. Renderer</Filter>
     </ClInclude>
     <ClInclude Include="WindParticle.h">
-      <Filter>Etc</Filter>
+      <Filter>Framework\Etc</Filter>
     </ClInclude>
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
@@ -244,7 +244,7 @@
       <Filter>Manager\Device</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
-      <Filter>Etc</Filter>
+      <Filter>Framework\Etc</Filter>
     </ClCompile>
     <ClCompile Include="Management.cpp">
       <Filter>Framework\00. Management</Filter>
@@ -262,7 +262,10 @@
       <Filter>Framework\04. Renderer</Filter>
     </ClCompile>
     <ClCompile Include="WindParticle.cpp">
-      <Filter>Etc</Filter>
+      <Filter>Framework\Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundMgr.cpp">
+      <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
       <Filter>Componnent\Shadow</Filter>
@@ -336,9 +339,6 @@
     </Filter>
     <Filter Include="Includes / Exports">
       <UniqueIdentifier>{861937ba-68a7-4f68-926e-ade248cc7386}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Etc">
-      <UniqueIdentifier>{85211221-3efb-44e5-be4f-b5bcaa4e3238}</UniqueIdentifier>
     </Filter>
     <Filter Include="Framework\00. Management">
       <UniqueIdentifier>{cec2c38a-f315-4d00-9ffd-78c40d7df64a}</UniqueIdentifier>
