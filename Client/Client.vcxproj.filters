@@ -133,6 +133,7 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning">
       <UniqueIdentifier>{458383cb-c7cd-4e6a-aeae-139fbc8ada6f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Imgui\Imgui_Object\DefaultUnit">
       <UniqueIdentifier>{82c722ae-dfdd-49b7-97bb-37a529872c20}</UniqueIdentifier>
     </Filter>
@@ -298,6 +299,7 @@
     </ClInclude>
     <ClInclude Include="Lightning.h">
       <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning</Filter>
+    </ClInclude>
     <ClInclude Include="DefaultUnit.h">
       <Filter>Imgui\Imgui_Object\DefaultUnit</Filter>
     </ClInclude>
@@ -456,6 +458,7 @@
     </ClCompile>
     <ClCompile Include="Lightning.cpp">
       <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning</Filter>
+    </ClCompile>
     <ClCompile Include="Defaultunit.cpp">
       <Filter>Imgui\Imgui_Object\DefaultUnit</Filter>
     </ClCompile>

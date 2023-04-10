@@ -2,6 +2,7 @@
 #include "LightningCloud.h"
 
 #include"..\Engine\Export_Function.h"
+#include "AbstractFactory.h"
 CLightningCloud::CLightningCloud(LPDIRECT3DDEVICE9 pGraphicDev):CCloud(pGraphicDev)
 {
 }
@@ -87,9 +88,10 @@ HRESULT CLightningCloud::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	return S_OK;
 }
 
-CLightningCloud* CLightningCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CLightningCloud* CLightningCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, CLayer* pLayer)
 {
 	CLightningCloud* pInstance = new CLightningCloud(pGraphicDev);
 
@@ -98,6 +100,8 @@ CLightningCloud* CLightningCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& v
 		Safe_Release(pInstance);
 		return nullptr;
 	}
+
+	FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"Lightning", pLayer, _vec3(30.f, 10.f, 10.f)), nullptr);
 
 	return pInstance;
 }

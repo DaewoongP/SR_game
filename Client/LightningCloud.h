@@ -21,7 +21,7 @@ public:
 	virtual HRESULT		Add_Component(void);
 
 public:
-	static CLightningCloud* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CLightningCloud* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, CLayer* pLayer);
 	CLightning* m_pLightning;
 private:
 	virtual void Free(void) override;
