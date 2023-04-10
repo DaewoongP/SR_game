@@ -13,41 +13,43 @@ CLightning::~CLightning()
 
 HRESULT CLightning::Ready_GameObject(_vec3& vPos)
 {
-	srand(time(NULL));
 	m_pTransform->m_vScale = { 1.f,4.f,2.f };
-	float slow = (rand() % 5-2 );
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_vPos = vPos;
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTextureCom->Add_Anim(L"Idle", 0, 6, 0.5f, false);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 7, 0.5f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
-
-	m_pTransform->Set_Pos(m_pTransform->m_vInfo[INFO_POS].x + slow,
-		m_pTransform->m_vInfo[INFO_POS].y,
-		m_pTransform->m_vInfo[INFO_POS].z);
-
-	m_pCollider->Set_BoundingBox({ 1.f,8.f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
 	return S_OK;
+
 }
 
 _int CLightning::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDead)
-	{
-	}
+	m_pCollider->Set_BoundingBox({ 1.f,8.f,1.0f });
+
+	srand(time(NULL));
+	float slow = (rand() % 5 - 2);
+	m_fLightCycle -= fTimeDelta;
 	//_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	if (m_pTextureCom->IsAnimationEnd(L"Idle"))
 	{
-		Ready_GameObject(m_vPos);
-		m_bDead = true;	
+		m_pCollider->Set_BoundingBox({ 0.f,0.f,0.f });
+		if (m_fLightCycle<=0)
+		{	m_pTextureCom->Switch_Anim(L"Idle");
+			m_pTransform->Set_Pos(m_vPos.x + slow,
+				m_pTransform->m_vInfo[INFO_POS].y,
+				m_pTransform->m_vInfo[INFO_POS].z);
+			m_pTextureCom->Set_Loop(L"Idle");
+			m_fLightCycle = 1.0f;
+			
+		}
 	}
-	
 	//	return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
 	return 0;

@@ -36,7 +36,7 @@ public:
 public:
 	static CLightning* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 	_vec3 m_vPos;
-
+	_float m_fLightCycle =1.0f;
 private:
 	virtual void Free() override;
 };

@@ -15,12 +15,13 @@ private:
 public:
 	HRESULT			Ready_Texture(TEXTYPE eTextype, const _tchar* pPath, const _uint& iCnt = 1);
 	void			Add_Anim(_tchar* name, int startIdx, int endIdx, _float dwCycle,bool loop);
+	void			Set_Loop(_tchar* name);
 	void			Switch_Anim(_tchar* name);
 	void			Update_Anim(const _float & fTimeDelta);
 	void			Set_Texture(const _uint& iIndex = 0);
 	_bool			IsAnimationEnd(_tchar* name);
 	_tchar*			Get_AnimState() { return m_CurrentAnimName; }
-
+	
 public:
 	_bool			m_bUseFrameAnimation;
 
