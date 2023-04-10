@@ -23,7 +23,7 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS].z = 8.999f;
 	m_pTransform->m_bIsStatic = false;
 
-	// ÁöÇü Å¥ºê¿¡ zÃà°ª º¸´Ù Á¶±Ý ¾Õ¿¡ ÀÖ¾î¾ß ÇÏ±â ¶§¹®¿¡ ¹Ù¿îµù ¹Ú½º °ªµµ Á¶Á¤
+	// ï¿½ï¿½ï¿½ï¿½ Å¥ï¿½ê¿¡ zï¿½à°ª ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	m_pCollider->Set_BoundingBox({ 1.5f, 2.5f, 2.1f });
 
 	return S_OK;
@@ -62,13 +62,13 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 	m_pSwitchCube = Engine::Get_GameObject(L"Layer_GameLogic", L"SwitchCube");
 	NULL_CHECK_RETURN(m_pSwitchCube, );
 
-	// ÀÏ½ÃÀûÀ¸·Î const ¹«·ÂÈ­ÇØ¼­ ÇÃ·¹ÀÌ¾îÀÇ Ãæµ¹ ¹æÇâÀ» ÀÐ¾î¿È. ÀÌ°Ô ¸Â´ÂÁö´Â ¸ð¸£°ÚÀ½
+	// ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ const ï¿½ï¿½ï¿½ï¿½È­ï¿½Ø¼ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½. ï¿½Ì°ï¿½ ï¿½Â´ï¿½ï¿½ï¿½ï¿½ ï¿½ð¸£°ï¿½ï¿½
 	COL_DIR	tToodeeDir = const_cast<Collision*>(collision)->Get_ColDir();
 
 	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || !lstrcmp(L"Pig", collision->otherObj->m_pTag))
 	{
-		// ¹æÇâ°ËÃâ, ¿ø·¡´Â À§¸¸ ÇÏ´Â°Ô ¸ÂÁö¸¸ °¡²û¾¿ µÚµµ ÀâÇô¼­ µÚµµ ³Ö¾îÁÜ, 
-		// ¾îÂ÷ÇÇ ½ºÀ§Ä¡ ÀÚÃ¼°¡ Å¥ºê¿Í µ¿ÀÏÇÑ Pos¿¡ ÀÖ±â ¶§¹®¿¡ »ó°ü¾øÀ»µí
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ï´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½, 
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½Ã¼ï¿½ï¿½ Å¥ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Posï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir)
 		{
 			m_bSwtichON = true;
