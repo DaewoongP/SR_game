@@ -25,9 +25,12 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 
 vector<CCollider*> CCollisionMgr::Collision_CheckRange(CCollider* col, vector<CCollider*> vecRange)
 {
+	// 리턴할 벡터 선언
 	vector<CCollider*>	vecOut;
+	// 사이즈와 센터포지션	
 	_vec3 vThis = col->Get_BoundCenter();
 	_vec3 vSize = col->Get_BoundSize();
+	// fRange에 콜라이더 중 가장 긴부분 가져옴
 	_float fRange = 0.f;
 	if (fRange < vSize.x)
 		fRange = vSize.x;
@@ -35,12 +38,13 @@ vector<CCollider*> CCollisionMgr::Collision_CheckRange(CCollider* col, vector<CC
 		fRange = vSize.y;
 	if (fRange < vSize.z)
 		fRange = vSize.z;
+	// 오프셋연산
 	fRange *= m_fRangeOffset;
 	_vec3 vOther = { 0.f, 0.f, 9999.f };
 	for (auto& iter : vecRange)
 	{
 		_vec3 vOther = iter->Get_BoundCenter();
-
+		// 다른객체와 거리가 오프셋보다 작으면 새로운 벡터에 푸쉬
 		if (fRange > fabs(D3DXVec3Length(&_vec3(vThis - vOther))))
 		{
 			vecOut.push_back(iter);
@@ -68,7 +72,8 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 			{
 				Collision* pCollision = nullptr;
 				iter->Find_ColList(iter2, &pCollision);
-				NULL_CHECK_RETURN(pCollision, );
+				if (pCollision == nullptr)
+					continue;
 				pCollision->Set_PreCol();
 				pCollision->otherObj = iter2->m_pGameObject;
 				switch (pCollision->_CurState)
@@ -87,7 +92,8 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 				}
 				pCollision = nullptr;
 				iter2->Find_ColList(iter, &pCollision);
-				NULL_CHECK_RETURN(pCollision, );
+				if (pCollision == nullptr)
+					continue;
 				pCollision->Set_PreCol();
 				pCollision->otherObj = iter->m_pGameObject;
 				switch (pCollision->_CurState)

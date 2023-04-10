@@ -51,17 +51,6 @@ namespace Engine
 		KEYNONE
 	};
 
-	enum PIG_PARTS
-	{
-		PIG_BODY,
-		PIG_EAR,
-		PIG_LEFTEYE,
-		PIG_NOSE,
-		PIG_RIGHTEYE,
-		PIG_TAIL,
-		PIG_END
-	};
-
 	enum TOPDEESTATE 
 	{
 		TD_IDLE,
@@ -89,5 +78,14 @@ namespace Engine
 		MD_RD,
 		MD_LD,
 		MD_END
+	};
+
+	enum CUBE_DIR
+	{
+		CD_UP,
+		CD_DOWN,
+		CD_LEFT,
+		CD_RIGHT,
+		CD_END
 	};
 }

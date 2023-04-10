@@ -27,7 +27,7 @@ public:
 	virtual void		Render_Too() {}
 	virtual void		Render_Top() {}
 	// 2D -> 3D 전환 or 3D -> 2D 전환시 호출
-	virtual void		SwapTrigger() { cout << "OBJ" << endl; }
+	virtual void		SwapTrigger() { }
 
 	virtual void OnCollisionEnter(const class Collision* collsion);
 	virtual void OnCollisionStay(const class Collision* collision);
