@@ -26,7 +26,7 @@ public:
 	virtual void OnCollisionEnter(const class Collision* collision);
 
 public:
-	_bool GetCrackDead() { return m_bRealDead; }
+	_bool GetCrackDead() { return m_bCrackDead; }
 	void DoShootRay(COL_DIR exceptDir);
 private:
 	HRESULT Add_Component(void);

@@ -172,7 +172,8 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"InstallGrid") ||
-			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")
+			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"InstallCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
