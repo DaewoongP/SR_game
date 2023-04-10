@@ -67,8 +67,8 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-	//DrawColor();
-	//m_pMesh->DrawSubset(0);
+	DrawColor();
+	m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
