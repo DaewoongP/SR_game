@@ -144,7 +144,7 @@ void CBat::Render_Top()
 
 void CBat::OnCollisionEnter(const Collision * collision)
 {
-	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && !lstrcmp(collision->otherObj->m_pTag, L"MapCube"))
+	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Bat")))
 	{
 		if (m_bMoveLeft)
 		{
@@ -157,6 +157,7 @@ void CBat::OnCollisionEnter(const Collision * collision)
 			m_pTransform->m_vScale.x = BATSCALE;
 		}
 	}
+
 		__super::OnCollisionEnter(collision);
 }
 
@@ -174,8 +175,30 @@ void CBat::OnCollisionStay(const Collision * collision)
 		
 		m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
 	}
+	
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Bat"))
+	{
+		_vec3 vBoundSize = m_pCollider->Get_BoundSize();
+
+		_vec3 vDir = (m_pTransform->m_vInfo[INFO_POS] - collision->otherObj->m_pTransform->m_vInfo[INFO_POS]);
+
+		vDir.z = 0.0f;
+		vBoundSize.z = 0.0f;
+
+		//길이
+		_float fLength = (D3DXVec3Length(&vBoundSize) - D3DXVec3Length(&vDir)) * 0.03125f;
+
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
+	}
 
 	__super::OnCollisionStay(collision);
+}
+
+void CBat::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
 }
 
 HRESULT CBat::Add_Component(void)
