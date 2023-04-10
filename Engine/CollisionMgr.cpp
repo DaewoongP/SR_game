@@ -82,39 +82,6 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 	}
 }
 
-_bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
-{
-	_vec3 vSrcCenter, vSrcSize, vDstCenter, vDstSize;
-	vSrcCenter = pSrc->Get_BoundCenter();
-	vDstCenter = pDest->Get_BoundCenter();
-	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
-	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
-
-	_float fSrcLong = 9999.f;
-	_float fDstLong = 9999.f;
-	if (fSrcLong > vSrcSize.x)
-		fSrcLong = vSrcSize.x;
-	if (fSrcLong > vSrcSize.y)
-		fSrcLong = vSrcSize.y;
-	if (fSrcLong > vSrcSize.z)
-		fSrcLong = vSrcSize.z;
-
-	if (fDstLong > vDstSize.x)
-		fDstLong = vDstSize.x;
-	if (fDstLong > vDstSize.y)
-		fDstLong = vDstSize.y;
-	if (fDstLong > vDstSize.z)
-		fDstLong = vDstSize.z;
-
-	_float fDistance;
-	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	
-	if (fDistance <= fSrcLong + fDstLong)
-		return true;
-
-	return false;
-}
-
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;

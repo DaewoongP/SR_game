@@ -3,6 +3,8 @@
 
 #include "Export_Function.h"
 
+#include "Cube.h"
+
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev),m_bMoveLeft(false), m_bBackSprite(false)
 {
@@ -103,6 +105,8 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	m_pTransform->m_vInfo[INFO_POS].z = 10.0f;
+
 	m_pTransform->m_vScale.y = PIGSCALE;
 
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
@@ -177,7 +181,7 @@ void CPig::Render_Top()
 
 void CPig::OnCollisionEnter(const Collision * collision)
 {
-	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && !lstrcmp(collision->otherObj->m_pTag, L"MapCube"))
+	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Pig")))
 	{
 		if (m_bMoveLeft)
 		{
@@ -189,14 +193,35 @@ void CPig::OnCollisionEnter(const Collision * collision)
 			m_bMoveLeft = true;
 			m_pTransform->m_vScale.x = PIGSCALE;
 		}
-		
 	}
 	__super::OnCollisionEnter(collision);
 }
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Pig"))
+	{
+		_vec3 vBoundSize = m_pCollider->Get_BoundSize();
+
+		_vec3 vDir = (m_pTransform->m_vInfo[INFO_POS] - collision->otherObj->m_pTransform->m_vInfo[INFO_POS]);
+
+		vDir.z = 0.0f;
+		vBoundSize.z = 0.0f;
+
+		//길이
+		_float fLength = (D3DXVec3Length(&vBoundSize) - D3DXVec3Length(&vDir)) * 0.03125f;
+		
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
+	}
+
 	__super::OnCollisionStay(collision);
+}
+
+void CPig::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
 }
 
 HRESULT CPig::Add_Component(void)
