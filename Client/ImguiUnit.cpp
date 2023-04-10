@@ -19,6 +19,7 @@
 #include "Switch.h"
 #include "SwitchCube.h"
 #include "GravityCube.h"
+#include "LightningCloud.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
@@ -206,7 +207,7 @@ HRESULT CImguiUnit::MapObjectMenu()
 
 		// 맵 오브젝트 종류 선택 콤보 박스
 		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD", 
-								"SWITCH", "SWITCH CUBE", "GRAVITY CUBE"};
+								"SWITCH", "SWITCH CUBE", "GRAVITY CUBE", "LIGHTNING CLOUD"};
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
@@ -326,6 +327,12 @@ void CImguiUnit::MapObjectInstall()
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
+		else if (10 == m_iMapObjectType) // 번개 구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"LightningCloud", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
 		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
 		tMapObjectInfo.iObjTypeNumber = m_iMapObjectType;
 
@@ -422,6 +429,11 @@ HRESULT CImguiUnit::LoadMapObject()
 		else if (9 == iter.iObjTypeNumber) // 중력 큐브
 		{
 			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (10 == iter.iObjTypeNumber) // 번개 구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 	}
 
