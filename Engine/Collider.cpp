@@ -11,6 +11,9 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	, m_eGroup(COL_OBJ)
 	, m_bIsTrigger(false)
 	, m_pBoundingBox(nullptr)
+	,m_pRedTex(nullptr)
+	,m_pGreenTex(nullptr)
+	, m_eColor(GREEN)
 {
 }
 
@@ -20,6 +23,9 @@ CCollider::CCollider(const CCollider & rhs) :
 	, m_pMesh(rhs.m_pMesh)
 	, m_eGroup(rhs.m_eGroup)
 	, m_bIsTrigger(rhs.m_bIsTrigger)
+	, m_pRedTex(rhs.m_pRedTex)
+	, m_pGreenTex(rhs.m_pGreenTex)
+	, m_eColor(rhs.m_eColor)
 {
 }
 
@@ -29,6 +35,12 @@ CCollider::~CCollider()
 
 HRESULT CCollider::Ready_Collider()
 {
+	FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, 
+		L"../Resource/Texture/ColTex/Red.png", 
+		(LPDIRECT3DTEXTURE9*)&m_pRedTex), E_FAIL);
+	FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev,
+		L"../Resource/Texture/ColTex/Green.png",
+		(LPDIRECT3DTEXTURE9*)&m_pGreenTex), E_FAIL);
 	return S_OK;
 }
 
@@ -55,6 +67,7 @@ void CCollider::Render_Component()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+	DrawColor();
 	m_pMesh->DrawSubset(0);
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
@@ -72,11 +85,12 @@ void CCollider::Insert_Collider(CCollider * pCollider, COL_DIR eDir)
 	}
 	else
 	{
-		pCollision = new Collision;
+		Collision col;
+		pCollision = &col;
 		pCollision->Set_Curcol(true);
 		pCollision->otherCol = pCollider;
 		pCollision->_dir = eDir;
-		m_ColList.insert({ pCollider, pCollision });
+		m_ColList.insert({ pCollider, col });
 	}
 }
 
@@ -89,7 +103,7 @@ _bool CCollider::Find_ColList(CCollider * pOtherCol, Collision** collision)
 	if (iter == m_ColList.end())
 		return false;
 	
-	*collision = iter->second;
+	*collision = &iter->second;
 	return true;
 }
 
@@ -101,48 +115,46 @@ _bool CCollider::Delete_OtherCollider(CCollider * pOtherCol)
 	if (iter == m_ColList.end())
 		return false;
 
-	if (iter->second->Get_PreCol() == false)
+	if (iter->second.Get_PreCol() == false)
 	{
-		delete iter->second;
-		iter->second = nullptr;
 		m_ColList.erase(iter);
 		return false;
 	}
 	else
 	{
-		iter->second->Set_Curcol(false);
+		iter->second.Set_Curcol(false);
 		return true;
 	}
 }
 
 void CCollider::OnCollisionEnter(const Collision * collision)
 {
-	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
+	m_eColor = RED;
 	m_pGameObject->OnCollisionEnter(collision);
 }
 
 void CCollider::OnCollisionStay(const Collision * collision)
 {
-	Change_ColliderColor(1.f, 0.f, 0.f, 1.f);
+	m_eColor = RED;
 	m_pGameObject->OnCollisionStay(collision);
 }
 
 void CCollider::OnCollisionExit(const Collision * collision)
 {
-	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
+	m_eColor = GREEN;
 	m_pGameObject->OnCollisionExit(collision);
 }
 
 // 가로, 세로, 깊이 사이즈 / 오프셋 좌표값 (객체 중점부터 상대좌표)
 void CCollider::Set_BoundingBox(const _vec3 & vSize, const _vec3& vOffsetPos)
 {
+	Safe_Release(m_pMesh);
 	D3DXCreateBox(m_pGraphicDev,
 		vSize.x,
 		vSize.y,
 		vSize.z,
 		&m_pMesh, NULL);
 
-	Change_ColliderColor(0.f, 1.f, 0.f, 1.f);
 	D3DXMatrixIdentity(&m_matWorld);
 	D3DXMatrixTranslation(&m_matWorld, vOffsetPos.x, vOffsetPos.y, vOffsetPos.z);
   
@@ -157,6 +169,22 @@ void CCollider::Set_BoundingBox(const _vec3 & vSize, const _vec3& vOffsetPos)
 		m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 		m_pBoundingBox->Offset(offsetPoint);
 		
+	}
+}
+
+void CCollider::DrawColor()
+{
+	switch (m_eColor)
+	{
+	case Engine::RED:
+		m_pGraphicDev->SetTexture(0, m_pRedTex);
+		break;
+	case Engine::GREEN:
+		m_pGraphicDev->SetTexture(0, m_pGreenTex);
+		break;
+	default:
+		m_pGraphicDev->SetTexture(0, m_pGreenTex);
+		break;
 	}
 }
 
@@ -198,28 +226,6 @@ CComponent * CCollider::Clone(void)
 void CCollider::Free(void)
 {
 	Safe_Delete(m_pBoundingBox);
-	for_each(m_ColList.begin(), m_ColList.end(), [](auto& iter) {
-		delete iter.second;
-		iter.second = nullptr;
-	});
 	m_ColList.clear();
 	__super::Free();
-}
-
-void CCollider::Change_ColliderColor(_float r, _float g, _float b, _float a)
-{
-	m_pMesh->CloneMeshFVF(0, FVF_COL, m_pGraphicDev, &m_pMesh);
-
-	m_pMesh->GetVertexBuffer(&m_pVB);
-	_int iNum = m_pMesh->GetNumVertices();
-	VTXCOL* pVertices = NULL;
-
-	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
-	{
-		for (int i = 0; i < iNum; ++i)
-		{
-			pVertices[i].dwColor = D3DXCOLOR(r, g, b, a);
-		}
-	}
-	m_pVB->Unlock();
 }
