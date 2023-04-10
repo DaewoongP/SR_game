@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
 CCollisionMgr::CCollisionMgr()
-	:m_fRangeOffset(1.f)
+	:m_fRangeOffset(1.5f)
 {
 }
 
@@ -23,56 +23,83 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 	m_ColliderList[COL_OBJ].push_back(pCollider);
 }
 
+vector<CCollider*> CCollisionMgr::Collision_CheckRange(CCollider* col, vector<CCollider*> vecRange)
+{
+	vector<CCollider*>	vecOut;
+	_vec3 vThis = col->Get_BoundCenter();
+	_vec3 vSize = col->Get_BoundSize();
+	_float fRange = 0.f;
+	if (fRange < vSize.x)
+		fRange = vSize.x;
+	if (fRange < vSize.y)
+		fRange = vSize.y;
+	if (fRange < vSize.z)
+		fRange = vSize.z;
+	fRange *= m_fRangeOffset;
+	_vec3 vOther = { 0.f, 0.f, 9999.f };
+	for (auto& iter : vecRange)
+	{
+		_vec3 vOther = iter->Get_BoundCenter();
+
+		if (fRange > fabs(D3DXVec3Length(&_vec3(vThis - vOther))))
+		{
+			vecOut.push_back(iter);
+		}
+	}
+
+	return vecOut;
+}
+
 void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 {
+	vector<CCollider*>	rangeList;
 	if (m_ColliderList[eGroup1].empty())
 		return;
 	if (m_ColliderList[eGroup2].empty())
 		return;
-	for (auto& iter = m_ColliderList[eGroup1].begin();
-	iter != m_ColliderList[eGroup1].end(); ++iter)
+	for (auto& iter : m_ColliderList[eGroup1])
 	{
-		for (auto& iter2 = m_ColliderList[eGroup2].begin();
-		iter2 != m_ColliderList[eGroup2].end(); ++iter2)
+		rangeList = Collision_CheckRange(iter, m_ColliderList[eGroup2]);
+		for(auto& iter2 : rangeList)
 		{
-			if ((*iter) == (*iter2))
+			if (iter == iter2)
 				continue;
-			if (Collision_Box(*iter, *iter2))
+			if (Collision_Box(iter, iter2))
 			{
 				Collision* pCollision = nullptr;
-				(*iter)->Find_ColList(*iter2, &pCollision);
+				iter->Find_ColList(iter2, &pCollision);
 				NULL_CHECK_RETURN(pCollision, );
 				pCollision->Set_PreCol();
-				pCollision->otherObj = (*iter2)->m_pGameObject;
+				pCollision->otherObj = iter2->m_pGameObject;
 				switch (pCollision->_CurState)
 				{
 				case Engine::COLSTATE_ENTER:
-					(*iter)->OnCollisionEnter(pCollision);
+					iter->OnCollisionEnter(pCollision);
 					break;
 				case Engine::COLSTATE_STAY:
-					(*iter)->OnCollisionStay(pCollision);
+					iter->OnCollisionStay(pCollision);
 					break;
 				case Engine::COLSTATE_EXIT:
-					(*iter)->OnCollisionExit(pCollision);
+					iter->OnCollisionExit(pCollision);
 					break;
 				case Engine::COLSTATE_NONE:
 					break;
 				}
 				pCollision = nullptr;
-				(*iter2)->Find_ColList(*iter, &pCollision);
+				iter2->Find_ColList(iter, &pCollision);
 				NULL_CHECK_RETURN(pCollision, );
 				pCollision->Set_PreCol();
-				pCollision->otherObj = (*iter)->m_pGameObject;
+				pCollision->otherObj = iter->m_pGameObject;
 				switch (pCollision->_CurState)
 				{
 				case Engine::COLSTATE_ENTER:
-					(*iter2)->OnCollisionEnter(pCollision);
+					iter2->OnCollisionEnter(pCollision);
 					break;
 				case Engine::COLSTATE_STAY:
-					(*iter2)->OnCollisionStay(pCollision);
+					iter2->OnCollisionStay(pCollision);
 					break;
 				case Engine::COLSTATE_EXIT:
-					(*iter2)->OnCollisionExit(pCollision);
+					iter2->OnCollisionExit(pCollision);
 					break;
 				case Engine::COLSTATE_NONE:
 					break;
