@@ -146,6 +146,9 @@
     <Filter Include="00. GameObject\02. MapObject\Cube\SwitchCube">
       <UniqueIdentifier>{8de42fbf-1e47-4079-b04c-8de5dedc94a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\PortalCube">
+      <UniqueIdentifier>{bfd2989d-479f-4069-b52c-824de8b3f354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -312,6 +315,9 @@
     <ClInclude Include="SwitchCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
     </ClInclude>
+    <ClInclude Include="PortalCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -470,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>Main\MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
