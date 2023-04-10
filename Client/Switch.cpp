@@ -3,9 +3,11 @@
 
 #include "Export_Function.h"
 
+bool CSwitch::m_bSwtichON = false;
+
 CSwitch::CSwitch(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
-	m_pToodee(nullptr),
+	m_pSwitchCube(nullptr),
 	m_iTextureIndex(0)
 {
 }
@@ -18,10 +20,11 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].z = 8.999f;
+	m_pTransform->m_bIsStatic = false;
 
-	m_pCollider->Set_BoundingBox({ 2.f, 2.f,2.f });
-	m_pCollider->Set_Group(COL_OBJ);
-	m_pTransform->m_bIsStatic = true;	
+	// ���� ť�꿡 z�ప ���� ��� �տ� �־�� �ϱ� ������ �ٿ�� �ڽ� ���� ��
+	m_pCollider->Set_BoundingBox({ 1.5f, 2.5f, 2.1f });
 
 	return S_OK;
 }
@@ -56,20 +59,28 @@ void CSwitch::Render_GameObject(void)
 
 void CSwitch::OnCollisionEnter(const Collision * collision)
 {
-	m_pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-	NULL_CHECK_RETURN(m_pToodee, );
+	m_pSwitchCube = Engine::Get_GameObject(L"Layer_GameLogic", L"SwitchCube");
+	NULL_CHECK_RETURN(m_pSwitchCube, );
 
-	if (m_pToodee == collision->otherObj)
-		m_iTextureIndex = 1;
-}
+	// �Ͻ������ const ����ȭ�ؼ� �÷��̾��� �浹 ����� �о��. �̰� �´���� �𸣰��
+	COL_DIR	tToodeeDir = const_cast<Collision*>(collision)->Get_ColDir();
 
-void CSwitch::OnCollisionStay(const Collision * collision)
-{
+	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || !lstrcmp(L"Pig", collision->otherObj->m_pTag))
+	{
+		// �������, ��� ��� �ϴ°� ���� ���� �ڵ� ���� �ڵ� �־���, 
+		// ������ ���ġ ��ü�� ť��� ������ Pos�� �ֱ� ������ �������
+		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir)
+		{
+			m_bSwtichON = true;
+			m_iTextureIndex = 1;
+		}			
+	}
 }
 
 void CSwitch::OnCollisionExit(const Collision * collision)
 {
-	m_iTextureIndex = 0;
+	m_bSwtichON = false;
+	m_iTextureIndex = 0;	
 }
 
 HRESULT CSwitch::Add_Component(void)

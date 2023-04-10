@@ -70,10 +70,7 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 		m_bTooCol = true;
 
 	if (m_pPlayer2 == collision->otherObj)
-	{
-		m_pCollider->m_bIsTrigger = true;
 		m_bTopCol = true;
-	}
 
 	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{

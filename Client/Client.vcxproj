@@ -191,6 +191,7 @@
     <ClInclude Include="PinkCloud.h" />
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
+    <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="PinkCloud.cpp" />
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
+    <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveCube.cpp" />

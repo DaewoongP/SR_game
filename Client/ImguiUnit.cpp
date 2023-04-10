@@ -16,6 +16,9 @@
 #include "CrackCube.h"
 #include "Spike.h"
 #include "PinkCloud.h"
+#include "Switch.h"
+#include "SwitchCube.h"
+#include "GravityCube.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
@@ -202,7 +205,8 @@ HRESULT CImguiUnit::MapObjectMenu()
 		ImGui::Checkbox("Map Object Placed", &m_bMapObjectON);
 
 		// 맵 오브젝트 종류 선택 콤보 박스
-		const char* items[] = { "KEY", "KEY BOX", "MOVE BOX", "PORTAL", "CRACK BLOCK", "SPIKE", "PINKCLOUD"};
+		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD", 
+								"SWITCH", "SWITCH CUBE", "GRAVITY CUBE"};
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
@@ -304,6 +308,24 @@ void CImguiUnit::MapObjectInstall()
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
+		else if (7 == m_iMapObjectType) // 스위치
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Swtich", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (8 == m_iMapObjectType) // 스위치 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwtichCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (9 == m_iMapObjectType) // 중력 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
 		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
 		tMapObjectInfo.iObjTypeNumber = m_iMapObjectType;
 
@@ -385,6 +407,21 @@ HRESULT CImguiUnit::LoadMapObject()
 		else if (6 == iter.iObjTypeNumber) // 분홍구름
 		{
 			FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (7 == iter.iObjTypeNumber) // 스위치
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Switch", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (8 == iter.iObjTypeNumber) // 스위치 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (9 == iter.iObjTypeNumber) // 중력 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 	}
 
