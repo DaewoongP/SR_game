@@ -14,6 +14,7 @@ CLightning::~CLightning()
 HRESULT CLightning::Ready_GameObject(_vec3& vPos)
 {
 	m_pTransform->m_vScale = { 1.f,4.f,2.f };
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_vPos = vPos;
 
