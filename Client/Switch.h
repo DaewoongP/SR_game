@@ -22,7 +22,6 @@ public:
 	virtual void Render_GameObject(void) override;
 
 	virtual void OnCollisionEnter(const class Collision* collision);
-	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
 private:
@@ -33,9 +32,12 @@ private:
 	Engine::CTexture*  m_pTextureCom;
 	Engine::CCollider* m_pCollider;
 
-	CGameObject* m_pToodee;
+	CGameObject* m_pSwitchCube;
 
 	int m_iTextureIndex;
+
+public:
+	static bool m_bSwtichON;
 
 public:
 	static CSwitch* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

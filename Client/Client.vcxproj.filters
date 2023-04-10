@@ -297,6 +297,9 @@
     <ClInclude Include="Switch.h">
       <Filter>00. GameObject\02. MapObject\Switch</Filter>
     </ClInclude>
+    <ClInclude Include="SwitchCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainApp.cpp">
@@ -446,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="Switch.cpp">
       <Filter>00. GameObject\02. MapObject\Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
