@@ -18,7 +18,9 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_fBlockTime = CRACKTIME;
-	m_pCollider->Set_BoundingBox({ 1.999f,1.999f,2.f });
+	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
+	m_bCrackDead = false;
+	m_pCollider->Set_Group(COL_ENV);
 	return S_OK;
 }
 
@@ -33,11 +35,7 @@ _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 
 _int CCrackCube::Update_Too(const _float& fTimeDelta)
 {
-	// 레이충돌필요함 철민출동 십자로 쏴야댐 
-	// 태그 안에서 레이충돌 시전 -> 최적화
-	CGameObject* pCrackBox = Get_GameObject(L"Layer_GameLogic", L"CrackCube");
-
-	if (nullptr != pCrackBox && dynamic_cast<CCrackCube*>(pCrackBox)->m_bCrackDead)
+	if (m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
 		_vec3 ShakePos;
@@ -77,12 +75,21 @@ void CCrackCube::Render_GameObject(void)
 
 void CCrackCube::OnCollisionEnter(const Collision* collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
-		m_bCrackDead = true;
-	if (!lstrcmp(collision->otherObj->m_pTag, L"CrackCube"))
-		m_bCrackDead = true;
+	if(!lstrcmp(collision->otherObj->m_pTag, L"Toodee") &&collision->_dir == DIR_UP)
+		DoShootRay(DIR_UP);
 	__super::OnCollisionEnter(collision);
 
+}
+
+void CCrackCube::DoShootRay(COL_DIR exceptDir)
+{
+	m_bCrackDead = true;
+	for (int i = 0; i < DIR_FRONT; i++)
+	{
+		if (exceptDir == i)
+			continue;
+		ShootRay((COL_DIR)i);
+	}
 }
 
 HRESULT CCrackCube::Add_Component(void)
@@ -102,6 +109,26 @@ HRESULT CCrackCube::Add_Component(void)
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	return S_OK;
 }
+
+void CCrackCube::ShootRay(COL_DIR exceptDir)
+{
+	_vec3 dir[DIR_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
+	vector<_tchar*> findTag;
+	findTag.push_back(L"CrackCube");
+	vector<RayCollision> _detectedCOL = 
+		Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir[exceptDir], 1.5f), m_pCollider, findTag);
+	if (_detectedCOL.size() >= 1)
+	{
+		if (exceptDir % 2 == 0)
+			exceptDir = (COL_DIR)(exceptDir + 1);
+		else
+			exceptDir = (COL_DIR)(exceptDir - 1);
+
+		if(!dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->GetCrackDead())
+			dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->DoShootRay(exceptDir);
+	}
+}
+
 
 void CCrackCube::Shaking(_vec3& vPos, const _float& fTimeDelta)
 {

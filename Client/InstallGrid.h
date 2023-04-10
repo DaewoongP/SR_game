@@ -1,13 +1,15 @@
 #pragma once
-#include "Grid.h"
+#include "GameObject.h"
 
 BEGIN(Engine)
 
 class CCollider;
+class CRcTex;
+class CTexture;
 
 END
 
-class CInstallGrid : public CGrid
+class CInstallGrid : public CGameObject
 {
 private:
 	explicit CInstallGrid(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -27,10 +29,12 @@ public:
 	void OnCollisionExit(const Collision* collision);
 
 private:
-	virtual HRESULT Add_Component(void) override;
+	HRESULT Add_Component(void);
 
 private:
 	Engine::CCollider * m_pCollider;
+	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pTextureCom;
 
 	int m_iStageTileIndex;
 

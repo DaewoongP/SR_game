@@ -73,17 +73,7 @@ struct Particle
 	bool bIsAlive;
 };
 
-struct Bound
-{
-	// 충돌했는지 아닌지 여부 검사
-	virtual bool Intersect(const _vec3& point) PURE;
-	// 게임오브젝트가 이동할때 같이 움직이게 하는 함수
-	virtual void Offset(const _vec3& origin) PURE;
-};
-
-
-
-struct BoundingBox : public Bound
+struct BoundingBox
 {
 	BoundingBox(const _vec3& offsetMin = { -1.f, -1.f, -1.f }, 
 		const _vec3& offsetMax = { 1.f, 1.f, 1.f },
@@ -115,8 +105,7 @@ struct BoundingBox : public Bound
 		return _offsetMax - _offsetMin;
 	}
 
-	// 지금은 큐브와 점의 충돌임
-	virtual bool Intersect(const _vec3& point) override
+	bool Intersect(const _vec3& point)
 	{
 		if (point.x >= _min.x && point.y >= _min.y && point.z >= _min.z &&
 			point.x <= _max.x && point.y <= _max.y && point.z <= _max.z)
@@ -130,7 +119,7 @@ struct BoundingBox : public Bound
 	}
 
 	// 오리진 위치를 받아와서 offsetMin 이랑 offsetMax만큼 더해줌 그 이유는 게임오브젝트가 움직였을때 범위가 달라져야 하기때문.
-	virtual void Offset(const _vec3& origin) override
+	void Offset(const _vec3& origin)
 	{
 		_min = origin + _offsetMin + _offPos;
 		_max = origin + _offsetMax + _offPos;
@@ -148,45 +137,10 @@ struct BoundingBox : public Bound
 	_vec3	_offPos;
 };
 
-struct Collision
-{
-	void Set_ColDir(COL_DIR dir) { _dir = dir; }
-	COL_DIR Get_ColDir() { return _dir; }
-	COL_STATE Set_Curcol(_bool curcol) { 
-		if (false == _bPreCol && true == curcol)
-		{
-			_CurState = COLSTATE_ENTER;
-		}
-		else if (true == _bPreCol && true == curcol)
-		{
-			_CurState = COLSTATE_STAY;
-		}
-		else if (true == _bPreCol && false == curcol)
-		{
-			_CurState = COLSTATE_EXIT;
-		}
-		_bCurCol = curcol;
-		return _CurState;
-	}
-	// 다음프레임 가기전 현재 상태를 이전값에 저장
-	void Set_PreCol() { _bPreCol = _bCurCol; }
-	_bool Get_PreCol() { return _bPreCol; }
-	//		이전프레임에 충돌중이였는지 확인
-	_bool	_bPreCol = false;
-	_bool	_bCurCol = false;
-
-	// 충돌한 방향
-	COL_DIR		_dir;
-	// 현재 enter, stay, exit 판단
-	COL_STATE	_CurState;
-	class CCollider*	otherCol;
-	class CGameObject* otherObj;
-};
-
 struct RayCollision 
 {
 	_tchar* tag;
-	CCollider* col;
+	class CCollider* col;
 	float dist;
 };
 
@@ -270,11 +224,6 @@ typedef struct tagRay
 	}
 
 }RAYCAST;
-
-typedef struct Mytchar
-{
-	_tchar	str[MAX_STR] = L"";
-};
 
 END
 

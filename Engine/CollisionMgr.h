@@ -15,12 +15,11 @@ public:
 	void		Add_Collider(CCollider* pCollider);
 	void		Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2);
 
-	_bool		Collision_Range(CCollider* pSrc, CCollider* pDest);
 	_bool		Collision_Box(CCollider* pSrc, CCollider* pDest);
 	_bool		Check_BoundingBox(CCollider * pSrc, CCollider * pDest, _float * pX, _float * pY, _float * pZ);
 	void		Delete_Collider(CGameObject* pGameObject);
 
-	vector<RayCollision>		Check_Collision_Ray(RAYCAST ray, CCollider* shootObj);
+	vector<RayCollision>		Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, vector<_tchar*> tagname = {});
 	_bool		Collision_Ray(RAYCAST ray, CCollider* pDest, float* pDist);
 
 	void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);

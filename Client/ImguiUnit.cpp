@@ -4,8 +4,9 @@
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 #include "Export_Function.h"
+#include "AbstractFactory.h"
 
-#include "DefaultMonster.h"
+#include "DefaultUnit.h"
 #include "Pig.h"
 #include "Bat.h"
 #include "Portal.h"
@@ -13,11 +14,16 @@
 #include "KeyCube.h"
 #include "MoveCube.h"
 #include "CrackCube.h"
+#include "Spike.h"
+#include "PinkCloud.h"
+#include "Switch.h"
+#include "SwitchCube.h"
+#include "GravityCube.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
-	m_iMonsterType(0), m_iMonsterindex(0), m_iMapObjectType(0), m_iMapObjectIndex(0)
+	m_iMonsterType(0), m_iMapObjectType(0)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
@@ -55,7 +61,7 @@ HRESULT CImguiUnit::MonsterMenu()
 		// 체크 박스가 켜졌을 때 디폴트 몬스터 생성
 		if (m_bMonsterON && nullptr == m_pDefaultMonster)
 		{
-			m_pDefaultMonster = CreateDefaultMonster();
+			CreateDefaultMonster();
 
 			if (m_bMapObjectON)
 				m_bMapObjectON = false;
@@ -87,20 +93,17 @@ HRESULT CImguiUnit::MonsterMenu()
 	return S_OK;
 }
 
-CGameObject * CImguiUnit::CreateDefaultMonster()
+void CImguiUnit::CreateDefaultMonster()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, nullptr);
+	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
+	FAILED_CHECK_RETURN(FACTORY<CDefaultUnit>::Create(L"DefaultMonster", pStageLayer, _vec3{0.f, 0.f, 0.f}), );
 
-	pGameObject = CDefaultMonster::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f });
-	dynamic_cast<CDefaultMonster*>(pGameObject)->Set_DefaultIndex(CDefaultMonster::DMonster);
+	m_pDefaultMonster = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultMonster");
+	dynamic_cast<CDefaultUnit*>(m_pDefaultMonster)->Set_DefaultIndex(CDefaultUnit::DMonster);
 
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"Monster_Default", pGameObject), nullptr);
-
-	return pGameObject;
+	return;
 }
 
 void CImguiUnit::MonsterInstall()
@@ -108,33 +111,26 @@ void CImguiUnit::MonsterInstall()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
-
 	if (Engine::Get_DIKeyState(DIK_F2) == Engine::KEYDOWN)
 	{
 		OBJINFO tMonsterInfo = {};
-		_tchar strCubeIndex[64] = { 0 };
 
 		if (0 == m_iMonsterType) // 돼지
 		{
-			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pStageLayer,
+				m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
 		else if (1 == m_iMonsterType) // 박쥐
 		{
-			_stprintf_s(strCubeIndex, _T("Bat%d"), m_iMonsterindex);
-			pGameObject = CBat::Create(m_pGraphicDev, m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
-		}
+			FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pStageLayer,
+				m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]), );
+		}			
 
-		tMonsterInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+		tMonsterInfo.vObjPos = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
 		tMonsterInfo.iObjTypeNumber = m_iMonsterType;
 
-		NULL_CHECK_RETURN(pGameObject, );
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), );
-		pGameObject->m_pTransform->m_bIsStatic = false;
 		m_vecMonsterInfo.push_back(tMonsterInfo);
-		++m_iMonsterindex;
 	}
 }
 
@@ -186,22 +182,14 @@ HRESULT CImguiUnit::LoadMonster()
 		// 돼지
 		if (0 == iter.iObjTypeNumber)
 		{
-			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CPig::Create(m_pGraphicDev, iter.vObjPos);	
+			FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
 		// 박쥐
 		else if (1 == iter.iObjTypeNumber)
 		{
-			_stprintf_s(strCubeIndex, _T("Pig%d"), m_iMonsterindex);
-			pGameObject = CBat::Create(m_pGraphicDev, iter.vObjPos);
+			FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pStageLayer, iter.vObjPos), E_FAIL);
 		}
-
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strCubeIndex, pGameObject), E_FAIL);
-
-		pGameObject->m_pTransform->m_bIsStatic = false;
-		++m_iMonsterindex;
 	}
 
 	return S_OK;
@@ -217,13 +205,14 @@ HRESULT CImguiUnit::MapObjectMenu()
 		ImGui::Checkbox("Map Object Placed", &m_bMapObjectON);
 
 		// 맵 오브젝트 종류 선택 콤보 박스
-		const char* items[] = { "KEY", "KEY BOX", "MOVE BOX", "PORTAL" , "CRACK BLOCK"};
+		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD", 
+								"SWITCH", "SWITCH CUBE", "GRAVITY CUBE"};
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
 		if (m_bMapObjectON && nullptr == m_pDefaultMapObject)
 		{
-			m_pDefaultMapObject = CreateDefaultMapObject();
+			CreateDefaultMapObject();
 
 			if (m_bMonsterON)
 				m_bMonsterON = false;
@@ -255,20 +244,17 @@ HRESULT CImguiUnit::MapObjectMenu()
 	return S_OK;
 }
 
-CGameObject * CImguiUnit::CreateDefaultMapObject()
+void CImguiUnit::CreateDefaultMapObject()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, nullptr);
+	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
+	FAILED_CHECK_RETURN(FACTORY<CDefaultUnit>::Create(L"DefaultMapObject", pStageLayer, _vec3{ 0.f, 0.f, 0.f }), );
 
-	pGameObject = CDefaultMonster::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f });
-	dynamic_cast<CDefaultMonster*>(pGameObject)->Set_DefaultIndex(CDefaultMonster::DMapObject);
+	m_pDefaultMapObject = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultMapObject");
+	dynamic_cast<CDefaultUnit*>(m_pDefaultMapObject)->Set_DefaultIndex(CDefaultUnit::DMapObject);
 
-	NULL_CHECK_RETURN(pGameObject, nullptr);
-	FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(L"MapObject_Default", pGameObject), nullptr);
-
-	return pGameObject;
+	return;
 }
 
 void CImguiUnit::MapObjectInstall()
@@ -276,51 +262,74 @@ void CImguiUnit::MapObjectInstall()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	CGameObject* pGameObject = nullptr;
-
 	if (Engine::Get_DIKeyState(DIK_F3) == Engine::KEYDOWN)
 	{
 		OBJINFO tMapObjectInfo = {};
-		_tchar strMapObjectIndex[64] = { 0 };
 
 		if (0 == m_iMapObjectType) // 키
 		{
-			_stprintf_s(strMapObjectIndex, _T("Key_%d"), m_iMapObjectIndex);
-			pGameObject = CKey::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer, 
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
-		else if (1 == m_iMapObjectType) // 키 박스
+		else if (1 == m_iMapObjectType) // 키 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("KeyBox_%d"), m_iMapObjectIndex);
-			pGameObject = CKeyCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
-		else if (2 == m_iMapObjectType) // 무브 박스
+		else if (2 == m_iMapObjectType) // 무브 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("MoveCube_%d"), m_iMapObjectIndex);
-			pGameObject = CMoveCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
 		else if (3 == m_iMapObjectType) // 포탈
 		{
-			_stprintf_s(strMapObjectIndex, _T("Portal_%d"), m_iMapObjectIndex);
-			pGameObject = CPortal::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
 		else if (4 == m_iMapObjectType) // 밟으면 없어지는 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("CrackBlock_%d"), m_iMapObjectIndex);
-			pGameObject = CCrackCube::Create(m_pGraphicDev, m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+			FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
-		tMapObjectInfo.vObjPos = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+		else if (5 == m_iMapObjectType) // 스파이크
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (6 == m_iMapObjectType) // 분홍구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (7 == m_iMapObjectType) // 스위치
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Swtich", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (8 == m_iMapObjectType) // 스위치 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwtichCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (9 == m_iMapObjectType) // 중력 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
 		tMapObjectInfo.iObjTypeNumber = m_iMapObjectType;
 
-		NULL_CHECK_RETURN(pGameObject, );
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strMapObjectIndex, pGameObject), );
-		pGameObject->m_pTransform->m_bIsStatic = true;
 		m_vecMapObjectInfo.push_back(tMapObjectInfo);
-		++m_iMapObjectIndex;
 	}
 }
 
@@ -341,7 +350,7 @@ HRESULT CImguiUnit::SaveMapObject()
 
 HRESULT CImguiUnit::LoadMapObject()
 {
-	m_vecMonsterInfo.clear();
+	m_vecMapObjectInfo.clear();
 
 	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
@@ -354,8 +363,6 @@ HRESULT CImguiUnit::LoadMapObject()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-	CGameObject* pGameObject = nullptr;
-
 	while (true)
 	{
 		ReadFile(hFile, &vMapObjectInfo, sizeof(OBJINFO), &dwByte, nullptr);
@@ -367,41 +374,55 @@ HRESULT CImguiUnit::LoadMapObject()
 
 	for (auto& iter : m_vecMapObjectInfo)
 	{
-		_tchar strMapObjectIndex[64] = { 0 };
-
-		// 키
-		if (0 == iter.iObjTypeNumber)
+		if (0 == iter.iObjTypeNumber) // 키
 		{
-			_stprintf_s(strMapObjectIndex, _T("Key%d"), m_iMapObjectIndex);
-			pGameObject = CKey::Create(m_pGraphicDev, iter.vObjPos);
+			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
-		// 키박스
-		else if (1 == iter.iObjTypeNumber)
+		else if (1 == iter.iObjTypeNumber) // 키 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("KeyBox%d"), m_iMapObjectIndex);
-			pGameObject = CKeyCube::Create(m_pGraphicDev, iter.vObjPos);
+			FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
-		// 무브 박스
-		else if (2 == iter.iObjTypeNumber)
+		else if (2 == iter.iObjTypeNumber) // 무브 큐브
 		{
-			_stprintf_s(strMapObjectIndex, _T("MoveBox%d"), m_iMapObjectIndex);
-			pGameObject = CMoveCube::Create(m_pGraphicDev, iter.vObjPos);
+			FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
-		// 포탈
-		else if (3 == iter.iObjTypeNumber)
+		else if (3 == iter.iObjTypeNumber) // 포탈
 		{
-			_stprintf_s(strMapObjectIndex, _T("Portal%d"), m_iMapObjectIndex);
-			pGameObject = CPortal::Create(m_pGraphicDev, iter.vObjPos);
+			FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(strMapObjectIndex, pGameObject), E_FAIL);
+		else if (4 == iter.iObjTypeNumber) // 밟으면 없어지는 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
 
-		pGameObject->m_pTransform->m_bIsStatic = false;
-		++m_iMapObjectIndex;
+		else if (5 == iter.iObjTypeNumber) // 스파이크
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (6 == iter.iObjTypeNumber) // 분홍구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (7 == iter.iObjTypeNumber) // 스위치
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Switch", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (8 == iter.iObjTypeNumber) // 스위치 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (9 == iter.iObjTypeNumber) // 중력 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
 	}
 
 	return S_OK;

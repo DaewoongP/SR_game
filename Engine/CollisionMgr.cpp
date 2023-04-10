@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
+#include "Collision.h"
 
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
@@ -20,7 +21,6 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 		return;
 
 	m_ColliderList[COL_OBJ].push_back(pCollider);
-	pCollider->AddRef();
 }
 
 void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
@@ -37,11 +37,11 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		{
 			if ((*iter) == (*iter2))
 				continue;
-			//if (false == Collision_Range((*iter), (*iter2)))
-			//	continue;
 			if (Collision_Box(*iter, *iter2))
 			{
-				Collision* pCollision = (*iter)->Find_ColState(*iter2);
+				Collision* pCollision = nullptr;
+				(*iter)->Find_ColList(*iter2, &pCollision);
+				NULL_CHECK_RETURN(pCollision, );
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
 				switch (pCollision->_CurState)
@@ -58,8 +58,9 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 				case Engine::COLSTATE_NONE:
 					break;
 				}
-
-				pCollision = (*iter2)->Find_ColState(*iter);
+				pCollision = nullptr;
+				(*iter2)->Find_ColList(*iter, &pCollision);
+				NULL_CHECK_RETURN(pCollision, );
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter)->m_pGameObject;
 				switch (pCollision->_CurState)
@@ -81,77 +82,83 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 	}
 }
 
-_bool CCollisionMgr::Collision_Range(CCollider* pSrc, CCollider* pDest)
-{
-	_vec3 vSrcCenter, vSrcSize, vDstCenter, vDstSize;
-	vSrcCenter = pSrc->Get_BoundCenter();
-	vDstCenter = pDest->Get_BoundCenter();
-	vSrcSize = pSrc->Get_BoundSize() * m_fRangeOffset;
-	vDstSize = pDest->Get_BoundSize() * m_fRangeOffset;
-
-	_float fSrcLong = 9999.f;
-	_float fDstLong = 9999.f;
-	if (fSrcLong > vSrcSize.x)
-		fSrcLong = vSrcSize.x;
-	if (fSrcLong > vSrcSize.y)
-		fSrcLong = vSrcSize.y;
-	if (fSrcLong > vSrcSize.z)
-		fSrcLong = vSrcSize.z;
-
-	if (fDstLong > vDstSize.x)
-		fDstLong = vDstSize.x;
-	if (fDstLong > vDstSize.y)
-		fDstLong = vDstSize.y;
-	if (fDstLong > vDstSize.z)
-		fDstLong = vDstSize.z;
-
-	_float fDistance;
-	fDistance = D3DXVec3Length(&(vDstCenter - vSrcCenter));
-	
-	if (fDistance <= fSrcLong + fDstLong)
-		return true;
-
-	return false;
-}
-
 _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 {
 	_float fX, fY, fZ;
-	_bool bChk = false;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX > fY)
+  		if (fX >= fY)
 		{
-			// src 상충돌
-			if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
+			if (fZ > fY) // Y값이 제일작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
-				return true;
+				// src 상충돌
+				if (pSrc->Get_BoundCenter().y < pDest->Get_BoundCenter().y)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_UP);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_DOWN);
+					return true;
+				}
+				// src 하충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
+					return true;
+				}
 			}
-			// src 하충돌
-			else
+			else // Z값이 제일 작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_DOWN);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_UP);
-				return true;
+				// src 후면충돌
+				if (pSrc->Get_BoundCenter().z < pDest->Get_BoundCenter().z)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_BACK);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_FRONT);
+					return true;
+				}
+				// src 전면충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_FRONT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_BACK);
+					return true;
+				}
 			}
 		}
-		else
+		else if (fY > fX)
 		{
-			// src 우충돌
-			if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
+			if (fZ > fX) // X값이 제일작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
-				return true;
+				// src 우충돌
+				if (pSrc->Get_BoundCenter().x < pDest->Get_BoundCenter().x)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_RIGHT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_LEFT);
+					return true;
+				}
+				// src 좌충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
+					return true;
+				}
 			}
-			// src 좌충돌
-			else
+			else // Z값 제일 작을때
 			{
-				pSrc->Insert_Collider(pDest, COL_DIR::DIR_LEFT);
-				pDest->Insert_Collider(pSrc, COL_DIR::DIR_RIGHT);
-				return true;
+				// src 후면충돌
+				if (pSrc->Get_BoundCenter().z < pDest->Get_BoundCenter().z)
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_BACK);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_FRONT);
+					return true;
+				}
+				// src 전면충돌
+				else
+				{
+					pSrc->Insert_Collider(pDest, COL_DIR::DIR_FRONT);
+					pDest->Insert_Collider(pSrc, COL_DIR::DIR_BACK);
+					return true;
+				}
 			}
 		}
 	}
@@ -193,8 +200,8 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 		{
 			if ((*iter)->m_pGameObject == pGameObject)
 			{
-				Safe_Release(*iter);
 				iter = m_ColliderList[i].erase(iter);
+				break;
 			}
 			else
 				++iter;
@@ -202,7 +209,7 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 	}
 }
 
-vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* shootObj)
+vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, vector<_tchar*> tagName)
 {
 	//obj와 거리만 저장하고, 거리에따라 정렬해주면 될듯.
 
@@ -218,18 +225,35 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray,CCollider* s
 		for (auto& iter = m_ColliderList[i].begin();
 		iter != m_ColliderList[i].end(); ++iter)
 		{
+			//자기 자신이면 탐색에서 제외
 			if (shootObj == *iter)
 				continue;
 
+			//일정거리 밖이면 탐색에서 제외
 			if (ray._Length * 3 <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
 				continue;
 
-			if (Collision_Ray(ray, *iter, &pDist))
-				colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
+			if (tagName.size() == 0)
+			{
+				if (Collision_Ray(ray, *iter, &pDist))
+					colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
+				continue;
+			}
+
+			//for 문을 돌며 찾은 iter가 배열에 등록된 태그인지 확인
+ 			for (int i = 0; i < tagName.size(); i++)
+			{
+				if (!lstrcmp((*iter)->m_pGameObject->m_pTag, tagName[i]))
+				{
+					if (Collision_Ray(ray, *iter, &pDist))
+						colList.push_back(RayCollision{ (*iter)->m_pGameObject->m_pTag,*iter,pDist });
+				}
+			}
+
 		}
 	}
-	
-	sort(colList.begin(),colList.end(),[](RayCollision& iter, RayCollision& iter2)->_bool {
+
+	sort(colList.begin(), colList.end(), [](RayCollision& iter, RayCollision& iter2)->_bool {
 		return iter.dist < iter2.dist;
 	});
 
@@ -260,11 +284,8 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 
 	if (returnValue)
 		if (*pDist < ray._Length)
-		{
 			return true;
-		}
 			
-
 	return false;
 }
 
@@ -292,10 +313,9 @@ void CCollisionMgr::Clear_Collision()
 {
 	for (size_t i = 0; i < COL_END; ++i)
 	{
-		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
+		//for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
 		m_ColliderList[i].clear();
 	}
-
 }
 
 void CCollisionMgr::Free(void)

@@ -21,6 +21,9 @@
 #include "Portal.h"
 #include "Fireball.h"
 #include "Spike.h"
+#include "Switch.h"
+#include "InstallGrid.h"
+#include "SwitchCube.h"
 
 
 
@@ -41,9 +44,6 @@ HRESULT CStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-	Engine::StopSound(SOUND_BGM);
-	Engine::PlaySound(L"13.wav", SOUND_BGM, 0.5f);
 	return S_OK;
 }
 
@@ -82,9 +82,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	//FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"Cloud_0", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
@@ -93,6 +90,10 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
 	//for(_int i = -2 ; i < 4;i=i+2)
 	FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"Lightning", pLayer, _vec3(30.f, 10.f, 10.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(8.f, 12.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(16.f, 6.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(14.f, 6.f, 10.f)), E_FAIL);
 
 	
 	int cubeCnt = 0;
@@ -103,7 +104,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			//맨 윗줄
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-
 			//사이 첫줄
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);

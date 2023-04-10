@@ -161,7 +161,7 @@
     <ClInclude Include="CrackCube.h" />
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
-    <ClInclude Include="DefaultMonster.h" />
+    <ClInclude Include="DefaultUnit.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Grid.h" />
@@ -192,6 +192,9 @@
     <ClInclude Include="Pig.h" />
     <ClInclude Include="MoveCube.h" />
     <ClInclude Include="PinkCloud.h" />
+    <ClInclude Include="SwallowPortal.h" />
+    <ClInclude Include="Switch.h" />
+    <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
@@ -200,7 +203,6 @@
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +213,6 @@
     <ClCompile Include="CrackCube.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
-    <ClCompile Include="DefaultMonster.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -240,6 +241,9 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="PinkCloud.cpp" />
+    <ClCompile Include="SwallowPortal.cpp" />
+    <ClCompile Include="Switch.cpp" />
+    <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveCube.cpp" />
@@ -250,7 +254,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SwallowPortal.cpp" />
+    <ClCompile Include="Defaultunit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

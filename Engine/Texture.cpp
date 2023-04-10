@@ -112,7 +112,7 @@ void CTexture::Update_Anim(const _float & fTimeDelta)
 		else
 			m_fTimer = m_CurrentAnim.fCycle;
 
-	int iIndex = (m_CurrentAnim.iEndIdx - m_CurrentAnim.iStartIdx) * (m_fTimer/ m_CurrentAnim.fCycle) + m_CurrentAnim.iStartIdx;
+	int iIndex = _int((m_CurrentAnim.iEndIdx - m_CurrentAnim.iStartIdx) * (m_fTimer/ m_CurrentAnim.fCycle) + m_CurrentAnim.iStartIdx);
 	m_CurIdx = iIndex;
 }
 

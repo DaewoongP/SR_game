@@ -18,7 +18,7 @@ HRESULT CPinkCloud::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 4.f, 4.f, 2.0f };
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_pTransform->m_bIsStatic = false;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
@@ -37,19 +37,16 @@ _int CPinkCloud::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
+	return 0;
 }
 
 _int CPinkCloud::Update_Too(const _float & fTimeDelta)
 {
-	__super::Update_Too(fTimeDelta);
-
 	return S_OK;
 }
 
 _int CPinkCloud::Update_Top(const _float & fTimeDelta)
 {
-	__super::Update_Top(fTimeDelta);
-
 	return S_OK;
 }
 
@@ -58,6 +55,8 @@ void CPinkCloud::Render_Too()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
+
+	m_pShadow->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 }
@@ -68,13 +67,14 @@ void CPinkCloud::Render_Top()
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
 HRESULT CPinkCloud::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-	m_pTransform->m_bIsStatic = false;
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
@@ -87,6 +87,11 @@ HRESULT CPinkCloud::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+	return S_OK;
 }
 
 CPinkCloud * CPinkCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

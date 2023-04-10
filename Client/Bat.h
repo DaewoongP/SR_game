@@ -8,6 +8,7 @@
 BEGIN(Engine)
 
 class CTexture;
+class CShadow;
 
 END
 
@@ -34,6 +35,8 @@ private:
 
 	virtual void OnCollisionEnter(const Collision * collision);
 	virtual void OnCollisionStay(const Collision * collision);
+	virtual void OnCollisionExit(const Collision* collision);
+
 public:
 	static	CBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 private:
@@ -41,6 +44,7 @@ private:
 
 private:
 	Engine::CTexture* m_pTextureCom_Back;
+	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
 

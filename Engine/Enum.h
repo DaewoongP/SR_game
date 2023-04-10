@@ -29,6 +29,8 @@ namespace Engine
 		DIR_DOWN,
 		DIR_LEFT,
 		DIR_RIGHT,
+		DIR_FRONT,
+		DIR_BACK,
 		DIR_END
 	};
 
@@ -74,5 +76,18 @@ namespace Engine
 		CH_START,
 		CH_ING,
 		CH_END
+	};
+
+	enum COL_MOVEDIR
+	{
+		MD_UP,
+		MD_DOWN,
+		MD_LEFT,
+		MD_RIGHT,
+		MD_RU,
+		MD_LU,
+		MD_RD,
+		MD_LD,
+		MD_END
 	};
 }

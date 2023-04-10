@@ -22,6 +22,7 @@ HRESULT CMoveCube::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_Group(COL_OBJ);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pCollider->Set_BoundingBox();
 
 	m_bIsCol[DIR_END] = { 0 };
 	m_bIsStone = false;
@@ -43,10 +44,12 @@ _int CMoveCube::Update_GameObject(const _float & fTimeDelta)
 _int CMoveCube::Update_Top(const _float & fTimeDelta)
 {
 	MoveToPos(fTimeDelta);
-	if (m_handleState == CH_START || m_handleState == CH_END|| m_bIsStone)
+
+	if (m_handleState == CH_START || m_handleState == CH_END)
 		return 0;
 
-	ShootRay();
+	if(!m_bIsFall)
+		ShootRay();
 	Move(fTimeDelta);
 	return 0;
 }
@@ -63,10 +66,9 @@ void CMoveCube::Render_GameObject(void)
 
 void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
-		DoRayToDir(collision->_dir);
+	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee")&&m_handleState==CH_NONE)
+		DoRayToDir(collision->_dir);		
 
-	//충돌시 레이 발생! 
 	__super::OnCollisionEnter(collision);
 }
 
@@ -85,9 +87,9 @@ HRESULT CMoveCube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Texture_Cube", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Move_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture_Cube", pComponent });
+	m_uMapComponent[ID_STATIC].insert({ L"Move_Cube", pComponent });
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pLine, E_FAIL);
@@ -109,12 +111,16 @@ _bool CMoveCube::IsMoveDone(const _float & fTimeDelta)
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
 
-	if (prePos == m_pTransform->m_vInfo[INFO_POS])
-		m_MovetoPos = prePos;
-	prePos = m_pTransform->m_vInfo[INFO_POS];
 	//거리 이용 도달했는지 알려주는 코드
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.15f)
 	{
+		if (m_bIsStone&&!m_bIsFall)
+		{
+			m_bIsFall = true;
+			m_MovetoPos = m_MovetoPos + _vec3(0, 0, 1);
+			m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
+			return false;
+		}
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
 
@@ -127,22 +133,30 @@ void CMoveCube::ShootRay()
 {
 	CheckColAble(_vec3(1, 0, 0), 2.5f, DIR_LEFT);
 	CheckColAble(_vec3(-1, 0, 0), 2.5f, DIR_RIGHT);
-	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_UP);
-	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_DOWN);
+	CheckColAble(_vec3(0, 1, 0), 2.5f, DIR_DOWN);
+	CheckColAble(_vec3(0, -1, 0), 2.5f, DIR_UP);
 }
 
 void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
-	if (_detectedCOL.size() == 1)
+	vector<_tchar*> tagName;
+	tagName.push_back(L"MapCube");
+	tagName.push_back(L"MoveCube");
+	tagName.push_back(L"GravityCube");
+	tagName.push_back(L"InstallCube");
+
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
+	if (_detectedCOL.size() >= 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"InstallCube"))
 			m_bIsCol[edir] = true;
 		else
 			m_bIsCol[edir] = false;
 
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
 	else
@@ -153,30 +167,34 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 {
 	//들어온 방향으로 레이를 쏩니다.
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<_tchar*> tagName;
+	tagName.push_back(L"MoveCube");
+	tagName.push_back(L"GravityCube");
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
 	case DIR_UP:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_DOWN:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_LEFT:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_RIGHT:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider, tagName);
 		break;
 	}
 	//거기에 movecube 검출되면 그 친구에게 드로우 레이를 쏩니다.
 	if (_detectedCOL.size() == 1)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube"))
+		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 				
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir))
+			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir)&&!m_bIsStone)
 			{
 				SetMovePos(dir);
 				return true;
@@ -185,8 +203,8 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 			return false;
 		}
 	}
-
-	SetMovePos(dir);	
+	if(!m_bIsStone)
+		SetMovePos(dir);	
 	return true;
 }
 
@@ -266,10 +284,10 @@ void CMoveCube::SetTarget(_vec3 pos, CGameObject * obj)
 	m_handleState = (CUBE_HANDING)((int)(m_handleState)+1);
 }
 
-void CMoveCube::DoFallingStart()
+void CMoveCube::DoFallingStart(_vec3 pos)
 {
-	m_bIsFall = true;
-	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, 2.1)); 
+	m_bIsStone = true;
+	m_MovetoPos = pos;
 	m_bIsMoving = true; 
 }
 

@@ -404,3 +404,8 @@ FodyWeavers.xsd
 *.dll
 *.exe 
 *.dat
+
+!fmodexL.dll
+!fmodex_vc.lib
+!fmodex.dll
+!fmod.hpp

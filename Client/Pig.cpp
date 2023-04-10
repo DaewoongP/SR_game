@@ -3,6 +3,8 @@
 
 #include "Export_Function.h"
 
+#include "Cube.h"
+
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev),m_bMoveLeft(false), m_bBackSprite(false)
 {
@@ -20,11 +22,10 @@ HRESULT CPig::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
-	// 기본 텍스처
 	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
-	// 백 텍스처
+	
 	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
@@ -104,6 +105,8 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	m_pTransform->m_vInfo[INFO_POS].z = 10.0f;
+
 	m_pTransform->m_vScale.y = PIGSCALE;
 
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
@@ -155,6 +158,8 @@ void CPig::Render_Too()
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -169,12 +174,14 @@ void CPig::Render_Top()
 	else
 		m_pTextureCom->Set_Texture(0);
 
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 }
 
 void CPig::OnCollisionEnter(const Collision * collision)
 {
-	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && collision->otherObj->m_pTag == L"Cube")
+	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Pig")))
 	{
 		if (m_bMoveLeft)
 		{
@@ -186,14 +193,35 @@ void CPig::OnCollisionEnter(const Collision * collision)
 			m_bMoveLeft = true;
 			m_pTransform->m_vScale.x = PIGSCALE;
 		}
-		
 	}
 	__super::OnCollisionEnter(collision);
 }
 
 void CPig::OnCollisionStay(const Collision * collision)
 {
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Pig"))
+	{
+		_vec3 vBoundSize = m_pCollider->Get_BoundSize();
+
+		_vec3 vDir = (m_pTransform->m_vInfo[INFO_POS] - collision->otherObj->m_pTransform->m_vInfo[INFO_POS]);
+
+		vDir.z = 0.0f;
+		vBoundSize.z = 0.0f;
+
+		//湲몄씠
+		_float fLength = (D3DXVec3Length(&vBoundSize) - D3DXVec3Length(&vDir)) * 0.03125f;
+		
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
+	}
+
 	__super::OnCollisionStay(collision);
+}
+
+void CPig::OnCollisionExit(const Collision * collision)
+{
+	__super::OnCollisionExit(collision);
 }
 
 HRESULT CPig::Add_Component(void)
@@ -219,6 +247,12 @@ HRESULT CPig::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+
+	m_pTransform->m_bIsStatic = false;
 
 	return S_OK;
 }

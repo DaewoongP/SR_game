@@ -25,9 +25,12 @@ public:
 
 	virtual void OnCollisionEnter(const class Collision* collision);
 
+public:
+	_bool GetCrackDead() { return m_bCrackDead; }
+	void DoShootRay(COL_DIR exceptDir);
 private:
 	HRESULT Add_Component(void);
-	_bool m_bRealDead;
+	void ShootRay(COL_DIR exceptDir);
 private:
 	Engine::CCubeTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
@@ -37,7 +40,7 @@ private:
 	//블럭이 사라지는 시간 *.*초
 	_float m_fBlockTime;
 	void Shaking(_vec3& vPos,const _float& fTimeDelta);
-
+	_bool m_bRealDead;
 	_bool m_bCrackDead;
 	
 public:

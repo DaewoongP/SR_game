@@ -32,6 +32,7 @@ private:
 
 	virtual void OnCollisionEnter(const Collision * collision);
 	virtual void OnCollisionStay(const Collision * collision);
+	virtual void OnCollisionExit(const Collision * collision);
 public:
 	static CPig*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
@@ -39,7 +40,8 @@ private:
 	virtual void Free(void) override;
 
 private:
-	CTexture* m_pTextureCom_Back;
+	Engine::CTexture* m_pTextureCom_Back;
+	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
 

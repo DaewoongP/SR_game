@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Cube.h"
-
 #include "Export_Function.h"
+#include "GravityCube.h"
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
@@ -41,11 +41,8 @@ void CCube::LateUpdate_GameObject(void)
 void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
 	m_pTextureCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
-
 	__super::Render_GameObject();
 }
 
@@ -56,6 +53,7 @@ void CCube::OnCollisionEnter(const Collision * collision)
 
 void CCube::OnCollisionStay(const Collision * collision)
 {
+	//여기서 자신과 부딪힌 친구를 보정시켜주는거임.
 	__super::OnCollisionStay(collision);
 }
 
