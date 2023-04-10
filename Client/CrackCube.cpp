@@ -83,7 +83,7 @@ void CCrackCube::OnCollisionEnter(const Collision* collision)
 void CCrackCube::DoShootRay(COL_DIR exceptDir)
 {
 	m_bCrackDead = true;
-	for (int i = 0; i < DIR_END; i++)
+	for (int i = 0; i < DIR_FRONT; i++)
 	{
 		if (exceptDir == i)
 			continue;
@@ -112,8 +112,10 @@ HRESULT CCrackCube::Add_Component(void)
 void CCrackCube::ShootRay(COL_DIR exceptDir)
 {
 	_vec3 dir[DIR_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
+	vector<_tchar*> findTag;
+	findTag.push_back(L"CrackCube");
 	vector<RayCollision> _detectedCOL = 
-		Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir[exceptDir], 1.5f), m_pCollider,L"CrackCube");
+		Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir[exceptDir], 1.5f), m_pCollider, findTag);
 	if (_detectedCOL.size() >= 1)
 	{
 		if (exceptDir % 2 == 0)

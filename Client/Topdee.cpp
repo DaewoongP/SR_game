@@ -19,15 +19,14 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
-	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,0.2f });
+	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+	m_pCollider->m_bIsTrigger = true;
 
 	__super::Update_GameObject(0.01f);
 	return S_OK;
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-	RayDiskey();
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -37,6 +36,8 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
+	Key_Input(fTimeDelta);
+	RayDiskey();
 	if (m_bIsMoving)
 		Move(fTimeDelta);
 	PlayerState(fTimeDelta);
@@ -89,8 +90,6 @@ HRESULT CTopdee::Add_Component(void)
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	return S_OK;
 }
-
-
 
 CTopdee* CTopdee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
@@ -155,16 +154,19 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 
 void CTopdee::RayDiskey()
 {
-	for (int i = 0; i < DIR_END; i++)
+	_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
+	//플레이어가 이동하려는 방향으로만 검출합니다
+	for (int i = 0; i < MD_END; i++)
 	{
-		RayDisKey_part((COL_DIR)i);
+		if (m_byPlayerInputDir == fdir[i])
+			RayDisKey_part((COL_MOVEDIR)i);
 	}
 }
 
-void CTopdee::RayDisKey_part(COL_DIR dir)
+void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 {
-	_vec3 vdir[DIR_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
-	_int fdir[DIR_END] = {13,14,7,11};
+	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{1,1,0},{-1,1,0},{1,-1,0},{-1,-1,0} };
+	_int fdir[MD_END] = {13,14,7,11,9,5,10,6};
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], vdir[dir], 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
@@ -175,14 +177,17 @@ void CTopdee::RayDisKey_part(COL_DIR dir)
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
-			COL_DIR destdir;
-			if (dir % 2 == 0)
-				destdir = (COL_DIR)(dir + 1);
-			else
-				destdir = (COL_DIR)(dir - 1);
+			if (dir < 4)
+			{
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
 
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
-				m_byPlayerInputDir &= fdir[dir];
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
 		}
 	}
 }
@@ -294,8 +299,7 @@ void CTopdee::Move(const _float& fTimeDelta)
 
 _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)
 	{

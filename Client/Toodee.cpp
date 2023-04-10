@@ -126,7 +126,7 @@ void CToodee::OnCollisionStay(const Collision * collision)
 			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
 				m_pTextureCom->Switch_Anim(L"Walk");
 			else
-				m_pTextureCom->Switch_Anim(L"Idle");
+ 				m_pTextureCom->Switch_Anim(L"Idle");
 	}
 	
 	__super::OnCollisionStay(collision);

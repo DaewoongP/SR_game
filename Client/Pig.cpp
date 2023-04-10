@@ -22,11 +22,10 @@ HRESULT CPig::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
-	// ±âº» ÅØ½ºÃ³
 	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
-	// ¹é ÅØ½ºÃ³
+	
 	m_pTextureCom_Back->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;

@@ -65,10 +65,9 @@ void CMoveCube::Render_GameObject(void)
 
 void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
-	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
-		DoRayToDir(collision->_dir);
+	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee")&&m_handleState==CH_NONE)
+		DoRayToDir(collision->_dir);		
 
-	//충돌시 레이 발생! 
 	__super::OnCollisionEnter(collision);
 }
 
@@ -140,7 +139,11 @@ void CMoveCube::ShootRay()
 void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider);
+	vector<_tchar*> tagName;
+	tagName.push_back(L"MapCube");
+	tagName.push_back(L"MoveCube");
+	tagName.push_back(L"GravityCube");
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube"))
@@ -160,20 +163,23 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 {
 	//들어온 방향으로 레이를 쏩니다.
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<_tchar*> tagName;
+	tagName.push_back(L"MoveCube");
+	tagName.push_back(L"GravityCube");
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
 	case DIR_UP:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, -1, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_DOWN:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(0, 1, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_LEFT:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(1.f, 0, 0), 2.5f), m_pCollider, tagName);
 		break;
 	case DIR_RIGHT:
-		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider);
+		_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, _vec3(-1.f, 0, 0), 2.5f), m_pCollider, tagName);
 		break;
 	}
 	//거기에 movecube 검출되면 그 친구에게 드로우 레이를 쏩니다.
