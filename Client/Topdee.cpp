@@ -155,16 +155,19 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 
 void CTopdee::RayDiskey()
 {
-	for (int i = 0; i < DIR_END; i++)
+	_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
+	//플레이어가 이동하려는 방향으로만 검출합니다
+	for (int i = 0; i < MD_END; i++)
 	{
-		RayDisKey_part((COL_DIR)i);
+		if (m_byPlayerInputDir == fdir[i])
+			RayDisKey_part((COL_MOVEDIR)i);
 	}
 }
 
-void CTopdee::RayDisKey_part(COL_DIR dir)
+void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 {
-	_vec3 vdir[DIR_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
-	_int fdir[DIR_END] = {13,14,7,11};
+	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{1,1,0},{-1,1,0},{1,-1,0},{-1,-1,0} };
+	_int fdir[MD_END] = {13,14,7,11,9,5,10,6};
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], vdir[dir], 1.5f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
@@ -175,14 +178,17 @@ void CTopdee::RayDisKey_part(COL_DIR dir)
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
-			COL_DIR destdir;
-			if (dir % 2 == 0)
-				destdir = (COL_DIR)(dir + 1);
-			else
-				destdir = (COL_DIR)(dir - 1);
+			if (dir < 4)
+			{
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
 
-			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
-				m_byPlayerInputDir &= fdir[dir];
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
 		}
 	}
 }
@@ -294,8 +300,7 @@ void CTopdee::Move(const _float& fTimeDelta)
 
 _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)
 	{

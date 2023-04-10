@@ -1,10 +1,6 @@
 #pragma once
 #include "MoveCube.h"
 
-BEGIN(Engine)
-class CRigidbody;
-END
-
 class CGravityCube :
 	public CMoveCube
 {
@@ -28,12 +24,15 @@ public:
 	static CGravityCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
+	void Do_CheckRay_Down();
+
+private:
+	_bool	m_bUseGraivty;
+
+private:
 	virtual void Free(void) override;
 
 private:
 	HRESULT		Add_Component(void);
-
-private:
-	CRigidbody* m_pRigid;
 };
 

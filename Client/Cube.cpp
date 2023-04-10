@@ -41,11 +41,8 @@ void CCube::LateUpdate_GameObject(void)
 void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
 	m_pTextureCom->Set_Texture();
-
 	m_pBufferCom->Render_Buffer();
-
 	__super::Render_GameObject();
 }
 
@@ -56,22 +53,13 @@ void CCube::OnCollisionEnter(const Collision * collision)
 
 void CCube::OnCollisionStay(const Collision * collision)
 {
+	//여기서 자신과 부딪힌 친구를 보정시켜주는거임.
 	__super::OnCollisionStay(collision);
-	if (dynamic_cast<CGravityCube*>(collision->otherObj) &&
-		collision->_dir == DIR_UP)
-	{
-		collision->otherObj->m_pTransform->m_bIsStatic = true;
-	}
 }
 
 void CCube::OnCollisionExit(const Collision * collision)
 {
 	__super::OnCollisionExit(collision);
-	if (dynamic_cast<CGravityCube*>(collision->otherObj) &&
-		collision->_dir == DIR_UP)
-	{
-		collision->otherObj->m_pTransform->m_bIsStatic = false;
-	}
 }
 
 HRESULT CCube::Add_Component(void)

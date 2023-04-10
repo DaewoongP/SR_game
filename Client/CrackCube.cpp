@@ -83,7 +83,7 @@ void CCrackCube::OnCollisionEnter(const Collision* collision)
 void CCrackCube::DoShootRay(COL_DIR exceptDir)
 {
 	m_bCrackDead = true;
-	for (int i = 0; i < DIR_END; i++)
+	for (int i = 0; i < DIR_FRONT; i++)
 	{
 		if (exceptDir == i)
 			continue;

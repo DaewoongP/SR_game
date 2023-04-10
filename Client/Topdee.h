@@ -27,7 +27,7 @@ private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
 	void		RayDiskey();
-	void		RayDisKey_part(COL_DIR dir);
+	void		RayDisKey_part(COL_MOVEDIR dir);
 	void		PlayerState(const _float& fTimeDelta);
 	void		Move(const _float& fTimeDelta);
 	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
