@@ -42,7 +42,8 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 			//	continue;
 			if (Collision_Box(*iter, *iter2))
 			{
-				Collision* pCollision = (*iter)->Find_ColState(*iter2);
+				Collision* pCollision;
+				(*iter)->Find_ColList(*iter2, &pCollision);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter2)->m_pGameObject;
 				switch (pCollision->_CurState)
@@ -60,7 +61,7 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 					break;
 				}
 
-				pCollision = (*iter2)->Find_ColState(*iter);
+				(*iter2)->Find_ColList(*iter, &pCollision);
 				pCollision->Set_PreCol();
 				pCollision->otherObj = (*iter)->m_pGameObject;
 				switch (pCollision->_CurState)

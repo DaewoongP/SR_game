@@ -18,7 +18,7 @@ protected:
 	LPD3DXMESH			m_pMesh;
 	COLGROUP			m_eGroup;
 	// 현재 충돌중인 상대 콜라이더와의 정보 -> 복사생성시 복사할 필요 없음. 실시간 정보
-	map<CCollider*, Collision*>	m_Colmap;
+	map<CCollider*, Collision*>	m_ColList;
 public:
 	_bool	m_bIsTrigger;
 public:
@@ -41,10 +41,8 @@ public:
 	}
 	// 현재 충돌이 일어난 상대 콜라이더, 상태값 저장
 	void Insert_Collider(CCollider* pCollider, COL_DIR eDir);
-	// 맵안에 해당하는 콜라이더의 상태값을 반환
-	Collision* Find_ColState(class CCollider* pOtherCol);
-	// 이미 리스트에 있는지 체크하는 함수
-	_bool	Check_AlreadyCol(class CCollider* pOtherCol);
+	// 콜라이더가 리스트에 있는지 확인후 반환, 콜리전 output
+	_bool	Find_ColList(class CCollider* pOtherCol, Collision** collision);
 	_bool Delete_OtherCollider(CCollider* pOtherCol);
 
 	bool Intersect(const _vec3& point) { return m_pBoundingBox->Intersect(point); }

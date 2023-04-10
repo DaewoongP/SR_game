@@ -63,60 +63,49 @@ void CCollider::Insert_Collider(CCollider * pCollider, COL_DIR eDir)
 {
 	if (nullptr == pCollider)
 		return;
-
-	if (Check_AlreadyCol(pCollider))
+	Collision* pCollision = nullptr;
+	if (Find_ColList(pCollider, &pCollision))
 	{
-		Collision* pCollision = Find_ColState(pCollider);
 		pCollision->Set_Curcol(true);
 		pCollision->otherCol = pCollider;
 		pCollision->_dir = eDir;
 	}
 	else
 	{
-		Collision* pCollision = new Collision;
+		pCollision = new Collision;
 		pCollision->Set_Curcol(true);
 		pCollision->otherCol = pCollider;
 		pCollision->_dir = eDir;
-		m_Colmap.insert({ pCollider, pCollision });
+		m_ColList.insert({ pCollider, pCollision });
 	}
 }
 
-Collision * CCollider::Find_ColState(CCollider * pOtherCol)
+_bool CCollider::Find_ColList(CCollider * pOtherCol, Collision** collision)
 {
-	auto	iter = find_if(m_Colmap.begin(), m_Colmap.end(), [&](auto& iter)->_bool {
+	auto	iter = find_if(m_ColList.begin(), m_ColList.end(), [&](auto& iter)->_bool {
 		return pOtherCol == iter.first;
 	});
 
-	if (iter == m_Colmap.end())
-		return nullptr;
-
-	return iter->second;
-}
-
-_bool CCollider::Check_AlreadyCol(CCollider * pOtherCol)
-{
-	auto	iter = find_if(m_Colmap.begin(), m_Colmap.end(), [&](auto& iter)->_bool {
-		return pOtherCol == iter.first;
-	});
-
-	if (iter == m_Colmap.end())
+	if (iter == m_ColList.end())
 		return false;
+	
+	collision = &iter->second;
 	return true;
 }
 
 _bool CCollider::Delete_OtherCollider(CCollider * pOtherCol)
 {
-	auto	iter = find_if(m_Colmap.begin(), m_Colmap.end(), [&](auto& iter)->_bool {
+	auto	iter = find_if(m_ColList.begin(), m_ColList.end(), [&](auto& iter)->_bool {
 		return pOtherCol == iter.first;
 	});
-	if (iter == m_Colmap.end())
+	if (iter == m_ColList.end())
 		return false;
 
 	if (iter->second->Get_PreCol() == false)
 	{
 		delete iter->second;
 		iter->second = nullptr;
-		m_Colmap.erase(iter);
+		m_ColList.erase(iter);
 		return false;
 	}
 	else
@@ -209,11 +198,11 @@ CComponent * CCollider::Clone(void)
 void CCollider::Free(void)
 {
 	Safe_Delete(m_pBoundingBox);
-	for_each(m_Colmap.begin(), m_Colmap.end(), [](auto& iter) {
+	for_each(m_ColList.begin(), m_ColList.end(), [](auto& iter) {
 		delete iter.second;
 		iter.second = nullptr;
 	});
-	m_Colmap.clear();
+	m_ColList.clear();
 	__super::Free();
 }
 
