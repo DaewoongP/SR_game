@@ -60,7 +60,8 @@ void CSwitchCube::OnCollisionEnter(const Collision * collision)
 {
 	if (CSwitch::m_bSwtichON)
 	{
-		if(!lstrcmp(L"Toodee", collision->otherObj->m_pTag))
+		if(!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
+			!lstrcmp(L"Pig", collision->otherObj->m_pTag))
 			m_pTransform->m_bIsStatic = false;
 
 		else
