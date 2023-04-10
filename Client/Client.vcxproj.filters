@@ -314,9 +314,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainApp.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -470,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="SwitchCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Main\MainApp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
