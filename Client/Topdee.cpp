@@ -19,15 +19,14 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
-	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,0.2f });
+	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+	m_pCollider->m_bIsTrigger = true;
 
 	__super::Update_GameObject(0.01f);
 	return S_OK;
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
-	Key_Input(fTimeDelta);
-	RayDiskey();
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -37,6 +36,8 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
+	Key_Input(fTimeDelta);
+	RayDiskey();
 	if (m_bIsMoving)
 		Move(fTimeDelta);
 	PlayerState(fTimeDelta);
@@ -89,8 +90,6 @@ HRESULT CTopdee::Add_Component(void)
 	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
 	return S_OK;
 }
-
-
 
 CTopdee* CTopdee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {

@@ -16,7 +16,7 @@ HRESULT CGravityCube::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_bUseGraivty = false;
-	m_pTransform->m_bIsStatic = true;
+	m_pTransform->m_bIsStatic = false;
 	m_pCollider->m_bIsTrigger = false;
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
 	return S_OK;
@@ -31,12 +31,12 @@ _int CGravityCube::Update_GameObject(const _float & fTimeDelta)
 
 _int CGravityCube::Update_Too(const _float & fTimeDelta)
 {
-	__super::Update_Too(fTimeDelta);
 	Do_CheckRay_Down();
 	if (m_bUseGraivty)
 	{
 		m_pTransform->m_vInfo[INFO_POS].y -= 9.8*fTimeDelta;
 	}
+	__super::Update_Too(fTimeDelta);
 	return 0;
 }
 
@@ -86,16 +86,25 @@ CGravityCube * CGravityCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 
 void CGravityCube::Do_CheckRay_Down()
 {
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0,-1,0), 1.1f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0,-1,0), 1.001f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
 		if (dynamic_cast<CCube*>(_detectedCOL[0].col->m_pGameObject))
+		{
+			m_pTransform->m_bIsStatic = true;
 			m_bUseGraivty = false;
-		else 
+		}
+		else
+		{
+			m_pTransform->m_bIsStatic = false;
 			m_bUseGraivty = true;
+		}
 	}
-	else 
+	else
+	{
+		m_pTransform->m_bIsStatic = false;
 		m_bUseGraivty = true;
+	}
 }
 
 void CGravityCube::Free(void)
