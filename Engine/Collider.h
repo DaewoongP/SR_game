@@ -2,8 +2,13 @@
 #include "Component.h"
 #include "Transform.h"
 #include "GameObject.h"
-BEGIN(Engine)
 
+BEGIN(Engine)
+enum COLOR
+{
+	RED,
+	GREEN
+};
 class CCollider : public CComponent
 {
 protected:
@@ -18,7 +23,7 @@ protected:
 	LPD3DXMESH			m_pMesh;
 	COLGROUP			m_eGroup;
 	// 현재 충돌중인 상대 콜라이더와의 정보 -> 복사생성시 복사할 필요 없음. 실시간 정보
-	map<CCollider*, Collision*>	m_ColList;
+	map<CCollider*, Collision>	m_ColList;
 public:
 	_bool	m_bIsTrigger;
 public:
@@ -62,12 +67,15 @@ public:
 	static CCollider* Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool bIsTrigger);
 	virtual CComponent * Clone(void) override;
 private:
-	virtual void Free(void) override;
+	void DrawColor();
 
-	void Change_ColliderColor(_float r, _float g, _float b, _float a);
 private:
-	LPDIRECT3DVERTEXBUFFER9		m_pVB;
+	LPDIRECT3DBASETEXTURE9		m_pRedTex;
+	LPDIRECT3DBASETEXTURE9		m_pGreenTex;
 	_matrix						m_matWorld;
+	COLOR						m_eColor;
+private:
+	virtual void Free(void) override;
 };
 
 END
