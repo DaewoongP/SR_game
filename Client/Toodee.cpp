@@ -8,7 +8,6 @@ CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_bJumpalbe(false)
 	, m_eKeyState(DIR_END)
 {
-
 }
 
 CToodee::~CToodee()
@@ -30,7 +29,7 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
 	return S_OK;
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
@@ -44,7 +43,6 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pRigid->m_bUseGrivaty = true;
 	Key_Input(fTimeDelta);
 	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
@@ -58,44 +56,30 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	DoFlip();
 	return 0;
 }
-_int CToodee::Update_Top(const _float & fTimeDelta)
+void CToodee::SwapTrigger()
 {
-	m_pRigid->m_bUseGrivaty = false;
-
-	return 0;
+	if (g_Is2D)
+	{
+		m_pRigid->m_bUseGrivaty = true;
+	}
+	else 
+	{
+		m_pRigid->m_bUseGrivaty = false;
+	}
+		
 }
 
 void CToodee::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
-
-void CToodee::LateUpdate_Too()
-{
-}
-
-void CToodee::LateUpdate_Top()
-{
-}
-
 void CToodee::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
 	m_pTextureCom->Set_Texture(0);
-
 	m_pBufferCom->Render_Buffer();
-
 	__super::Render_GameObject();
 
-}
-
-void CToodee::Render_Too()
-{
-}
-
-void CToodee::Render_Top()
-{
 }
 
 void CToodee::OnCollisionEnter(const Collision * collision)
@@ -112,7 +96,7 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 
 void CToodee::OnCollisionStay(const Collision * collision)
 {
-	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
+ 	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
 	{
 		if (collision->_dir == DIR_DOWN)
 			m_bJumpalbe = true;

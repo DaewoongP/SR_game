@@ -23,6 +23,7 @@ public:
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void SwapTrigger();
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);

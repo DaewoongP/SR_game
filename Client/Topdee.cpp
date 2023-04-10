@@ -71,6 +71,10 @@ void CTopdee::OnCollisionStay(const Collision * collision)
 	__super::OnCollisionStay(collision);
 }
 
+void CTopdee::SwapTrigger()
+{
+}
+
 HRESULT CTopdee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
