@@ -62,20 +62,6 @@ HRESULT CImguiStage::GridMenu()
 			m_bGridCreate = false;
 		}
 
-		//// �ٴ� �׸��� ON
-		//if (m_bGridON && !m_bGridCreate)
-		//{
-		//	for (auto& iter : m_vecGroundGrid)
-		//		dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(true);
-		//}
-
-		//// �ٴ� �׸��� OFF
-		//if (!m_bGridON && !m_bGridCreate)
-		//{
-		//	for (auto& iter : m_vecGroundGrid)
-		//		dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(false);
-		//}
-
 		// �Ϲ� �׸��� ��ġ üũ �ڽ�
 		ImGui::Checkbox("Grid", &m_bDefaultGridCreate);
 
@@ -118,24 +104,6 @@ void CImguiStage::GroundGridON()
 	NULL_CHECK_RETURN(pStageLayer, );
 
 	CGameObject* pGameObject = nullptr;
-
-	/*int cubeCnt = 0;
-	for (int i = 0; i < CUBEY; ++i)
-	{
-		for (int j = 0; j < CUBEX; ++j)
-		{
-			TCHAR objName[128] = { 0 };
-			_stprintf_s(objName, _T("GroundGrid%d"), (cubeCnt));
-
-			pGameObject = CGroundGrid::Create(m_pGraphicDev, _vec3{ (float)j * 2.f,(float)i * 2.f, 10.f });
-			NULL_CHECK_RETURN(pGameObject, E_FAIL);
-			FAILED_CHECK_RETURN(pStageLayer->Add_GameObject(objName, pGameObject), E_FAIL);
-
-			dynamic_cast<CGroundGrid*>(pGameObject)->Set_GridOn(true);
-			m_vecGroundGrid.push_back(pGameObject);
-			++cubeCnt;
-		}
-	}*/
 
 	for (int i = 0; i < CUBEY; ++i)
 	{
