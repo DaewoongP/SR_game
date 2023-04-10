@@ -89,7 +89,7 @@ _bool CCollider::Find_ColList(CCollider * pOtherCol, Collision** collision)
 	if (iter == m_ColList.end())
 		return false;
 	
-	collision = &iter->second;
+	*collision = iter->second;
 	return true;
 }
 
