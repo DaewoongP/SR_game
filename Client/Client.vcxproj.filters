@@ -134,6 +134,12 @@
     <Filter Include="00. GameObject\02. MapObject\Cube\KeyCube">
       <UniqueIdentifier>{217df511-324e-4382-b5ca-bda9c5427c79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cloud\LightningCloud">
+      <UniqueIdentifier>{44fb033c-1181-4f66-a281-39ae44757380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning">
+      <UniqueIdentifier>{458383cb-c7cd-4e6a-aeae-139fbc8ada6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -291,6 +297,12 @@
     <ClInclude Include="Monster.h">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
+    <ClInclude Include="LightningCloud.h">
+      <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Lightning.h">
+      <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainApp.cpp">
@@ -396,9 +408,6 @@
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages</Filter>
     </ClCompile>
@@ -407,9 +416,6 @@
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamiCamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>GameObject\Portal</Filter>
@@ -449,6 +455,12 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="LightningCloud.cpp">
+      <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud</Filter>
+    </ClCompile>
+    <ClCompile Include="Lightning.cpp">
+      <Filter>00. GameObject\02. MapObject\Cloud\LightningCloud\Lightning</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

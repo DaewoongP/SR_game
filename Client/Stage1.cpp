@@ -13,12 +13,16 @@
 #include "Pig.h"
 #include "Bat.h"
 #include "PinkCloud.h"
+#include"LightningCloud.h"
+#include"Lightning.h"
 #include "Topdee.h"
 #include "Spike.h"
 #include "GravityCube.h"
 #include "Portal.h"
 #include "Fireball.h"
 #include "Spike.h"
+
+
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -78,15 +82,19 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig_0", pLayer, _vec3(50.f, 7.f, 10.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat_0", pLayer, _vec3(50.f, 20.f, 8.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"Cloud_0", pLayer, _vec3(6.f, 30.f, 10.5f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 	
-	FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pLayer, _vec3(40.f, 10.f, 11.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pLayer, _vec3(40.f, 10.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
+	//for(_int i = -2 ; i < 4;i=i+2)
+	FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"Lightning", pLayer, _vec3(30.f, 10.f, 10.f)), E_FAIL);
 
+	
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)
 	{
