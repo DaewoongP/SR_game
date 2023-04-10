@@ -35,6 +35,8 @@ private:
 
 	virtual void OnCollisionEnter(const Collision * collision);
 	virtual void OnCollisionStay(const Collision * collision);
+	virtual void OnCollisionExit(const Collision* collision);
+
 public:
 	static	CBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 private:
