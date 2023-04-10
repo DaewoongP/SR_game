@@ -90,4 +90,13 @@ namespace Engine
 		MD_LD,
 		MD_END
 	};
+
+	enum SHAKE_AXIS
+	{
+		SHAKE_ALL,
+		SHAKE_X,
+		SHAKE_Y,
+		SHAKE_Z,
+		SHAKE_END
+	};
 }

@@ -5,6 +5,8 @@
 
 #include "Cube.h"
 
+#include "StageCamera.h"
+
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev),m_bMoveLeft(false), m_bBackSprite(false)
 {
@@ -183,6 +185,8 @@ void CPig::OnCollisionEnter(const Collision * collision)
 {
 	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Pig")))
 	{
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
+
 		if (m_bMoveLeft)
 		{
 			m_bMoveLeft = false;
