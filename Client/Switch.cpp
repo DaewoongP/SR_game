@@ -21,10 +21,11 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vInfo[INFO_POS].z = 8.999f;
+	m_pTransform->m_vScale = { 0.9f, 0.9f, 1.f };
 	m_pTransform->m_bIsStatic = false;
 
 	// ���� ť�꿡 z�ప ���� ��� �տ� �־�� �ϱ� ������ �ٿ�� �ڽ� ���� ��
-	m_pCollider->Set_BoundingBox({ 1.5f, 2.5f, 2.1f });
+	m_pCollider->Set_BoundingBox({ 1.f, 2.5f, 2.1f });
 
 	return S_OK;
 }
@@ -69,7 +70,7 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 	{
 		// �������, ��� ��� �ϴ°� ���� ���� �ڵ� ���� �ڵ� �־���, 
 		// ������ ���ġ ��ü�� ť��� ������ Pos�� �ֱ� ������ �������
-		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir)
+		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir || DIR_LEFT == tToodeeDir || DIR_RIGHT == tToodeeDir)
 		{
 			m_bSwtichON = true;
 			m_iTextureIndex = 1;

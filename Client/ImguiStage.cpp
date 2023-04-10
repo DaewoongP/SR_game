@@ -12,9 +12,11 @@
 #include "DefaultGrid.h"
 #include "InstallGrid.h"
 
+bool CImguiStage::m_bGridON = false;
+
 CImguiStage::CImguiStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
-	m_bGridON(false), m_bGridCreate(true), m_bCubePlaced(false), m_bDefaultGridCreate(false),
+	m_bGridCreate(true), m_bCubePlaced(false), m_bDefaultGridCreate(false),
 	m_iCubeTextureNumber(0)
 {
 	m_pDefaultCube = nullptr;
@@ -56,23 +58,23 @@ HRESULT CImguiStage::GridMenu()
 		// �׸��� üũ �ڽ� Ȱ��ȭ �� �ٴ� �׸��� ����
 		if (m_bGridON && m_bGridCreate)
 		{
-			FAILED_CHECK_RETURN(GroundGridON(), E_FAIL);
+			GroundGridON();
 			m_bGridCreate = false;
 		}
 
-		// �ٴ� �׸��� ON
-		if (m_bGridON && !m_bGridCreate)
-		{
-			for (auto& iter : m_vecGroundGrid)
-				dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(true);
-		}
+		//// �ٴ� �׸��� ON
+		//if (m_bGridON && !m_bGridCreate)
+		//{
+		//	for (auto& iter : m_vecGroundGrid)
+		//		dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(true);
+		//}
 
-		// �ٴ� �׸��� OFF
-		if (!m_bGridON && !m_bGridCreate)
-		{
-			for (auto& iter : m_vecGroundGrid)
-				dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(false);
-		}
+		//// �ٴ� �׸��� OFF
+		//if (!m_bGridON && !m_bGridCreate)
+		//{
+		//	for (auto& iter : m_vecGroundGrid)
+		//		dynamic_cast<CGroundGrid*>(iter)->Set_GridOn(false);
+		//}
 
 		// �Ϲ� �׸��� ��ġ üũ �ڽ�
 		ImGui::Checkbox("Grid", &m_bDefaultGridCreate);
@@ -110,14 +112,14 @@ HRESULT CImguiStage::GridMenu()
 	return S_OK;
 }
 
-HRESULT CImguiStage::GroundGridON()
+void CImguiStage::GroundGridON()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	NULL_CHECK_RETURN(pStageLayer, );
 
 	CGameObject* pGameObject = nullptr;
 
-	int cubeCnt = 0;
+	/*int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; ++i)
 	{
 		for (int j = 0; j < CUBEX; ++j)
@@ -133,9 +135,18 @@ HRESULT CImguiStage::GroundGridON()
 			m_vecGroundGrid.push_back(pGameObject);
 			++cubeCnt;
 		}
+	}*/
+
+	for (int i = 0; i < CUBEY; ++i)
+	{
+		for (int j = 0; j < CUBEX; ++j)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGroundGrid>::Create(L"GroundGrid", pStageLayer,
+				_vec3{ (float)j * 2.f,(float)i * 2.f, 10.f }), );
+		}
 	}
 
-	return S_OK;
+	return;
 }
 
 void CImguiStage::CreateDefaultGrid()
@@ -143,10 +154,10 @@ void CImguiStage::CreateDefaultGrid()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	FAILED_CHECK_RETURN(FACTORY<CGroundGrid>::Create(L"DefaultGrid", pStageLayer,
+	FAILED_CHECK_RETURN(FACTORY<CDefaultGrid>::Create(L"DefaultGrid", pStageLayer,
 		_vec3{ 0.f, 0.f, 0.f}), );
 
-	m_pDefaultGrid =  Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultGrid");
+	m_pDefaultGrid = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultGrid");
 
 	return;
 }
@@ -232,7 +243,7 @@ HRESULT CImguiStage::CubeMenu()
 		{
 			CreateDefaultCube();
 			m_bDefaultGridCreate = false;
-		}			
+		}
 
 		// ť�� ��� ���� �޺� �ڽ�
 		const char* items[] = { "NONE", "STYLE" };

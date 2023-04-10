@@ -16,9 +16,6 @@ private:
 	virtual ~CGroundGrid();
 
 public:
-	void	Set_GridOn(bool TrueorFalse) { m_bGridON = TrueorFalse; }
-
-public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
@@ -31,7 +28,6 @@ private:
 	Engine::CCollider * m_pCollider;
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
-	bool m_bGridON;
 
 public:
 	static	CGroundGrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
