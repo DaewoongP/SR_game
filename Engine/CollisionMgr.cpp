@@ -21,7 +21,6 @@ void CCollisionMgr::Add_Collider(CCollider * pCollider)
 		return;
 
 	m_ColliderList[COL_OBJ].push_back(pCollider);
-	pCollider->AddRef();
 }
 
 void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
@@ -234,8 +233,8 @@ void CCollisionMgr::Delete_Collider(CGameObject* pGameObject)
 		{
 			if ((*iter)->m_pGameObject == pGameObject)
 			{
-				Safe_Release(*iter);
 				iter = m_ColliderList[i].erase(iter);
+				break;
 			}
 			else
 				++iter;
@@ -309,11 +308,8 @@ _bool CCollisionMgr::Collision_Ray(RAYCAST ray, CCollider * pDest,float* pDist)
 
 	if (returnValue)
 		if (*pDist < ray._Length)
-		{
 			return true;
-		}
 			
-
 	return false;
 }
 
@@ -341,10 +337,9 @@ void CCollisionMgr::Clear_Collision()
 {
 	for (size_t i = 0; i < COL_END; ++i)
 	{
-		for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
+		//for_each(m_ColliderList[i].begin(), m_ColliderList[i].end(), CDeleteObj());
 		m_ColliderList[i].clear();
 	}
-
 }
 
 void CCollisionMgr::Free(void)
