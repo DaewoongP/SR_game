@@ -42,6 +42,8 @@ private:
 	void Shaking(_vec3& vPos,const _float& fTimeDelta);
 	_bool m_bRealDead;
 	_bool m_bCrackDead;
+
+	_bool m_bShakeDir;
 	
 public:
 	static CCrackCube* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

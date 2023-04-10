@@ -21,6 +21,7 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
 	m_bCrackDead = false;
 	m_pCollider->Set_Group(COL_ENV);
+	m_bShakeDir = (rand() % 2);
 	return S_OK;
 }
 
@@ -135,16 +136,19 @@ void CCrackCube::Shaking(_vec3& vPos, const _float& fTimeDelta)
 	static _float fTime = 0.f;
 	fTime += fTimeDelta;
 
-	if (fTime > 0.01f)
+	if (fTime > 0.05f)
 	{
 		fTime = 0.f;
-
-		_float fRandomX = (_float)(rand() % 100) / 100.f;
+		_float fRandomX = 0;
+		if (m_bShakeDir)
+			fRandomX = -1;
+		else
+			fRandomX = 1;
+		m_bShakeDir = !m_bShakeDir;
 		
 		_float fRandomY = (_float)(rand() % 100) / 100.f;
-		//y값랜덤주게되면 점프가 잘 안됨
-		_vec3 ShakePos = {vPos.x + 0.075f * (fRandomX - 0.5f),
-					vPos.y /*+0.05f*(fRandomY-0.5f)*/ ,  10.f};
+		_vec3 ShakePos = {vPos.x + 0.075f * fRandomX,
+					vPos.y ,  10.f};
 		m_pTransform->Set_Pos(ShakePos.x,ShakePos.y,10.f);
 	}
 }
