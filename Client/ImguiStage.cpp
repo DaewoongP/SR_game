@@ -85,12 +85,12 @@ HRESULT CImguiStage::GridMenu()
 
 		// ���� ���
 		if (ImGui::Button("Grid Save"))
-			FAILED_CHECK_RETURN(SaveGrid(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveGrid(m_iStageNumber), E_FAIL);
 
 		// �ε� ���
 		ImGui::SameLine();
 		if (ImGui::Button("Grid Load"))
-			FAILED_CHECK_RETURN(LoadGrid(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadGrid(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -149,9 +149,12 @@ void CImguiStage::GridInstall()
 	}
 }
 
-HRESULT CImguiStage::SaveGrid()
+HRESULT CImguiStage::SaveGrid(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/GridPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/GridPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -164,11 +167,14 @@ HRESULT CImguiStage::SaveGrid()
 	return S_OK;
 }
 
-HRESULT CImguiStage::LoadGrid()
+HRESULT CImguiStage::LoadGrid(_int iStageNumber)
 {
 	m_vecInstallGrid.clear();
 
-	HANDLE hFile = CreateFile(L"../Data/GridPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/GridPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
@@ -234,12 +240,12 @@ HRESULT CImguiStage::CubeMenu()
 
 		// ���� ���
 		if (ImGui::Button("Cube Save"))
-			FAILED_CHECK_RETURN(SaveCube(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveCube(m_iStageNumber), E_FAIL);
 
 		// �ε� ���
 		ImGui::SameLine();
 		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadCube(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadCube(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -279,9 +285,12 @@ void CImguiStage::CubeInstall()
 	}
 }
 
-HRESULT CImguiStage::SaveCube()
+HRESULT CImguiStage::SaveCube(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/CubePos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -294,11 +303,14 @@ HRESULT CImguiStage::SaveCube()
 	return S_OK;
 }
 
-HRESULT CImguiStage::LoadCube()
+HRESULT CImguiStage::LoadCube(_int iStageNumber)
 {
 	m_vecCubeInfo.clear();
 
-	HANDLE hFile = CreateFile(L"../Data/CubePos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/CubePos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;

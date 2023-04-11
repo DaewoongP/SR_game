@@ -18,14 +18,12 @@ HRESULT CPinkCloud::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 4.f, 4.f, 2.0f };
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_bIsStatic = false;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
-	m_pCollider->m_bIsTrigger = true;
 	
 	return S_OK;
 }

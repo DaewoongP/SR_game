@@ -9,13 +9,16 @@ public:
 	~CImguiUnit();
 
 public:
+	void	Set_StageNumber(_int _iNumber) { m_iStageNumber = _iNumber; }
+
+public:
 	_int Update_Imgui_Unit();
 	void Release();
 
-	HRESULT SaveMonster();
-	HRESULT LoadMonster();
-	HRESULT SaveMapObject();
-	HRESULT LoadMapObject();
+	HRESULT SaveMonster(_int iStageNumber);
+	HRESULT LoadMonster(_int iStageNumber);
+	HRESULT SaveMapObject(_int iStageNumber);
+	HRESULT LoadMapObject(_int iStageNumber);
 
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
@@ -36,6 +39,9 @@ private:
 	vector<int> m_vecPortalCubeDir;			// 포탈 큐브 방향 저장용
 	int m_iPortalCubeCount;					// 포탈 큐브 개수
 	CUBE_DIR	m_tPortalCubeDir;			// 포탈 큐브 방향
+
+	// 스테이지 저장용 변수
+	_int m_iStageNumber;
 
 private:
 	// 몬스터 메뉴

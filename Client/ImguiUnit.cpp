@@ -83,12 +83,12 @@ HRESULT CImguiUnit::MonsterMenu()
 
 		// 저장 기능
 		if (ImGui::Button("Monster Save"))
-			FAILED_CHECK_RETURN(SaveMonster(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveMonster(m_iStageNumber), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Monster Load"))
-			FAILED_CHECK_RETURN(LoadMonster(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMonster(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -137,9 +137,12 @@ void CImguiUnit::MonsterInstall()
 	}
 }
 
-HRESULT CImguiUnit::SaveMonster()
+HRESULT CImguiUnit::SaveMonster(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MonsterPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -152,11 +155,14 @@ HRESULT CImguiUnit::SaveMonster()
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMonster()
+HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
 {
 	m_vecMonsterInfo.clear();
 
-	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MonsterPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
@@ -253,12 +259,12 @@ HRESULT CImguiUnit::MapObjectMenu()
 
 		// 저장 기능
 		if (ImGui::Button("MapObject Save"))
-			FAILED_CHECK_RETURN(SaveMapObject(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveMapObject(m_iStageNumber), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("MapObject Load"))
-			FAILED_CHECK_RETURN(LoadMapObject(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMapObject(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -369,9 +375,12 @@ void CImguiUnit::MapObjectInstall()
 	}
 }
 
-HRESULT CImguiUnit::SaveMapObject()
+HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -382,7 +391,10 @@ HRESULT CImguiUnit::SaveMapObject()
 
 	CloseHandle(hFile);
 
-	HANDLE hFile2 = CreateFile(L"../Data/PortalCubeDir.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile2[128] = { 0 };
+	_stprintf_s(dataFile2, _T("../Data/PortalCubeDir%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile2 = CreateFile(dataFile2, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile2)
 		return E_FAIL;
 
@@ -396,7 +408,7 @@ HRESULT CImguiUnit::SaveMapObject()
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMapObject()
+HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 {
 	m_vecMapObjectInfo.clear();
 	m_vecPortalCubeDir.clear();
@@ -404,7 +416,10 @@ HRESULT CImguiUnit::LoadMapObject()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
@@ -422,7 +437,10 @@ HRESULT CImguiUnit::LoadMapObject()
 
 	CloseHandle(hFile);
 
-	HANDLE hFile2 = CreateFile(L"../Data/PortalCubeDir.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile2[128] = { 0 };
+	_stprintf_s(dataFile2, _T("../Data/PortalCubeDir%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile2 = CreateFile(dataFile2, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile2)
 		return E_FAIL;
