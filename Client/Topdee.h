@@ -34,7 +34,8 @@ private:
 	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
 	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
 	void		DirApply(_int dir,_int& x,_int& y);
-	void		FindPlace(_int x,_int y);
+public:
+	void		SetMovePos(COL_DIR dir);
 
 private:
 	Engine::CRcTex*			m_pBufferCom;

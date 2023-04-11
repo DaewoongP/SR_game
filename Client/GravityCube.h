@@ -1,6 +1,10 @@
 #pragma once
 #include "MoveCube.h"
 
+BEGIN(Engine)
+class CRigidbody;
+END
+
 class CGravityCube :
 	public CMoveCube
 {
@@ -30,6 +34,7 @@ private:
 
 private:
 	_bool	m_bUseGraivty;
+	CRigidbody* m_pRigid;
 
 private:
 	virtual void Free(void) override;

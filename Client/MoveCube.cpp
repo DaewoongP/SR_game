@@ -66,7 +66,7 @@ void CMoveCube::Render_GameObject(void)
 
 void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
-	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee")&&m_handleState==CH_NONE)
+	if (!g_Is2D&&!lstrcmp(collision->otherObj->m_pTag, L"Topdee")&&m_handleState==CH_NONE&&!m_bIsCol[collision->_dir])
 		DoRayToDir(collision->_dir);		
 
 	__super::OnCollisionEnter(collision);
@@ -147,6 +147,7 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	tagName.push_back(L"InstallCube");
 	tagName.push_back(L"SwitchCube");
 	tagName.push_back(L"CrackCube");
+	tagName.push_back(L"PortalCube");
 
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1)
@@ -161,7 +162,8 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 			m_bIsCol[edir] = false;
 
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 	}
 	else
@@ -175,6 +177,7 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	vector<_tchar*> tagName;
 	tagName.push_back(L"MoveCube");
 	tagName.push_back(L"GravityCube");
+	tagName.push_back(L"PortalCube");
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
@@ -195,7 +198,8 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 				

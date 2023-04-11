@@ -20,8 +20,10 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 public:
 	void Set_CubeDir(CUBE_DIR dir) { m_eDir = dir; }
+	CUBE_DIR Get_CubeDir() { return m_eDir; }
 	_vec3 Get_CubeHeadPos();
 	void Set_Other(CGameObject* pOther) { m_pOtherCube = pOther; }
+	void CoolReset() { m_dwCool = 0; }
 
 	_vec3 Trans_Velocity(_vec3& velocity, CPortalCube* other);
 private:
@@ -33,7 +35,8 @@ private:
 	virtual void Free(void) override;
 
 private:
-	CUBE_DIR			m_eDir;
+	_float					m_dwCool;
+	CUBE_DIR				m_eDir;
 	class CGameObject*		m_pOtherCube;
 	_bool					m_bInit;
 };
