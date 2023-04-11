@@ -15,7 +15,7 @@ public:
 	virtual _int		Update_Scene(const _float& fTimeDelta)override;
 	virtual void		LateUpdate_Scene(void)override;
 	virtual void		Render_Scene(void) override;
-
+ 	static _bool Get_Start() { return m_bStart; }
 private:
 	HRESULT				Ready_Proto(void);
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
@@ -24,7 +24,7 @@ private:
 	
 private:
 	CLoading*			m_pLoading;
-	_bool				m_bStart = true;
+	static _bool				m_bStart;
 public:
 	static CLogo*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
