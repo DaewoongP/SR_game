@@ -44,6 +44,8 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
+	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
+
 	if (0.f > m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
 

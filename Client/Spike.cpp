@@ -30,6 +30,9 @@ HRESULT CSpike::Ready_GameObject(_vec3& vPos)
 
 _int CSpike::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	m_pTextureCom->Update_Anim(fTimeDelta);
