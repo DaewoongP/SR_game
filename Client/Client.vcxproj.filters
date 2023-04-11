@@ -149,6 +149,12 @@
     <Filter Include="00. GameObject\02. MapObject\Cube\PortalCube">
       <UniqueIdentifier>{bfd2989d-479f-4069-b52c-824de8b3f354}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\Stages\Logo">
+      <UniqueIdentifier>{6ae78c6a-8cbd-4fa3-af94-b6e8dc8ce95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\Logo\00.Title">
+      <UniqueIdentifier>{df773c6d-ec21-4c91-a92c-4372b755ee36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -255,9 +261,6 @@
     <ClInclude Include="Loading.h">
       <Filter>01. Scene\Loading</Filter>
     </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>01. Scene\Stages</Filter>
-    </ClInclude>
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
     </ClInclude>
@@ -317,6 +320,12 @@
     </ClInclude>
     <ClInclude Include="PortalCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,9 +405,6 @@
     <ClCompile Include="DefaultGrid.cpp">
       <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="StageBG.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
@@ -407,9 +413,6 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
@@ -479,6 +482,15 @@
     </ClCompile>
     <ClCompile Include="PortalCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

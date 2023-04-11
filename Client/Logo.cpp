@@ -3,6 +3,7 @@
 
 #include "Export_Function.h"
 #include "BackGround.h"
+#include"Title.h"
 #include "Stage1.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -68,7 +69,7 @@ HRESULT CLogo::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Logo_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/screenshotsSpr/screenshotsSpr_0.png")), E_FAIL);
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LogoCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCubeSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
 	return S_OK;
@@ -84,6 +85,7 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CBackGround::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title",pGameObject),E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
