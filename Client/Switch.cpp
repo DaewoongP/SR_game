@@ -60,9 +60,6 @@ void CSwitch::Render_GameObject(void)
 
 void CSwitch::OnCollisionEnter(const Collision * collision)
 {
-	m_pSwitchCube = Engine::Get_GameObject(L"Layer_GameLogic", L"SwitchCube");
-	NULL_CHECK_RETURN(m_pSwitchCube, );
-
 	// �Ͻ������ const ����ȭ�ؼ� �÷��̾��� �浹 ����� �о��. �̰� �´���� �𸣰��
 	COL_DIR	tToodeeDir = const_cast<Collision*>(collision)->Get_ColDir();
 
