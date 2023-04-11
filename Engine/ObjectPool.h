@@ -7,10 +7,12 @@ class CObjectPool
 private:
 	explicit CObjectPool() 
 	{
-		m_ObjectList.reserve(800);
-		for (size_t i = 0; i < 800; ++i)
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		m_ObjectList.reserve(100);
+		for (size_t i = 0; i < 100; ++i)
 		{
-			m_ObjectList.pu
+			CGameObject* pObject = new T(pGraphicDev);
+			m_ObjectList.push_back(pObject);
 		}
 	}
 	~CObjectPool() {}
