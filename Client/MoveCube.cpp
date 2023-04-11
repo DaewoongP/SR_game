@@ -2,6 +2,7 @@
 #include "MoveCube.h"
 
 #include "Topdee.h"
+#include "PortalCube.h"
 #include "Export_Function.h"
 CMoveCube::CMoveCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev)
@@ -162,9 +163,12 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 			m_bIsCol[edir] = false;
 
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
+
+		//포탈 큐브고									//검출 레이의 방향이 포탈큐브 입구와 다르다면?
+		if (!lstrcmp(_detectedCOL[0].tag, L"PortalCube")&&(edir != static_cast<CPortalCube*>(_detectedCOL[0].col->m_pGameObject)->Get_CubeDir()))
+			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir]; //동기화
 	}
 	else
 		m_bIsCol[edir] = false;
@@ -198,11 +202,9 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
-				
 			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir)&&!m_bIsStone)
 			{
 				SetMovePos(dir);
@@ -211,10 +213,40 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 			//거짓이라면 암것도 안합니다.
 			return false;
 		}
+		else
+		{
+			if (!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+			{
+				//들어오는 방향이 입구와 같은지? && 벽이랑 닿아있는지?
+				if (dynamic_cast<CPortalCube*>(_detectedCOL[0].col->m_pGameObject)->Get_CubeDir() == dir&&
+					dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir])
+				{
+					//포탈타게해줘.
+				}
+				else //아니다
+				{
+					m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+					if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir) && !m_bIsStone)
+					{
+						SetMovePos(dir);
+						return true;
+					}
+					//거짓이라면 암것도 안합니다.
+					return false;
+				}
+			}
+		}
+			
 	}
 	if(!m_bIsStone)
 		SetMovePos(dir);	
 	return true;
+}
+
+void CMoveCube::SetMovePos_zero()
+{
+	m_bIsMoving = true;
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 }
 
 void CMoveCube::SetMovePos(COL_DIR dir)
