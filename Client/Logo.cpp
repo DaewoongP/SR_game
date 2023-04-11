@@ -31,6 +31,10 @@ HRESULT CLogo::Ready_Scene(void)
 
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
+
+
+
+
 	int iExit = __super::Update_Scene(fTimeDelta);
 
 	if (true == m_pLoading->Get_Finish())
@@ -63,9 +67,10 @@ void CLogo::Render_Scene(void)
 HRESULT CLogo::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Logo_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Logo/IU.jpg")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Logo_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/screenshotsSpr/screenshotsSpr_0.png")), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LogoCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCubeSpr_%d.png", 2)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
 	return S_OK;
 }
 
