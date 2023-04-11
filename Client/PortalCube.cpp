@@ -158,7 +158,7 @@ HRESULT CPortalCube::Add_Component(void)
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Portal_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Portal_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Portal_Cube", pComponent });
 
 	return S_OK;
 }

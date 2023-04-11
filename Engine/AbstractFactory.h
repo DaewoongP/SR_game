@@ -21,6 +21,7 @@ public:
 		// 持失
 		CGameObject* pGameObject = T::Create(pGraphicDev);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return  S_OK;
 	}
@@ -34,6 +35,7 @@ public:
 		// 持失
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}
@@ -47,6 +49,7 @@ public:
 		// 持失
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, iIndex);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}
@@ -60,6 +63,7 @@ public:
 		// 持失
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, pLayer);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}

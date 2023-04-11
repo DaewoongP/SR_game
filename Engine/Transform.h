@@ -73,9 +73,9 @@ public:
 	void		Set_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL)
 	{
 		m_fShakeTimer = fDuration;
-		m_fShakePower = iPower;
-		m_iShakeAxis = eShake_Axis;
-		m_fWeakPoint = iPower / fDuration;
+		m_fShakePower = (_float)iPower;
+		m_iShakeAxis = (_int)eShake_Axis;
+		m_fWeakPoint = (_float)iPower / fDuration;
 	}
 
 public:
