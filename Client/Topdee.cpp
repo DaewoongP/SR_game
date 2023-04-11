@@ -2,6 +2,7 @@
 #include "Topdee.h"
 #include "MoveCube.h"
 #include "Export_Function.h"
+#include "PortalCube.h"
 
 CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -195,6 +196,36 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 					m_byPlayerInputDir &= fdir[dir];
 			}
 		}
+		if (!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+		{
+			COL_DIR destdir = (COL_DIR)dynamic_cast<CPortalCube*>(_detectedCOL[0].col->m_pGameObject)->Get_CubeDir();
+			if (dir % 2 != 0)
+				destdir = (COL_DIR)(destdir + 1);
+			else
+				destdir = (COL_DIR)(destdir - 1);
+			_bool isBlocked = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+			
+			//만약 플레이어가 이동하려는 방향이 입구가 아니고
+			//그쪽방향으로 막혀있다면?
+			if (destdir == dir&& !isBlocked )
+			{
+
+			}
+			else 
+			{
+				//이동 막아주는 로직
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
+
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
+
+			
+		}
 	}
 }
 
@@ -310,7 +341,8 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
 		{
 			*col = _detectedCOL[0].col;
 			return true;
