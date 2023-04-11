@@ -33,12 +33,12 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
-
+	void				Sort_Component();
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
 protected:
-	unordered_map<const _tchar*, CComponent*>			m_uMapComponent[ID_END];
+	vector<pair<const _tchar*, CComponent*>> m_vecComponent[ID_END];
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 
 public:

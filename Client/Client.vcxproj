@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Boss3Hand.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="Select.h" />
+    <ClInclude Include="Boss3.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -212,6 +214,7 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Boss3Hand.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />
@@ -224,6 +227,7 @@
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

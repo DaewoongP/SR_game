@@ -53,7 +53,7 @@ void CCube::OnCollisionEnter(const Collision * collision)
 
 void CCube::OnCollisionStay(const Collision * collision)
 {
-	//¿©±â¼­ ÀÚ½Å°ú ºÎµúÈù Ä£±¸¸¦ º¸Á¤½ÃÄÑÁÖ´Â°ÅÀÓ.
+	//ì—¬ê¸°ì„œ ìì‹ ê³¼ ë¶€ë”ªíŒ ì¹œêµ¬ë¥¼ ë³´ì •ì‹œì¼œì£¼ëŠ”ê±°ì„.
 	__super::OnCollisionStay(collision);
 }
 
@@ -68,14 +68,15 @@ HRESULT CCube::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Engine::Clone_Proto(L"CubeTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"CubeTex", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage1_Cube",this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Stage1_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Stage1_Cube", pComponent });
+  
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }

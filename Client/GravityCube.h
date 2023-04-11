@@ -1,6 +1,10 @@
 #pragma once
 #include "MoveCube.h"
 
+BEGIN(Engine)
+class CRigidbody;
+END
+
 class CGravityCube :
 	public CMoveCube
 {
@@ -16,6 +20,8 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
+	virtual void SwapTrigger();
+
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
@@ -28,6 +34,7 @@ private:
 
 private:
 	_bool	m_bUseGraivty;
+	CRigidbody* m_pRigid;
 
 private:
 	virtual void Free(void) override;

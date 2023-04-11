@@ -23,6 +23,7 @@ public:
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
+	virtual void SwapTrigger();
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
@@ -31,9 +32,12 @@ private:
 	void		PlayerState(const _float& fTimeDelta);
 	void		Move(const _float& fTimeDelta);
 	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
+
 	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
 	void		DirApply(_int dir,_int& x,_int& y);
-	void		FindPlace(_int x,_int y);
+public:
+	void		SetMovePos(COL_DIR dir);
+	void		SetMovePos_zero();
 
 private:
 	Engine::CRcTex*			m_pBufferCom;

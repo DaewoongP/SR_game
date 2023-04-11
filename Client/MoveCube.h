@@ -38,10 +38,6 @@ protected:
 	void		ShootRay();
 	void		CheckColAble(_vec3 vdir,float len, COL_DIR edir);
 
-	//이동용
-	_bool		DoRayToDir(COL_DIR dir);
-	void		SetMovePos(COL_DIR dir);
-
 	//들기용
 	void		MoveToPos(const _float& fTimeDelta);
 
@@ -49,7 +45,9 @@ public:
 	void		SetTarget(_vec3 pos, CGameObject* obj);
 	_bool		GetHandleState() {return (((m_handleState == CH_ING) || (m_handleState == CH_NONE))&& !m_bIsMoving); }
 	void		DoFallingStart(_vec3 pos);
-
+	void		SetMovePos(COL_DIR dir);
+	_bool		DoRayToDir(COL_DIR dir);
+	void		SetMovePos_zero();
 protected:
 	Engine::CLine*			m_pLine;
 
