@@ -321,6 +321,7 @@
     <ClInclude Include="PortalCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClInclude>
+
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClInclude>
@@ -330,6 +331,13 @@
     <ClInclude Include="StageCamera.h">
       <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
     </ClInclude>
+
+    <ClInclude Include="UICamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoCamera.h" />
+    <ClInclude Include="TestButton.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -480,6 +488,7 @@
     <ClCompile Include="PortalCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClCompile>
+
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
@@ -493,5 +502,12 @@
     <ClCompile Include="StageCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
     </ClCompile>
+
+    <ClCompile Include="UICamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoCamera.cpp" />
+    <ClCompile Include="TestButton.cpp" />
+
   </ItemGroup>
 </Project>

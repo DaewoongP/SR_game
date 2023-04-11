@@ -166,6 +166,7 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningCloud.h" />
+    <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
@@ -195,8 +196,11 @@
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
+
     <ClInclude Include="Title.h" />
-    <ClInclude Include="Toodee.h" />
+
+    <ClInclude Include="TestButton.h" />
+  <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Resource.h" />
@@ -205,6 +209,7 @@
     <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
@@ -218,6 +223,7 @@
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
+    <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
@@ -245,7 +251,11 @@
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
+
     <ClCompile Include="Title.cpp" />
+
+    <ClCompile Include="TestButton.cpp" />
+
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveCube.cpp" />
@@ -257,6 +267,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Defaultunit.cpp" />
+    <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

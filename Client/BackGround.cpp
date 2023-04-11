@@ -16,12 +16,17 @@ HRESULT CBackGround::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_pTransform->m_vScale.x = WINCX;
+	m_pTransform->m_vScale.y = WINCY;
+	m_pTransform->m_vInfo[INFO_POS].x = 0.0f;
+	m_pTransform->m_vInfo[INFO_POS].y = 0.0f;
+	m_pTransform->m_vInfo[INFO_POS].z = 0.0f;
 
 	return S_OK;
 }
+
 _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 {
-
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
@@ -35,6 +40,8 @@ void CBackGround::LateUpdate_GameObject(void)
 
 void CBackGround::Render_GameObject(void)
 {
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
