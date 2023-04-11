@@ -74,8 +74,10 @@ void CPortalCube::LateUpdate_GameObject(void)
 
 void CPortalCube::Render_GameObject(void)
 {
-	_vec3 start = static_cast<CPortalCube*>(m_pOtherCube)->m_pTransform->m_vInfo[INFO_POS];
-	_vec3 dir = (m_pOtherCube)->m_pTransform->m_vInfo[INFO_POS] + GetDirVec()*-5.f;
+	//레이 싲가 위치 = 친구의 원점
+	_vec3 start = m_pTransform->m_vInfo[INFO_POS];
+	//레이 방향 = 친구의 방향 *-1
+	_vec3 dir = m_pTransform->m_vInfo[INFO_POS] + GetDirVec()*5.f;
 	m_pLine->Set_Line(start, dir, D3DXCOLOR{1.0f,1.0f,1.0f,1.0f});
 	
 	D3DXMATRIX mat,view,proj;
@@ -108,16 +110,19 @@ void CPortalCube::ShootRay_Portal()
 {
 	vector<_tchar*> name;
 	name.push_back(L"MoveCube");
-	name.push_back(L"GrivatyCube");
-	_vec3 _vec = static_cast<CPortalCube*>(m_pOtherCube)->GetDirVec()*-1;
-	_vec3 start = (m_pOtherCube)->m_pTransform->m_vInfo[INFO_POS];
-
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(start, _vec, 3.f),m_pCollider, name);
+	name.push_back(L"GravityCube");
+	_vec3 start = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(start, m_DirVec, 30.f),m_pCollider, name);
 	if (_detectedCOL.size() >= 1)
 	{
-		COL_DIR __dir = (COL_DIR)static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir();
+		COL_DIR __dir = (COL_DIR)m_eDir;
+		if (__dir % 2 == 0)
+			__dir = (COL_DIR)(__dir + 1);
+		else
+			__dir = (COL_DIR)(__dir - 1);
 		dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(__dir);
 	}
+		
 }
 
 void CPortalCube::OnCollisionEnter(const Collision * collision)
@@ -174,17 +179,17 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 			{
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos();
 				static_cast<CPortalCube*>(m_pOtherCube)->ShootRay_Portal();
+				//들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고
 				COL_DIR destdir;
 				if (static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir() % 2 == 0)
 					destdir = (COL_DIR)(static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir() + 1);
 				else
 					destdir = (COL_DIR)(static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir() - 1);
 
-				//들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고
 				if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 					dynamic_cast<CTopdee*>(collision->otherObj)->SetMovePos_zero();
 				else if (dynamic_cast<CMoveCube*>(collision->otherObj))
-					dynamic_cast<CMoveCube*>(collision->otherObj)->SetMovePos_zero();
+					dynamic_cast<CMoveCube*>(collision->otherObj)->SetMovePos(destdir);
 				static_cast<CPortalCube*>(m_pOtherCube)->CoolReset();
 				CoolReset();
 			}
