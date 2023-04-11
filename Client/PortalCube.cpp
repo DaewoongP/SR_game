@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PortalCube.h"
 #include "Export_Function.h"
+#include "Toodee.h"
 
 CPortalCube::CPortalCube(LPDIRECT3DDEVICE9 pGraphicDev) :CMoveCube(pGraphicDev)
 {
@@ -18,18 +19,21 @@ HRESULT CPortalCube::Ready_GameObject(_vec3 & vPos)
 	m_pCollider->Set_Options();
 	// Up vector = portal col direction
 	// COL dir == CD dir
+	_matrix matInfo;
+	D3DXMatrixIdentity(&matInfo);
+	
 	switch (m_eDir)
 	{
 	case Engine::CD_UP:
 		break;
-	case Engine::CD_RIGHT:
-		m_pTransform->Rotation(ROT_Z, D3DXToRadian(270));
+	case Engine::CD_LEFT:
+		m_pTransform->Rotation(ROT_Z, D3DXToRadian(90));
 		break;
 	case Engine::CD_DOWN:
 		m_pTransform->Rotation(ROT_Z, D3DXToRadian(180));
 		break;
-	case Engine::CD_LEFT:
-		m_pTransform->Rotation(ROT_Z, D3DXToRadian(90));
+	case Engine::CD_RIGHT:
+		m_pTransform->Rotation(ROT_Z, D3DXToRadian(270));
 		break;
 	}
 	m_bInit = true;
@@ -71,13 +75,51 @@ void CPortalCube::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+_vec3 CPortalCube::Trans_Velocity(_vec3 & velocity, CPortalCube* other)
+{
+	_vec3 vNormal, vRref, outVelocity, outUp;
+	_matrix matRot;
+	_float fSpeed, fRad;
+	fSpeed = D3DXVec3Length(&velocity);
+	D3DXVec3Normalize(&vNormal, &velocity);
+	fRad = acosf(D3DXVec3Dot(&(-m_pTransform->m_vInfo[INFO_UP]), &vNormal));
+	D3DXMatrixIdentity(&matRot);
+	D3DXMatrixRotationZ(&matRot, fRad);
+	switch (other->m_eDir)
+	{
+	case Engine::CD_UP:
+		outUp = _vec3(0.f, 1.f, 0.f);
+		break;
+	case Engine::CD_DOWN:
+		outUp = _vec3(0.f, -1.f, 0.f);
+		break;
+	case Engine::CD_LEFT:
+		outUp = _vec3(-1.f, 0.f, 0.f);
+		break;
+	case Engine::CD_RIGHT:
+		outUp = _vec3(1.f, 0.f, 0.f);
+		break;
+	}
+
+	D3DXVec3TransformNormal(&vRref, &outUp, &matRot);
+	outVelocity = vRref * fSpeed;
+	return outVelocity;
+}
+
 void CPortalCube::OnCollisionEnter(const Collision * collision)
 {
 	if ((_int)collision->_dir == (_int)m_eDir && 
-		lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
-		lstrcmp(collision->otherObj->m_pTag, L"PortalCube"))
+		lstrcmp(collision->otherObj->m_pTag, L"MapCube") &&
+		lstrcmp(collision->otherObj->m_pTag, L"PortalCube") &&
+		lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 	{
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos();
+		if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
+		{
+			CComponent* pOtherRigid = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Rigidbody", ID_DYNAMIC);
+			_vec3 velocity = dynamic_cast<CRigidbody*>(pOtherRigid)->m_Velocity;
+			dynamic_cast<CRigidbody*>(pOtherRigid)->m_Velocity = Trans_Velocity(velocity, static_cast<CPortalCube*>(m_pOtherCube));
+		}
 	}
 	__super::OnCollisionEnter(collision);
 }
@@ -108,6 +150,7 @@ _vec3 CPortalCube::Get_CubeHeadPos()
 		return _vec3(0.f, 0.f, 0.f);
 	}
 }
+
 
 HRESULT CPortalCube::Add_Component(void)
 {
