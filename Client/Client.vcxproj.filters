@@ -337,7 +337,6 @@
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClInclude>
     <ClInclude Include="LogoCamera.h" />
-    <ClInclude Include="TestButton.h" />
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
@@ -508,7 +507,6 @@
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
     <ClCompile Include="LogoCamera.cpp" />
-    <ClCompile Include="TestButton.cpp" />
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
