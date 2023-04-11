@@ -42,11 +42,13 @@ _int CPinkCloud::Update_GameObject(const _float & fTimeDelta)
 
 _int CPinkCloud::Update_Too(const _float & fTimeDelta)
 {
+	__super::Update_Too(fTimeDelta);
 	return S_OK;
 }
 
 _int CPinkCloud::Update_Top(const _float & fTimeDelta)
 {
+	__super::Update_Top(fTimeDelta);
 	return S_OK;
 }
 

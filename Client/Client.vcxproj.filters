@@ -155,9 +155,6 @@
     <Filter Include="01. Scene\Stages\Logo\00.Title">
       <UniqueIdentifier>{df773c6d-ec21-4c91-a92c-4372b755ee36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\03. Etc\Camera\StageCamera">
-      <UniqueIdentifier>{9a709d8a-b6b6-4f1c-93f4-920a6b2e948e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
@@ -336,13 +333,9 @@
     <ClInclude Include="Title.h">
       <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClInclude>
-    <ClInclude Include="StageCamera.h">
-      <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
-    </ClInclude>
     <ClInclude Include="UICamera.h">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
@@ -351,6 +344,12 @@
     </ClInclude>
     <ClInclude Include="Boss3Hand.h">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="StageCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,13 +508,9 @@
       <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp" />
-    <ClCompile Include="StageCamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
-    </ClCompile>
     <ClCompile Include="UICamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
@@ -527,6 +522,12 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="StageCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
