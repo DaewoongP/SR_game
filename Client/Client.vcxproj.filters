@@ -158,9 +158,6 @@
     <Filter Include="00. GameObject\03. Etc\Camera\StageCamera">
       <UniqueIdentifier>{9a709d8a-b6b6-4f1c-93f4-920a6b2e948e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\03. Etc\Camera\UICamera">
-      <UniqueIdentifier>{13484f9e-7d71-458f-a69f-27909b746059}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -333,9 +330,6 @@
     <ClInclude Include="StageCamera.h">
       <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
     </ClInclude>
-    <ClInclude Include="UICamera.h">
-      <Filter>00. GameObject\03. Etc\Camera\UICamera</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -498,9 +492,6 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="StageCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera\StageCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="UICamera.cpp">
-      <Filter>00. GameObject\03. Etc\Camera\UICamera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

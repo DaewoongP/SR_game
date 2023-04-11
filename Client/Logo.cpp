@@ -2,11 +2,9 @@
 #include "Logo.h"
 
 #include "Export_Function.h"
-#include"..\Engine\AbstractFactory.h"
 #include "BackGround.h"
 #include"Title.h"
 #include "Stage1.h"
-#include"UICamera.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev), m_pLoading(nullptr)
@@ -107,9 +105,7 @@ HRESULT CLogo::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject* pGameObject = nullptr;
-	pGameObject = CUICamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UICamera", pGameObject), E_FAIL);
+
 
 	pGameObject = CTitle::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
