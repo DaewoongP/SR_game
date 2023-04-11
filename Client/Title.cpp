@@ -13,8 +13,8 @@ CTitle::~CTitle()
 HRESULT CTitle::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = { 35.f,20.f,-1.f };
-	m_pTransform->m_vScale = { 0.1f,0.1f,0.1f };
+	m_pTransform->m_vInfo[INFO_POS].y = 100.f;
+	m_pTransform->m_vScale = { 256.f,128.f,1.f };
 	return S_OK;
 }
 
@@ -37,7 +37,7 @@ void CTitle::LateUpdate_GameObject(void)
 
 void CTitle::Render_GameObject(void)
 {
-	m_pTransform->Get_WorldMatrixPointer();
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();

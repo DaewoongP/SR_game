@@ -12,7 +12,7 @@
 #include "LogoCamera.h"
 
 //Å×½ºÆ®
-#include "TestButton.h"
+#include "Title.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev), m_pLoading(nullptr)
@@ -115,24 +115,6 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT CLogo::Ready_Layer_UI(const _tchar* pLayerTag)
-{
-	CLayer* pLayer = CLayer::Create();
-	NULL_CHECK_RETURN(pLayer, E_FAIL);
-
-	CGameObject* pGameObject = nullptr;
-
-
-	pGameObject = CTitle::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
-
-
-
-	m_uMapLayer.insert({ pLayerTag, pLayer });
-
-	return S_OK;
-}
 
 HRESULT CLogo::Ready_Layer_UI(const _tchar * pLayerTag)
 {
@@ -145,9 +127,9 @@ HRESULT CLogo::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UICamera", pGameObject), E_FAIL);
 
-	pGameObject = CTestButton::Create(m_pGraphicDev);
+	pGameObject = CTitle::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"TestButton", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
