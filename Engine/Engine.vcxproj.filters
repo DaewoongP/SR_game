@@ -150,7 +150,9 @@
     </ClInclude>
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="WindParticle.h" />
-    <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Manager\ObjectPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
