@@ -43,7 +43,7 @@ private:
 	//Engine::CSnow * m_praticle;
 
 	_float					m_fSpeed = 10.f;
-	bool					m_bJumpalbe;
+	bool					m_bJumpable;
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
 	COL_DIR					m_eKeyState;
 public:
