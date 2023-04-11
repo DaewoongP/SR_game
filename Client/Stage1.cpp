@@ -25,6 +25,7 @@
 #include "InstallGrid.h"
 #include "SwitchCube.h"
 #include "PortalCube.h"
+#include "Boss3.h"
 
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -88,8 +89,7 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
   
 	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(20.f, 10.f, 10.f), (_int)CD_LEFT), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(42.f, 10.f, 10.f), (_int)CD_RIGHT), E_FAIL);
-	
-	int cubeCnt = 0;
+
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
@@ -103,7 +103,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			//사이 마지막줄
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);
-				cubeCnt++;
 			//맨 아랫줄
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (float)j * 2,(float)i * 2,10.f }), E_FAIL);

@@ -68,11 +68,11 @@ HRESULT CSkyBox::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Engine::Clone_Proto(L"CubeTex",this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"CubeTex", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"SkyBox_Texture",this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"SkyBox_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"SkyBox_Texture", pComponent });
 
 	return S_OK;
 }

@@ -75,11 +75,11 @@ HRESULT CGroundGrid::Add_Component(void)
 	
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 	
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Tile_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Tile_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Tile_Texture", pComponent });
 	
 	return S_OK;
 }

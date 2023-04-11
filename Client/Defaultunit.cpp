@@ -62,17 +62,17 @@ HRESULT CDefaultUnit::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
 	// 디폴트 몬스터
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Default_Monster_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Default_Monster_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Default_Monster_Texture", pComponent });
 
 	// 디폴트 맵 오브젝트
 	pComponent = m_pTextureCom2 = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Default_MapObject_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Default_MapObject_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Default_MapObject_Texture", pComponent });
 
 	return S_OK;
 }

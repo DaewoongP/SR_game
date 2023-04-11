@@ -207,27 +207,27 @@ HRESULT CBat::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
 	pComponent = m_pTextureCom_Back = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bat_Back_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom_Back, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Bat_Back_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Bat_Back_Texture", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bat_Front_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Bat_Front_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Bat_Front_Texture", pComponent });
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow", pComponent });
 
 	m_pTransform->m_bIsStatic = false;
 	return S_OK;
