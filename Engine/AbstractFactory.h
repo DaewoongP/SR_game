@@ -17,7 +17,6 @@ public:
 		// 초기화
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CScene*	pScene = Get_Scene();
-		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		CGameObject* pGameObject = T::Create(pGraphicDev);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -31,7 +30,6 @@ public:
 		// 초기화
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CScene*	pScene = Get_Scene();
-		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -45,7 +43,6 @@ public:
 		// 초기화
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CScene*	pScene = Get_Scene();
-		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, iIndex);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -59,7 +56,6 @@ public:
 		// 초기화
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CScene*	pScene = Get_Scene();
-		NULL_CHECK_RETURN(pScene, E_FAIL);
 		// 생성
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, pLayer);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);

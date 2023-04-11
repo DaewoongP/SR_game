@@ -451,9 +451,6 @@
     <ClCompile Include="Topdee.cpp">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
     </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
     <ClCompile Include="MoveCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\MoveCube</Filter>
     </ClCompile>
@@ -527,6 +524,9 @@
     </ClCompile>
     <ClCompile Include="Boss3Hand.cpp">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

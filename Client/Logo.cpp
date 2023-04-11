@@ -28,7 +28,6 @@ HRESULT CLogo::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Proto(), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
-
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
@@ -43,9 +42,6 @@ HRESULT CLogo::Ready_Scene(void)
 
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
-	
-
-
 	int iExit = __super::Update_Scene(fTimeDelta);
 
 	if (true == m_pLoading->Get_Finish())
@@ -101,14 +97,8 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	pGameObject = CLogoCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LogoCamera", pGameObject), E_FAIL);
-
-	pGameObject = CBackGround::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
-	
+	FAILED_CHECK_RETURN(FACTORY<CLogoCamera>::Create(L"LogoCamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBackGround>::Create(L"BackGround", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -123,18 +113,9 @@ HRESULT CLogo::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	pGameObject = CUICamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UICamera", pGameObject), E_FAIL);
-
-	pGameObject = CTitle::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
-
-	pGameObject = CSelect::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Select", pGameObject), E_FAIL);
-
+	FAILED_CHECK_RETURN(FACTORY<CUICamera>::Create(L"UICamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTitle>::Create(L"Title", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSelect>::Create(L"Select", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
