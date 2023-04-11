@@ -20,11 +20,11 @@ private:
 	HRESULT				Ready_Proto(void);
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag)		{ return S_OK; }
-	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag)				{ return S_OK; }
+	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 	
 private:
 	CLoading*			m_pLoading;
-
+	_bool				m_bStart = true;
 public:
 	static CLogo*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
