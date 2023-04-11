@@ -28,6 +28,7 @@ private:
 public:
 	static CStage1Camera*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
+	//								½Ã°£				Èû					Èçµé Ãà								Èû °¨¼Ò »ç¿ë À¯¹«
 	void Start_Camera_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL, _bool bUseWeak =true)
 	{
 		m_pTransform->m_bUseWeak = bUseWeak;
