@@ -211,7 +211,7 @@ HRESULT CGravityCube::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
 	return S_OK;
 }

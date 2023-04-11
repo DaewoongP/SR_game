@@ -228,7 +228,7 @@ HRESULT CPortalCube::Add_Component(void)
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Line", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Line", pComponent });
 
 	return S_OK;
 }
