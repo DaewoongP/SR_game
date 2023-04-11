@@ -99,13 +99,12 @@ _vec3 CPortalCube::Trans_Velocity(_vec3 & velocity, CPortalCube* other)
 	fRad = acosf(D3DXVec3Dot(&(-myUp), &vNormal));
 	D3DXMatrixIdentity(&matRot);
 	D3DXMatrixRotationZ(&matRot, fRad);
-	outUp = m_DirVec;
+	outUp = other->m_DirVec;
 
 	D3DXVec3TransformNormal(&vRref, &outUp, &matRot);
 	outVelocity = vRref * fSpeed;
 	return outVelocity;
 }
-
 void CPortalCube::ShootRay_Portal()
 {
 	vector<_tchar*> name;
@@ -122,7 +121,6 @@ void CPortalCube::ShootRay_Portal()
 			__dir = (COL_DIR)(__dir - 1);
 		dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(__dir);
 	}
-		
 }
 
 void CPortalCube::OnCollisionEnter(const Collision * collision)
