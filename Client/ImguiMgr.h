@@ -19,11 +19,12 @@ public:
 	void	Release();
 
 private:
-	CImguiStage* m_pImguiStage; // 스테이지 툴
-	CImguiUnit*  m_pImguiUnit;  // 유닛 툴
+	CImguiStage* m_pImguiStage;		// 스테이지 툴
+	CImguiUnit*  m_pImguiUnit;		// 유닛 툴
 
-	CGameObject* m_pToodee;		// 투디가 있는지 확인
-	bool		 m_bOnceLoad;	// 최초 한 번 로드
+	CGameObject* m_pToodee;			// 투디가 있는지 확인
+	bool		 m_bOnceLoad;		// 최초 한 번 로드
+	_int		 m_iStageNumber;	// 스테이지 고르는 변수
 
 	// window 창 onoff 관련 변수
 	bool m_bStageTool; // 스테이지 onoff

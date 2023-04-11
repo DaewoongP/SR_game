@@ -12,7 +12,8 @@ IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
 	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pToodee(nullptr),
-	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true)
+	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true),
+	m_iStageNumber(0)
 {
 }
 
@@ -82,37 +83,43 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			}
 		}
 
+		// 스테이지 선택 콤보 박스
+		const char* items[] = { "1", "2", "3" };
+		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
+		m_pImguiStage->Set_StageNumber(m_iStageNumber);
+		m_pImguiUnit->Set_StageNumber(m_iStageNumber);
+
 		// 전부 세이브 버튼
 		ImGui::Text("All Save and Load");
 		
 		if (ImGui::Button("SAVE ALL"))
 		{
-			m_pImguiStage->SaveCube();
-			m_pImguiStage->SaveGrid();
-			m_pImguiUnit->SaveMapObject();
-			m_pImguiUnit->SaveMonster();
+			m_pImguiStage->SaveCube(m_iStageNumber);
+			m_pImguiStage->SaveGrid(m_iStageNumber);
+			m_pImguiUnit->SaveMapObject(m_iStageNumber);
+			m_pImguiUnit->SaveMonster(m_iStageNumber);
 		}
 
 		// 전부 로드 버튼
 		ImGui::SameLine();
 		if (ImGui::Button("LOAD ALL"))
 		{
-			m_pImguiStage->LoadCube();
-			m_pImguiStage->LoadGrid();
-			m_pImguiUnit->LoadMapObject();
-			m_pImguiUnit->LoadMonster();
+			m_pImguiStage->LoadCube(m_iStageNumber);
+			m_pImguiStage->LoadGrid(m_iStageNumber);
+			m_pImguiUnit->LoadMapObject(m_iStageNumber);
+			m_pImguiUnit->LoadMonster(m_iStageNumber);
 		}
 
-		// 프로그램 시작하자 마자 로딩
-		m_pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		if (m_pToodee && m_bOnceLoad)
-		{
-			m_pImguiStage->LoadCube();
-			m_pImguiStage->LoadGrid();
-			m_pImguiUnit->LoadMapObject();
-			m_pImguiUnit->LoadMonster();
-			m_bOnceLoad = false;
-		}
+		//// 프로그램 시작하자 마자 로딩
+		//m_pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		//if (m_pToodee && m_bOnceLoad)
+		//{
+		//	m_pImguiStage->LoadCube(m_iStageNumber);
+		//	m_pImguiStage->LoadGrid(m_iStageNumber);
+		//	m_pImguiUnit->LoadMapObject(m_iStageNumber);
+		//	m_pImguiUnit->LoadMonster(m_iStageNumber);
+		//	m_bOnceLoad = false;
+		//}
 
 		// 마우스 커서 위치
 		if (ImGui::IsMousePosValid())

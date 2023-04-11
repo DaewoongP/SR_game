@@ -121,9 +121,6 @@
     <ClInclude Include="GraphicDev.h">
       <Filter>Manager\Device</Filter>
     </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>Framework\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="Management.h">
       <Filter>Framework\00. Management</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Framework\04. Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="WindParticle.h">
-      <Filter>Framework\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
@@ -153,6 +147,11 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Componnent\Collider\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Manager\ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +242,6 @@
     <ClCompile Include="GraphicDev.cpp">
       <Filter>Manager\Device</Filter>
     </ClCompile>
-    <ClCompile Include="SkyBox.cpp">
-      <Filter>Framework\Etc</Filter>
-    </ClCompile>
     <ClCompile Include="Management.cpp">
       <Filter>Framework\00. Management</Filter>
     </ClCompile>
@@ -261,9 +257,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Framework\04. Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="WindParticle.cpp">
-      <Filter>Framework\Etc</Filter>
-    </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
@@ -273,6 +266,8 @@
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -369,6 +364,9 @@
     </Filter>
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ObjectPool">
+      <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

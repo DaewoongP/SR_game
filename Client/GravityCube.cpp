@@ -83,22 +83,22 @@ void CGravityCube::OnCollisionStay(const Collision * collision)
 	CCollider* collider_other = collision->otherCol;
 	if (collider_other->m_bIsTrigger)
 		return;
-	//ÇöÀç °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ Äİ¶óÀÌ´õ¸¦ °¡Á®¿É´Ï´Ù.
+	//í˜„ì¬ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ì½œë¼ì´ë”ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	CCollider* collider_this = dynamic_cast<CCollider*>(this->Get_Component(L"Collider", ID_DYNAMIC));
 
 	if (trans_other->m_bIsStatic)
 		return;
 
-	//°¢ Äİ¶óÀÌ´õÀÇ Ãæµ¹ ¿µ¿ªÀ» °¡Á®¿È.
+	//ê° ì½œë¼ì´ë”ì˜ ì¶©ëŒ ì˜ì—­ì„ ê°€ì ¸ì˜´.
 	_vec3 center_this = collider_this->Get_BoundCenter();
 	_vec3 size_this = collider_this->Get_BoundSize();
 	_vec3 center_other = collider_other->Get_BoundCenter();
 	_vec3 size_other = collider_other->Get_BoundSize();
 
-	// Äİ¶óÀÌ´õ ÀÚÃ¼ ¿ÀÇÁ¼Â
+	// ì½œë¼ì´ë” ìì²´ ì˜¤í”„ì…‹
 	_vec3 offset_other = collider_other->Get_BoundOffset();
 
-	//Ãæµ¹ ¿µ¿ªÀ» ÀÌ¿ëÇÑ À§Ä¡ º¸Á¤°ª
+	//ì¶©ëŒ ì˜ì—­ì„ ì´ìš©í•œ ìœ„ì¹˜ ë³´ì •ê°’
 	_float min_x = center_this.x - (size_this.x*0.5f + size_other.x*0.5f);
 	_float min_y = center_this.y - (size_this.y*0.5f + size_other.y*0.5f);
 	_float max_y = center_this.y + (size_this.y*0.5f + size_other.y*0.5f);
@@ -121,13 +121,13 @@ void CGravityCube::OnCollisionStay(const Collision * collision)
 	else if (collision->_dir == DIR_RIGHT&&center_other.x > min_x)
 		trans_other->m_vInfo[INFO_POS].x = max_x - offset_other.x;
 
-	//³ª¶û Ãæµ¹ÇÑ ¹°Ã¼°¡ ¸®Áş¹Ùµğ¸¦ °¡Áö°íÀÖÁö ¾Ê´Ù¸é ½ÇÇà X
+	//ë‚˜ë‘ ì¶©ëŒí•œ ë¬¼ì²´ê°€ ë¦¬ì§“ë°”ë””ë¥¼ ê°€ì§€ê³ ìˆì§€ ì•Šë‹¤ë©´ ì‹¤í–‰ X
 	CRigidbody* _rigid;
 
 	if ((collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC)) == nullptr) return;
 	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
 
-	//velocity / trans µÑ´Ù ¹Ğ¾î³»±â¸¦ ÁøÇàÇØÁà¾ßÇÔ.
+	//velocity / trans ë‘˜ë‹¤ ë°€ì–´ë‚´ê¸°ë¥¼ ì§„í–‰í•´ì¤˜ì•¼í•¨.
 	_vec3 reaction = _vec3(0, 0, 0);
 
 	switch (collision->_dir)
@@ -211,7 +211,7 @@ HRESULT CGravityCube::Add_Component(void)
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
 	return S_OK;
 }

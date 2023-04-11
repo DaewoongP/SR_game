@@ -5,7 +5,7 @@
 
 CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
-	, m_bJumpalbe(false)
+	, m_bJumpable(false)
 	, m_eKeyState(DIR_END)
 {
 }
@@ -99,14 +99,14 @@ void CToodee::OnCollisionStay(const Collision * collision)
  	if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
 	{
 		if (collision->_dir == DIR_DOWN)
-			m_bJumpalbe = true;
+			m_bJumpable = true;
 
-		if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpalbe)
+		if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpable)
 		{
-			m_bJumpalbe = false;
+			m_bJumpable = false;
 			m_pTextureCom->Switch_Anim(L"Jump");
 		}
-		else if (m_bJumpalbe)
+		else if (m_bJumpable)
 			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
 				m_pTextureCom->Switch_Anim(L"Walk");
 			else
@@ -118,7 +118,7 @@ void CToodee::OnCollisionStay(const Collision * collision)
 
 void CToodee::OnCollisionExit(const Collision * collision)
 {
-	m_bJumpalbe = false;
+	m_bJumpable = false;
 	__super::OnCollisionExit(collision);
 }
 
@@ -128,19 +128,19 @@ HRESULT CToodee::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }
@@ -183,7 +183,7 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
 		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
 
-	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpalbe)
+	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 
 }

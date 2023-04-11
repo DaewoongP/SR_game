@@ -20,11 +20,13 @@
 #include "SwitchCube.h"
 #include "GravityCube.h"
 #include "LightningCloud.h"
+#include "PortalCube.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
-	m_iMonsterType(0), m_iMapObjectType(0)
+	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0),
+	m_tPortalCubeDir(CD_END)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
@@ -66,7 +68,7 @@ HRESULT CImguiUnit::MonsterMenu()
 
 			if (m_bMapObjectON)
 				m_bMapObjectON = false;
-		}			
+		}
 
 		// 체크 박스 활성화 시 몬스터 설치 부분
 		if (m_bMonsterON && nullptr != m_pDefaultMonster)
@@ -81,12 +83,12 @@ HRESULT CImguiUnit::MonsterMenu()
 
 		// 저장 기능
 		if (ImGui::Button("Monster Save"))
-			FAILED_CHECK_RETURN(SaveMonster(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveMonster(m_iStageNumber), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Monster Load"))
-			FAILED_CHECK_RETURN(LoadMonster(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMonster(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -99,7 +101,7 @@ void CImguiUnit::CreateDefaultMonster()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	FAILED_CHECK_RETURN(FACTORY<CDefaultUnit>::Create(L"DefaultMonster", pStageLayer, _vec3{0.f, 0.f, 0.f}), );
+	FAILED_CHECK_RETURN(FACTORY<CDefaultUnit>::Create(L"DefaultMonster", pStageLayer, _vec3{ 0.f, 0.f, 0.f }), );
 
 	m_pDefaultMonster = Engine::Get_GameObject(L"Layer_GameLogic", L"DefaultMonster");
 	dynamic_cast<CDefaultUnit*>(m_pDefaultMonster)->Set_DefaultIndex(CDefaultUnit::DMonster);
@@ -126,7 +128,7 @@ void CImguiUnit::MonsterInstall()
 		{
 			FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pStageLayer,
 				m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]), );
-		}			
+		}
 
 		tMonsterInfo.vObjPos = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
 		tMonsterInfo.iObjTypeNumber = m_iMonsterType;
@@ -135,9 +137,12 @@ void CImguiUnit::MonsterInstall()
 	}
 }
 
-HRESULT CImguiUnit::SaveMonster()
+HRESULT CImguiUnit::SaveMonster(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MonsterPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -150,11 +155,14 @@ HRESULT CImguiUnit::SaveMonster()
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMonster()
+HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
 {
 	m_vecMonsterInfo.clear();
 
-	HANDLE hFile = CreateFile(L"../Data/MonsterPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MonsterPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
@@ -206,9 +214,28 @@ HRESULT CImguiUnit::MapObjectMenu()
 		ImGui::Checkbox("Map Object Placed", &m_bMapObjectON);
 
 		// 맵 오브젝트 종류 선택 콤보 박스
-		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD", 
-								"SWITCH", "SWITCH CUBE", "GRAVITY CUBE", "LIGHTNING CLOUD"};
+		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD",
+			"SWITCH", "SWITCH CUBE", "GRAVITY CUBE", "LIGHTNING CLOUD", "PORTAL CUBE" };
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
+
+		// 포탈 큐브 방향 설정
+		if (11 == m_iMapObjectType)
+		{
+			if (ImGui::Button("LEFT"))
+				m_tPortalCubeDir = CD_LEFT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("RIGHT"))
+				m_tPortalCubeDir = CD_RIGHT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("UP"))
+				m_tPortalCubeDir = CD_UP;
+
+			ImGui::SameLine();
+			if (ImGui::Button("DOWN"))
+				m_tPortalCubeDir = CD_DOWN;
+		}
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
 		if (m_bMapObjectON && nullptr == m_pDefaultMapObject)
@@ -217,7 +244,7 @@ HRESULT CImguiUnit::MapObjectMenu()
 
 			if (m_bMonsterON)
 				m_bMonsterON = false;
-		}			
+		}
 
 		// 체크 박스 활성화 시 맵 오브젝트 설치 부분
 		if (m_bMapObjectON && nullptr != m_pDefaultMapObject)
@@ -232,12 +259,12 @@ HRESULT CImguiUnit::MapObjectMenu()
 
 		// 저장 기능
 		if (ImGui::Button("MapObject Save"))
-			FAILED_CHECK_RETURN(SaveMapObject(), E_FAIL);
+			FAILED_CHECK_RETURN(SaveMapObject(m_iStageNumber), E_FAIL);
 
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("MapObject Load"))
-			FAILED_CHECK_RETURN(LoadMapObject(), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMapObject(m_iStageNumber), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -269,7 +296,7 @@ void CImguiUnit::MapObjectInstall()
 
 		if (0 == m_iMapObjectType) // 키
 		{
-			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer, 
+			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer,
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
@@ -329,8 +356,16 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (10 == m_iMapObjectType) // 번개 구름
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"LightningCloud", pStageLayer,
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer,
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
+		}
+
+		else if (11 == m_iMapObjectType && (2 >  m_iPortalCubeCount)) // 포탈 큐브, 맵에 최대로 설치 가능한 개수는 2개
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], (_int)m_tPortalCubeDir), );
+			m_vecPortalCubeDir.push_back(m_tPortalCubeDir);
+			++m_iPortalCubeCount;
 		}
 
 		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
@@ -340,9 +375,12 @@ void CImguiUnit::MapObjectInstall()
 	}
 }
 
-HRESULT CImguiUnit::SaveMapObject()
+HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 {
-	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -352,23 +390,42 @@ HRESULT CImguiUnit::SaveMapObject()
 		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
 
 	CloseHandle(hFile);
+
+	TCHAR dataFile2[128] = { 0 };
+	_stprintf_s(dataFile2, _T("../Data/PortalCubeDir%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile2 = CreateFile(dataFile2, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile2)
+		return E_FAIL;
+
+	dwByte = 0;
+
+	for (auto&iter : m_vecPortalCubeDir)
+		WriteFile(hFile, &iter, sizeof(_int), &dwByte, nullptr);
+
+	CloseHandle(hFile2);
+
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMapObject()
+HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 {
 	m_vecMapObjectInfo.clear();
+	m_vecPortalCubeDir.clear();
 
-	HANDLE hFile = CreateFile(L"../Data/MapObjectPos.dat", GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
 	DWORD	dwByte = 0;
 	OBJINFO vMapObjectInfo = {};
-
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
 	while (true)
 	{
@@ -377,7 +434,29 @@ HRESULT CImguiUnit::LoadMapObject()
 			break;
 		m_vecMapObjectInfo.push_back(vMapObjectInfo);
 	}
+
 	CloseHandle(hFile);
+
+	TCHAR dataFile2[128] = { 0 };
+	_stprintf_s(dataFile2, _T("../Data/PortalCubeDir%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile2 = CreateFile(dataFile2, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile2)
+		return E_FAIL;
+
+	DWORD dwByte2 = 0;
+	int vPortalCubeInfo = {};
+
+	while (true)
+	{
+		ReadFile(hFile, &vPortalCubeInfo, sizeof(int), &dwByte2, nullptr);
+		if (dwByte2 == 0)
+			break;
+		m_vecPortalCubeDir.push_back(vPortalCubeInfo);
+	}
+
+	CloseHandle(hFile2);
 
 	for (auto& iter : m_vecMapObjectInfo)
 	{
@@ -434,6 +513,13 @@ HRESULT CImguiUnit::LoadMapObject()
 		else if (10 == iter.iObjTypeNumber) // 번개 구름
 		{
 			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (11 == iter.iObjTypeNumber && 2 > m_iPortalCubeCount) // 포탈 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer, iter.vObjPos,
+				(_int)m_vecPortalCubeDir.at(m_iPortalCubeCount)), E_FAIL);
+			++m_iPortalCubeCount;
 		}
 	}
 

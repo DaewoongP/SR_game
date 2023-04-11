@@ -68,6 +68,16 @@ public:
 	virtual		void	LateUpdate_Component(void);
 
 
+	void		Update_Shake(_float fTimeDelta, _vec3& vPos);
+	//쉐이크 시간, 세기 입력 함수
+	void		Set_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL)
+	{
+		m_fShakeTimer = fDuration;
+		m_fShakePower = (_float)iPower;
+		m_iShakeAxis = (_int)eShake_Axis;
+		m_fWeakPoint = (_float)iPower / fDuration;
+	}
+
 public:
 	_bool		m_bIsStatic = true;
 	_vec3		m_vInfo[INFO_END];
@@ -78,6 +88,14 @@ public:
 	_matrix		m_matBillY;
 
 	_bool		m_bMove;
+
+	//쉐이크 변수
+	_bool	m_bUseWeak = false;
+	_float	m_fWeakPoint = 0.0f;
+	_int	m_iShakeAxis = Engine::SHAKE_END;
+	_float	m_fShakeTimer = 0.0f;
+	_float	m_fShakePower = 0;
+	_vec3	m_vShakeOffset;
 
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

@@ -21,7 +21,6 @@ HRESULT CPortalCube::Ready_GameObject(_vec3 & vPos)
 	_matrix matInfo;
 	D3DXMatrixIdentity(&matInfo);
 	m_dwCool = 0; 
-	m_pLine->Ready_Line(3.0f);
 	switch (m_eDir)
 	{
 	case Engine::CD_UP:
@@ -42,7 +41,7 @@ HRESULT CPortalCube::Ready_GameObject(_vec3 & vPos)
 
 _int CPortalCube::Update_Too(const _float & fTimeDelta)
 {
-	//Ã¹ ¾÷µ¥ÀÌÆ®¶§ ´Ù¸¥ Å¥ºê¸¦ °¡Á®¿À´Â ·ÎÁ÷ÀÎ°Å °°À½.
+	//ì²« ì—…ë°ì´íŠ¸ë•Œ ë‹¤ë¥¸ íë¸Œë¥¼ ê°€ì ¸ì˜¤ëŠ” ë¡œì§ì¸ê±° ê°™ìŒ.
 	if (m_bInit)
 	{
 		m_pOtherCube = Get_GameObject(L"Layer_GameLogic", L"PortalCube");
@@ -74,17 +73,15 @@ void CPortalCube::LateUpdate_GameObject(void)
 
 void CPortalCube::Render_GameObject(void)
 {
-	//·¹ÀÌ šë°¡ À§Ä¡ = Ä£±¸ÀÇ ¿øÁ¡
+	//ë ˆì´ Âšè«› ìœ„ì¹˜ = ì¹œêµ¬ì˜ ì›ì 
 	_vec3 start = m_pTransform->m_vInfo[INFO_POS];
-	//·¹ÀÌ ¹æÇâ = Ä£±¸ÀÇ ¹æÇâ *-1
+	//ë ˆì´ ë°©í–¥ = ì¹œêµ¬ì˜ ë°©í–¥ *-1
 	_vec3 dir = m_pTransform->m_vInfo[INFO_POS] + GetDirVec()*5.f;
-	m_pLine->Set_Line(start, dir, D3DXCOLOR{1.0f,1.0f,1.0f,1.0f});
 	
 	D3DXMATRIX mat,view,proj;
 	D3DXMatrixIdentity(&mat);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW,&view);
 	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &proj);
-	m_pLine->Draw_Line(mat, view, proj);
 	__super::Render_GameObject();
 }
 
@@ -105,6 +102,7 @@ _vec3 CPortalCube::Trans_Velocity(_vec3 & velocity, CPortalCube* other)
 	outVelocity = vRref * fSpeed;
 	return outVelocity;
 }
+
 void CPortalCube::ShootRay_Portal()
 {
 	vector<_tchar*> name;
@@ -149,16 +147,16 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 	if (m_dwCool > 0.2f)
 	{
 		_bool IsIntersect = Check_BoundingBox(m_pCollider, collision->otherCol);
-		//±×³É ·¹ÀÌ¸¦ ÇÏ³ª ½õ½Ã´Ù.
+		//ê·¸ëƒ¥ ë ˆì´ë¥¼ í•˜ë‚˜ ì©ì‹œë‹¤.
 		if (g_Is2D)
 		{
-			if ((_int)collision->_dir == (_int)m_eDir &&  //µé¾î¿Â ¹æÇâÀÌ ÀÔ±¸°í
-				lstrcmp(collision->otherObj->m_pTag, L"MapCube") && //¾Ö Á¦¿Ü
-				lstrcmp(collision->otherObj->m_pTag, L"PortalCube") && // ¾Ö Á¦¿Ü
-				lstrcmp(collision->otherObj->m_pTag, L"Topdee") &&//¾Ö Á¦¿Ü¸é?
+			if ((_int)collision->_dir == (_int)m_eDir &&  //ë“¤ì–´ì˜¨ ë°©í–¥ì´ ì…êµ¬ê³ 
+				lstrcmp(collision->otherObj->m_pTag, L"MapCube") && //ì•  ì œì™¸
+				lstrcmp(collision->otherObj->m_pTag, L"PortalCube") && // ì•  ì œì™¸
+				lstrcmp(collision->otherObj->m_pTag, L"Topdee") &&//ì•  ì œì™¸ë©´?
 				IsIntersect)
 			{
-				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos(); //µé¾î¿Â ¹°Ã¼ÀÇ À§Ä¡¸¦ ´Ù¸¥ Å¥ºêÀÇ Çìµå·Î ¹Ù²ãÁÖ°í
+				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos(); //ë“¤ì–´ì˜¨ ë¬¼ì²´ì˜ ìœ„ì¹˜ë¥¼ ë‹¤ë¥¸ íë¸Œì˜ í—¤ë“œë¡œ ë°”ê¿”ì£¼ê³ 
 				if (collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC) != NULL)
 				{
 					CRigidbody* rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
@@ -171,13 +169,13 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 		}
 		else
 		{
-			if ((_int)collision->_dir == (_int)m_eDir &&//ÀÔ±¸¹æÇâ
+			if ((_int)collision->_dir == (_int)m_eDir &&//ì…êµ¬ë°©í–¥
 				m_bIsCol[m_eDir] &&
-				IsIntersect)//µé¾î¿Â °¢µµ·Î ¸·ÇôÀÖÀ½.
+				IsIntersect)//ë“¤ì–´ì˜¨ ê°ë„ë¡œ ë§‰í˜€ìˆìŒ.
 			{
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos();
 				static_cast<CPortalCube*>(m_pOtherCube)->ShootRay_Portal();
-				//µé¾î¿Â ¹°Ã¼ÀÇ À§Ä¡¸¦ ´Ù¸¥ Å¥ºêÀÇ Çìµå·Î ¹Ù²ãÁÖ°í
+				//ë“¤ì–´ì˜¨ ë¬¼ì²´ì˜ ìœ„ì¹˜ë¥¼ ë‹¤ë¥¸ íë¸Œì˜ í—¤ë“œë¡œ ë°”ê¿”ì£¼ê³ 
 				COL_DIR destdir;
 				if (static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir() % 2 == 0)
 					destdir = (COL_DIR)(static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeDir() + 1);
@@ -211,7 +209,7 @@ void CPortalCube::Set_CubeDir(CUBE_DIR dir)
 
 _vec3 CPortalCube::Get_CubeHeadPos()
 {
-	//¹æÇâ¿¡ µû¶ó Çìµå À§Ä¡¸¦ ¹İÈ¯½ÃÄÑÁÖ´Â Ä£±¸ÀÓ.
+	//ë°©í–¥ì— ë”°ë¼ í—¤ë“œ ìœ„ì¹˜ë¥¼ ë°˜í™˜ì‹œì¼œì£¼ëŠ” ì¹œêµ¬ì„.
 	return _vec3(m_pTransform->m_vInfo[INFO_POS] + (m_DirVec*2));
 }
 
@@ -222,7 +220,7 @@ HRESULT CPortalCube::Add_Component(void)
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Portal_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Portal_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Portal_Cube", pComponent });
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
