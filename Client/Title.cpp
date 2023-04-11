@@ -57,7 +57,7 @@ HRESULT CTitle::Add_Component(void)
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Title_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Title_Texture", pComponent });
+	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
 
 	return S_OK;
 }
