@@ -8,6 +8,9 @@ private:
 	virtual ~CBoss3Hand();
 
 public:
+	void	Set_Attack(_bool TrueorFalse) { m_bAttack = TrueorFalse; }
+
+public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float & fTimeDelta);
@@ -30,6 +33,8 @@ private:
 	_float  m_fAngle;
 	_float	m_fSpeed;
 	_float  m_fCoolDown;
+	_float  m_fAttackCoolDown;
+	_bool	m_bAttack;
 
 public:
 	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int iIndex);

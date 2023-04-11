@@ -20,6 +20,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->m_bIsStatic = true;
 
@@ -90,7 +91,7 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
-__super::OnCollisionEnter(collision);
+	__super::OnCollisionEnter(collision);
 }
 
 void CBoss3::OnCollisionStay(const Collision * collision)
@@ -133,15 +134,15 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 	
-	// 추격을 6초동안 진행하고
-	if (3 < m_fCoolDown && 6 > m_fCoolDown)
+	// 추격을 진행하고
+	if (2.f < m_fCoolDown && 5.f > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	// 6초 후 공격 시작
-	else if (6 < m_fCoolDown)
+	// 시간이 지나면 공격 시작
+	else if (5.f < m_fCoolDown)
 	{
 		BossAttack(fTimeDelta);
 	}
@@ -157,10 +158,22 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
 	// 내려 찍기
-	else
+	else if(0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
 	{
 		if(5.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
+	}
+
+	else if (1.f < fAttackCoolDown && 6.f > fAttackCoolDown)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
+		dynamic_cast<CBoss3Hand*>(pGameObject)->Set_Attack(true);
+	}
+
+	else if (6.f < fAttackCoolDown)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
+		dynamic_cast<CBoss3Hand*>(pGameObject)->Set_Attack(true);
 	}
 }
 
