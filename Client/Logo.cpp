@@ -10,6 +10,9 @@
 #include "UICamera.h"
 #include "StageCamera.h"
 #include "LogoCamera.h"
+#include "BackgroundSpr.h"
+#include "ShiningStar.h"
+#include "MenuSmoke.h"
 
 //Å×½ºÆ®
 #include "Title.h"
@@ -87,8 +90,16 @@ void CLogo::Render_Scene(void)
 HRESULT CLogo::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Logo_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/screenshotsSpr/screenshotsSpr_0.png")), E_FAIL);
+
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcAlpha", CRcAlpha::Create(m_pGraphicDev)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
+	
+	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Smoke_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuSmoke.png")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
 	return S_OK;
@@ -105,11 +116,22 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LogoCamera", pGameObject), E_FAIL);
 
-	pGameObject = CBackGround::Create(m_pGraphicDev);
+	pGameObject = CBackgroundSpr::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
-	
 
+	for (size_t i = 0; i < 50; i++)
+	{
+		_float fRandX = rand() % WINCX - WINCX * 0.5f;
+		_float fRandY = rand() % WINCY - WINCY * 0.5f;
+
+		
+		FAILED_CHECK_RETURN(FACTORY<CShiningStar>::Create(L"ShiningStar", pLayer, _vec3(fRandX, fRandY, 0.0f)), E_FAIL);
+	}
+
+	//FAILED_CHECK_RETURN(FACTORY<CMenuSmoke>::Create(L"MenuSmoke", pLayer, _vec3(0.0f, 0.0f, 0.0f)), E_FAIL);
+
+	
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;

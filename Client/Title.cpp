@@ -23,7 +23,7 @@ _int CTitle::Update_GameObject(const _float& fTimeDelta)
 	
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return S_OK;
 

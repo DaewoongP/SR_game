@@ -121,9 +121,6 @@
     <ClInclude Include="GraphicDev.h">
       <Filter>Manager\Device</Filter>
     </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>Framework\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="Management.h">
       <Filter>Framework\00. Management</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Framework\04. Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="WindParticle.h">
-      <Filter>Framework\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="AbstractFactory.h">
       <Filter>Manager\AbstractFactory</Filter>
     </ClInclude>
@@ -153,6 +147,14 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Componnent\Collider\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="RcAlpha.h">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="RcGradation.h">
+      <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +245,6 @@
     <ClCompile Include="GraphicDev.cpp">
       <Filter>Manager\Device</Filter>
     </ClCompile>
-    <ClCompile Include="SkyBox.cpp">
-      <Filter>Framework\Etc</Filter>
-    </ClCompile>
     <ClCompile Include="Management.cpp">
       <Filter>Framework\00. Management</Filter>
     </ClCompile>
@@ -261,9 +260,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Framework\04. Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="WindParticle.cpp">
-      <Filter>Framework\Etc</Filter>
-    </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
@@ -272,6 +268,14 @@
     </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="WindParticle.cpp" />
+    <ClCompile Include="RcGradation.cpp">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="RcAlpha.cpp">
+      <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,9 @@
 
 #include "Shadow.h"
 
+#include "RcGradation.h"
+#include "RcAlpha.h"
+
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

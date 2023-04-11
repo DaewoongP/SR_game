@@ -16,11 +16,12 @@ const	_ulong		FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
 typedef	 struct tagVertexTexture
 {
 	_vec3			vPos;		// 위치
+	_ulong			dwColor;	// 색상
 	_vec2			vTexUV;		// 색상
 
 }VTXTEX;
 
-const	_ulong		FVF_TEX = D3DFVF_XYZ | D3DFVF_TEX1;
+const	_ulong		FVF_TEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 typedef	 struct tagVertexCube
 {
