@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
 CCollisionMgr::CCollisionMgr()
-	:m_fRangeOffset(1000.5f)
+	:m_fRangeOffset(1.5f)
 {
 }
 

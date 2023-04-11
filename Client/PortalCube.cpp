@@ -112,7 +112,7 @@ void CPortalCube::ShootRay_Portal()
 	name.push_back(L"MoveCube");
 	name.push_back(L"GravityCube");
 	_vec3 start = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(start, m_DirVec, 30.f),m_pCollider, name);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(start, m_DirVec, 4.f),m_pCollider, name);
 	if (_detectedCOL.size() >= 1)
 	{
 		COL_DIR __dir = (COL_DIR)m_eDir;
