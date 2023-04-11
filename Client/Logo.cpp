@@ -5,12 +5,13 @@
 
 #include "Export_Function.h"
 #include "BackGround.h"
+#include"Title.h"
 #include "Stage1.h"
 #include "UICamera.h"
 #include "StageCamera.h"
 #include "LogoCamera.h"
 
-//�׽�Ʈ
+//Å×½ºÆ®
 #include "TestButton.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -28,8 +29,10 @@ HRESULT CLogo::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Proto(), E_FAIL);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
+
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+
 
 	m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
@@ -41,15 +44,19 @@ HRESULT CLogo::Ready_Scene(void)
 
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
-
-
+	
 
 
 	int iExit = __super::Update_Scene(fTimeDelta);
 
 	if (true == m_pLoading->Get_Finish())
 	{
-		if (GetAsyncKeyState(VK_RETURN))
+		if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
+			m_bStart = true;
+		if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+			m_bStart = false;
+
+		if (GetAsyncKeyState(VK_RETURN)&&m_bStart==true)
 		{
 			CScene*	pScene = CStage1::Create(m_pGraphicDev);
 			NULL_CHECK_RETURN(pScene, -1);
@@ -58,6 +65,9 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 			pScene->Update_Scene(fTimeDelta);
 			return 0;
 		}
+		else if (GetAsyncKeyState(VK_RETURN) && m_bStart==false)
+			PostQuitMessage(0);
+
 	}
 
 	return iExit;
@@ -78,7 +88,7 @@ HRESULT CLogo::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Logo_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/screenshotsSpr/screenshotsSpr_0.png")), E_FAIL);
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LogoCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCubeSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
 	return S_OK;
@@ -98,6 +108,26 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CBackGround::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
+	
+
+	m_uMapLayer.insert({ pLayerTag, pLayer });
+
+	return S_OK;
+}
+
+HRESULT CLogo::Ready_Layer_UI(const _tchar* pLayerTag)
+{
+	CLayer* pLayer = CLayer::Create();
+	NULL_CHECK_RETURN(pLayer, E_FAIL);
+
+	CGameObject* pGameObject = nullptr;
+
+
+	pGameObject = CTitle::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
+
+
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

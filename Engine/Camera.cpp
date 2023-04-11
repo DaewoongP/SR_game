@@ -48,7 +48,7 @@ _int CCamera::Update_Component(const _float & fTimeDelta)
 {
 	if (!m_bSwitch)
 		return 0;
-
+	
 	m_tViewParams.vEye = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
 
 	m_tViewParams.vAt = m_tViewParams.vEye + m_pGameObject->m_pTransform->m_vInfo[INFO_LOOK];

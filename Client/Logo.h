@@ -24,7 +24,7 @@ private:
 	
 private:
 	CLoading*			m_pLoading;
-
+	_bool				m_bStart = true;
 public:
 	static CLogo*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
