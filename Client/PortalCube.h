@@ -22,6 +22,8 @@ public:
 	void Set_CubeDir(CUBE_DIR dir) { m_eDir = dir; }
 	_vec3 Get_CubeHeadPos();
 	void Set_Other(CGameObject* pOther) { m_pOtherCube = pOther; }
+
+	_vec3 Trans_Velocity(_vec3& velocity, CPortalCube* other);
 private:
 	HRESULT		Add_Component(void);
 public:

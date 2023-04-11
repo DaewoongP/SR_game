@@ -89,11 +89,11 @@ HRESULT CMoveCube::Add_Component(void)
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Move_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Move_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Move_Cube", pComponent });
 
 	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
 	NULL_CHECK_RETURN(m_pLine, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Line", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Line", pComponent });
 	
 	return S_OK;
 }
@@ -145,12 +145,17 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	tagName.push_back(L"MoveCube");
 	tagName.push_back(L"GravityCube");
 	tagName.push_back(L"InstallCube");
+	tagName.push_back(L"SwitchCube");
+	tagName.push_back(L"CrackCube");
 
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"InstallCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"InstallCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"SwitchCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")
+			)
 			m_bIsCol[edir] = true;
 		else
 			m_bIsCol[edir] = false;

@@ -5,6 +5,8 @@
 
 #include "Cube.h"
 
+#include "StageCamera.h"
+
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev),m_bMoveLeft(false), m_bBackSprite(false)
 {
@@ -183,6 +185,9 @@ void CPig::OnCollisionEnter(const Collision * collision)
 {
 	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Pig")))
 	{
+		//카메라 쉐이크 사용함수 예
+		//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
+
 		if (m_bMoveLeft)
 		{
 			m_bMoveLeft = false;
@@ -230,27 +235,27 @@ HRESULT CPig::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
 	pComponent = m_pTextureCom_Back = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Back_Pig_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom_Back, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Back_Pig_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Back_Pig_Texture", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Pig_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Pig_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Pig_Texture", pComponent });
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Rigidbody", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Shadow", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow", pComponent });
 
 	m_pTransform->m_bIsStatic = false;
 
