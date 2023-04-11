@@ -32,7 +32,6 @@ _int CLightning::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pCollider->Set_BoundingBox({ 1.f,8.f,1.0f });
 
-	srand(time(NULL));
 	float slow = (rand() % 5 - 2);
 	m_fLightCycle -= fTimeDelta;
 	//_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];

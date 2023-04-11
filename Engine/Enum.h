@@ -5,7 +5,7 @@ enum WINMODE { MODE_FULL, MODE_WIN };
 
 namespace Engine
 {
-	// ID_DYNAMIC : ¸Å ÇÁ·¹ÀÓ¸¶´Ù °»½ÅÀ» ÇØ¾ßÇÏ´Â ÄÄÆ÷³ÍÆ® Áý´Ü
+	// ID_DYNAMIC : ë§¤ í”„ë ˆìž„ë§ˆë‹¤ ê°±ì‹ ì„ í•´ì•¼í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ ì§‘ë‹¨
 	enum COMPONENTID{ID_DYNAMIC, ID_STATIC, ID_END };
 
 	enum INFO {INFO_RIGHT, INFO_UP, INFO_LOOK, INFO_POS, INFO_END };
@@ -80,6 +80,13 @@ namespace Engine
 		MD_END
 	};
 
+	enum SHAKE_AXIS
+	{
+		SHAKE_ALL,
+		SHAKE_X,
+		SHAKE_Y,
+		SHAKE_Z,
+		SHAKE_END
 	enum CUBE_DIR
 	{
 		CD_UP,

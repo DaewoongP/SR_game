@@ -20,17 +20,17 @@ CStage1Camera::~CStage1Camera()
 
 HRESULT CStage1Camera::Ready_GameObject(void)
 {
-	Rotation_View();
 	_matrix matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 1000.0f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
+	m_pTransform->m_bUseWeak = true;
 
 	return S_OK;
 }
 
 _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 {
-	Rotation_View();
+	Rotation_View(fTimeDelta);
 
 	Move_Camera(fTimeDelta);
 
@@ -46,7 +46,7 @@ void CStage1Camera::LateUpdate_GameObject(void)
 	__super::LateUpdate_GameObject();
 }
 
-void CStage1Camera::Rotation_View()
+void CStage1Camera::Rotation_View(const _float& fTimeDelta)
 {
 	_float fRadian;
 
@@ -66,6 +66,12 @@ void CStage1Camera::Rotation_View()
 	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
 
 	vEye = vAt + vDir;
+
+	_vec3 vShake = { 0.0f,0.0f,0.0f };
+	m_pTransform->Update_Shake(fTimeDelta, vShake);
+	
+	vEye += vShake;
+	vAt += vShake;
 
 	_vec3 vAxisX = { 1.f, 0.f, 0.f };
 	// 카메라의 업벡터
@@ -90,7 +96,12 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 		{
 			g_Is2D = true;
 		}
+		
 	}
+
+	//카메라 쉐이크 사용 예
+	if (Engine::Get_DIKeyState(DIK_F) == Engine::KEYDOWN)
+		m_pTransform->Set_Shake(1.0f, 100.0f, SHAKE_Y);
 }
 
 void CStage1Camera::Move_Camera(const _float & fTimeDelta)
