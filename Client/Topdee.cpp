@@ -319,6 +319,35 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 	return false;
 }
 
+void CTopdee::SetMovePos_zero()
+{
+	m_bIsMoving = true;
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+}
+
+
+void CTopdee::SetMovePos(COL_DIR dir)
+{
+	_vec3 m_MoveVec;
+	switch (dir)
+	{
+	case DIR_UP:
+		m_MoveVec = _vec3(0, -2, 0);
+		break;
+	case DIR_DOWN:
+		m_MoveVec = _vec3(0, 2, 0);
+		break;
+	case DIR_LEFT:
+		m_MoveVec = _vec3(2, 0, 0);
+		break;
+	case DIR_RIGHT:
+		m_MoveVec = _vec3(-2, 0, 0);
+		break;
+	}
+	m_bIsMoving = true;
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
+}
+
 _bool CTopdee::CheckAnythingExist(_vec3 dir, CCollider ** col)
 {
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
