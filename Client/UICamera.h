@@ -14,15 +14,11 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 
-private:
-	void		Rotation_View();
-	void		Key_Input(const _float& fTimeDelta);
-	void		Move_Camera(const _float& fTimeDelta);
-
 
 	_float m_fTime = 0.f;
-	_matrix matRotX;
+	_matrix matView;
 	_vec3 vEye, vAt, vUp;
+	_matrix matProj;
 
 	_float m_fToo, m_fTop;
 
