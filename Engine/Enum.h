@@ -87,6 +87,7 @@ namespace Engine
 		SHAKE_Y,
 		SHAKE_Z,
 		SHAKE_END
+	};
 	enum CUBE_DIR
 	{
 		CD_UP,
