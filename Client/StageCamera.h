@@ -4,7 +4,7 @@
 
 class CStage1Camera : public Engine::CGameObject
 {
-public:
+private:
 	explicit CStage1Camera(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CStage1Camera();
 
