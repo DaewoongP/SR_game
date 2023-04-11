@@ -21,7 +21,6 @@ HRESULT CPortalCube::Ready_GameObject(_vec3 & vPos)
 	_matrix matInfo;
 	D3DXMatrixIdentity(&matInfo);
 	m_dwCool = 0; 
-	m_pLine->Ready_Line(3.0f);
 	switch (m_eDir)
 	{
 	case Engine::CD_UP:
@@ -78,13 +77,11 @@ void CPortalCube::Render_GameObject(void)
 	_vec3 start = m_pTransform->m_vInfo[INFO_POS];
 	//레이 방향 = 친구의 방향 *-1
 	_vec3 dir = m_pTransform->m_vInfo[INFO_POS] + GetDirVec()*5.f;
-	m_pLine->Set_Line(start, dir, D3DXCOLOR{1.0f,1.0f,1.0f,1.0f});
 	
 	D3DXMATRIX mat,view,proj;
 	D3DXMatrixIdentity(&mat);
 	m_pGraphicDev->GetTransform(D3DTS_VIEW,&view);
 	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &proj);
-	m_pLine->Draw_Line(mat, view, proj);
 	__super::Render_GameObject();
 }
 
@@ -225,10 +222,6 @@ HRESULT CPortalCube::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Portal_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Portal_Cube", pComponent });
-
-	pComponent = m_pLine = dynamic_cast<CLine*>(Engine::Clone_Proto(L"Line", this));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Line", pComponent });
 
 	return S_OK;
 }

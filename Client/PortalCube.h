@@ -1,10 +1,6 @@
 #pragma once
 #include "MoveCube.h"
 
-BEGIN(Engine)
-class CLine;
-END
-
 class CPortalCube :
 	public CMoveCube
 {
@@ -49,6 +45,5 @@ private:
 	class CGameObject*		m_pOtherCube;
 	_bool					m_bInit;
 	_vec3					m_DirVec;
-	CLine*					m_pLine;
 };
 
