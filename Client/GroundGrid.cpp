@@ -2,10 +2,10 @@
 #include "GroundGrid.h"
 
 #include "Export_Function.h"
+#include "ImguiStage.h"
 
 CGroundGrid::CGroundGrid(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev),
-	m_bGridON(true)
+	:CGameObject(pGraphicDev)
 {
 }
 
@@ -41,7 +41,7 @@ void CGroundGrid::LateUpdate_GameObject(void)
 
 void CGroundGrid::Render_GameObject(void)
 {
-	if (m_bGridON)
+	if (CImguiStage::m_bGridON)
 	{
 		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 

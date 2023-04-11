@@ -166,6 +166,7 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningCloud.h" />
+    <ClInclude Include="PortalCube.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
+    <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

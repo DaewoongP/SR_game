@@ -24,7 +24,7 @@
 #include "Switch.h"
 #include "InstallGrid.h"
 #include "SwitchCube.h"
-
+#include "PortalCube.h"
 
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -85,13 +85,9 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
-	
-	FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pLayer, _vec3(8.f, 12.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(16.f, 6.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pLayer, _vec3(14.f, 6.f, 10.f)), E_FAIL);
-
+  
+	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(20.f, 10.f, 10.f), (_int)CD_UP), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(42.f, 10.f, 10.f), (_int)CD_RIGHT), E_FAIL);
 	
 	int cubeCnt = 0;
 	for (int i = 0; i < CUBEY; i++)

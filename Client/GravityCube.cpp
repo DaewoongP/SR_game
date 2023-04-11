@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GravityCube.h"
 #include "Export_Function.h"
+#include "CrackCube.h"
 
 CGravityCube::CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev):CMoveCube(pGraphicDev)
 {
@@ -56,6 +57,19 @@ void CGravityCube::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+void CGravityCube::SwapTrigger()
+{
+	if (!g_Is2D)
+	{
+		m_pTransform->m_vInfo[INFO_POS].x = 
+			((int)m_pTransform->m_vInfo[INFO_POS].x%2==0)? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x+1);
+		m_pTransform->m_vInfo[INFO_POS].y = 
+			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
+		m_pTransform->m_vInfo[INFO_POS].z = 
+			((int)m_pTransform->m_vInfo[INFO_POS].z % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].z) : ((int)m_pTransform->m_vInfo[INFO_POS].z + 1);
+	}
+}
+
 void CGravityCube::OnCollisionEnter(const Collision * collision)
 {
 	__super::OnCollisionEnter(collision);
@@ -91,6 +105,11 @@ void CGravityCube::Do_CheckRay_Down()
 	{
 		if (dynamic_cast<CCube*>(_detectedCOL[0].col->m_pGameObject))
 		{
+			if (!lstrcmp(_detectedCOL[0].tag, L"CrackCube")&&
+				!dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->GetCrackDead())
+			{
+				dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->DoShootRay(DIR_DOWN);
+			}
 			m_pTransform->m_bIsStatic = true;
 			m_bUseGraivty = false;
 		}

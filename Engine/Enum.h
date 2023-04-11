@@ -5,7 +5,7 @@ enum WINMODE { MODE_FULL, MODE_WIN };
 
 namespace Engine
 {
-	// ID_DYNAMIC : ¸Å ÇÁ·¹ÀÓ¸¶´Ù °»½ÅÀ» ÇØ¾ßÇÏ´Â ÄÄÆ÷³ÍÆ® Áý´Ü
+	// ID_DYNAMIC : ë§¤ í”„ë ˆìž„ë§ˆë‹¤ ê°±ì‹ ì„ í•´ì•¼í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ ì§‘ë‹¨
 	enum COMPONENTID{ID_DYNAMIC, ID_STATIC, ID_END };
 
 	enum INFO {INFO_RIGHT, INFO_UP, INFO_LOOK, INFO_POS, INFO_END };
@@ -51,17 +51,6 @@ namespace Engine
 		KEYNONE
 	};
 
-	enum PIG_PARTS
-	{
-		PIG_BODY,
-		PIG_EAR,
-		PIG_LEFTEYE,
-		PIG_NOSE,
-		PIG_RIGHTEYE,
-		PIG_TAIL,
-		PIG_END
-	};
-
 	enum TOPDEESTATE 
 	{
 		TD_IDLE,
@@ -98,5 +87,12 @@ namespace Engine
 		SHAKE_Y,
 		SHAKE_Z,
 		SHAKE_END
+	enum CUBE_DIR
+	{
+		CD_UP,
+		CD_DOWN,
+		CD_LEFT,
+		CD_RIGHT,
+		CD_END
 	};
 }
