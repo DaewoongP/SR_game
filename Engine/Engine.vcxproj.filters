@@ -155,6 +155,7 @@
     </ClInclude>
     <ClInclude Include="RcGradation.h">
       <Filter>Componnent\VIBuffer</Filter>
+    </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Manager\ObjectPool</Filter>
     </ClInclude>

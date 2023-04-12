@@ -49,9 +49,6 @@ HRESULT CLogo::Ready_Scene(void)
 
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
-	
-
-
 	int iExit = __super::Update_Scene(fTimeDelta);
 
 	if (true == m_pLoading->Get_Finish())

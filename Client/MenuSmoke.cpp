@@ -50,11 +50,11 @@ HRESULT CMenuSmoke::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcAlpha*>(Engine::Clone_Proto(L"RcAlpha", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcAlpha", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcAlpha", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Smoke_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Smoke_Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Smoke_Texture", pComponent });
 
 	return S_OK;
 }

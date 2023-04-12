@@ -174,7 +174,6 @@
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Select.h" />
-    <ClInclude Include="PortalCube.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="StageCamera.h" />
@@ -237,7 +236,6 @@
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Select.cpp" />
-    <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="StageCamera.cpp" />

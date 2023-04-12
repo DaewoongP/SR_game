@@ -47,7 +47,7 @@ HRESULT CBackgroundSpr::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcGradation*>(Engine::Clone_Proto(L"RcGradation", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcGradation", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcGradation", pComponent });
 
 	return S_OK;
 }
