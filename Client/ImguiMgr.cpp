@@ -109,7 +109,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiUnit->LoadMapObject(m_iStageNumber);
 			m_pImguiUnit->LoadMonster(m_iStageNumber);
 		}
-
 		// 레이어의 모든 요소 지우기(맵 큐브 제외)
 		ImGui::Text("All Delete");
 		if (ImGui::Button("DELETE ALL"))

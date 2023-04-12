@@ -105,15 +105,15 @@ HRESULT CBoss3Hand::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CCubeTex*>(Engine::Clone_Proto(L"CubeTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"CubeTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"CubeTex", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage3_Boss_Hand_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Stage3_Boss_Hand_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Stage3_Boss_Hand_Cube", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }
@@ -125,14 +125,14 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
-	// Ãß°ÝÀ» 4ÃÊµ¿¾È ÁøÇàÇÏ°í
+	// ï¿½ß°ï¿½ï¿½ 4ï¿½Êµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
 	if (1.f < m_fCoolDown && 4.f > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	// 4ÃÊ ÈÄ °ø°Ý ½ÃÀÛ
+	// 4ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	else if (4.f < m_fCoolDown)
 	{
 		BossAttack(fTimeDelta);
@@ -143,15 +143,15 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
 
-	// È¸ÀüÇÏ°í 
+	// È¸ï¿½ï¿½ï¿½Ï°ï¿½ 
 	if (0.75f > m_fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
-	// ³»·Á Âï±â
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	else
 	{
 		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f ´Â ¼Óµµ(»ó¼ö)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f ï¿½ï¿½ ï¿½Óµï¿½(ï¿½ï¿½ï¿½)
 	}
 
 	if (7.f < m_fAttackCoolDown)

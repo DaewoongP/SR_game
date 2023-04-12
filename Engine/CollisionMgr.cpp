@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
 CCollisionMgr::CCollisionMgr()
-	:m_fRangeOffset(1.5f)
+	:m_fRangeOffset(1000.5f)
 {
 }
 
@@ -44,6 +44,8 @@ vector<CCollider*> CCollisionMgr::Collision_CheckRange(CCollider* col, vector<CC
 	for (auto& iter : vecRange)
 	{
 		_vec3 vOther = iter->Get_BoundCenter();
+		if (iter == col)
+			continue;
 		// 다른객체와 거리가 오프셋보다 작으면 새로운 벡터에 푸쉬
 		if (fRange > fabs(D3DXVec3Length(&_vec3(vThis - vOther))))
 		{
@@ -66,8 +68,6 @@ void CCollisionMgr::Check_Collision(COLGROUP eGroup1, COLGROUP eGroup2)
 		rangeList = Collision_CheckRange(iter, m_ColliderList[eGroup2]);
 		for(auto& iter2 : rangeList)
 		{
-			if (iter == iter2)
-				continue;
 			if (Collision_Box(iter, iter2))
 			{
 				Collision* pCollision = nullptr;
@@ -120,7 +120,7 @@ _bool CCollisionMgr::Collision_Box(CCollider * pSrc, CCollider * pDest)
 	_float fX, fY, fZ;
 	if (Check_BoundingBox(pSrc, pDest, &fX, &fY, &fZ))
 	{
-  		if (fX >= fY)
+  		if (fX > fY)
 		{
 			if (fZ > fY) // Y값이 제일작을때
 			{
@@ -274,7 +274,7 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray, CCollider* 
 			}
 
 			//for 문을 돌며 찾은 iter가 배열에 등록된 태그인지 확인
- 			for (int i = 0; i < tagName.size(); i++)
+ 			for (size_t i = 0; i < tagName.size(); i++)
 			{
 				if (!lstrcmp((*iter)->m_pGameObject->m_pTag, tagName[i]))
 				{

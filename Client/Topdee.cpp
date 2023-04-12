@@ -2,6 +2,7 @@
 #include "Topdee.h"
 #include "MoveCube.h"
 #include "Export_Function.h"
+#include "PortalCube.h"
 
 CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -71,6 +72,10 @@ void CTopdee::OnCollisionStay(const Collision * collision)
 	__super::OnCollisionStay(collision);
 }
 
+void CTopdee::SwapTrigger()
+{
+}
+
 HRESULT CTopdee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
@@ -79,15 +84,15 @@ HRESULT CTopdee::Add_Component(void)
 
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"RcTex", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Player_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_uMapComponent[ID_STATIC].insert({ L"Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Collider", pComponent });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 	return S_OK;
 }
 
@@ -173,7 +178,8 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"InstallGrid") ||
 			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"InstallCube")
+			!lstrcmp(_detectedCOL[0].tag, L"InstallCube") ||
+			!lstrcmp(_detectedCOL[0].tag, L"SwitchCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
@@ -189,6 +195,36 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
 					m_byPlayerInputDir &= fdir[dir];
 			}
+		}
+		if (!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+		{
+			COL_DIR destdir = (COL_DIR)dynamic_cast<CPortalCube*>(_detectedCOL[0].col->m_pGameObject)->Get_CubeDir();
+			if (dir % 2 != 0)
+				destdir = (COL_DIR)(destdir + 1);
+			else
+				destdir = (COL_DIR)(destdir - 1);
+			_bool isBlocked = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
+			
+			//만약 플레이어가 이동하려는 방향이 입구가 아니고
+			//그쪽방향으로 막혀있다면?
+			if (destdir == dir&& !isBlocked )
+			{
+
+			}
+			else 
+			{
+				//이동 막아주는 로직
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
+
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
+
+			
 		}
 	}
 }
@@ -305,13 +341,43 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
 		{
 			*col = _detectedCOL[0].col;
 			return true;
 		}
 	}
 	return false;
+}
+
+void CTopdee::SetMovePos_zero()
+{
+	m_bIsMoving = true;
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+}
+
+
+void CTopdee::SetMovePos(COL_DIR dir)
+{
+	_vec3 m_MoveVec;
+	switch (dir)
+	{
+	case DIR_UP:
+		m_MoveVec = _vec3(0, -2, 0);
+		break;
+	case DIR_DOWN:
+		m_MoveVec = _vec3(0, 2, 0);
+		break;
+	case DIR_LEFT:
+		m_MoveVec = _vec3(2, 0, 0);
+		break;
+	case DIR_RIGHT:
+		m_MoveVec = _vec3(-2, 0, 0);
+		break;
+	}
+	m_bIsMoving = true;
+	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
 }
 
 _bool CTopdee::CheckAnythingExist(_vec3 dir, CCollider ** col)
