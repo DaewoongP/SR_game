@@ -490,9 +490,6 @@
     <ClCompile Include="PortalCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
@@ -509,6 +506,9 @@
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
