@@ -95,11 +95,13 @@ void CLayer::Delete_In_Layer()
 {
 	for (auto& iter = m_uMapObject.begin(); iter != m_uMapObject.end(); ++iter)
 	{
-		if (lstrcmp(L"MapCube", iter->first) ||
-			lstrcmp(L"Toodee", iter->first) ||
-			lstrcmp(L"Topdee", iter->first))
+		if (!lstrcmp(L"MapCube", iter->first) ||
+			!lstrcmp(L"Toodee", iter->first) ||
+			!lstrcmp(L"Topdee", iter->first))
+			continue;
+
 			iter->second->m_bDead = true;		
-	}	
+	}
 }
 
 
