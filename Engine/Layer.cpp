@@ -82,7 +82,7 @@ void CLayer::LateUpdate_Layer(void)
 		else
 			iter.second->LateUpdate_Top();
 		iter.second->LateUpdate_GameObject();
-		// Ʈ���� ȣ��
+		// Æ®¸®°Å È£Ãâ
 		if (bPreState != g_Is2D)
 		{
 			iter.second->SwapTrigger();
