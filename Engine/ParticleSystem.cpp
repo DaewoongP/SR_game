@@ -54,10 +54,10 @@ _int CParticleSystem::Update_Component(const _float& fTimeDelta)
 	if (iExit != 0) return iExit;
 
 	//위치 적용 코드임.
-	_vec3 offsetPoint;
+	/*_vec3 offsetPoint;
 	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
 
-	m_BoundingBox.Offset(offsetPoint);
+	m_BoundingBox.Offset(offsetPoint);*/
 
 	return 0;
 }
@@ -69,6 +69,9 @@ void CParticleSystem::LateUpdate_Component()
 
 void CParticleSystem::Render_Particle(void)
 {
+	_matrix mat;
+	D3DXMatrixIdentity(&mat);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &mat);
 	if (!m_Particles.empty())
 	{
 		PreRender();
@@ -169,8 +172,6 @@ void CParticleSystem::RemoveDeadParticles()
 		}
 		else it++;
 	}
-
-	
 }
 
 void CParticleSystem::Reset()
@@ -194,8 +195,6 @@ void CParticleSystem::Free(void)
 	CComponent::Free();
 	m_VB->Release();
 	//m_Texture->Release();
-
-	
 }
 
 void CParticleSystem::PreRender()

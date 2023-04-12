@@ -126,7 +126,11 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage3Boss.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Boss3Hand%d.dds", 2)), E_FAIL);
 	
-	
+	Set_String(L"Particle Loading..........");
+	BoundingBox box;
+	box._min = { 0.f, 0.f, 9.f };
+	box._max = { 60.f, 34.f, 9.f };
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Snow", CSnow::Create(m_pGraphicDev, &box, 1000)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
 	m_bFinish = true;

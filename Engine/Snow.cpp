@@ -31,19 +31,19 @@ CSnow::~CSnow()
 void CSnow::ResetParticle(Particle* particle)
 {
 	particle->bIsAlive = true;
-
+	
 	GetRandomVector(
 		&particle->vPos, 
 		&m_BoundingBox._min, 
 		&m_BoundingBox._max);
 
-	/*particle->vPos.y = m_BoundingBox._max.y;*/
-
+	particle->vPos.y = m_BoundingBox._max.y;
 	
 	particle->vVelocity.x = 0.f;
-	particle->vVelocity.y = GetRandomFloat(0.f, 1.0f) * -10.f;
+	particle->vVelocity.y = GetRandomFloat(0.f, 0.5f) * -5.f;
 	particle->vVelocity.z = 0.f;
-
+	
+	//particle->dwColor = { particle->vPos.x, particle->vPos.y };
 	particle->dwColor = D3DXCOLOR(1.f,1.f,1.f,0.8f);
 }
 
@@ -59,10 +59,10 @@ _int CSnow::Update_Component(const _float& fTimeDelta)
 		it->vPos += it->vVelocity * fTimeDelta;
 
 		//영역 이탈시 삭제해주는 친구
-		/*if (m_BoundingBox.Intersect(it->vPos) == false)
+		if (m_BoundingBox.Intersect(it->vPos) == false)
 		{
 			ResetParticle(&(*it));
-		}*/
+		}
 	}
 	return 0;
 }

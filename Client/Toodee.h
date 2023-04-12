@@ -9,6 +9,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CSnow;
 
 END
 class CToodee : public Engine::CGameObject
@@ -40,7 +41,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
-	//Engine::CSnow * m_praticle;
+	Engine::CSnow *			m_pParticle;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;
