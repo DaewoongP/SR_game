@@ -56,18 +56,31 @@ private:
 	void		Do_Jump_01(const _float& fTimeDelta);
 	//착지한다.
 	void		Do_Jump_02(const _float& fTimeDelta);
+	//휴식패턴
+	void		Do_Rest(const _float& fTimeDelta);
+	//벨로시티 초기화 패턴
+	void		Do_ResetVelocity(const _float& fTimeDelta) {
+		m_pRigid->m_Velocity = _vec3(0, 0, 0); 
+		CheckIsLastActionIdx();}
+	//toodee 혹은 topdee를 향해 n초간 가있는 패턴
+	void		Do_Chase_Player();
+	//y로 살짝 올라가며, 회전을 주는 패턴
+	void		Do_LittleUp_Turn();
 
+	void        Do_Hurray(const _float& fTimeDelta);
+	void        Do_SummonFist(const _float& fTimeDelta);
 
-	void		Do_Scream();
-	void		Do_Punch();
-	void		Do_Idle();
-	_bool		SetPartten();
+	void		SetPartten();
 	void		ReadyPartten();
+	
+	void		CheckIsLastActionIdx();
 
 private:
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;
 	_int		m_iCurrentActionIdx;
+	_float		m_dwRestTime;
+	_float		m_dwActionTime;
 
 	//state, 함수포인터 vec를 가지는 vector
 	vector<BOSS2_STATE_FUNC> funcAction;

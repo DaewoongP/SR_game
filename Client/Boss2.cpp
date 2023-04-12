@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Boss2.h"
 #include "Export_Function.h"
+#include "StageCamera.h"
+#include "Cube.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
@@ -16,6 +18,8 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_pTransform->m_bIsStatic = false;
+
 	m_eCurrentState = B2_IDLE;
 	m_ePreState = B2_END;
 	m_bInit = false;
@@ -24,6 +28,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
 	m_iJumpPosidx = 0;
+	m_dwRestTime = 0;
 	ReadyPartten();
 
 	m_pTransform->m_vScale = { 3.f, 3.f, 3.f };
@@ -87,6 +92,9 @@ void CBoss2::SwapTrigger()
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
+	//땅이랑 닿으면 충격 함 주겟음.
+	if(dynamic_cast<CCube*>(collision->otherObj))
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
 	__super::OnCollisionEnter(collision);
 }
 
@@ -167,86 +175,82 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 	if (D3DXVec3Length(&originlen) <1.f)
 	{
 		//다음 행동으로 ㄱㄱ
-		m_iCurrentActionIdx++;
+		CheckIsLastActionIdx();
+		m_dwRestTime = 1;
 	}
 }
 
 void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
-	_vec3 _dir, originlen;
-	originlen = _vec3(m_fJumpPos[m_iJumpPosidx] - m_pTransform->m_vInfo[INFO_POS]);
-	D3DXVec3Normalize(&_dir, &originlen);
-	m_pTransform->m_vInfo[INFO_POS] += _dir * fTimeDelta * 40;
-	if (D3DXVec3Length(&originlen) <1.f)
-	{
-		//다음 행동으로 ㄱㄱ
-		m_iCurrentActionIdx++;
-	}
+	//그냥 아래로 addforce줄거임.
+	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
+	CheckIsLastActionIdx();
+	m_dwRestTime = 1;
 }
 
-void CBoss2::Do_Scream()
+void CBoss2::Do_Hurray(const _float & fTimeDelta)
 {
 }
 
-void CBoss2::Do_Punch()
+void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 {
 }
 
-void CBoss2::Do_Idle()
-{
-}
-
-_bool CBoss2::SetPartten()
+//현재 스테이트가 같은게 아니라면 true 및 변경
+void CBoss2::SetPartten()
 {
 	//100 안쪽의 랜덤 난수 생성
-	int ranIdx = (rand()+1) % 100;
+	int ranIdx = 0;
 
-	switch (ranIdx)
+	while (true)
 	{
-	case 0: //30% idle
-		if (m_eCurrentState != B2_IDLE)
+		ranIdx = (rand() + 1) % 100;
+		switch (ranIdx)
 		{
+		case 0: //30% idle
+			if (m_eCurrentState != B2_IDLE)
+			{
+				m_ePreState = m_eCurrentState;
+				m_eCurrentState = B2_IDLE;
+				m_iCurrentActionIdx = 0;
+				return;
+			}
+			break;
+		case 30: //40% jump
 			m_ePreState = m_eCurrentState;
-			m_eCurrentState = B2_IDLE;
+			m_eCurrentState = B2_JUMPING;
+			m_iCurrentActionIdx = 0;
+			return;
+			break;
+		case 70: //10% scream
+			if (m_eCurrentState != B2_SCREAM)
+			{
+				m_ePreState = m_eCurrentState;
+				m_eCurrentState = B2_SCREAM;
+				m_iCurrentActionIdx = 0;
+				return;
+			}
+			break;
+		case 80: // 10% punch
+			if (m_eCurrentState != B2_PUNCH)
+			{
+				m_ePreState = m_eCurrentState;
+				m_eCurrentState = B2_PUNCH;
+				m_iCurrentActionIdx = 0;
+				return;
+			}
+			break;
+		case 90: // 10% stump
+			if (m_eCurrentState != B2_STUMP)
+			{
+				m_ePreState = m_eCurrentState;
+				m_eCurrentState = B2_STUMP;
+				m_iCurrentActionIdx = 0;
+				return;
+			}
+			break;
 		}
-		else
-			return false;
-		break;
-	case 30: //40% jump
-		m_ePreState = m_eCurrentState;
-		m_eCurrentState = B2_JUMPING;
-		break;
-	case 70: //10% scream
-		if (m_eCurrentState != B2_SCREAM)
-		{
-			m_ePreState = m_eCurrentState;
-			m_eCurrentState = B2_SCREAM;
-		}
-		else
-			return false;
-		break;
-	case 80: // 10% punch
-		if (m_eCurrentState != B2_PUNCH)
-		{
-			m_ePreState = m_eCurrentState;
-			m_eCurrentState = B2_PUNCH;
-		}
-		else
-			return false;
-		break;
-	case 90: // 10% stump
-		if (m_eCurrentState != B2_STUMP)
-		{
-			m_ePreState = m_eCurrentState;
-			m_eCurrentState = B2_STUMP;
-		}
-		else
-			return false;
-		break;
 	}
-	//보스 스테이트 나온 idx로 변경
-	m_eCurrentState = (BOSS2STATE)ranIdx;
-	return true;
 }
 
 void CBoss2::ReadyPartten()
@@ -256,30 +260,70 @@ void CBoss2::ReadyPartten()
 	
 	BOSS2_STATE_FUNC func;
 	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
 
+	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
 
+	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
 
+	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
 
+	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
+}
+
+void CBoss2::Do_Rest(const _float& fTimeDelta)
+{
+	m_dwRestTime -= fTimeDelta;
+	if (m_dwRestTime < 0)
+		CheckIsLastActionIdx();
+}
+
+void CBoss2::CheckIsLastActionIdx()
+{
+	int abcd = funcAction[m_eCurrentState].size();
+	if (funcAction[m_eCurrentState].size() <= (m_iCurrentActionIdx+1))
+		SetPartten();
+	else
+		m_iCurrentActionIdx++; 
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
