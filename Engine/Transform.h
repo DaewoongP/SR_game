@@ -67,6 +67,7 @@ public:
 	virtual		_int	Update_Component(const _float& fTimeDelta);
 	virtual		void	LateUpdate_Component(void);
 
+	void Move_Floating(const _float& fTimeDelta, _float fPower = 10.0f, _float fSpeed = 60.0f);
 
 public:
 	_bool		m_bIsStatic = true;
@@ -78,6 +79,8 @@ public:
 	_matrix		m_matBillY;
 
 	_bool		m_bMove;
+
+	_float		m_fFloating = 0.0f;
 
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

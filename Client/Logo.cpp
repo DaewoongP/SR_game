@@ -13,6 +13,7 @@
 #include "BackgroundSpr.h"
 #include "ShiningStar.h"
 #include "MenuSmoke.h"
+#include "MenuCubeSpr.h"
 
 //Å×½ºÆ®
 #include "Title.h"
@@ -99,6 +100,8 @@ HRESULT CLogo::Ready_Proto(void)
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
 	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MenuCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCube.png")), E_FAIL);
+	
 	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Smoke_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuSmoke.png")), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
@@ -131,7 +134,9 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	//FAILED_CHECK_RETURN(FACTORY<CMenuSmoke>::Create(L"MenuSmoke", pLayer, _vec3(0.0f, 0.0f, 0.0f)), E_FAIL);
 
-	
+	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(300.0f, -300.0f, 0.0f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(-300.0f, 200.0f, 0.0f)), E_FAIL);
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
