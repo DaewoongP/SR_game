@@ -1,22 +1,21 @@
 #include "stdafx.h"
-#include "RcTex.h"
+#include "RcAlpha.h"
 
-
-CRcTex::CRcTex(LPDIRECT3DDEVICE9 pGraphicDev)
+CRcAlpha::CRcAlpha(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CVIBuffer(pGraphicDev)
 {
 }
 
-CRcTex::CRcTex(const CRcTex & rhs)
+CRcAlpha::CRcAlpha(const CRcAlpha & rhs)
 	: CVIBuffer(rhs)
 {
 }
 
-CRcTex::~CRcTex()
+CRcAlpha::~CRcAlpha()
 {
 }
 
-HRESULT CRcTex::Ready_Buffer(void)
+HRESULT CRcAlpha::Ready_Buffer(void)
 {
 
 	m_dwFVF = FVF_TEX;
@@ -35,19 +34,19 @@ HRESULT CRcTex::Ready_Buffer(void)
 	// 버텍스 버퍼 메모리 공간의 접근을 막는 행위, 3번 인자는 버텍스 버퍼에 저장된 버텍스들 중 첫 번째 버텍스의 주소를 반환한다.
 
 	pVertex[0].vPos = { -1.f, 1.f, 0.f };
-	pVertex[0].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	pVertex[0].dwColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.1f);
 	pVertex[0].vTexUV = { 0.f, 0.f };
 
 	pVertex[1].vPos = { 1.f, 1.f, 0.f };
-	pVertex[1].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	pVertex[1].dwColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.1f);
 	pVertex[1].vTexUV = { 1.f, 0.f };
 
 	pVertex[2].vPos = { 1.f, -1.f, 0.f };
-	pVertex[2].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	pVertex[2].dwColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.1f);
 	pVertex[2].vTexUV = { 1.f, 1.f };
 
 	pVertex[3].vPos = { -1.f, -1.f, 0.f };
-	pVertex[3].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	pVertex[3].dwColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.1f);
 	pVertex[3].vTexUV = { 0.f, 1.f };
 
 	m_pVB->Unlock();
@@ -69,14 +68,14 @@ HRESULT CRcTex::Ready_Buffer(void)
 	return S_OK;
 }
 
-void CRcTex::Render_Buffer(void)
+void CRcAlpha::Render_Buffer(void)
 {
 	__super::Render_Buffer();
 }
 
-CRcTex * CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CRcAlpha * CRcAlpha::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CRcTex *	pInstance = new CRcTex(pGraphicDev);
+	CRcAlpha *	pInstance = new CRcAlpha(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Buffer()))
 	{
@@ -86,12 +85,12 @@ CRcTex * CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	return pInstance;
 }
-CComponent * CRcTex::Clone(void)
+CComponent * CRcAlpha::Clone(void)
 {
-	return new CRcTex(*this);
+	return new CRcAlpha(*this);
 }
 
-void CRcTex::Free(void)
+void CRcAlpha::Free(void)
 {
 	__super::Free();
 }

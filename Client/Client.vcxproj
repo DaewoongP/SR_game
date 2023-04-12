@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BackgroundSpr.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
@@ -167,8 +168,14 @@
     <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LogoCamera.h" />
+    <ClInclude Include="MenuCubeSpr.h" />
+    <ClInclude Include="MenuSmoke.h" />
     <ClInclude Include="PortalCube.h" />
+
+    <ClInclude Include="ShiningStar.h" />
+
     <ClInclude Include="Select.h" />
+
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -198,6 +205,8 @@
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="TestButton.h" />
+
     <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
     <ClInclude Include="Portal.h" />
@@ -211,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BackgroundSpr.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
@@ -222,7 +232,10 @@
     <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LogoCamera.cpp" />
+    <ClCompile Include="MenuCubeSpr.cpp" />
+    <ClCompile Include="MenuSmoke.cpp" />
     <ClCompile Include="PortalCube.cpp" />
+    <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
@@ -251,6 +264,8 @@
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TestButton.cpp" />
+
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />
     <ClCompile Include="MoveCube.cpp" />

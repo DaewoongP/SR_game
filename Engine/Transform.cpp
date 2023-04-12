@@ -110,6 +110,13 @@ void CTransform::LateUpdate_Component(void)
 {
 }
 
+void CTransform::Move_Floating(const _float & fTimeDelta, _float fPower, _float fSpeed)
+{
+	m_fFloating += fTimeDelta * fSpeed;
+
+	m_vInfo[INFO_POS].y += fPower * sinf(D3DXToRadian(m_fFloating));
+}
+
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CTransform *	pInstance = new CTransform(pGraphicDev);
