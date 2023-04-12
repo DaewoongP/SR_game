@@ -172,9 +172,8 @@
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
     <ClInclude Include="PortalCube.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="ShiningStar.h" />
-    <ClInclude Include="Select.h" />
-    <ClInclude Include="Select.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
@@ -234,9 +233,8 @@
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
     <ClCompile Include="PortalCube.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="ShiningStar.cpp" />
-    <ClCompile Include="Select.cpp" />
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
