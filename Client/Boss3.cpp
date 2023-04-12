@@ -20,6 +20,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->m_bIsStatic = true;
 
@@ -55,6 +56,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 	if (0.f > m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
 
@@ -90,7 +92,7 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
-__super::OnCollisionEnter(collision);
+	__super::OnCollisionEnter(collision);
 }
 
 void CBoss3::OnCollisionStay(const Collision * collision)
@@ -122,7 +124,6 @@ HRESULT CBoss3::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
-
 	return S_OK;
 }
 
@@ -133,15 +134,15 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 	
-	// Ãß°İÀ» 6ÃÊµ¿¾È ÁøÇàÇÏ°í
-	if (3 < m_fCoolDown && 6 > m_fCoolDown)
+	// ì¶”ê²©ì„ ì§„í–‰í•˜ê³ 
+	if (2.f < m_fCoolDown && 5.f > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	// 6ÃÊ ÈÄ °ø°İ ½ÃÀÛ
-	else if (6 < m_fCoolDown)
+	// ì‹œê°„ì´ ì§€ë‚˜ë©´ ê³µê²© ì‹œì‘
+	else if (5.f < m_fCoolDown)
 	{
 		BossAttack(fTimeDelta);
 	}
@@ -152,15 +153,26 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	static _float fAttackCoolDown = 0.f;
 	fAttackCoolDown += fTimeDelta;
 
-	// È¸ÀüÇÏ°í 
+	// íšŒì „í•˜ê³  
 	if(0.75f > fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
-	// ³»·Á Âï±â
-	else
+	// ë‚´ë ¤ ì°ê¸°
+	else if(0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
 	{
 		if(5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f ´Â ¼Óµµ(»ó¼ö)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f ëŠ” ì†ë„(ìƒìˆ˜)
+	}
+	else if (1.f < fAttackCoolDown && 6.f > fAttackCoolDown)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
+		dynamic_cast<CBoss3Hand*>(pGameObject)->Set_Attack(true);
+	}
+
+	else if (6.f < fAttackCoolDown)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
+		dynamic_cast<CBoss3Hand*>(pGameObject)->Set_Attack(true);
 	}
 }
 

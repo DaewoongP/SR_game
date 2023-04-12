@@ -4,7 +4,9 @@
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(25.f)
+	m_fSpeed(25.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f),
+	m_iIndex(0),
+	m_bAttack(false)
 {
 }
 
@@ -16,6 +18,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = true;
 
@@ -56,7 +59,8 @@ _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 	if (-100.f < m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
 
-	FollowPlayer(fTimeDelta);
+	if(m_bAttack)
+		FollowPlayer(fTimeDelta);
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -78,14 +82,17 @@ void CBoss3Hand::Render_GameObject(void)
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 {
+	__super::OnCollisionEnter(collision);
 }
 
 void CBoss3Hand::OnCollisionStay(const Collision * collision)
 {
+	__super::OnCollisionStay(collision);
 }
 
 void CBoss3Hand::OnCollisionExit(const Collision * collision)
 {
+	__super::OnCollisionExit(collision);
 }
 
 void CBoss3Hand::SwapTrigger()
@@ -113,10 +120,45 @@ HRESULT CBoss3Hand::Add_Component(void)
 
 void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 {
+	m_fCoolDown += fTimeDelta;
+
+	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+	NULL_CHECK_RETURN(pGameObject, );
+
+	// �߰�� 4�ʵ��� �����ϰ�
+	if (1.f < m_fCoolDown && 4.f > m_fCoolDown)
+	{
+		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
+		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
+	}
+
+	// 4�� �� ��� ����
+	else if (4.f < m_fCoolDown)
+	{
+		BossAttack(fTimeDelta);
+	}
 }
 
 void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 {
+	m_fAttackCoolDown += fTimeDelta;
+
+	// ȸ���ϰ� 
+	if (0.75f > m_fAttackCoolDown)
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
+
+	// ���� ���
+	else
+	{
+		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f �� �ӵ�(���)
+	}
+
+	if (7.f < m_fAttackCoolDown)
+	{
+		m_bAttack = false;
+		m_fAttackCoolDown = 0.f;
+	}
 }
 
 CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, int iIndex)

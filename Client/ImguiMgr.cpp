@@ -12,7 +12,7 @@ IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
 	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pToodee(nullptr),
-	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true),
+	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true), m_bDeleteAll(false),
 	m_iStageNumber(0)
 {
 }
@@ -84,7 +84,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		}
 
 		// 스테이지 선택 콤보 박스
-		const char* items[] = { "1", "2", "3" };
+		const char* items[] = { "1", "2", "3", "4", "5", "6", "7" };
 		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
 		m_pImguiStage->Set_StageNumber(m_iStageNumber);
 		m_pImguiUnit->Set_StageNumber(m_iStageNumber);
@@ -109,17 +109,29 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiUnit->LoadMapObject(m_iStageNumber);
 			m_pImguiUnit->LoadMonster(m_iStageNumber);
 		}
+		// 레이어의 모든 요소 지우기(맵 큐브 제외)
+		ImGui::Text("All Delete");
+		if (ImGui::Button("DELETE ALL"))
+			m_bDeleteAll = true;
 
-		//// 프로그램 시작하자 마자 로딩
-		//m_pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		//if (m_pToodee && m_bOnceLoad)
-		//{
-		//	m_pImguiStage->LoadCube(m_iStageNumber);
-		//	m_pImguiStage->LoadGrid(m_iStageNumber);
-		//	m_pImguiUnit->LoadMapObject(m_iStageNumber);
-		//	m_pImguiUnit->LoadMonster(m_iStageNumber);
-		//	m_bOnceLoad = false;
-		//}
+		// 선택지, 진짜 다 지울꺼냐 말꺼냐
+		if (m_bDeleteAll)
+		{
+			ImGui::SameLine();
+			ImGui::Text("Are you sure?");
+
+			ImGui::SameLine();
+			if (ImGui::Button("Yes"))
+			{
+				CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+				pLayer->Delete_In_Layer();
+				m_bDeleteAll = false;
+			}
+
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+				m_bDeleteAll = false;
+		}
 
 		// 마우스 커서 위치
 		if (ImGui::IsMousePosValid())

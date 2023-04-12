@@ -91,6 +91,17 @@ void CLayer::LateUpdate_Layer(void)
 	bPreState = g_Is2D;
 }
 
+void CLayer::Delete_In_Layer()
+{
+	for (auto& iter = m_uMapObject.begin(); iter != m_uMapObject.end(); ++iter)
+	{
+		if (!lstrcmp(L"MapCube", iter->first))
+			continue;
+
+		iter->second->m_bDead = true;
+	}
+}
+
 
 CLayer * CLayer::Create(void)
 {
