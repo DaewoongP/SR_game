@@ -26,7 +26,7 @@ CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
 	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0),
-	m_tPortalCubeDir(CD_END)
+	m_tPortalCubeDir(CD_UP)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
