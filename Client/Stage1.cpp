@@ -26,6 +26,7 @@
 #include "SwitchCube.h"
 #include "PortalCube.h"
 #include "Boss3.h"
+#include "Boss2.h"
 
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -87,9 +88,7 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(18.f, 10.f, 10.f), (_int)CD_UP), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(40.f, 10.f, 10.f), (_int)CD_RIGHT), E_FAIL);
-
+	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(18.f, 10.f, 10.f)), E_FAIL);
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)

@@ -27,8 +27,11 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 
 _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDead)
+	if (m_fBlockTime <= 0.f)
+	{
+		m_bDead = true;
 		return OBJ_DEAD;
+	}
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return OBJ_NOEVENT;
@@ -39,23 +42,14 @@ _int CCrackCube::Update_Too(const _float& fTimeDelta)
 	if (m_bCrackDead)
 	{
 		m_fBlockTime -= fTimeDelta;
-		_vec3 ShakePos;
-		ShakePos = m_pTransform->m_vInfo[INFO_POS];
+		_vec3 ShakePos = m_pTransform->m_vInfo[INFO_POS];;
 		Shaking(ShakePos, fTimeDelta);
-		if (m_fBlockTime <= 0.f)
-		{
-			m_bDead = true;
-			return OBJ_DEAD;
-		}
 	}
 	return 0;
 }
 
 _int CCrackCube::Update_Top(const _float& fTimeDelta)
 {
-	if (m_fBlockTime <= 0.f)
-		return OBJ_DEAD;
-
 	return 0;
 }
 
@@ -79,7 +73,6 @@ void CCrackCube::OnCollisionEnter(const Collision* collision)
 	if(!lstrcmp(collision->otherObj->m_pTag, L"Toodee") &&collision->_dir == DIR_UP)
 		DoShootRay(DIR_UP);
 	__super::OnCollisionEnter(collision);
-
 }
 
 void CCrackCube::DoShootRay(COL_DIR exceptDir)

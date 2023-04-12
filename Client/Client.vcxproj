@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Boss2.h" />
     <ClInclude Include="Boss3Hand.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
@@ -214,6 +215,7 @@
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Boss2.cpp" />
     <ClCompile Include="Boss3Hand.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
