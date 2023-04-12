@@ -88,6 +88,9 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 
+	//FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(10.f, 4.f, 10.f),CD_UP), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pLayer, _vec3(30.f, 4.f, 10.f),CD_LEFT), E_FAIL);
+
 	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(18.f, 10.f, 10.f)), E_FAIL);
 	for (int i = 0; i < CUBEY; i++)
 	{

@@ -2,12 +2,24 @@
 #include "Include.h"
 #include "GameObject.h"
 
+#define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
+
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
 END
+
+enum BOSS2STATE
+{
+	B2_IDLE,
+	B2_JUMPING,
+	B2_SCREAM,
+	B2_PUNCH,
+	B2_STUMP,
+	B2_END
+};
 
 //보스의 머리통임. 모든 생각/행동의 중추를 담당함.
 //보스는 중력을 쓰지 않을거임. 보니까 중력 안씀.
@@ -35,6 +47,40 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
+	HRESULT		Find_PlayerBoth();
+	void		Do_Stump();
+	
+	//점프 기본값 설정
+	void		Do_Jump_Ready(const _float& fTimeDelta);
+	//위로 상승한다
+	void		Do_Jump_01(const _float& fTimeDelta);
+	//착지한다.
+	void		Do_Jump_02(const _float& fTimeDelta);
+
+
+	void		Do_Scream();
+	void		Do_Punch();
+	void		Do_Idle();
+	_bool		SetPartten();
+	void		ReadyPartten();
+
+private:
+	BOSS2STATE m_eCurrentState;
+	BOSS2STATE m_ePreState;
+	_int		m_iCurrentActionIdx;
+
+	//state, 함수포인터 vec를 가지는 vector
+	vector<BOSS2_STATE_FUNC> funcAction;
+
+	//점프시 이동할 x 값
+	_vec3	   m_fJumpPos[3];
+	_int	   m_iJumpPosidx;
+
+	//찍기때 사용할 player의 위치를 받아오기 위함.
+	CTransform* m_pPlayer01_trans;
+	CTransform* m_pPlayer02_trans;
+
+	_bool		m_bInit;
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
