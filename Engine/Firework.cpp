@@ -7,7 +7,7 @@
 CFirework::CFirework(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 * origin, int numParticles) :
 	CParticleSystem(pGraphicDev)
 {
-	m_Origin = *origin;
+	m_vOrigin = *origin;
 	m_Size = 0.8f;
 	m_VBSize = 2048;
 	m_VBOffset = 0;
@@ -31,7 +31,7 @@ CFirework::~CFirework()
 void CFirework::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->vPos = m_Origin;
+	particle->vPos = m_vOrigin;
 
 	_vec3 minVec = _vec3(-1.f, -1.f, -1.f);
 	_vec3 maxVec = _vec3(1.f, 1.f, 1.f);

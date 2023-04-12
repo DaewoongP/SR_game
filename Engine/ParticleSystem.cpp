@@ -2,8 +2,7 @@
 #include "ParticleSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-
-
+#include "Texture.h"
 
 CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphicDev) :
 	CComponent(pGraphicDev),
@@ -17,14 +16,13 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_VBSize(rhs.m_VBSize),
 	m_VBOffset(rhs.m_VBOffset),
 	m_VBBatchSize(rhs.m_VBBatchSize),
-	m_Origin(rhs.m_Origin),
-	m_Texture(rhs.m_Texture),
+	m_vOrigin(rhs.m_vOrigin),
 	m_EmitRate(rhs.m_EmitRate),
 	m_Size(rhs.m_Size),
-	m_BoundingBox(rhs.m_BoundingBox)
+	m_BoundingBox(rhs.m_BoundingBox),
+	m_pTexture(rhs.m_pTexture)
 {
 	m_VB->AddRef();
-	/*m_Texture->AddRef();*/
 }
 
 CParticleSystem::~CParticleSystem()
@@ -36,9 +34,9 @@ HRESULT CParticleSystem::Ready_Particle(void)
 	FAILED_CHECK_RETURN
 	(
 		m_pGraphicDev->CreateVertexBuffer(
-			m_VBSize * sizeof(PTCCOL),
+			m_VBSize * sizeof(PTCTEX),
 			D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
-			FVF_COL,
+			FVF_PTC,
 			D3DPOOL_DEFAULT,
 			&m_VB,
 			0),
@@ -53,11 +51,12 @@ _int CParticleSystem::Update_Component(const _float& fTimeDelta)
 	_int iExit = __super::Update_Component(fTimeDelta);
 	if (iExit != 0) return iExit;
 
+	m_pTexture->Update_Anim(fTimeDelta);
 	//위치 적용 코드임.
 	/*_vec3 offsetPoint;
-	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);
+	m_pGameObject->m_pTransform->Get_Info(INFO_POS, &offsetPoint);*/
 
-	m_BoundingBox.Offset(offsetPoint);*/
+	//m_BoundingBox.Offset(m_vOrigin);
 
 	return 0;
 }
@@ -76,33 +75,33 @@ void CParticleSystem::Render_Particle(void)
 	{
 		PreRender();
 
-		m_pGraphicDev->SetTexture(0, m_Texture);
-		m_pGraphicDev->SetFVF(FVF_COL);
-		m_pGraphicDev->SetStreamSource(0, m_VB, 0, sizeof(PTCCOL));
-
+		m_pTexture->Set_Texture(0);
+		m_pGraphicDev->SetFVF(FVF_PTC);
+		m_pGraphicDev->SetStreamSource(0, m_VB, 0, sizeof(PTCTEX));
+		
 		if (m_VBOffset >= m_VBSize)
 			m_VBOffset = 0;
 
-		PTCCOL* v = 0;
+		PTCTEX* v = 0;
 
 		m_VB->Lock(
-			m_VBOffset * sizeof(PTCCOL),
-			m_VBBatchSize * sizeof(PTCCOL),
+			m_VBOffset * sizeof(PTCTEX),
+			m_VBBatchSize * sizeof(PTCTEX),
 			(void**)&v,
 			m_VBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 
 		DWORD numParticlesInBatch = 0;
 
-		list<Particle>::iterator it;
-		for (it = m_Particles.begin(); it != m_Particles.end(); it++)
+		for (auto it = m_Particles.begin(); it != m_Particles.end(); it++)
 		{
 			if (it->bIsAlive)
 			{
 				v->vPos = it->vPos;
+				v->vTexUV = it->vTexUV;
 				v->dwColor = it->dwColor;
 				v++;
 				numParticlesInBatch++;
-
+	
 				if (numParticlesInBatch == m_VBBatchSize)
 				{
 					m_VB->Unlock();
@@ -116,15 +115,14 @@ void CParticleSystem::Render_Particle(void)
 						m_VBOffset = 0;
 
 					m_VB->Lock(
-						m_VBOffset * sizeof(PTCCOL),
-						m_VBBatchSize * sizeof(PTCCOL),
+						m_VBOffset * sizeof(PTCTEX),
+						m_VBBatchSize * sizeof(PTCTEX),
 						(void**)&v,
 						m_VBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
 					numParticlesInBatch = 0;
 				}
 			}
 		}
-
 
 		m_VB->Unlock();
 
@@ -140,7 +138,6 @@ void CParticleSystem::Render_Particle(void)
 
 		PostRender();
 	}
-
 }
 
 bool CParticleSystem::IsEmpty()
@@ -192,9 +189,9 @@ void CParticleSystem::AddParticle()
 
 void CParticleSystem::Free(void)
 {
+	m_pTexture->Release();
 	CComponent::Free();
 	m_VB->Release();
-	//m_Texture->Release();
 }
 
 void CParticleSystem::PreRender()

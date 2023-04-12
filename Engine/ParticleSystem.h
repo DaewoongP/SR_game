@@ -2,7 +2,7 @@
 #include "Component.h"
 
 BEGIN(Engine)
-
+class CTexture;
 class  CParticleSystem : public CComponent
 {
 protected:
@@ -20,7 +20,7 @@ public:
 	virtual void LateUpdate_Component() override;
 	void		Render_Particle(void);
 
-	void SetOrigin(const _vec3& origin) { m_Origin = origin; }
+	void Set_Origin(const _vec3& origin) { m_vOrigin = origin; }
 	void Set_BoundingBox(const BoundingBox& boundingBox) { m_BoundingBox = boundingBox; }
 	void SetEmitRate(const float& emitRate) { m_EmitRate = emitRate; }
 	void SetNumParticle(const int& numParticle) 
@@ -42,18 +42,19 @@ protected:
 	virtual void PostRender();
 
 protected:
-	_vec3					m_Origin;
+	_vec3					m_vOrigin;
 	BoundingBox				m_BoundingBox;
 	float					m_EmitRate;
 	float					m_Size;
-	LPDIRECT3DTEXTURE9		m_Texture;
 	LPDIRECT3DVERTEXBUFFER9 m_VB;
 	list<Particle>			m_Particles;
 	int						m_MaxParticles;
-
+	DWORD					m_dwFVF;
 	DWORD					m_VBSize;
 	DWORD					m_VBOffset;
 	DWORD					m_VBBatchSize;
+
+	CTexture*				m_pTexture;
 
 };
 

@@ -2,7 +2,7 @@
 #include "ParticleSystem.h"
 
 BEGIN(Engine)
-
+class CTexture;
 class  CSnow : public CParticleSystem
 {
 public:
