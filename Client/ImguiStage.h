@@ -8,13 +8,16 @@ public:
 	~CImguiStage();
 
 public:
+	void	Set_StageNumber(_int _iNumber) { m_iStageNumber = _iNumber; }
+
+public:
 	_int Update_Imgui_Stage();
 	void Release();
 	
-	HRESULT SaveGrid();
-	HRESULT LoadGrid();
-	HRESULT SaveCube();
-	HRESULT LoadCube();
+	HRESULT SaveGrid(_int iStageNumber);
+	HRESULT LoadGrid(_int iStageNumber);
+	HRESULT SaveCube(_int iStageNumber);
+	HRESULT LoadCube(_int iStageNumber);
 
 private:
 	// 그리드 메뉴
@@ -48,6 +51,8 @@ private:
 
 	bool m_bCubePlaced;						// 디폴트 큐브 생성 
 	int m_iCubeTextureNumber;				// 큐브 스타일 번호
+
+	_int m_iStageNumber;					// 스테이지 저장용 변수
 	
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);

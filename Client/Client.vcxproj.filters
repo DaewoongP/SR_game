@@ -167,6 +167,15 @@
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
+      <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss">
+      <UniqueIdentifier>{75774083-3cd0-48df-a419-5ecbb16f12ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3">
+      <UniqueIdentifier>{2dc22887-05a7-46f0-b662-307accbe57c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -359,6 +368,24 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="UICamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3.h">
+      <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Hand.h">
+      <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClInclude>
+    <ClInclude Include="StageCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoCamera.h">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -544,6 +571,26 @@
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    <ClCompile Include="UICamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Hand.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="StageCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoCamera.cpp">
+      <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

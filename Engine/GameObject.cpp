@@ -9,7 +9,7 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_pGraphicDev->AddRef();
 
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
-	m_uMapComponent[ID_DYNAMIC].insert({ L"Transform", m_pTransform });
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Transform", m_pTransform });
 }
 
 CGameObject::~CGameObject()
@@ -41,7 +41,7 @@ void CGameObject::Set_Tag(const _tchar * pTag)
 
 _int CGameObject::Update_GameObject(const _float & fTimeDelta)
 {
-	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 		iter.second->Update_Component(fTimeDelta);
 
 	return 0;
@@ -49,14 +49,14 @@ _int CGameObject::Update_GameObject(const _float & fTimeDelta)
 
 void CGameObject::LateUpdate_GameObject(void)
 {
-	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 		iter.second->LateUpdate_Component();
 }
 
 void CGameObject::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTexture(0, nullptr);
-	for (auto& iter : m_uMapComponent[ID_DYNAMIC])
+	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 	{
 		iter.second->Render_Component();
 	}
@@ -128,7 +128,6 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 		if (_rigid->m_Velocity.y < 0)
 			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
 		_rigid->m_Velocity.x *= 0.8f;
-		
 		break;
 	case DIR_DOWN:
 		if (_rigid->m_Velocity.y > 0)
@@ -138,14 +137,10 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	case DIR_LEFT:
 		if (_rigid->m_Velocity.x > 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		if (_rigid->m_Velocity.y < 0)
-			_rigid->m_Velocity.y *= 0.95f;
 		break;
 	case DIR_RIGHT:
 		if (_rigid->m_Velocity.x < 0)
 			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		if (_rigid->m_Velocity.y < 0)
-			_rigid->m_Velocity.y *= 0.95f;
 		break;
 	}
 	_rigid->m_Velocity -= reaction;
@@ -155,12 +150,49 @@ void CGameObject::OnCollisionExit(const Collision * collision)
 {
 }
 
+void CGameObject::Sort_Component()
+{
+	if (!m_vecComponent->empty())
+	{
+		CComponent* pTransform = nullptr;
+		CComponent* pCollider = nullptr;
+		CComponent* pRigidbody = nullptr;
+
+		for (auto& pair = m_vecComponent[ID_DYNAMIC].begin(); pair != m_vecComponent[ID_DYNAMIC].end();)
+		{
+			if (!lstrcmp(pair->first, L"Transform"))
+			{
+				pTransform = pair->second;
+				pair = m_vecComponent[ID_DYNAMIC].erase(pair);
+			}
+			else if (!lstrcmp(pair->first, L"Collider"))
+			{
+				pCollider = pair->second;
+				pair = m_vecComponent[ID_DYNAMIC].erase(pair);
+			}
+			else if (!lstrcmp(pair->first, L"Rigidbody"))
+			{
+				pRigidbody = pair->second;
+				pair = m_vecComponent[ID_DYNAMIC].erase(pair);
+			}
+			else
+				++pair;
+		}
+		if (nullptr != pTransform)
+			m_vecComponent[ID_DYNAMIC].push_back({ L"Transform", pTransform });
+		if (nullptr != pCollider)
+			m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pCollider });
+		if (nullptr != pRigidbody)
+			m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pRigidbody });
+	}
+}
+
 
 CComponent * CGameObject::Find_Component(const _tchar * pComponentTag, COMPONENTID eID)
 {
-	auto	iter = find_if(m_uMapComponent[eID].begin(), m_uMapComponent[eID].end(), CTag_Finder(pComponentTag));
+	auto	iter = find_if(m_vecComponent[eID].begin(), m_vecComponent[eID].end(), CTag_Finder(pComponentTag));
 
-	if (iter == m_uMapComponent[eID].end())
+	if (iter == m_vecComponent[eID].end())
 		return nullptr;
 
 	return iter->second;
@@ -170,8 +202,8 @@ void CGameObject::Free(void)
 {
 	for (size_t i = 0; i < ID_END; ++i)
 	{
-		for_each(m_uMapComponent[i].begin(), m_uMapComponent[i].end(), CDeleteMap());
-		m_uMapComponent[i].clear();
+		for_each(m_vecComponent[i].begin(), m_vecComponent[i].end(), CDeleteMap());
+		m_vecComponent[i].clear();
 	}
 	Safe_Release(m_pGraphicDev);
 }

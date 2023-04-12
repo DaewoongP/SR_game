@@ -19,13 +19,15 @@ public:
 	void	Release();
 
 private:
-	CImguiStage* m_pImguiStage; // ½ºÅ×ÀÌÁö Åø
-	CImguiUnit*  m_pImguiUnit;  // À¯´Ö Åø
+	CImguiStage* m_pImguiStage;		// ìŠ¤í…Œì´ì§€ íˆ´
+	CImguiUnit*  m_pImguiUnit;		// ìœ ë‹› íˆ´
 
-	CGameObject* m_pToodee;		// Åõµğ°¡ ÀÖ´ÂÁö È®ÀÎ
-	bool		 m_bOnceLoad;	// ÃÖÃÊ ÇÑ ¹ø ·Îµå
+	CGameObject* m_pToodee;			// íˆ¬ë””ê°€ ìˆëŠ”ì§€ í™•ì¸
+	_bool		 m_bOnceLoad;		// ìµœì´ˆ í•œ ë²ˆ ë¡œë“œ
+	_bool		 m_bDeleteAll;		// ì§„ì§œ ë‹¤ ì§€ìš¸ê»€ì§€ ë¬¼ì–´ë³´ëŠ” ë³€ìˆ˜
+	_int		 m_iStageNumber;	// ìŠ¤í…Œì´ì§€ ê³ ë¥´ëŠ” ë³€ìˆ˜
 
-	// window Ã¢ onoff °ü·Ã º¯¼ö
-	bool m_bStageTool; // ½ºÅ×ÀÌÁö onoff
-	bool m_bUnitTool;  // À¯´Ö onoff
+	// window ì°½ onoff ê´€ë ¨ ë³€ìˆ˜
+	bool m_bStageTool; // ìŠ¤í…Œì´ì§€ onoff
+	bool m_bUnitTool;  // ìœ ë‹› onoff
 };

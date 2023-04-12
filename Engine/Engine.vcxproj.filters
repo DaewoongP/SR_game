@@ -155,6 +155,8 @@
     </ClInclude>
     <ClInclude Include="RcGradation.h">
       <Filter>Componnent\VIBuffer</Filter>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Manager\ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +375,9 @@
     </Filter>
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ObjectPool">
+      <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

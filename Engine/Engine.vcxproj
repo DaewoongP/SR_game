@@ -46,6 +46,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MyFont.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ProtoMgr.h" />
     <ClInclude Include="RcAlpha.h" />

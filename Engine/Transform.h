@@ -69,6 +69,16 @@ public:
 
 	void Move_Floating(const _float& fTimeDelta, _float fPower = 10.0f, _float fSpeed = 60.0f);
 
+	void		Update_Shake(_float fTimeDelta, _vec3& vPos);
+	//����ũ �ð�, ���� �Է� �Լ�
+	void		Set_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL)
+	{
+		m_fShakeTimer = fDuration;
+		m_fShakePower = (_float)iPower;
+		m_iShakeAxis = (_int)eShake_Axis;
+		m_fWeakPoint = (_float)iPower / fDuration;
+	}
+
 public:
 	_bool		m_bIsStatic = true;
 	_vec3		m_vInfo[INFO_END];
@@ -81,6 +91,13 @@ public:
 	_bool		m_bMove;
 
 	_float		m_fFloating = 0.0f;
+	//����ũ ����
+	_bool	m_bUseWeak = false;
+	_float	m_fWeakPoint = 0.0f;
+	_int	m_iShakeAxis = Engine::SHAKE_END;
+	_float	m_fShakeTimer = 0.0f;
+	_float	m_fShakePower = 0;
+	_vec3	m_vShakeOffset;
 
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

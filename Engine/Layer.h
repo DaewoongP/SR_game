@@ -22,6 +22,9 @@ public:
 	_int				Update_Layer(const _float& fTimeDelta);
 	void				LateUpdate_Layer(void);
 
+public:
+	void				Delete_In_Layer();
+
 private:
 	multimap<const _tchar*, CGameObject*>	m_uMapObject;
 
