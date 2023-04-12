@@ -23,7 +23,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->m_bIsStatic = true;
-
+	
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
@@ -34,6 +34,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+	
 
 	if (m_bCreateHand)
 	{
@@ -57,9 +58,59 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
-	if (0.f > m_fAngle)
-		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
 
+	m_vLookDot = { m_pTransform->m_vInfo[INFO_POS].x - 1.f,
+					   m_pTransform->m_vInfo[INFO_POS].y,
+					   m_pTransform->m_vInfo[INFO_POS].z - 1.f };
+	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+	//toodee topdee 카메라전환할때 위치돌리기
+	if (0  >m_fAngle)
+		m_pTransform->Rotation(ROT_X, D3DXToRadian(-m_fAngle++ * fTimeDelta));
+	
+	BossLook(fTimeDelta);
+	D3DXVec3Normalize(&m_vDirection, &m_vDirection);
+
+	_vec3 vBossToPlayer = m_vPlayerInfo - m_pTransform->m_vInfo[INFO_POS];
+	D3DXVec3Normalize(&vBossToPlayer, &vBossToPlayer);
+	//_matrix matRot = *m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	//D3DXMatrixRotationY(&matRot, D3DXToRadian(-45 * fTimeDelta));
+	//m_pTransform->m_matWorld = matRot;
+	//m_pTransform->m_matWorld = matRot;
+
+	_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
+	m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
+	//if (fSight < 0.f)
+	//{
+	//	if (m_pTransform->m_vInfo[INFO_POS].y > m_vPlayerInfo.y)
+	//	{
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//		if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+
+	//	}
+	//	else if (m_pTransform->m_vInfo[INFO_POS].y < m_vPlayerInfo.y)
+	//	{
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//		if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+
+	//	}
+	//}
+	//else if (fSight > 0.f)
+	//{
+	//	if (m_pTransform->m_vInfo[INFO_POS].y < m_vPlayerInfo.y)
+
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//	if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//		m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+	//}
+	//else if(fSight==0.f)
+	//{	
+	//	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	//}
 	CGameObject::Update_Too(fTimeDelta);
 
 	return 0;
@@ -68,7 +119,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 _int CBoss3::Update_Top(const _float & fTimeDelta)
 {
 	if (-100.f < m_fAngle)
-		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
+				m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
 
 	FollowPlayer(fTimeDelta);
 
@@ -92,6 +143,7 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
+	//collision->otherObj
 	__super::OnCollisionEnter(collision);
 }
 
@@ -138,6 +190,7 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	if (2.f < m_fCoolDown && 5.f > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
+		
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
@@ -146,6 +199,17 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	{
 		BossAttack(fTimeDelta);
 	}
+}
+
+void CBoss3::BossLook(const _float& fTimeDelta)
+{
+	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+	NULL_CHECK_RETURN(pGameObject, );
+	m_vPlayerInfo = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+	
+	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+
+	
 }
 
 void CBoss3::BossAttack(const _float & fTimeDelta)

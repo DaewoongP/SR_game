@@ -23,6 +23,7 @@ private:
 	HRESULT Add_Component(void);
 
 	void	FollowPlayer(const _float & fTimeDelta);
+	void	BossLook(const _float& fTimeDelta);
 	void	BossAttack(const _float & fTimeDelta);
 
 private:
@@ -30,6 +31,9 @@ private:
 	_float  m_fAngle;
 	_float	m_fSpeed;
 	_float  m_fCoolDown;
+	_vec3  m_vLookDot;
+	_vec3 m_vDirection;
+	_vec3 m_vPlayerInfo;
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
