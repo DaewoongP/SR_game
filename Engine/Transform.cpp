@@ -84,11 +84,11 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	for (size_t i = 0; i < INFO_POS; ++i)
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
 
-	// Å©±â º¯È¯
+	// Å©ï¿½ï¿½ ï¿½ï¿½È¯
 	_matrix matScale;
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 
-	// È¸Àü º¯È¯
+	// È¸ï¿½ï¿½ ï¿½ï¿½È¯
 	_matrix			matRot[ROT_END];
 	_matrix			matRotation;
 
@@ -98,12 +98,12 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 
 	matRotation = matRot[ROT_Y] * matRot[ROT_Z] * matRot[ROT_X];
 
-	//½¦ÀÌÅ©
+	//ï¿½ï¿½ï¿½ï¿½Å©
 	_vec3 vShake = { 0.0f,0.0f,0.0f };
 
 	Update_Shake(fTimeDelta, vShake);
 
-	// À§Ä¡ º¯È¯
+	// ï¿½ï¿½Ä¡ ï¿½ï¿½È¯
 	_matrix			matTrans;
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x + vShake.x, m_vInfo[INFO_POS].y + vShake.y, m_vInfo[INFO_POS].z + vShake.z);
 
@@ -116,6 +116,12 @@ void CTransform::LateUpdate_Component(void)
 {
 }
 
+void CTransform::Move_Floating(const _float & fTimeDelta, _float fPower, _float fSpeed)
+{
+	m_fFloating += fTimeDelta * fSpeed;
+
+	m_vInfo[INFO_POS].y += fPower * sinf(D3DXToRadian(m_fFloating));
+}
 void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 {
 	if (m_fShakeTimer > 0.0f)

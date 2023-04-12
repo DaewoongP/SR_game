@@ -14,10 +14,9 @@ private:
 public:
 	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer)
 	{
-		// ÃÊ±âÈ­
+		// ï¿½Ê±ï¿½È­
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
-		CScene*	pScene = Get_Scene();
-		// »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½
 		CGameObject* pGameObject = T::Create(pGraphicDev);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		pGameObject->Sort_Component();
@@ -27,10 +26,9 @@ public:
 
 	static HRESULT	Create(const _tchar * pObjTag , CLayer* pLayer, _vec3& vPos)
 	{
-		// ÃÊ±âÈ­
+		// ï¿½Ê±ï¿½È­
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
-		CScene*	pScene = Get_Scene();
-		// »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		pGameObject->Sort_Component();
@@ -40,10 +38,9 @@ public:
 
 	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos, int iIndex)
 	{
-		// ÃÊ±âÈ­
+		// ï¿½Ê±ï¿½È­
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
-		CScene*	pScene = Get_Scene();
-		// »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, iIndex);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		pGameObject->Sort_Component();
@@ -53,10 +50,9 @@ public:
 
 	static HRESULT	CreateParent(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos)
 	{
-		// ÃÊ±âÈ­
+		// ï¿½Ê±ï¿½È­
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
-		CScene*	pScene = Get_Scene();
-		// »ý¼º
+		// ï¿½ï¿½ï¿½ï¿½
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, pLayer);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		pGameObject->Sort_Component();

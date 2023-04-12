@@ -49,7 +49,9 @@
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ProtoMgr.h" />
+    <ClInclude Include="RcAlpha.h" />
     <ClInclude Include="RcCol.h" />
+    <ClInclude Include="RcGradation.h" />
     <ClInclude Include="RcTex.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Rigidbody.h" />
@@ -91,7 +93,9 @@
     <ClCompile Include="MyFont.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ProtoMgr.cpp" />
+    <ClCompile Include="RcAlpha.cpp" />
     <ClCompile Include="RcCol.cpp" />
+    <ClCompile Include="RcGradation.cpp" />
     <ClCompile Include="RcTex.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Rigidbody.cpp" />

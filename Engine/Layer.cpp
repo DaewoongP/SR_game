@@ -82,7 +82,7 @@ void CLayer::LateUpdate_Layer(void)
 		else
 			iter.second->LateUpdate_Top();
 		iter.second->LateUpdate_GameObject();
-		// Ʈ���� ȣ��
+		// Æ®¸®°Å È£Ãâ
 		if (bPreState != g_Is2D)
 		{
 			iter.second->SwapTrigger();
@@ -99,9 +99,8 @@ void CLayer::Delete_In_Layer()
 			!lstrcmp(L"Toodee", iter->first) ||
 			!lstrcmp(L"Topdee", iter->first))
 			continue;
-
-			iter->second->m_bDead = true;		
-	}
+		iter->second->m_bDead = true;
+	}	
 }
 
 

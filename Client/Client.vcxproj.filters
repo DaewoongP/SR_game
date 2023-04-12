@@ -83,15 +83,6 @@
     <Filter Include="00. GameObject\02. MapObject\Spike">
       <UniqueIdentifier>{1efa3d7a-e68a-4d36-9a90-b4b436676355}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\03. Etc">
-      <UniqueIdentifier>{9163a1fd-8629-4881-bd24-809e01b849c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\03. Etc\BackGround">
-      <UniqueIdentifier>{6b52c980-3a99-4eb1-9e87-2f4d65d543db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\03. Etc\Camera">
-      <UniqueIdentifier>{6f60e620-5749-4699-a3f4-4516b0b9fc84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene">
       <UniqueIdentifier>{493da810-209f-4978-ad05-d997e6ebcb9c}</UniqueIdentifier>
     </Filter>
@@ -154,6 +145,24 @@
     </Filter>
     <Filter Include="01. Scene\Stages\Logo\00.Title">
       <UniqueIdentifier>{df773c6d-ec21-4c91-a92c-4372b755ee36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc">
+      <UniqueIdentifier>{9163a1fd-8629-4881-bd24-809e01b849c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc\BackGround">
+      <UniqueIdentifier>{6b52c980-3a99-4eb1-9e87-2f4d65d543db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc\Camera">
+      <UniqueIdentifier>{6f60e620-5749-4699-a3f4-4516b0b9fc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj">
+      <UniqueIdentifier>{5ef426b5-219e-46de-bc40-f3e4b4edf3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. BackGroundSpr">
+      <UniqueIdentifier>{ccda0f4c-d796-41be-9924-d3d2f1241391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
+      <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
@@ -259,10 +268,10 @@
       <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="StageBG.h">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="MainApp.h">
       <Filter>Main\MainApp</Filter>
@@ -324,14 +333,29 @@
     <ClInclude Include="SwitchCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
     </ClInclude>
-    <ClInclude Include="PortalCube.h">
-      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
-    </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>01. Scene\Stages\Logo\00.Title</Filter>
+    </ClInclude>
+    <ClInclude Include="UICamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundSpr.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
+    <ClInclude Include="ShiningStar.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuCubeSpr.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuSmoke.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
     <ClInclude Include="UICamera.h">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
@@ -350,6 +374,18 @@
     </ClInclude>
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="StageCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -430,7 +466,7 @@
       <Filter>Imgui\Imgui_Object\Grid\DefaultGrid</Filter>
     </ClCompile>
     <ClCompile Include="StageBG.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>Main\MainApp</Filter>
@@ -495,11 +531,8 @@
     <ClCompile Include="MainApp.cpp">
       <Filter>Main\MainApp</Filter>
     </ClCompile>
-    <ClCompile Include="PortalCube.cpp">
-      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
-    </ClCompile>
     <ClCompile Include="BackGround.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
@@ -508,6 +541,30 @@
       <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="UICamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundSpr.cpp">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClCompile>
+    <ClCompile Include="ShiningStar.cpp">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuCubeSpr.cpp">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuSmoke.cpp">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\03. Etc\BackGround</Filter>
+    </ClCompile>
     <ClCompile Include="UICamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
     </ClCompile>
@@ -528,6 +585,18 @@
     </ClCompile>
     <ClCompile Include="LogoCamera.cpp">
       <Filter>00. GameObject\03. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="StageCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

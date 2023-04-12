@@ -150,6 +150,12 @@
     </ClInclude>
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="WindParticle.h" />
+    <ClInclude Include="RcAlpha.h">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="RcGradation.h">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Manager\ObjectPool</Filter>
     </ClInclude>
@@ -268,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="WindParticle.cpp" />
+    <ClCompile Include="RcGradation.cpp">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="RcAlpha.cpp">
+      <Filter>Componnent\VIBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
