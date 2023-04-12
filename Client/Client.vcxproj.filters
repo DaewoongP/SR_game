@@ -163,6 +163,7 @@
     </Filter>
     <Filter Include="00. BackGroundSpr">
       <UniqueIdentifier>{ccda0f4c-d796-41be-9924-d3d2f1241391}</UniqueIdentifier>
+	</Filter>
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
@@ -354,6 +355,7 @@
     </ClInclude>
     <ClInclude Include="MenuSmoke.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
+	</ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
@@ -536,6 +538,7 @@
     </ClCompile>
     <ClCompile Include="MenuSmoke.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
+	</ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
