@@ -48,9 +48,7 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
-	void		Do_Stump();
-	
-	//점프 기본값 설정
+	//점프 함수 기본값 설정
 	void		Do_Jump_Ready(const _float& fTimeDelta);
 	//위로 상승한다
 	void		Do_Jump_01(const _float& fTimeDelta);
@@ -59,20 +57,21 @@ private:
 	//휴식패턴
 	void		Do_Rest(const _float& fTimeDelta);
 	//벨로시티 초기화 패턴
-	void		Do_ResetVelocity(const _float& fTimeDelta) {
-		m_pRigid->m_Velocity = _vec3(0, 0, 0); 
-		CheckIsLastActionIdx();}
+	void		Do_ResetVelocity(const _float& fTimeDelta) {m_pRigid->m_Velocity = _vec3(0, 0, 0);CheckIsLastActionIdx();}
+	
+	//스텀프 함수 기본값 설정
+	void		Do_Stump_Ready(const _float& fTimeDelta);
 	//toodee 혹은 topdee를 향해 n초간 가있는 패턴
-	void		Do_Chase_Player();
+	void		Do_Chase_Player(const _float& fTimeDelta);
 	//y로 살짝 올라가며, 회전을 주는 패턴
-	void		Do_LittleUp_Turn();
-
+	void		Do_LittleUp_Turn(const _float& fTimeDelta);
+	//만세!
 	void        Do_Hurray(const _float& fTimeDelta);
+	//주먹 소환
 	void        Do_SummonFist(const _float& fTimeDelta);
 
 	void		SetPartten();
 	void		ReadyPartten();
-	
 	void		CheckIsLastActionIdx();
 
 private:

@@ -50,6 +50,8 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = true;
 	}
 	//패턴 실행
+	m_dwActionTime -= fTimeDelta;
+	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -138,10 +140,6 @@ HRESULT CBoss2::Find_PlayerBoth()
 	m_pPlayer02_trans = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
 	NULL_CHECK_RETURN(m_pPlayer02_trans, -1);
 	return S_OK;
-}
-
-void CBoss2::Do_Stump()
-{
 }
 
 void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
@@ -269,19 +267,9 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	funcAction.push_back(func);
-	func.clear();
-
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
@@ -289,9 +277,9 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
@@ -299,9 +287,19 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
-	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
+	funcAction.push_back(func);
+	func.clear();
+
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
@@ -312,9 +310,43 @@ void CBoss2::ReadyPartten()
 
 void CBoss2::Do_Rest(const _float& fTimeDelta)
 {
-	m_dwRestTime -= fTimeDelta;
 	if (m_dwRestTime < 0)
 		CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
+{
+	m_dwActionTime = 3;
+	CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
+{
+	if (g_Is2D)
+	{
+		float _x =Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer01_trans->m_vInfo[INFO_POS].x, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].x = _x;
+		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y,30, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].y = _y;
+	}
+	else 
+	{
+		float _x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer02_trans->m_vInfo[INFO_POS].x, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].x = _x;
+		//탑디면 y도 따라가줘야함
+		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].y = _y;
+
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
+	}
+	if (m_dwActionTime < 0)
+		CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
+{
+	CheckIsLastActionIdx();
 }
 
 void CBoss2::CheckIsLastActionIdx()
