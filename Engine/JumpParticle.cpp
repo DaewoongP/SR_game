@@ -63,7 +63,7 @@ _int CJumpParticle::Update_Particle()
 			it->vVelocity -= it->vAccel;
 			if (D3DXVec3Length(&it->vAccel) > D3DXVec3Length(&it->vVelocity))
 				it->vAccel = { 0.f, 0.f, 0.f };
-
+			m_Size *= 0.995f;
 			it->fAge += fTimeDelta;
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;

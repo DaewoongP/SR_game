@@ -34,7 +34,6 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	BoundingBox box;
 	box.Offset(vPos);
 	m_pJumpParticle->Set_BoundingBox(box);
-	m_pJumpParticle->Set_Size(0.6f);
 
 	return S_OK;
 }
@@ -202,10 +201,9 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	{
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 		m_pJumpParticle->Reset();
+		m_pJumpParticle->Set_Size(0.8f);
 		m_pJumpParticle->Start_Particle();
 	}
-		
-
 }
 
 void CToodee::DoFlip()
