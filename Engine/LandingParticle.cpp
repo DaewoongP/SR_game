@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "JumpParticle.h"
+#include "LandingParticle.h"
 
 #include "Export_Function.h"
-CJumpParticle::CJumpParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CLandingParticle::CLandingParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 	:CParticleSystem(pGraphicDev)
 {
 	m_pTexture = CTexture::Create(m_pGraphicDev,
@@ -20,35 +20,38 @@ CJumpParticle::CJumpParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 		AddParticle();
 }
 
-CJumpParticle::CJumpParticle(const CJumpParticle & rhs)
+CLandingParticle::CLandingParticle(const CLandingParticle & rhs)
 	:CParticleSystem(rhs)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
 }
 
-CJumpParticle::~CJumpParticle()
+CLandingParticle::~CLandingParticle()
 {
 }
 
-void CJumpParticle::ResetParticle(Particle * particle)
+void CLandingParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	if (nullptr != m_pGameObject && m_bClone)
 		particle->vPos = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
-	particle->vPos.y -= 1.f;
-	GetRandomVector(&particle->vVelocity, 
-		&m_BoundingBox._offsetMin,
-		&m_BoundingBox._offsetMax);
-	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
-	particle->vAccel.y += 2.f;
-	particle->vVelocity = particle->vAccel * 10.f;
+	particle->vPos.y -= rand() % 1000 * 0.0017;
+	switch (rand() % 2)
+	{
+	case 0:
+		particle->vVelocity = { 10.f, 0.f, 0.f };
+		break;
+	case 1:
+		particle->vVelocity = { -10.f, 0.f, 0.f };
+		break;
+	}
 	particle->fAge = 0.f;
-	particle->fLifeTime = 0.3f;
+	particle->fLifeTime = 0.5f;
 }
 
-_int CJumpParticle::Update_Particle()
+_int CLandingParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -60,9 +63,6 @@ _int CJumpParticle::Update_Particle()
 		if (it->bIsAlive)
 		{
 			it->vPos += it->vVelocity * fTimeDelta;
-			it->vVelocity -= it->vAccel;
-			if (D3DXVec3Length(&it->vAccel) >= D3DXVec3Length(&it->vVelocity))
-				it->vAccel = { 0.f, 0.f, 0.f };
 			m_Size *= 0.995f;
 			it->fAge += fTimeDelta;
 			if (it->fAge > it->fLifeTime)
@@ -75,9 +75,9 @@ _int CJumpParticle::Update_Particle()
 	return -1;
 }
 
-CJumpParticle * CJumpParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CLandingParticle * CLandingParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 {
-	CJumpParticle *	pInstance = new CJumpParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
+	CLandingParticle *	pInstance = new CLandingParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
 
 	if (FAILED(pInstance->Ready_Particle()))
 	{
@@ -88,12 +88,12 @@ CJumpParticle * CJumpParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tcha
 	return pInstance;
 }
 
-CComponent * CJumpParticle::Clone(void)
+CComponent * CLandingParticle::Clone(void)
 {
-	return new CJumpParticle(*this);
+	return new CLandingParticle(*this);
 }
 
-void CJumpParticle::Free(void)
+void CLandingParticle::Free(void)
 {
 	__super::Free();
 }

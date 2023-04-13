@@ -107,9 +107,9 @@ HRESULT CKey::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider",pComponent });
 
-	pComponent = m_pSparkParticle = dynamic_cast<CSpark*>(Engine::Clone_Proto(L"Spark", this));
+	pComponent = m_pSparkParticle = dynamic_cast<CSparkParticle*>(Engine::Clone_Proto(L"SparkParticle", this));
 	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Spark", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"SparkParticle", pComponent });
 
 	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
 	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);

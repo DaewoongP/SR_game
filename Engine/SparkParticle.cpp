@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "Spark.h"
+#include "SparkParticle.h"
 
 #include "Export_Function.h"
-CSpark::CSpark(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CSparkParticle::CSparkParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 	:CParticleSystem(pGraphicDev)
 {
 	m_pTexture = CTexture::Create(m_pGraphicDev,
@@ -24,18 +24,18 @@ CSpark::CSpark(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextur
 		AddParticle();
 }
 
-CSpark::CSpark(const CSpark & rhs)
+CSparkParticle::CSparkParticle(const CSparkParticle & rhs)
 	:CParticleSystem(rhs)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
 }
 
-CSpark::~CSpark()
+CSparkParticle::~CSparkParticle()
 {
 }
 
-void CSpark::ResetParticle(Particle * particle)
+void CSparkParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
@@ -46,7 +46,7 @@ void CSpark::ResetParticle(Particle * particle)
 		&m_BoundingBox._max);
 }
 
-_int CSpark::Update_Particle()
+_int CSparkParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -56,9 +56,9 @@ _int CSpark::Update_Particle()
 	return -1;
 }
 
-CSpark * CSpark::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CSparkParticle * CSparkParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 {
-	CSpark *	pInstance = new CSpark(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
+	CSparkParticle *	pInstance = new CSparkParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
 
 	if (FAILED(pInstance->Ready_Particle()))
 	{
@@ -69,12 +69,12 @@ CSpark * CSpark::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _in
 	return pInstance;
 }
 
-CComponent * CSpark::Clone(void)
+CComponent * CSparkParticle::Clone(void)
 {
-	return new CSpark(*this);
+	return new CSparkParticle(*this);
 }
 
-void CSpark::Free(void)
+void CSparkParticle::Free(void)
 {
 	__super::Free();
 }

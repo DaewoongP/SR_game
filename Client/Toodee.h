@@ -10,6 +10,7 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 class CJumpParticle;
+class CLandingParticle;
 
 END
 class CToodee : public Engine::CGameObject
@@ -42,6 +43,7 @@ private:
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	Engine::CJumpParticle*	m_pJumpParticle;
+	Engine::CLandingParticle*	m_pLandingParticle;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;

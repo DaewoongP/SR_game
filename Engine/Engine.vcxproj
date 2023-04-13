@@ -45,6 +45,7 @@
     <ClInclude Include="GraphicDev.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="JumpParticle.h" />
+    <ClInclude Include="LandingParticle.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
@@ -63,7 +64,7 @@
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Snow.h" />
     <ClInclude Include="SoundMgr.h" />
-    <ClInclude Include="Spark.h" />
+    <ClInclude Include="SparkParticle.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicDev.cpp" />
     <ClCompile Include="JumpParticle.cpp" />
+    <ClCompile Include="LandingParticle.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Management.cpp" />
@@ -111,7 +113,7 @@
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Snow.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
-    <ClCompile Include="Spark.cpp" />
+    <ClCompile Include="SparkParticle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

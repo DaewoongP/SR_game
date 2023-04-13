@@ -28,9 +28,10 @@
 #include "RcAlpha.h"
 
 #include "BlockExp.h"
-#include "Spark.h"
+#include "SparkParticle.h"
 #include "CircularParticle.h"
 #include "JumpParticle.h"
+#include "LandingParticle.h"
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

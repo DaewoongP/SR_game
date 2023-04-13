@@ -131,7 +131,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CBlockExp::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png", 
 		9, 1.f, 1, false)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark", CSpark::Create(m_pGraphicDev,
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CSparkParticle", CSparkParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png",
 		10, 1.f, 2, false)), E_FAIL);
 
@@ -142,6 +142,10 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		1.f, 15, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LandingParticle", CLandingParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		1.f, 10, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
 	m_bFinish = true;

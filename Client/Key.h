@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
-class CSpark;
+class CSparkParticle;
 class CCircularParticle;
 END
 class CKey : public Engine::CGameObject
@@ -31,7 +31,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
-	Engine::CSpark*		m_pSparkParticle;
+	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CCircularParticle*		m_pCircularParticle;
 	
 public:

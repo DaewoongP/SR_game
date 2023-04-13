@@ -162,14 +162,15 @@
     <ClInclude Include="BlockExp.h">
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClInclude>
-    <ClInclude Include="Spark.h">
-      <Filter>Componnent\ParticleSystem\Spark</Filter>
-    </ClInclude>
     <ClInclude Include="CircularParticle.h">
       <Filter>Componnent\ParticleSystem\Circular</Filter>
     </ClInclude>
     <ClInclude Include="JumpParticle.h">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="LandingParticle.h" />
+    <ClInclude Include="SparkParticle.h">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -295,14 +296,15 @@
     <ClCompile Include="BlockExp.cpp">
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClCompile>
-    <ClCompile Include="Spark.cpp">
-      <Filter>Componnent\ParticleSystem\Spark</Filter>
-    </ClCompile>
     <ClCompile Include="CircularParticle.cpp">
       <Filter>Componnent\ParticleSystem\Circular</Filter>
     </ClCompile>
     <ClCompile Include="JumpParticle.cpp">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="LandingParticle.cpp" />
+    <ClCompile Include="SparkParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +417,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Jump">
       <UniqueIdentifier>{d7d78ead-aab4-4266-ae54-9e6d2ba8e2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Landing">
+      <UniqueIdentifier>{f627f8ca-0cc5-4a6a-a380-a481c6e68f44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -34,6 +34,7 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	BoundingBox box;
 	box.Offset(vPos);
 	m_pJumpParticle->Set_BoundingBox(box);
+	m_pLandingParticle->Set_BoundingBox(box);
 
 	return S_OK;
 }
@@ -76,15 +77,15 @@ void CToodee::SwapTrigger()
 void CToodee::LateUpdate_GameObject(void)
 {
 	if (m_pJumpParticle->IsDead())
-	{
 		m_pJumpParticle->End_Particle();
-	}
+	if (m_pLandingParticle->IsDead())
+		m_pLandingParticle->End_Particle();
 	__super::LateUpdate_GameObject();
 }
 void CToodee::Render_GameObject(void)
 {
 	m_pJumpParticle->Update_Particle();
-
+	m_pLandingParticle->Update_Particle();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
@@ -99,6 +100,13 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 		collision->_dir == DIR_DOWN)
 	{
 		m_pTextureCom->Switch_Anim(L"Die");
+	}
+
+	if (collision->_dir == DIR_DOWN && m_bJumpable == false)
+	{
+		m_pLandingParticle->Reset();
+		m_pLandingParticle->Set_Size(1.f);
+		m_pLandingParticle->Start_Particle();
 	}
 
 	__super::OnCollisionEnter(collision);
@@ -155,6 +163,10 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"JumpParticle", this));
 	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"JumpParticle", pComponent });
+
+	pComponent = m_pLandingParticle = dynamic_cast<CLandingParticle*>(Engine::Clone_Proto(L"LandingParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"LandingParticle", pComponent });
 
 	return S_OK;
 }
