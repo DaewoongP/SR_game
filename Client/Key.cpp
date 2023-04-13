@@ -29,14 +29,15 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	
 	BoundingBox box;
 	box.Offset(vPos);
-	m_pParticle->Set_BoundingBox(box);
-	m_pParticle->Set_Size(2.f);
+	m_pCircularParticle->Set_BoundingBox(box);
+	m_pCircularParticle->Set_Size(0.7f);
+	m_pCircularParticle->Set_Options(0.2f, 10.f);
 	box._offsetMin = { -0.2f, -0.2f, 0.f };
 	box._offsetMax = { 0.2f, 0.2f, 0.f };
 	m_pSparkParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_AnimSpeed(0.1f);
 	m_pSparkParticle->Start_Particle();
-	
+
 	++iKeyCnt;
 	return S_OK;
 }
@@ -45,9 +46,9 @@ _int CKey::Update_GameObject(const _float& fTimeDelta)
 {	
 	if (m_bDead)
 	{
-		m_pParticle->Start_Particle();
+		m_pCircularParticle->Start_Particle();
 	}
-	if (m_pParticle->IsDead())
+	if (m_pCircularParticle->IsDead())
 		return OBJ_DEAD;
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -63,7 +64,7 @@ void CKey::LateUpdate_GameObject(void)
 
 void CKey::Render_GameObject(void)
 {
-	if (-1 == m_pParticle->Update_Particle())
+	if (-1 == m_pCircularParticle->Update_Particle())
 		return;
 	m_pSparkParticle->Update_Particle();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
@@ -106,13 +107,13 @@ HRESULT CKey::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider",pComponent });
 
-	pComponent = m_pParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
-	NULL_CHECK_RETURN(m_pParticle, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
-
 	pComponent = m_pSparkParticle = dynamic_cast<CSpark*>(Engine::Clone_Proto(L"Spark", this));
 	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Spark", pComponent });
+
+	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
+	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
 
 	return S_OK;
 }

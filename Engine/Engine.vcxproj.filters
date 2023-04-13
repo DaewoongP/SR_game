@@ -165,6 +165,9 @@
     <ClInclude Include="Spark.h">
       <Filter>Componnent\ParticleSystem\Spark</Filter>
     </ClInclude>
+    <ClInclude Include="CircularParticle.h">
+      <Filter>Componnent\ParticleSystem\Circular</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -292,6 +295,9 @@
     <ClCompile Include="Spark.cpp">
       <Filter>Componnent\ParticleSystem\Spark</Filter>
     </ClCompile>
+    <ClCompile Include="CircularParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Circular</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -397,6 +403,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Spark">
       <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Circular">
+      <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

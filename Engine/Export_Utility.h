@@ -29,6 +29,7 @@
 
 #include "BlockExp.h"
 #include "Spark.h"
+#include "CircularParticle.h"
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

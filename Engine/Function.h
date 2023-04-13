@@ -74,6 +74,33 @@ static void GetRandomVector(
 	out->y = GetRandomFloat(min->y, max->y);
 	out->z = GetRandomFloat(min->z, max->z);
 }
+/* 특정 반지름을 가진 원의 벡터를 랜덤 반환 */
+static void GetRandomVectorIncircle(D3DXVECTOR3* out, _float radius)
+{
+	_float randNum = (rand() % 10000) * 0.0001;
+	*out = D3DXVECTOR3(randNum, 1 - randNum, 0.f);
+	D3DXVec3Normalize(out, out);
+	*out = *out * radius;
+	switch (rand() % 4)
+	{
+	case 0:
+		// 1사분면
+		break;
+	case 1:
+		// 2사분면
+		out->x *= -1;
+		break;
+	case 2:
+		// 3사분면
+		out->x *= -1;
+		out->y *= -1;
+		break;
+	case 3:
+		// 4사분면
+		out->y *= -1;
+		break;
+	}
+}
 //////////////////////////////////////////////////////////////////
 /////////////////////////////////Functor 함수객체//////////////////////////
 

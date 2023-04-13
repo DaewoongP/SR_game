@@ -8,8 +8,8 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
-class CBlockExp;
 class CSpark;
+class CCircularParticle;
 END
 class CKey : public Engine::CGameObject
 {
@@ -31,8 +31,8 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
-	Engine::CBlockExp *	m_pParticle;
 	Engine::CSpark*		m_pSparkParticle;
+	Engine::CCircularParticle*		m_pCircularParticle;
 	
 public:
 	static CKey* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
