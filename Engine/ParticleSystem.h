@@ -11,22 +11,22 @@ protected:
 	virtual ~CParticleSystem();
 public:
 	virtual HRESULT		Ready_Particle(void);
-	
+
 	virtual void Reset();
 	virtual void ResetParticle(Particle* particle) PURE;
 	virtual void AddParticle();
-	
+
 	virtual _int	Update_Particle();
 	void			Render_Particle(void);
 
 	void Set_Origin(const _vec3& origin) { m_vOrigin = origin; }
 	void Set_BoundingBox(const BoundingBox& boundingBox)
-	{ 
+	{
 		m_BoundingBox = boundingBox;
 		Reset();
 	}
 	void SetEmitRate(const float& emitRate) { m_EmitRate = emitRate; }
-	void SetNumParticle(const int& numParticle) 
+	void SetNumParticle(const int& numParticle)
 	{
 		Reset();
 		for (int i = 0; i < numParticle; i++)

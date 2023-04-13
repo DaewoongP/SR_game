@@ -86,6 +86,7 @@ void CToodee::Render_GameObject(void)
 {
 	m_pJumpParticle->Update_Particle();
 	m_pLandingParticle->Update_Particle();
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
@@ -102,7 +103,13 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 		m_pTextureCom->Switch_Anim(L"Die");
 	}
 
-	if (collision->_dir == DIR_DOWN && m_bJumpable == false)
+	if (collision->_dir == DIR_DOWN && m_bJumpable == false && 
+		!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"CrackCube") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"KeyCube") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"MoveCube") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube") || 
+		!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud"))
 	{
 		m_pLandingParticle->Reset();
 		m_pLandingParticle->Set_Size(1.f);

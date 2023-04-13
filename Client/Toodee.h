@@ -36,7 +36,7 @@ private:
 	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
 	void		DoFlip();
 	void		DoStrech();
-	void		Limit_X();
+
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;

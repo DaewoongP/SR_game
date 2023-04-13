@@ -68,6 +68,7 @@ _int CCircularParticle::Update_Particle()
 			it->vVelocity -= it->vAccel;
 			if (D3DXVec3Length(&it->vAccel) > D3DXVec3Length(&it->vVelocity))
 				it->vAccel = { 0.f, 0.f, 0.f };
+			m_Size *= 0.995f;
 			// 3초 뒤 삭제코드
 			it->fAge += fTimeDelta;
 			if (it->fAge > it->fLifeTime)

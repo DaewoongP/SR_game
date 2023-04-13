@@ -194,7 +194,7 @@ void CParticleSystem::AddParticle()
 void CParticleSystem::Free(void)
 {
 	if (!m_bClone)
-		m_pTexture->Release();
+		Safe_Release(m_pTexture);
 	CComponent::Free();
 	m_VB->Release();
 }

@@ -37,18 +37,18 @@ void CLandingParticle::ResetParticle(Particle * particle)
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	if (nullptr != m_pGameObject && m_bClone)
 		particle->vPos = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
-	particle->vPos.y -= rand() % 1000 * 0.0017;
+	particle->vPos.y -= rand() % 1000 * 0.0015;
 	switch (rand() % 2)
 	{
 	case 0:
-		particle->vVelocity = { 10.f, 0.f, 0.f };
+		particle->vVelocity = { 15.f, 0.f, 0.f };
 		break;
 	case 1:
-		particle->vVelocity = { -10.f, 0.f, 0.f };
+		particle->vVelocity = { -15.f, 0.f, 0.f };
 		break;
 	}
 	particle->fAge = 0.f;
-	particle->fLifeTime = 0.5f;
+	particle->fLifeTime = 0.3f;
 }
 
 _int CLandingParticle::Update_Particle()
