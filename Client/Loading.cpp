@@ -105,6 +105,8 @@ _uint CLoading::Loading_ForStage(void)
 	
 	//Boss2 머리털
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 5)), E_FAIL);
+	//Boss2 공격용 팔
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Hand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/Boss2_Hand.png")), E_FAIL);
 
 	Set_String(L"Buffer Loading.......");
 

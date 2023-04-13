@@ -53,17 +53,28 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwActionTime -= fTimeDelta;
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
 
 _int CBoss2::Update_Too(const _float & fTimeDelta)
 {
+	if (m_eCurrentState == B2_STUMP)
+	{
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 10.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
+	}
+	
 	return 0;
 }
 
 _int CBoss2::Update_Top(const _float & fTimeDelta)
 {
+	if (m_eCurrentState == B2_STUMP)
+	{
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
+	}
 	return 0;
 }
 
@@ -336,9 +347,6 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 		//탑디면 y도 따라가줘야함
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
-
-		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
-		m_pTransform->m_vInfo[INFO_POS].z = _z;
 	}
 	if (m_dwActionTime < 0)
 		CheckIsLastActionIdx();

@@ -358,6 +358,9 @@
     <ClInclude Include="Boss2.h">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClInclude>
+    <ClInclude Include="Boss2Hand.h">
+      <Filter>00. GameObject\04. Boss\Boss2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -535,6 +538,9 @@
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
     <ClCompile Include="Boss2.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Hand.cpp">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClCompile>
   </ItemGroup>
