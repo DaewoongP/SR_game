@@ -5,7 +5,12 @@
 #include "Cube.h"
 #include "Boss2Hand.h"
 #include "AbstractFactory.h"
-
+#include "Boss2Eye.h"
+#include "Boss2Face.h"
+#include "Boss2Jaw.h"
+#include "Boss2Nose.h"
+#include "Boss2EyeBrow.h"
+#include "AbstractFactory.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
@@ -26,12 +31,12 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_IDLE;
 	m_ePreState = B2_END;
 	m_bInit = false;
-
-	//≥™∏”¡ˆ ¿ßƒ°ø° º’ º“»Ø
+	//ÎÇòÎ®∏ÏßÄ ÏúÑÏπòÏóê ÏÜê ÏÜåÌôò
+	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
-	m_iJumpPosidx = 0;//¿⁄Ω≈ ¿ßƒ°
+	m_iJumpPosidx = 0;//ÏûêÏã† ÏúÑÏπò
 	m_dwRestTime = 0;
 	ReadyPartten();
 
@@ -47,13 +52,37 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	//«√∑π¿ÃæÓ ∞°¡Æø¿±‚
+	//ÌîåÎ†àÏù¥Ïñ¥ Í∞ÄÏ†∏Ïò§Í∏∞
 	if (!m_bInit)
 	{
+		//ÎààÏïå ÎëêÏ™Ω ÏÉùÏÑ±
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+		
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(0)->m_vScale = _vec3(2.0f, 1.5f, 2.0f);
+		m_pTransform->GetChild(0)->m_vAngle = _vec3(0,0,D3DXToRadian(0.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(1)->m_vScale = _vec3(1.5f, 2, 2);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(2)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(3)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(4)->m_vScale = _vec3(0.5f, 0.5f, 0.5f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(5)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
 	}
-	//∆–≈œ Ω««‡
+	
+	CheckZFloor();
 	m_dwActionTime -= fTimeDelta;
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
@@ -64,22 +93,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss2::Update_Too(const _float & fTimeDelta)
 {
-	if (m_eCurrentState == B2_STUMP)
-	{
-		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 10.f, 0.1f);
-		m_pTransform->m_vInfo[INFO_POS].z = _z;
-	}
-	
 	return 0;
 }
 
 _int CBoss2::Update_Top(const _float & fTimeDelta)
 {
-	if (m_eCurrentState == B2_STUMP)
-	{
-		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
-		m_pTransform->m_vInfo[INFO_POS].z = _z;
-	}
 	return 0;
 }
 
@@ -110,9 +128,13 @@ void CBoss2::SwapTrigger()
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
-	//∂•¿Ã∂˚ ¥Í¿∏∏È √Ê∞› «‘ ¡÷∞Ÿ¿Ω.
-	if(dynamic_cast<CCube*>(collision->otherObj))
+	//ÎïÖÏù¥Îûë ÎãøÏúºÎ©¥ Ï∂©Í≤© Ìï® Ï£ºÍ≤üÏùå.
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		m_bIsOnGround = true;
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+	}
+		
 	__super::OnCollisionEnter(collision);
 }
 
@@ -123,6 +145,10 @@ void CBoss2::OnCollisionStay(const Collision * collision)
 
 void CBoss2::OnCollisionExit(const Collision * collision)
 {
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		m_bIsOnGround = false;
+	}
 	__super::OnCollisionExit(collision);
 }
 
@@ -146,6 +172,10 @@ HRESULT CBoss2::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
+	pComponent = m_pAnimation = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
+	NULL_CHECK_RETURN(m_pAnimation, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+
 	return S_OK;
 }
 
@@ -158,8 +188,21 @@ HRESULT CBoss2::Find_PlayerBoth()
 	return S_OK;
 }
 
+void CBoss2::CheckZFloor()
+{
+	if (m_pTransform->m_vInfo[INFO_POS].z > 11)
+	{
+		m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_pRigid->m_Velocity.z = 0;
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+		//Ïù¥Í±∞ Ïñ¥ÎñªÍ≤å Í∫ºÏ§ÑÍ±∞ÏûÑ?
+		m_bIsOnGround = true;
+	}
+}
+
 void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 {
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	if (m_iJumpPosidx == 0)
 		if (rand() % 2 == 0)
 			m_iJumpPosidx = m_iJumpPosidx;
@@ -177,6 +220,7 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 			m_iJumpPosidx--;
 		else
 			m_iJumpPosidx = m_iJumpPosidx;
+	m_bIsOnGround = false;
 	m_iCurrentActionIdx++;
 }
 
@@ -188,7 +232,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS] += _dir * fTimeDelta * 40;
 	if (D3DXVec3Length(&originlen) <1.f)
 	{
-		//¥Ÿ¿Ω «‡µø¿∏∑Œ §°§°
+		//Îã§Ïùå ÌñâÎèôÏúºÎ°ú „Ñ±„Ñ±
 		CheckIsLastActionIdx();
 		m_dwRestTime = 1;
 	}
@@ -196,7 +240,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 
 void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
-	//±◊≥… æ∆∑°∑Œ addforce¡Ÿ∞≈¿”.
+	//Í∑∏ÎÉ• ÏïÑÎûòÎ°ú addforceÏ§ÑÍ±∞ÏûÑ.
 	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
@@ -220,10 +264,10 @@ void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 	}
 }
 
-//«ˆ¿Á Ω∫≈◊¿Ã∆Æ∞° ∞∞¿∫∞‘ æ∆¥œ∂Û∏È true π◊ ∫Ø∞Ê
+//ÌòÑÏû¨ Ïä§ÌÖåÏù¥Ìä∏Í∞Ä Í∞ôÏùÄÍ≤å ÏïÑÎãàÎùºÎ©¥ true Î∞è Î≥ÄÍ≤Ω
 void CBoss2::SetPartten()
 {
-	//100 æ»¬ ¿« ∑£¥˝ ≥≠ºˆ ª˝º∫
+	//100 ÏïàÏ™ΩÏùò ÎûúÎç§ ÎÇúÏàò ÏÉùÏÑ±
 	int ranIdx = 0;
 
 	while (true)
@@ -279,10 +323,10 @@ void CBoss2::SetPartten()
 
 void CBoss2::ReadyPartten()
 {
-	//¡æ∑·±Ó¡ˆ »Æ¿Â
+	//Ï¢ÖÎ£åÍπåÏßÄ ÌôïÏû•
 	funcAction.reserve(B2_END);
 	
-	BOSS2_STATE_FUNC func;
+	BOSS2_STATE_FUNC func; //idle
 	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
@@ -297,8 +341,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -307,19 +351,19 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
 
-	//∆›ƒ°
+	//ÌéÄÏπò
 	func.push_back(&CBoss2::Do_Stump_Ready);
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -328,8 +372,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -344,6 +388,8 @@ void CBoss2::Do_Rest(const _float& fTimeDelta)
 void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
 {
 	m_dwActionTime = 3;
+	m_bIsOnGround = false;
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	CheckIsLastActionIdx();
 }
 
@@ -355,14 +401,18 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].x = _x;
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y,30, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 10.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
 	}
 	else 
 	{
 		float _x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer02_trans->m_vInfo[INFO_POS].x, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].x = _x;
-		//≈æµ∏È yµµ µ˚∂Û∞°¡‡æﬂ«‘
+		//ÌÉëÎîîÎ©¥ yÎèÑ Îî∞ÎùºÍ∞ÄÏ§òÏïºÌï®
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
 	}
 	if (m_dwActionTime < 0)
 		CheckIsLastActionIdx();
@@ -370,7 +420,33 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 
 void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 {
+	if(g_Is2D)
+		m_pRigid->AddTorque(_vec3(0, 1, 0), 100.f, IMPULSE, fTimeDelta);
+	else
+		m_pRigid->AddTorque(_vec3(0, 0, 1), 100.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_Stump_02(const _float & fTimeDelta)
+{
+	//Ìà¨ÎîîÎ©¥ ÏïÑÎûòÎ°ú
+	if (g_Is2D)
+	{
+		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
+	}
+	//ÌÉëÎîîÎ©¥ zÎ°ú
+	else 
+		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
+	CheckIsLastActionIdx();
+	m_dwRestTime = 3;
+}
+
+void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
+{
+	if (m_dwRestTime < 0)
+		CheckIsLastActionIdx();
+	if(m_bIsOnGround)
+		m_pRigid->m_AngularVelocity *= 0.9f;
 }
 
 void CBoss2::CheckIsLastActionIdx()

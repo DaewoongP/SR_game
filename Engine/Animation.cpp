@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Animation.h"
 
-CAnimation::CAnimation()
-	: m_AnimState(0)
+CAnimation::CAnimation(LPDIRECT3DDEVICE9 pGraphicDev):
+	CComponent(pGraphicDev)
+	,m_AnimState(0)
 {
 }
 
@@ -76,19 +77,33 @@ void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 			//찾아온 info의 발동 시간이 지금 시간보다 아래라면?
 			if (clip->source[i][j].ActionTime < m_CurrentTime)
 			{
-				//행동을 진행해줘야겠죠
-				//해당된 파츠를 dwTime까지 변환시켜주는 행동을 합니다. 
+				//지정된 rotation이 있다면 행동
+				if (clip->source[i][j].rotation != _vec3(0, 0, 0))
+					clip->parts[i]->m_vAngle = Lerp(clip->parts[i]->m_vAngle, clip->source[i][j].rotation, 1 / clip->source[i][j].TillTime);
+				
+				//지정된 scale이 있다면 행동
+				if (clip->source[i][j].scale != _vec3(0, 0, 0))
+					clip->parts[i]->m_vScale = Lerp(clip->parts[i]->m_vScale, clip->source[i][j].scale, 1 / clip->source[i][j].TillTime);
+				
+				//지정된 trans가 있다면 행동
+				if (clip->source[i][j].trans != _vec3(0, 0, 0))
+					clip->parts[i]->m_vInfo[INFO_POS] = Lerp(clip->parts[i]->m_vInfo[INFO_POS], clip->source[i][j].trans, 1 / clip->source[i][j].TillTime);
+
+				//위를 기준으로 새로운 스자이를 만들고
+
 				//부모의 world matrix에서
-				//clip->parts[i]
+				clip->parts[i]->MakeMyMatrix(fTimeDelta);
+				//스자이부
+				clip->parts[i]->m_matWorld *= m_pGameObject->m_pTransform->m_matWorld;
 			}
 		}
 	}
 	
 }
 
-CAnimation * CAnimation::Create()
+CAnimation * CAnimation::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CAnimation* pInstance = new CAnimation();
+	CAnimation* pInstance = new CAnimation(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Animation()))
 	{

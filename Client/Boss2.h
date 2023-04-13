@@ -2,7 +2,7 @@
 #include "Include.h"
 #include "GameObject.h"
 
-//						¹İÈ¯Å¸ÀÔ, º¸½º¾ÈÀÇ ÇÔ¼ö »ç¿ëÇÏ±â À§ÇÔ, ¸Å°³º¯¼ö
+//						ë°˜í™˜íƒ€ì…, ë³´ìŠ¤ì•ˆì˜ í•¨ìˆ˜ ì‚¬ìš©í•˜ê¸° ìœ„í•¨, ë§¤ê°œë³€ìˆ˜
 #define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
 
 BEGIN(Engine)
@@ -10,11 +10,12 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CAnimation;
 END
 
 enum BOSS2STATE
 {
-	B2_IDLE,
+	B2_IDLE, //ì• ë‹ˆë©”ì´ì…˜/ë¦¬ê¹…/joint
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -22,8 +23,8 @@ enum BOSS2STATE
 	B2_END
 };
 
-//º¸½ºÀÇ ¸Ó¸®ÅëÀÓ. ¸ğµç »ı°¢/Çàµ¿ÀÇ ÁßÃß¸¦ ´ã´çÇÔ.
-//º¸½º´Â Áß·ÂÀ» ¾²Áö ¾ÊÀ»°ÅÀÓ. º¸´Ï±î Áß·Â ¾È¾¸.
+//ë³´ìŠ¤ì˜ ë¨¸ë¦¬í†µì„. ëª¨ë“  ìƒê°/í–‰ë™ì˜ ì¤‘ì¶”ë¥¼ ë‹´ë‹¹í•¨.
+//ë³´ìŠ¤ëŠ” ì¤‘ë ¥ì„ ì“°ì§€ ì•Šì„ê±°ì„. ë³´ë‹ˆê¹Œ ì¤‘ë ¥ ì•ˆì”€.
 class CBoss2 :
 	public CGameObject
 {
@@ -49,26 +50,32 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
-	//Á¡ÇÁ ÇÔ¼ö ±âº»°ª ¼³Á¤
+	void		CheckZFloor();
+	//ì í”„ í•¨ìˆ˜ ê¸°ë³¸ê°’ ì„¤ì •
 	void		Do_Jump_Ready(const _float& fTimeDelta);
-	//À§·Î »ó½ÂÇÑ´Ù
+	//ìœ„ë¡œ ìƒìŠ¹í•œë‹¤
 	void		Do_Jump_01(const _float& fTimeDelta);
-	//ÂøÁöÇÑ´Ù.
+	//ì°©ì§€í•œë‹¤.
 	void		Do_Jump_02(const _float& fTimeDelta);
-	//ÈŞ½ÄÆĞÅÏ
+	//íœ´ì‹íŒ¨í„´
 	void		Do_Rest(const _float& fTimeDelta);
-	//º§·Î½ÃÆ¼ ÃÊ±âÈ­ ÆĞÅÏ
-	void		Do_ResetVelocity(const _float& fTimeDelta) {m_pRigid->m_Velocity = _vec3(0, 0, 0);CheckIsLastActionIdx();}
+	//ë²¨ë¡œì‹œí‹° ì´ˆê¸°í™” íŒ¨í„´
+	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); CheckIsLastActionIdx(); }
 	
-	//½ºÅÒÇÁ ÇÔ¼ö ±âº»°ª ¼³Á¤
+	//ìŠ¤í…€í”„ í•¨ìˆ˜ ê¸°ë³¸ê°’ ì„¤ì •
 	void		Do_Stump_Ready(const _float& fTimeDelta);
-	//toodee È¤Àº topdee¸¦ ÇâÇØ nÃÊ°£ °¡ÀÖ´Â ÆĞÅÏ
+	//toodee í˜¹ì€ topdeeë¥¼ í–¥í•´ nì´ˆê°„ ê°€ìˆëŠ” íŒ¨í„´
 	void		Do_Chase_Player(const _float& fTimeDelta);
-	//y·Î »ìÂ¦ ¿Ã¶ó°¡¸ç, È¸ÀüÀ» ÁÖ´Â ÆĞÅÏ
+	//yë¡œ ì‚´ì§ ì˜¬ë¼ê°€ë©°, íšŒì „ì„ ì£¼ëŠ” íŒ¨í„´
 	void		Do_LittleUp_Turn(const _float& fTimeDelta);
-	//¸¸¼¼!
+	//ì°©ì§€í•œë‹¤.
+	void		Do_Stump_02(const _float& fTimeDelta);
+	//íšŒì „ ê°ì†Œ íŒ¨í„´
+	void		Do_Turn_Minus(const _float& fTimeDelta);
+
+	//ë§Œì„¸!
 	void        Do_Hurray(const _float& fTimeDelta);
-	//ÁÖ¸Ô ¼ÒÈ¯
+	//ì£¼ë¨¹ ì†Œí™˜
 	void        Do_SummonFist(const _float& fTimeDelta);
 
 	void		SetPartten();
@@ -82,17 +89,18 @@ private:
 	_float		m_dwRestTime;
 	_float		m_dwActionTime;
 
-	//state, ÇÔ¼öÆ÷ÀÎÅÍ vec¸¦ °¡Áö´Â vector
+	//state, í•¨ìˆ˜í¬ì¸í„° vecë¥¼ ê°€ì§€ëŠ” vector
 	vector<BOSS2_STATE_FUNC> funcAction;
 
-	//Á¡ÇÁ½Ã ÀÌµ¿ÇÒ x °ª
+	//ì í”„ì‹œ ì´ë™í•  x ê°’
 	_vec3	   m_fJumpPos[3];
 	_int	   m_iJumpPosidx;
 
-	//Âï±â¶§ »ç¿ëÇÒ playerÀÇ À§Ä¡¸¦ ¹Ş¾Æ¿À±â À§ÇÔ.
+	//ì°ê¸°ë•Œ ì‚¬ìš©í•  playerì˜ ìœ„ì¹˜ë¥¼ ë°›ì•„ì˜¤ê¸° ìœ„í•¨.
 	CTransform* m_pPlayer01_trans;
 	CTransform* m_pPlayer02_trans;
 
+	_bool		m_bIsOnGround;
 	_bool		m_bInit;
 
 private:
@@ -100,6 +108,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CAnimation*		m_pAnimation;
 
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

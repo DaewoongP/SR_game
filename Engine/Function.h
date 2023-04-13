@@ -144,6 +144,11 @@ static float Lerp(float A, float B, float Alpha)
 	return A * (1 - Alpha) + B * Alpha;
 }
 
+static _vec3 Lerp(_vec3 A, _vec3 B, float Alpha)
+{
+	return _vec3(Lerp(A.x, B.x, Alpha), Lerp(A.y, B.y, Alpha), Lerp(A.z, B.z, Alpha));
+}
+
 template <typename T>
 static void Value_Range(T Min, T Max, T* Value)
 {

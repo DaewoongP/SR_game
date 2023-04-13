@@ -7,6 +7,8 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_vScale(1.f, 1.f, 1.f)
 	, m_vAngle(0.f, 0.f, 0.f)
 	,m_bMove(true)
+	, m_Parent(NULL)
+	, m_Child(NULL)
 
 {
 	ZeroMemory(&m_vInfo, sizeof(m_vInfo));
@@ -23,6 +25,8 @@ CTransform::CTransform(const CTransform & rhs)
 	, m_matBillX(rhs.m_matBillX)
 	, m_matBillY(rhs.m_matBillY)
 	,m_bMove(rhs.m_bMove)
+	, m_Parent(rhs.m_Parent)
+	, m_Child(rhs.m_Child)
 {
 	for (size_t i = 0; i < INFO_END; ++i)
 		m_vInfo[i] = rhs.m_vInfo[i];
@@ -30,6 +34,30 @@ CTransform::CTransform(const CTransform & rhs)
 
 CTransform::~CTransform()
 {
+}
+
+void CTransform::MakeMyMatrix(const _float& fTimeDelta)
+{
+	D3DXMatrixIdentity(&m_matWorld);
+
+	for (size_t i = 0; i < INFO_POS; ++i)
+		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
+
+	// 크기 변환
+	_matrix matScale = GetScaleMat();
+
+	// 회전 변환
+	_matrix			matRotation = GetRotMat();
+	// 위치 변환
+	_matrix			matTrans = GetTransMat(fTimeDelta);
+
+	//매트릭스 생성
+	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
+	if (m_Parent == NULL)
+		return;
+
+	//스자이 공(부모의 회전행렬)부(부모의 이동행렬)
+	m_matWorld = m_matWorld * m_Parent->GetRotMat() * m_Parent->GetTransMat(fTimeDelta);
 }
 
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)
@@ -79,36 +107,7 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 {
 	if (!m_bMove)
 		return 0;
-	D3DXMatrixIdentity(&m_matWorld);
-
-	for (size_t i = 0; i < INFO_POS; ++i)
-		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
-
-	// 크기 변환
-	_matrix matScale;
-	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
-
-	// 회전 변환
-	_matrix			matRot[ROT_END];
-	_matrix			matRotation;
-
-	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
-	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
-	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
-
-	matRotation = matRot[ROT_Y] * matRot[ROT_Z] * matRot[ROT_X];
-
-	//쉐이크
-	_vec3 vShake = { 0.0f,0.0f,0.0f };
-
-	Update_Shake(fTimeDelta, vShake);
-
-	// 위치 변환
-	_matrix			matTrans;
-	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x + vShake.x, m_vInfo[INFO_POS].y + vShake.y, m_vInfo[INFO_POS].z + vShake.z);
-
-	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
-
+	MakeMyMatrix(fTimeDelta);
 	return 0;
 }
 
@@ -167,6 +166,38 @@ void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 		m_fShakePower = 0.0f;
 		m_vShakeOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
+}
+
+_matrix CTransform::GetRotMat()
+{
+	// 회전 변환
+	_matrix			matRot[ROT_END];
+	_matrix			matRotation;
+
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
+
+	return ( matRot[ROT_Y] * matRot[ROT_Z] * matRot[ROT_X]);
+}
+
+_matrix CTransform::GetTransMat(const _float& fTimeDelta)
+{
+	_vec3 vShake = { 0.0f,0.0f,0.0f };
+	Update_Shake(fTimeDelta, vShake);
+
+	// 위치 변환
+	_matrix			matTrans;
+	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x + vShake.x, m_vInfo[INFO_POS].y + vShake.y, m_vInfo[INFO_POS].z + vShake.z);
+	return matTrans;
+}
+
+_matrix CTransform::GetScaleMat()
+{
+	// 크기 변환
+	_matrix matScale;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+	return matScale;
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)

@@ -33,7 +33,7 @@ class CAnimation :
 	public CComponent
 {
 private:
-	explicit CAnimation();
+	explicit CAnimation(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CAnimation();
 
 public:
@@ -60,7 +60,7 @@ private:
 	_ulong					m_CurrentTime;
 
 public:
-	static CAnimation* Create();
+	static CAnimation* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent * Clone(void) override;
 
 private:
