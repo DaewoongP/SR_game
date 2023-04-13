@@ -168,6 +168,9 @@
     <ClInclude Include="CircularParticle.h">
       <Filter>Componnent\ParticleSystem\Circular</Filter>
     </ClInclude>
+    <ClInclude Include="JumpParticle.h">
+      <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -298,6 +301,9 @@
     <ClCompile Include="CircularParticle.cpp">
       <Filter>Componnent\ParticleSystem\Circular</Filter>
     </ClCompile>
+    <ClCompile Include="JumpParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -406,6 +412,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Circular">
       <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Jump">
+      <UniqueIdentifier>{d7d78ead-aab4-4266-ae54-9e6d2ba8e2d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

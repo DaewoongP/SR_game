@@ -44,6 +44,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicDev.h" />
     <ClInclude Include="Include.h" />
+    <ClInclude Include="JumpParticle.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="FrameMgr.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicDev.cpp" />
+    <ClCompile Include="JumpParticle.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Management.cpp" />

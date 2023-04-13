@@ -31,6 +31,11 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
 
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pJumpParticle->Set_BoundingBox(box);
+	m_pJumpParticle->Set_Size(0.6f);
+
 	return S_OK;
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
@@ -71,10 +76,16 @@ void CToodee::SwapTrigger()
 
 void CToodee::LateUpdate_GameObject(void)
 {
+	if (m_pJumpParticle->IsDead())
+	{
+		m_pJumpParticle->End_Particle();
+	}
 	__super::LateUpdate_GameObject();
 }
 void CToodee::Render_GameObject(void)
 {
+	m_pJumpParticle->Update_Particle();
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
@@ -142,6 +153,10 @@ HRESULT CToodee::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
+	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"JumpParticle", this));
+	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"JumpParticle", pComponent });
+
 	return S_OK;
 }
 
@@ -184,7 +199,12 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
+	{
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
+		m_pJumpParticle->Reset();
+		m_pJumpParticle->Start_Particle();
+	}
+		
 
 }
 
