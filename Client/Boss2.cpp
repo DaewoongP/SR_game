@@ -3,6 +3,8 @@
 #include "Export_Function.h"
 #include "StageCamera.h"
 #include "Cube.h"
+#include "Boss2Hand.h"
+#include "AbstractFactory.h"
 #include "Boss2Eye.h"
 #include "Boss2Face.h"
 #include "Boss2Jaw.h"
@@ -29,11 +31,12 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_IDLE;
 	m_ePreState = B2_END;
 	m_bInit = false;
+	//ë‚˜ë¨¸ì§€ ìœ„ì¹˜ì— ì† ì†Œí™˜
 	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
-	m_iJumpPosidx = 0;
+	m_iJumpPosidx = 0;//ìì‹  ìœ„ì¹˜
 	m_dwRestTime = 0;
 	ReadyPartten();
 
@@ -49,10 +52,10 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	//ÇÃ·¹ÀÌ¾î °¡Á®¿À±â
+	//í”Œë ˆì´ì–´ ê°€ì ¸ì˜¤ê¸°
 	if (!m_bInit)
 	{
-		//´«¾Ë µÎÂÊ »ı¼º
+		//ëˆˆì•Œ ë‘ìª½ ìƒì„±
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
@@ -84,6 +87,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	return 0;
 }
 
@@ -124,7 +128,7 @@ void CBoss2::SwapTrigger()
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
-	//¶¥ÀÌ¶û ´êÀ¸¸é Ãæ°İ ÇÔ ÁÖ°ÙÀ½.
+	//ë•…ì´ë‘ ë‹¿ìœ¼ë©´ ì¶©ê²© í•¨ ì£¼ê²ŸìŒ.
 	if (dynamic_cast<CCube*>(collision->otherObj))
 	{
 		m_bIsOnGround = true;
@@ -191,7 +195,7 @@ void CBoss2::CheckZFloor()
 		m_pTransform->m_vInfo[INFO_POS].z = 10;
 		m_pRigid->m_Velocity.z = 0;
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
-		//ÀÌ°Å ¾î¶»°Ô ²¨ÁÙ°ÅÀÓ?
+		//ì´ê±° ì–´ë–»ê²Œ êº¼ì¤„ê±°ì„?
 		m_bIsOnGround = true;
 	}
 }
@@ -228,7 +232,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS] += _dir * fTimeDelta * 40;
 	if (D3DXVec3Length(&originlen) <1.f)
 	{
-		//´ÙÀ½ Çàµ¿À¸·Î ¤¡¤¡
+		//ë‹¤ìŒ í–‰ë™ìœ¼ë¡œ ã„±ã„±
 		CheckIsLastActionIdx();
 		m_dwRestTime = 1;
 	}
@@ -236,7 +240,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 
 void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
-	//±×³É ¾Æ·¡·Î addforceÁÙ°ÅÀÓ.
+	//ê·¸ëƒ¥ ì•„ë˜ë¡œ addforceì¤„ê±°ì„.
 	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
@@ -248,12 +252,22 @@ void CBoss2::Do_Hurray(const _float & fTimeDelta)
 
 void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 {
+	for (size_t i = 0; i < sizeof(m_fJumpPos)/sizeof(_vec3); i++)
+	{
+		//====================================
+		if (i != m_iJumpPosidx)
+		{
+			FAILED_CHECK_RETURN(CManagement::GetInstance()->Get_Layer(L"Layer_GameLogic")->
+				Add_GameObject(L"Boss2Hand", CBoss2Hand::Create(m_pGraphicDev, _vec3(m_fJumpPos[i].x, 50.f, 10.f))));
+		}
+		//====================================
+	}
 }
 
-//ÇöÀç ½ºÅ×ÀÌÆ®°¡ °°Àº°Ô ¾Æ´Ï¶ó¸é true ¹× º¯°æ
+//í˜„ì¬ ìŠ¤í…Œì´íŠ¸ê°€ ê°™ì€ê²Œ ì•„ë‹ˆë¼ë©´ true ë° ë³€ê²½
 void CBoss2::SetPartten()
 {
-	//100 ¾ÈÂÊÀÇ ·£´ı ³­¼ö »ı¼º
+	//100 ì•ˆìª½ì˜ ëœë¤ ë‚œìˆ˜ ìƒì„±
 	int ranIdx = 0;
 
 	while (true)
@@ -309,7 +323,7 @@ void CBoss2::SetPartten()
 
 void CBoss2::ReadyPartten()
 {
-	//Á¾·á±îÁö È®Àå
+	//ì¢…ë£Œê¹Œì§€ í™•ì¥
 	funcAction.reserve(B2_END);
 	
 	BOSS2_STATE_FUNC func; //idle
@@ -343,6 +357,7 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
+	//í€ì¹˜
 	func.push_back(&CBoss2::Do_Stump_Ready);
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
@@ -393,7 +408,7 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 	{
 		float _x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer02_trans->m_vInfo[INFO_POS].x, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].x = _x;
-		//Å¾µğ¸é yµµ µû¶ó°¡Áà¾ßÇÔ
+		//íƒ‘ë””ë©´ yë„ ë”°ë¼ê°€ì¤˜ì•¼í•¨
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
 		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
@@ -414,12 +429,12 @@ void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 
 void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 {
-	//Åõµğ¸é ¾Æ·¡·Î
+	//íˆ¬ë””ë©´ ì•„ë˜ë¡œ
 	if (g_Is2D)
 	{
 		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
 	}
-	//Å¾µğ¸é z·Î
+	//íƒ‘ë””ë©´ zë¡œ
 	else 
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
