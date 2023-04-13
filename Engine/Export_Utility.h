@@ -28,7 +28,7 @@
 #include "RcAlpha.h"
 
 #include "BlockExp.h"
-
+#include "Spark.h"
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

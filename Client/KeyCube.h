@@ -1,6 +1,9 @@
 #pragma once
 #include "Cube.h"
 
+BEGIN(Engine)
+class CBlockExp;
+END
 class CKeyCube : public CCube
 {
 private:
@@ -20,6 +23,8 @@ public:
 	
 private:
 	virtual void Free() override;
+private:
+	Engine::CBlockExp* m_pExpParticle;
 };
 
 

@@ -162,6 +162,9 @@
     <ClInclude Include="BlockExp.h">
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClInclude>
+    <ClInclude Include="Spark.h">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -286,6 +289,9 @@
     <ClCompile Include="BlockExp.cpp">
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClCompile>
+    <ClCompile Include="Spark.cpp">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -388,6 +394,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\BlockExp">
       <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Spark">
+      <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

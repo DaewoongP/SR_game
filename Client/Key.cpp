@@ -30,7 +30,13 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	BoundingBox box;
 	box.Offset(vPos);
 	m_pParticle->Set_BoundingBox(box);
-
+	m_pParticle->Set_Size(2.f);
+	box._offsetMin = { -0.2f, -0.2f, 0.f };
+	box._offsetMax = { 0.2f, 0.2f, 0.f };
+	m_pSparkParticle->Set_BoundingBox(box);
+	m_pSparkParticle->Set_AnimSpeed(0.1f);
+	m_pSparkParticle->Start_Particle();
+	
 	++iKeyCnt;
 	return S_OK;
 }
@@ -39,10 +45,10 @@ _int CKey::Update_GameObject(const _float& fTimeDelta)
 {	
 	if (m_bDead)
 	{
-		if (iKeyCnt > 0)
-			--iKeyCnt;
-		return OBJ_DEAD;
+		m_pParticle->Start_Particle();
 	}
+	if (m_pParticle->IsDead())
+		return OBJ_DEAD;
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
@@ -52,8 +58,6 @@ _int CKey::Update_GameObject(const _float& fTimeDelta)
 
 void CKey::LateUpdate_GameObject(void)
 {
-	if (m_pParticle->IsDead())
-		m_bDead = true;
 	__super::LateUpdate_GameObject();
 }
 
@@ -61,7 +65,7 @@ void CKey::Render_GameObject(void)
 {
 	if (-1 == m_pParticle->Update_Particle())
 		return;
-
+	m_pSparkParticle->Update_Particle();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
@@ -72,7 +76,12 @@ void CKey::Render_GameObject(void)
 
 void CKey::OnCollisionEnter(const Collision* collision)
 {	
-	m_pParticle->Start_Particle();
+	if (iKeyCnt > 0)
+	{
+		--iKeyCnt;
+		m_bDead = true;
+	}
+		
 	__super::OnCollisionEnter(collision);
 }
 
@@ -100,6 +109,10 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
 	NULL_CHECK_RETURN(m_pParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
+
+	pComponent = m_pSparkParticle = dynamic_cast<CSpark*>(Engine::Clone_Proto(L"Spark", this));
+	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Spark", pComponent });
 
 	return S_OK;
 }

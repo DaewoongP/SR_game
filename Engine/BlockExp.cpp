@@ -9,15 +9,16 @@ CBlockExp::CBlockExp(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int i
 		TEX_NORMAL,
 		pPath,
 		iTextureNum);
-	m_pTexture->Add_Anim(L"Idle", 0, 8, 1.f, false);
+	m_pTexture->Add_Anim(L"Idle", 0, iTextureNum - 1, 1.f, false);
 	m_pTexture->Switch_Anim(L"Idle");
 	m_pTexture->m_bUseFrameAnimation = true;
 	m_bIsWorld = isWorld;
-
+	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
-	m_VBSize = 64;
+	// 적절하게 크기값 조절하면됨.
+	m_VBSize = 8;
 	m_VBOffset = 0;
-	m_VBBatchSize = 16;
+	m_VBBatchSize = 8;
 
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
@@ -38,8 +39,6 @@ void CBlockExp::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	// 파티클 설정
-	// 바운딩박스 위치값 설정을 어디에 줘야할지,._
 	particle->vVelocity = { 0.f, 0.f, 0.f };
 	particle->vPos = m_BoundingBox.Get_Center();
 }
@@ -54,6 +53,8 @@ _int CBlockExp::Update_Particle()
 
 	for (it = m_Particles.begin(); it != m_Particles.end(); it++)
 	{
+		// 애니메이션이 끝났는데 살아있으면 파티클 초기화 후 죽이고 애니메이션 초기화
+		// 애니메이션 무조건 초기화 해줘야 다음 객체가 사용가능함.
 		if (m_pTexture->IsAnimationEnd(L"Idle") && true == it->bIsAlive)
 		{
 			ResetParticle(&(*it));

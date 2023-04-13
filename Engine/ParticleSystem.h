@@ -33,11 +33,12 @@ public:
 			AddParticle();
 	}
 
-
 	bool IsEmpty();
 	bool IsDead();
 
 	void Start_Particle() { m_bTrigger = true; }
+	void Set_Size(_float fSize) { m_Size = fSize; }
+	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
 
 protected:
 	virtual void RemoveDeadParticles();
