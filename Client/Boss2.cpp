@@ -23,7 +23,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_IDLE;
 	m_ePreState = B2_END;
 	m_bInit = false;
-
+	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
@@ -49,7 +49,8 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
 	}
-	//패턴 실행
+	
+	CheckZFloor();
 	m_dwActionTime -= fTimeDelta;
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
@@ -59,22 +60,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss2::Update_Too(const _float & fTimeDelta)
 {
-	if (m_eCurrentState == B2_STUMP)
-	{
-		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 10.f, 0.1f);
-		m_pTransform->m_vInfo[INFO_POS].z = _z;
-	}
-	
 	return 0;
 }
 
 _int CBoss2::Update_Top(const _float & fTimeDelta)
 {
-	if (m_eCurrentState == B2_STUMP)
-	{
-		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
-		m_pTransform->m_vInfo[INFO_POS].z = _z;
-	}
 	return 0;
 }
 
@@ -106,8 +96,12 @@ void CBoss2::SwapTrigger()
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
 	//땅이랑 닿으면 충격 함 주겟음.
-	if(dynamic_cast<CCube*>(collision->otherObj))
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		m_bIsOnGround = true;
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+	}
+		
 	__super::OnCollisionEnter(collision);
 }
 
@@ -118,6 +112,10 @@ void CBoss2::OnCollisionStay(const Collision * collision)
 
 void CBoss2::OnCollisionExit(const Collision * collision)
 {
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		m_bIsOnGround = false;
+	}
 	__super::OnCollisionExit(collision);
 }
 
@@ -153,8 +151,21 @@ HRESULT CBoss2::Find_PlayerBoth()
 	return S_OK;
 }
 
+void CBoss2::CheckZFloor()
+{
+	if (m_pTransform->m_vInfo[INFO_POS].z > 11)
+	{
+		m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_pRigid->m_Velocity.z = 0;
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+		//이거 어떻게 꺼줄거임?
+		m_bIsOnGround = true;
+	}
+}
+
 void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 {
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	if (m_iJumpPosidx == 0)
 		if (rand() % 2 == 0)
 			m_iJumpPosidx = m_iJumpPosidx;
@@ -172,6 +183,7 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 			m_iJumpPosidx--;
 		else
 			m_iJumpPosidx = m_iJumpPosidx;
+	m_bIsOnGround = false;
 	m_iCurrentActionIdx++;
 }
 
@@ -267,7 +279,7 @@ void CBoss2::ReadyPartten()
 	//종료까지 확장
 	funcAction.reserve(B2_END);
 	
-	BOSS2_STATE_FUNC func;
+	BOSS2_STATE_FUNC func; //idle
 	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Jump_01);
@@ -282,8 +294,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -292,8 +304,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -302,8 +314,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -312,8 +324,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
@@ -328,6 +340,8 @@ void CBoss2::Do_Rest(const _float& fTimeDelta)
 void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
 {
 	m_dwActionTime = 3;
+	m_bIsOnGround = false;
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	CheckIsLastActionIdx();
 }
 
@@ -339,6 +353,8 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].x = _x;
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y,30, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 10.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
 	}
 	else 
 	{
@@ -347,6 +363,8 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 		//탑디면 y도 따라가줘야함
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
+		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
+		m_pTransform->m_vInfo[INFO_POS].z = _z;
 	}
 	if (m_dwActionTime < 0)
 		CheckIsLastActionIdx();
@@ -354,12 +372,37 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 
 void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 {
+	if(g_Is2D)
+		m_pRigid->AddTorque(_vec3(0, 1, 0), 100.f, IMPULSE, fTimeDelta);
+	else
+		m_pRigid->AddTorque(_vec3(0, 0, 1), 100.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_Stump_02(const _float & fTimeDelta)
+{
+	//투디면 아래로
+	if (g_Is2D)
+	{
+		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
+	}
+	//탑디면 z로
+	else 
+		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
+	CheckIsLastActionIdx();
+	m_dwRestTime = 3;
+}
+
+void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
+{
+	if (m_dwRestTime < 0)
+		CheckIsLastActionIdx();
+	if(m_bIsOnGround)
+		m_pRigid->m_AngularVelocity *= 0.9f;
 }
 
 void CBoss2::CheckIsLastActionIdx()
 {
-	int abcd = funcAction[m_eCurrentState].size();
 	if (funcAction[m_eCurrentState].size() <= (m_iCurrentActionIdx+1))
 		SetPartten();
 	else

@@ -2,6 +2,7 @@
 #include "Include.h"
 #include "GameObject.h"
 
+
 #define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
 
 BEGIN(Engine)
@@ -13,7 +14,7 @@ END
 
 enum BOSS2STATE
 {
-	B2_IDLE,
+	B2_IDLE, //애니메이션/리깅/joint
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -48,6 +49,7 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
+	void		CheckZFloor();
 	//점프 함수 기본값 설정
 	void		Do_Jump_Ready(const _float& fTimeDelta);
 	//위로 상승한다
@@ -57,7 +59,7 @@ private:
 	//휴식패턴
 	void		Do_Rest(const _float& fTimeDelta);
 	//벨로시티 초기화 패턴
-	void		Do_ResetVelocity(const _float& fTimeDelta) {m_pRigid->m_Velocity = _vec3(0, 0, 0);CheckIsLastActionIdx();}
+	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); CheckIsLastActionIdx(); }
 	
 	//스텀프 함수 기본값 설정
 	void		Do_Stump_Ready(const _float& fTimeDelta);
@@ -65,6 +67,11 @@ private:
 	void		Do_Chase_Player(const _float& fTimeDelta);
 	//y로 살짝 올라가며, 회전을 주는 패턴
 	void		Do_LittleUp_Turn(const _float& fTimeDelta);
+	//착지한다.
+	void		Do_Stump_02(const _float& fTimeDelta);
+	//회전 감소 패턴
+	void		Do_Turn_Minus(const _float& fTimeDelta);
+
 	//만세!
 	void        Do_Hurray(const _float& fTimeDelta);
 	//주먹 소환
@@ -92,6 +99,7 @@ private:
 	CTransform* m_pPlayer01_trans;
 	CTransform* m_pPlayer02_trans;
 
+	_bool		m_bIsOnGround;
 	_bool		m_bInit;
 
 private:
