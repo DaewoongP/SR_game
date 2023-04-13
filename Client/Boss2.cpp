@@ -3,6 +3,9 @@
 #include "Export_Function.h"
 #include "StageCamera.h"
 #include "Cube.h"
+#include "Boss2Hand.h"
+#include "AbstractFactory.h"
+
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
@@ -24,10 +27,11 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_ePreState = B2_END;
 	m_bInit = false;
 
+	//나머지 위치에 손 소환
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
-	m_iJumpPosidx = 0;
+	m_iJumpPosidx = 0;//자신 위치
 	m_dwRestTime = 0;
 	ReadyPartten();
 
@@ -54,6 +58,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	return 0;
 }
 
@@ -203,6 +208,16 @@ void CBoss2::Do_Hurray(const _float & fTimeDelta)
 
 void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 {
+	for (size_t i = 0; i < sizeof(m_fJumpPos)/sizeof(_vec3); i++)
+	{
+		//====================================
+		if (i != m_iJumpPosidx)
+		{
+			FAILED_CHECK_RETURN(CManagement::GetInstance()->Get_Layer(L"Layer_GameLogic")->
+				Add_GameObject(L"Boss2Hand", CBoss2Hand::Create(m_pGraphicDev, _vec3(m_fJumpPos[i].x, 50.f, 10.f))));
+		}
+		//====================================
+	}
 }
 
 //현재 스테이트가 같은게 아니라면 true 및 변경
@@ -298,6 +313,7 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
+	//펀치
 	func.push_back(&CBoss2::Do_Stump_Ready);
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
@@ -359,7 +375,6 @@ void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 
 void CBoss2::CheckIsLastActionIdx()
 {
-	int abcd = funcAction[m_eCurrentState].size();
 	if (funcAction[m_eCurrentState].size() <= (m_iCurrentActionIdx+1))
 		SetPartten();
 	else

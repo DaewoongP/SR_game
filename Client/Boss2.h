@@ -2,6 +2,7 @@
 #include "Include.h"
 #include "GameObject.h"
 
+//						반환타입, 보스안의 함수 사용하기 위함, 매개변수
 #define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
 
 BEGIN(Engine)

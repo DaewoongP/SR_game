@@ -19,13 +19,21 @@ HRESULT CBoss2Hand::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	//지정된 위쪽에서 태어나겠지
-	m_pTransform->m_vScale = _vec3(7, 14, 5);
+	m_pTransform->m_vScale = _vec3(9, 20, 5);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
-	m_pCollider->Set_BoundingBox(_vec3(9,18,2));
+	m_fStartY = vPos.y;
+
+	m_pCollider->Set_BoundingBox(_vec3(9,5,1));
+	m_pCollider->Set_BoundOffset(_vec3(0.0f, -(m_pTransform->m_vScale.y - m_pCollider->Get_BoundSize().y*0.5f), -1.0f));
 
 	m_pRigid->m_bUseGrivaty = false;
+	//충돌 전부 OFF
+	//m_pCollider->m_bIsTrigger = true;
+
+	m_state = B2H_APPEAR;
+
 
 	return S_OK;
 }
@@ -33,9 +41,13 @@ HRESULT CBoss2Hand::Ready_GameObject(_vec3 & vPos)
 _int CBoss2Hand::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
-		return -1;
+		return 1;
+
+	DoActionSwitch(fTimeDelta);
+
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	//DoActionSwitch(fTimeDelta);
 	return 0;
 }
@@ -109,11 +121,17 @@ void CBoss2Hand::DoActionSwitch(const _float & fTimeDelta)
 	case B2H_APPEAR:
 		D0_Appear(fTimeDelta);
 		break;
+	case B2H_READY_LITTLEUP:
+		D0_Ready_LittleUp(fTimeDelta);
+		break;
 	case B2H_LITTLEUP:
 		D0_LittleUp(fTimeDelta);
 		break;
 	case B2H_DROP:
 		D0_Drop(fTimeDelta);
+		break;
+	case B2H_READY_DISAPPEAR:
+		D0_Ready_DisAppear(fTimeDelta);
 		break;
 	case B2H_DISAPPEAR:
 		D0_DisAppear(fTimeDelta);
@@ -125,22 +143,106 @@ void CBoss2Hand::DoActionSwitch(const _float & fTimeDelta)
 
 void CBoss2Hand::D0_Appear(const _float & fTimeDelta)
 {
-	if (m_dwActionTimer < 0)
+	if (m_dwActionTimer < 1.0f)
 	{
-		//m_pRigid->
+		m_dwActionTimer += fTimeDelta;
+
+		if (1.0f <= m_dwActionTimer)
+		{
+			m_dwActionTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(m_fStartY, B2H_APPEAR_YPOS, m_dwActionTimer);
+	}
+	else
+	{
+		Next_State();
+		Set_BoundOffSetZ(1.0f);
+	}
+}
+
+void CBoss2Hand::D0_Ready_LittleUp(const _float & fTimeDelta)
+{
+	if (m_dwActionTimer < 1.0f)
+	{
+		m_dwActionTimer += fTimeDelta;
+	}
+	else
+	{
+		Next_State();
 	}
 }
 
 void CBoss2Hand::D0_LittleUp(const _float & fTimeDelta)
 {
+	if (m_dwActionTimer < 1.0f)
+	{
+		m_dwActionTimer += fTimeDelta * 10.0f;
+
+		if (1.0f <= m_dwActionTimer)
+		{
+			m_dwActionTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(B2H_APPEAR_YPOS, B2H_APPEAR_YPOS + 5, m_dwActionTimer);
+	}
+	else
+	{
+		Next_State();
+	}
 }
 
 void CBoss2Hand::D0_Drop(const _float & fTimeDelta)
 {
+	if (m_dwActionTimer < 1.0f)
+	{
+		m_dwActionTimer += fTimeDelta * 4.0f;
+
+		if (1.0f <= m_dwActionTimer)
+		{
+			m_dwActionTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(B2H_APPEAR_YPOS + 5, B2H_DROP_YPOS, m_dwActionTimer);
+	}
+	else
+	{
+		Next_State();
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.8f, 100.0f, SHAKE_Y);
+	}
+}
+
+void CBoss2Hand::D0_Ready_DisAppear(const _float & fTimeDelta)
+{
+	if (m_dwActionTimer < 1.0f)
+	{
+		m_dwActionTimer += fTimeDelta;
+	}
+	else
+	{
+		Next_State();
+		Set_BoundOffSetZ(-1.0f);
+	}
 }
 
 void CBoss2Hand::D0_DisAppear(const _float & fTimeDelta)
 {
+	if (m_dwActionTimer < 1.0f)
+	{
+		m_dwActionTimer += fTimeDelta;
+
+		if (1.0f <= m_dwActionTimer)
+		{
+			m_dwActionTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].y = Lerp(B2H_DROP_YPOS, m_fStartY, m_dwActionTimer);
+	}
+	else
+	{
+		Next_State();
+		m_bDead = true;
+	}
 }
 
 CBoss2Hand * CBoss2Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
