@@ -159,6 +159,9 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>Manager\ObjectPool</Filter>
     </ClInclude>
+    <ClInclude Include="BlockExp.h">
+      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -280,6 +283,9 @@
     <ClCompile Include="RcAlpha.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="BlockExp.cpp">
+      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -379,6 +385,9 @@
     </Filter>
     <Filter Include="Manager\ObjectPool">
       <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\BlockExp">
+      <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

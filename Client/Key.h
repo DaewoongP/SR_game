@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
-
+class CBlockExp;
 END
 class CKey : public Engine::CGameObject
 {
@@ -30,6 +30,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
+	Engine::CBlockExp *	m_pParticle;
 	
 public:
 	static CKey* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

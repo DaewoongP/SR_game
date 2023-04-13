@@ -16,12 +16,15 @@ public:
 	virtual void ResetParticle(Particle* particle) PURE;
 	virtual void AddParticle();
 	
-	virtual _int Update_Component(const _float& fTimeDelta) override;
-	virtual void LateUpdate_Component() override;
-	void		Render_Particle(void);
+	virtual _int	Update_Particle();
+	void			Render_Particle(void);
 
 	void Set_Origin(const _vec3& origin) { m_vOrigin = origin; }
-	void Set_BoundingBox(const BoundingBox& boundingBox) { m_BoundingBox = boundingBox; }
+	void Set_BoundingBox(const BoundingBox& boundingBox)
+	{ 
+		m_BoundingBox = boundingBox;
+		Reset();
+	}
 	void SetEmitRate(const float& emitRate) { m_EmitRate = emitRate; }
 	void SetNumParticle(const int& numParticle) 
 	{
@@ -33,6 +36,8 @@ public:
 
 	bool IsEmpty();
 	bool IsDead();
+
+	void Start_Particle() { m_bTrigger = true; }
 
 protected:
 	virtual void RemoveDeadParticles();
@@ -56,6 +61,10 @@ protected:
 
 	CTexture*				m_pTexture;
 
+	_bool					m_bIsWorld;
+	_bool					m_bTrigger;
+
+	_float					m_fAnimSpeed;
 };
 
 END

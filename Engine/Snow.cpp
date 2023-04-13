@@ -2,7 +2,6 @@
 #include "Snow.h"
 #include "Export_Function.h"
 
-
 CSnow::CSnow(LPDIRECT3DDEVICE9 pGraphicDev, BoundingBox* boundingBox, int numParticles) :
 	CParticleSystem(pGraphicDev)
 {
@@ -43,7 +42,7 @@ void CSnow::ResetParticle(Particle* particle)
 	particle->vVelocity.y = GetRandomFloat(0.f, 1.f) * -5.f;
 	particle->vVelocity.z = 0.f;
 	
-	particle->vTexUV = { 1,1 };
+	//particle->vTexUV = { 1,1 };
 	particle->dwColor = D3DXCOLOR(1.f,1.f,1.f,1.f);
 	particle->fAge = 0.f;
 	particle->fLifeTime = 10.f;

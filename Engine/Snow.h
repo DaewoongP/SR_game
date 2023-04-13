@@ -5,11 +5,11 @@ BEGIN(Engine)
 class CTexture;
 class  CSnow : public CParticleSystem
 {
-public:
+private:
 	explicit CSnow(LPDIRECT3DDEVICE9 pGraphicDev, BoundingBox* boundingBox, int numParticles);
 	explicit CSnow(const CSnow& rhs);
 	virtual ~CSnow();
-
+public:
 	virtual void ResetParticle(Particle* particle) override;
 
 

@@ -27,6 +27,8 @@
 #include "RcGradation.h"
 #include "RcAlpha.h"
 
+#include "BlockExp.h"
+
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

@@ -75,7 +75,6 @@ void CToodee::LateUpdate_GameObject(void)
 }
 void CToodee::Render_GameObject(void)
 {
-	m_pParticle->Render_Particle();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
@@ -142,10 +141,6 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
-
-	pComponent = m_pParticle = dynamic_cast<CSnow*>(Engine::Clone_Proto(L"Snow", this));
-	NULL_CHECK_RETURN(m_pParticle, E_FAIL);
-	m_vecComponent[ID_DYNAMIC].push_back({ L"Snow", pComponent });
 
 	return S_OK;
 }
