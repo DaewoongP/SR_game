@@ -21,7 +21,7 @@
 #include "Rigidbody.h"
 #include "Line.h"
 #include "Snow.h"
-
+#include "Animation.h"
 #include "Shadow.h"
 
 BEGIN(Engine)

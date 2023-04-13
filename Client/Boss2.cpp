@@ -3,6 +3,12 @@
 #include "Export_Function.h"
 #include "StageCamera.h"
 #include "Cube.h"
+#include "Boss2Eye.h"
+#include "Boss2Face.h"
+#include "Boss2Jaw.h"
+#include "Boss2Nose.h"
+#include "Boss2EyeBrow.h"
+#include "AbstractFactory.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
@@ -46,6 +52,29 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	//플레이어 가져오기
 	if (!m_bInit)
 	{
+		//눈알 두쪽 생성
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+		
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(0)->m_vScale = _vec3(2.0f, 1.5f, 2.0f);
+		m_pTransform->GetChild(0)->m_vAngle = _vec3(0,0,D3DXToRadian(0.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(1)->m_vScale = _vec3(1.5f, 2, 2);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(2)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(3)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(4)->m_vScale = _vec3(0.5f, 0.5f, 0.5f);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(5)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
 	}
@@ -138,6 +167,10 @@ HRESULT CBoss2::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pAnimation = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
+	NULL_CHECK_RETURN(m_pAnimation, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
 
 	return S_OK;
 }

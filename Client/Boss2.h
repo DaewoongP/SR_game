@@ -10,6 +10,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CAnimation;
 END
 
 enum BOSS2STATE
@@ -107,6 +108,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CAnimation*		m_pAnimation;
 
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
