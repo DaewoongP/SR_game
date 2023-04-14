@@ -10,6 +10,7 @@
 #include "Boss2Jaw.h"
 #include "Boss2Nose.h"
 #include "Boss2EyeBrow.h"
+#include "Boss2TailBody.h"
 #include "AbstractFactory.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
@@ -77,6 +78,9 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
 		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(7)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(7)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;

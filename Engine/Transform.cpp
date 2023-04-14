@@ -44,20 +44,21 @@ void CTransform::MakeMyMatrix(const _float& fTimeDelta)
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
 
 	// 크기 변환
-	_matrix matScale = GetScaleMat();
-
+	_matrix			matScale = GetScaleMat();
 	// 회전 변환
 	_matrix			matRotation = GetRotMat();
 	// 위치 변환
 	_matrix			matTrans = GetTransMat(fTimeDelta);
 
-	//매트릭스 생성
-	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
-	if (m_Parent == NULL)
-		return;
+	//공전 변환
+	_matrix			matRevolutionRotation = GetRevolutionRotMat();
+
+	m_matRT = m_matBillY * m_matBillX * matRotation * matTrans;
+	if (m_Parent != NULL)
+		m_matRT = m_matRT * matRevolutionRotation * m_Parent->m_matRT;
 
 	//스자이 공(부모의 회전행렬)부(부모의 이동행렬)
-	m_matWorld = m_matWorld * m_Parent->GetRotMat() * m_Parent->GetTransMat(fTimeDelta);
+	m_matWorld = matScale *  m_matRT;
 }
 
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)
@@ -179,6 +180,19 @@ _matrix CTransform::GetRotMat()
 	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
 
 	return ( matRot[ROT_Y] * matRot[ROT_Z] * matRot[ROT_X]);
+}
+
+_matrix CTransform::GetRevolutionRotMat()
+{
+	// 회전 변환
+	_matrix			matRot[ROT_END];
+	_matrix			matRotation;
+
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vRevolutionAngle.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vRevolutionAngle.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vRevolutionAngle.z);
+
+	return (matRot[ROT_Y] * matRot[ROT_Z] * matRot[ROT_X]);
 }
 
 _matrix CTransform::GetTransMat(const _float& fTimeDelta)

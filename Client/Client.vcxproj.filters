@@ -379,6 +379,8 @@
     <ClInclude Include="Boss2Nose.h">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClInclude>
+    <ClInclude Include="Boss2TailBody.h" />
+    <ClInclude Include="Boss2Tail.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -576,5 +578,7 @@
     <ClCompile Include="Boss2Nose.cpp">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClCompile>
+    <ClCompile Include="Boss2TailBody.cpp" />
+    <ClCompile Include="Boss2Tail.cpp" />
   </ItemGroup>
 </Project>

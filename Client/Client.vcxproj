@@ -162,6 +162,8 @@
     <ClInclude Include="Boss2Hand.h" />
     <ClInclude Include="Boss2Jaw.h" />
     <ClInclude Include="Boss2Nose.h" />
+    <ClInclude Include="Boss2Tail.h" />
+    <ClInclude Include="Boss2TailBody.h" />
     <ClInclude Include="Boss3Hand.h" />
     <ClInclude Include="Boss2Eye.h" />
     <ClInclude Include="Client.h" />
@@ -227,6 +229,8 @@
     <ClCompile Include="Boss2Hand.cpp" />
     <ClCompile Include="Boss2Jaw.cpp" />
     <ClCompile Include="Boss2Nose.cpp" />
+    <ClCompile Include="Boss2Tail.cpp" />
+    <ClCompile Include="Boss2TailBody.cpp" />
     <ClCompile Include="Boss3Hand.cpp" />
     <ClCompile Include="Boss2Eye.cpp" />
     <ClCompile Include="Client.cpp" />
