@@ -36,7 +36,7 @@ void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSp
 {
 	_vec3	vDir = *pTargetPos - m_vInfo[INFO_POS];
 
-	m_vInfo[INFO_POS] += *D3DXVec3Normalize(&vDir, &vDir) * fSpeed * fTimeDelta;
+	 m_vInfo[INFO_POS] += *D3DXVec3Normalize(&vDir, &vDir) * fSpeed * fTimeDelta;
 
 	_matrix		matRot, matTrans;
 

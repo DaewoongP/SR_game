@@ -12,10 +12,10 @@ class CBoss3 : public CCube
 {
 	typedef enum Boss3State
 	{
-		B3_IDLE,		// Æò»ó½Ã
-		B3_ATTACK,		// ³»·Á Âï±â °ø°İ
-		B3_SHOOT,		// ÃÑ¾Ë ½î´Â °ø°İ
-		B3_DEAD			// »ç¸Á
+		B3_IDLE,		// í‰ìƒì‹œ
+		B3_ATTACK,		// ë‚´ë ¤ ì°ê¸° ê³µê²©
+		B3_SHOOT,		// ì´ì•Œ ì˜ëŠ” ê³µê²©
+		B3_DEAD			// ì‚¬ë§
 	}BOSS3;
 
 private:
@@ -38,27 +38,34 @@ private:
 	HRESULT Add_Component(void);
 	void	State_Change(const _float & fTimeDelta);
 
-	void	FollowPlayer(const _float & fTimeDelta);	// Ãß°İ ÈÄ ³»·ÁÂï±â¸¦ ½ÃÀÛÇÒ ÇÔ¼ö
-	void	BossAttack(const _float & fTimeDelta);		// ³»·ÁÂï´Â °ø°İ
+	void	BossLook(const _float& fTimeDelta);
 
-	void	ShootBullet(const _float & fTimeDelta);		// ÃÑ¾Ë ½î´Â °ø°İ
+
+	void	FollowPlayer(const _float & fTimeDelta);	// ì¶”ê²© í›„ ë‚´ë ¤ì°ê¸°ë¥¼ ì‹œì‘í•  í•¨ìˆ˜
+	void	BossAttack(const _float & fTimeDelta);		// ë‚´ë ¤ì°ëŠ” ê³µê²©
+
+	void	ShootBullet(const _float & fTimeDelta);		// ì´ì•Œ ì˜ëŠ” ê³µê²©
 
 private:
-	_bool   m_bCreateHand;			// ÇÑ¹ø¸¸ ¾ç¼Õ »ı¼º + Ç¥Á¤ »ı¼º
-	CGameObject* m_pBossLeft;		// ¿Ş¼Õ ÁÖ¼Ò
-	CGameObject* m_pBossRight;		// ¿À¸¥¼Õ ÁÖ¼Ò
-	CGameObject* m_pBossLeftEye;	// ¿Ş´« ÁÖ¼Ò	
-	CGameObject* m_pBossRightEye;	// ¿À¸¥´« ÁÖ¼Ò
-	CGameObject* m_pBossLeftPupil;	// ¿Ş´«µ¿ÀÚ ÁÖ¼Ò	
-	CGameObject* m_pBossRightPupil;	// ¿À¸¥´«µ¿ÀÚ ÁÖ¼Ò
-	CGameObject* m_pLeftEyebrow;	// ¿Ş ´«½ç ÁÖ¼Ò
-	CGameObject* m_pRightEyebrow;	// ¿À¸¥ ´«½ç ÁÖ¼Ò
+	_bool   m_bCreateHand;			// í•œë²ˆë§Œ ì–‘ì† ìƒì„± + í‘œì • ìƒì„±
+	CGameObject* m_pBossLeft;		// ì™¼ì† ì£¼ì†Œ
+	CGameObject* m_pBossRight;		// ì˜¤ë¥¸ì† ì£¼ì†Œ
+	CGameObject* m_pBossLeftEye;	// ì™¼ëˆˆ ì£¼ì†Œ	
+	CGameObject* m_pBossRightEye;	// ì˜¤ë¥¸ëˆˆ ì£¼ì†Œ
+	CGameObject* m_pBossLeftPupil;	// ì™¼ëˆˆë™ì ì£¼ì†Œ	
+	CGameObject* m_pBossRightPupil;	// ì˜¤ë¥¸ëˆˆë™ì ì£¼ì†Œ
+	CGameObject* m_pLeftEyebrow;	// ì™¼ ëˆˆì¹ ì£¼ì†Œ
+	CGameObject* m_pRightEyebrow;	// ì˜¤ë¥¸ ëˆˆì¹ ì£¼ì†Œ
 	
-	_float  m_fXAngle;			// ÇÃ·¹ÀÌ¾î ÀüÈ¯ ½Ã xÃà È¸Àü °ª
-	_float	m_fSpeed;			// ÀÌµ¿ ¼Óµµ
-	_float  m_fAttackCoolDown;	// °ø°İ Äğ´Ù¿î
-	_float  m_fCoolDown;		// Ãß°İ Äğ´Ù¿î
-	_float  m_fShootCoolDown;	// »ç°İ Äğ´Ù¿î
+	_float  m_fXAngle;			// í”Œë ˆì´ì–´ ì „í™˜ ì‹œ xì¶• íšŒì „ ê°’
+	_float	m_fSpeed;			// ì´ë™ ì†ë„
+	_float  m_fAttackCoolDown;	// ê³µê²© ì¿¨ë‹¤ìš´
+	_float  m_fCoolDown;		// ì¶”ê²© ì¿¨ë‹¤ìš´
+	_float  m_fShootCoolDown;	// ì‚¬ê²© ì¿¨ë‹¤ìš´
+  
+	_vec3  m_vLookDot;
+	_vec3 m_vDirection;
+	_vec3 m_vPlayerInfo;
 
 	BOSS3	m_eCurState;		
 	BOSS3	m_ePreState;

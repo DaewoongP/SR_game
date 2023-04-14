@@ -29,7 +29,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45.f));
 	m_pTransform->m_bIsStatic = true;
-
+	
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
@@ -40,6 +40,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+	
 
 	// Boss3 생성과 크기 조정
 	if (m_bCreateHand)
@@ -91,10 +92,70 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
+
+	m_vLookDot = { m_pTransform->m_vInfo[INFO_POS].x - 1.f,
+					   m_pTransform->m_vInfo[INFO_POS].y,
+					   m_pTransform->m_vInfo[INFO_POS].z - 1.f };
+	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+
+	//toodee topdee 카메라전환할때 위치돌리기
+	if (0  >m_fAngle)
+		m_pTransform->Rotation(ROT_X, D3DXToRadian(-m_fAngle++ * fTimeDelta));
+	
+	BossLook(fTimeDelta);
+		m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+
+	D3DXVec3Normalize(&m_vDirection, &m_vDirection);
+
+	_vec3 vBossToPlayer = m_vPlayerInfo - m_pTransform->m_vInfo[INFO_POS];
+	D3DXVec3Normalize(&vBossToPlayer, &vBossToPlayer);
+	//_matrix matRot = *m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	//D3DXMatrixRotationY(&matRot, D3DXToRadian(-45 * fTimeDelta));
+	//m_pTransform->m_matWorld = matRot;
+	//m_pTransform->m_matWorld = matRot;
+
+	_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
+	if(!(fSight==0))
+	m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
+	//if (fSight < 0.f)
+	//{
+	//	if (m_pTransform->m_vInfo[INFO_POS].y > m_vPlayerInfo.y)
+	//	{
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//		if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+
+	//	}
+	//	else if (m_pTransform->m_vInfo[INFO_POS].y < m_vPlayerInfo.y)
+	//	{
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//		if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+
+	//	}
+	//}
+	//else if (fSight > 0.f)
+	//{
+	//	if (m_pTransform->m_vInfo[INFO_POS].y < m_vPlayerInfo.y)
+
+	//		if (m_pTransform->m_vInfo[INFO_POS].x < m_vPlayerInfo.x)
+	//			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45 * fTimeDelta));
+	//	if (m_pTransform->m_vInfo[INFO_POS].x > m_vPlayerInfo.x)
+	//		m_pTransform->Rotation(ROT_Y, D3DXToRadian(45 * fTimeDelta));
+	//}
+	//else if(fSight==0.f)
+	//{	
+	//	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	//}
+
+/*
 	if (0.f > m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fXAngle)++ * fTimeDelta));
 
 	ShootBullet(fTimeDelta);
+*/
 
 	CGameObject::Update_Too(fTimeDelta);
 
@@ -128,6 +189,7 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
+	//collision->otherObj
 	__super::OnCollisionEnter(collision);
 }
 
@@ -198,6 +260,7 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	if (2.f < m_fCoolDown && 2.f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
+		
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
@@ -206,18 +269,29 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 		BossAttack(fTimeDelta);
 }
 
+void CBoss3::BossLook(const _float& fTimeDelta)
+{
+	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+	NULL_CHECK_RETURN(pGameObject, );
+	m_vPlayerInfo = pGameObject->m_pTransform->m_vInfo[INFO_POS];
+	
+	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+
+	
+}
+
 void CBoss3::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
 
 	// 회전하고 
-	if(0.5f > m_fAttackCoolDown)
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(360.f * fTimeDelta));
+	if (0.75f > fAttackCoolDown)
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
-	// 내려 찍기 (3.5f + 1.f)
-	else if(0.5f < m_fAttackCoolDown && 0.5f + BOSS3_SPIN  > m_fAttackCoolDown)
+	// 내려 찍기
+	else if (0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
 	{
-		if(5.f > m_pTransform->m_vInfo[INFO_POS].z)
+		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
 	}
 
@@ -231,6 +305,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 오른손 공격 명령
 	else if (5.f < m_fAttackCoolDown && 8.f > m_fAttackCoolDown)
 	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(false);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 	}		
@@ -256,6 +331,8 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 
 		m_fShootCoolDown = 0.f;
 	}
+	
+
 }
 
 CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

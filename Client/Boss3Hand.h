@@ -9,7 +9,6 @@ private:
 
 public:
 	void	Set_Attack(_bool TrueorFalse) { m_bAttack = TrueorFalse; }
-
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
@@ -36,6 +35,12 @@ private:
 
 	_float  m_fCoolDown;
 	_float  m_fAttackCoolDown;
+	_float m_fShockCollDown;
+
+	static _bool m_bAttackEnd;
+	_bool	m_bShock = false;
+
+	_int m_iBossHp=1;
 	_float  m_fIdleCycle;
 	_float  m_fIdleAngle;
 	_bool	m_bAttack;

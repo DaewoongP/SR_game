@@ -1,6 +1,12 @@
 #include "stdafx.h"
+#include"Boss3.h"
 #include "Boss3Hand.h"
+#include"..\Client\Toodee.h"
+#include"..\Client\Topdee.h"
+
 #include "Export_Function.h"
+
+_bool CBoss3Hand::m_bAttackEnd = false;
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
@@ -35,10 +41,41 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+    
+	if (m_iBossHp == 1 && m_bAttackEnd==true)
+	{
+		m_bShock = true;
+		m_fShockCollDown += fTimeDelta;
 
-	IdleMove(fTimeDelta);
+	}
+	if (m_fShockCollDown > 4.f)
+	{
+		m_bShock = false;
+		m_bAttackEnd = false;
+		m_fShockCollDown = 0.f;
+	}
+	if (m_bShock == true)
+	{
+		m_pCollider->Set_BoundingBox({ 6.f,6.f,6.f });
+	
+	}
+	if (m_bShock == false)
+		m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
 
-	CGameObject::Update_GameObject(fTimeDelta);
+	if (7.f < m_fAttackCoolDown)
+	{
+		m_bAttack = false;
+		m_fAttackCoolDown = 0.f;
+		m_bAttackEnd = true;
+
+	}
+	else if (m_iBossHp == 1 && m_bAttackEnd == true)
+		m_bShock = true;
+    
+    IdleMove(fTimeDelta);
+	
+	__super::Update_GameObject(fTimeDelta);
+
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -85,7 +122,17 @@ void CBoss3Hand::Render_GameObject(void)
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 {
-	CGameObject::OnCollisionEnter(collision);
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") && m_bShock == true)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead(); 
+	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		dynamic_cast<CTopdee*>(pGameObject)->Set_AnimDead();
+	}
+	__super::OnCollisionEnter(collision);
 }
 
 void CBoss3Hand::OnCollisionStay(const Collision * collision)
@@ -125,6 +172,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
 
+
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
@@ -135,8 +183,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	// 시간이 지나면 공격 시작 (3.f)
-	else if (1.5f + BOSS3_CHASE < m_fCoolDown)
+	else if (4.f < m_fCoolDown && m_bAttackEnd==false)
 	{
 		BossAttack(fTimeDelta);
 	}
@@ -146,7 +193,17 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
 
-	// 회전하고 
+	// ȸ���ϰ� 
+	if (0.75f > m_fAttackCoolDown)
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
+
+	// ���� ���
+	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
+	{
+			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
+
+
+	/* // 회전하고 
 	if (0.5f > m_fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(360.f * fTimeDelta));
 
@@ -154,7 +211,7 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	else if (0.5f < m_fAttackCoolDown && 0.5f + BOSS3_SPIN  > m_fAttackCoolDown)
 	{
 		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수) */
 	}
 
 	else if (1.f < m_fAttackCoolDown)
@@ -162,7 +219,7 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
-	}
+	} */
 }
 
 void CBoss3Hand::IdleMove(const _float & fTimeDelta)
@@ -194,7 +251,9 @@ void CBoss3Hand::IdleMove(const _float & fTimeDelta)
 		{
 			m_fIdleAngle += 2.f;
 			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-7.5f));
-			m_fIdleCycle = 0.f;
+			m_f
+      
+      Cycle = 0.f;
 
 			if (m_fIdleAngle >= 10.f)
 			{
@@ -214,6 +273,8 @@ void CBoss3Hand::IdleMove(const _float & fTimeDelta)
 			m_bIdleStop = false;
 		}			
 	}
+
+	
 }
 
 CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

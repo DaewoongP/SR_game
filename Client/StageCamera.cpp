@@ -60,7 +60,7 @@ void CStage1Camera::Rotation_View(const _float& fTimeDelta)
 	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
 	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
 	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
-
+	
 	_vec3 vDir;
 	vDir = vEye - vAt;
 	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
