@@ -39,11 +39,23 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_0", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.2f)), E_FAIL);
-
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_0"))->
 			Set_PreTail(m_pTransform->GetChild(0));
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_1", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.3f)), E_FAIL);
+		for (size_t i = 0; i < 20; i++)
+		{
+			TCHAR	szFileName[256] = L"";
+			TCHAR	szFileName2[256] = L"";
+
+			wsprintf(szFileName, L"Boss2Tail_%d", i + 1);
+			wsprintf(szFileName2, L"Boss2Tail_%d", i);
+
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(szFileName, pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.1 * i + 0.3f)), E_FAIL);
+
+			dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", szFileName))->
+				Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", szFileName2)->m_pTransform);
+		}
+		/*FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_1", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.3f)), E_FAIL);
 
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_1"))->
 			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_0")->m_pTransform);
@@ -57,6 +69,26 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_3"))->
 			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_2")->m_pTransform);
+		
+		
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_4", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.3f)), E_FAIL);
+
+		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_4"))->
+			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_3")->m_pTransform);
+
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_5", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.4f)), E_FAIL);
+
+		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_5"))->
+			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_4")->m_pTransform);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_6", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.5f)), E_FAIL);
+
+		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_6"))->
+			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_5")->m_pTransform);*/
+
+
 
 		//CTransform*	pTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Proto_Transform", ID_DYNAMIC));
 

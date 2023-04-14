@@ -73,19 +73,22 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
 		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(7)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
-		m_pTransform->GetChild(7)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
+
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(4.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
+		
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(11)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
-		dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(11)->m_pGameObject)->SetRotAngle(30,120);
+		//dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(11)->m_pGameObject)->SetRotAngle(30,120);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(12)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
-		dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(12)->m_pGameObject)->SetRotAngle(30,60);
+		//dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(12)->m_pGameObject)->SetRotAngle(30,60);
+		
+		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		AnimClip* clip = new AnimClip();
@@ -683,7 +686,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Face->AddClip(L"Scream", clip);
-		m_pAnimation_Face->SetAnimation(L"Idle");
+		m_pAnimation_Face->SetAnimation(L"Scream");
 
 		clip = new AnimClip();
 		{
@@ -694,8 +697,8 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_pTransform->GetChild(11));
 			clip->parts.push_back(m_pTransform->GetChild(12));
 			clip->source.resize(6);
-			clip->TotalTime = 2.5f;
-			clip->Useloop = false;
+			clip->TotalTime = 2.8f;
+			clip->Useloop = true;
 			//LeftFront
 			{
 				clip->source[0].push_back(

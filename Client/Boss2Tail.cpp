@@ -17,7 +17,7 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_bUseLimitVelocity = true;
-	m_pRigid->m_fLimitVelocity = 20.0f;
+	m_pRigid->m_fLimitVelocity = 10.0f;
 	m_pRigid->m_bFreezePos_Z = true;
 
 	
@@ -27,26 +27,36 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss2Tail::Update_GameObject(const _float & fTimeDelta)
 {
-	
+	//m_pRigid->m_fLimitVelocity = TAILVELOCITYLIMT;
+
 
 	if (m_pPreTail)
 	{
 		_vec3 vPrePos = {
-			m_pPreTail->Get_WorldMatrixPointer()->_41+1,
+			m_pPreTail->Get_WorldMatrixPointer()->_41+1.0f,
 			m_pPreTail->Get_WorldMatrixPointer()->_42,
 			m_pPreTail->Get_WorldMatrixPointer()->_43 };
 		
 		_vec3 vDis = vPrePos - m_pTransform->m_vInfo[INFO_POS];
 
-		_float fLength = D3DXVec3Length(&vDis);
+		_vec3 vDir = m_pTransform->m_vInfo[INFO_POS] - vPrePos;
 
+		D3DXVec3Normalize(&vDir, &vDir);
+
+		vDir.z = 0.0f;
+
+		_float fLength = D3DXVec3Length(&vDis);
+		D3DXVec3Normalize(&vDis, &vDis);
+		m_pRigid->AddForce(vDis, 1000.f, FORCE, fTimeDelta);
+		vDis.z = 0.0f;
 		if (1.0f < fLength)
 		{
-			D3DXVec3Normalize(&vDis, &vDis);
-			m_pRigid->AddForce(vDis,2000.0f, FORCE, fTimeDelta);
+			_vec3 vRePosition = vPrePos + vDir;
+			vRePosition.z = 0.0f;
+			m_pTransform->Set_Pos(vRePosition.x, vRePosition.y, m_pTransform->m_vInfo[INFO_POS].z);
+			
 			
 		}
-
 	}
 
 __super::Update_GameObject(fTimeDelta);
