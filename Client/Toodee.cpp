@@ -91,12 +91,11 @@ void CToodee::LateUpdate_GameObject(void)
 }
 void CToodee::Render_GameObject(void)
 {
-	Render_Particle();
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
+	Render_Particle();
 }
 
 void CToodee::OnCollisionEnter(const Collision * collision)

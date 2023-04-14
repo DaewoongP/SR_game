@@ -164,6 +164,10 @@ _uint CLoading::Loading_ForStage(void)
 		L"../Resource/Texture/Export_Textures/Sprites/theme2LeafSpr/theme2LeafSpr_2.png", 1,
 		1.f, 8, true)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RainParticle", CRainParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/RainSpr/RainSpr_0.png", 1,
+		0.7f, 70, true)), E_FAIL);
+
 	/*FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WindParticle", CWindParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/theme1SunSparkSpr/theme1SunSparkSpr_1.png", 1,
 		1.f, 5, true)), E_FAIL);*/
