@@ -34,7 +34,15 @@ private:
 	_float	m_fSpeed;
 	_float  m_fCoolDown;
 	_float  m_fAttackCoolDown;
+	_float m_fShockCollDown;
+
+
+	_bool m_bAttackEnd = false;
 	_bool	m_bAttack;
+	_bool	m_bShock = false;
+
+	_int m_iBossHp=1;
+
 
 public:
 	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int iIndex);

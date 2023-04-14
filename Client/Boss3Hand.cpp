@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Boss3Hand.h"
+#include"..\Client\Toodee.h"
+#include"..\Client\Topdee.h"
+
 #include "Export_Function.h"
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -35,7 +38,21 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+
+	if (m_iBossHp == 1 && m_bAttackEnd==true)
+	{
+		m_bShock = true;
+		m_fShockCollDown += fTimeDelta;
+
+	}
+	if (m_fShockCollDown > 4.f)
+	{
+		m_bShock = false;
+		m_fShockCollDown = 0.f;
+	}
+
 	__super::Update_GameObject(fTimeDelta);
+
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -82,6 +99,16 @@ void CBoss3Hand::Render_GameObject(void)
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 {
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") && m_bShock == true)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead(); 
+	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
+	{
+		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		dynamic_cast<CTopdee*>(pGameObject)->Set_AnimDead();
+	}
 	__super::OnCollisionEnter(collision);
 }
 
@@ -122,6 +149,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
 
+
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
@@ -133,7 +161,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	}
 
 	// 4�� �� ��� ����
-	else if (4.f < m_fCoolDown)
+	else if (4.f < m_fCoolDown && m_bAttackEnd==false)
 	{
 		BossAttack(fTimeDelta);
 	}
@@ -142,7 +170,6 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
-
 	// ȸ���ϰ� 
 	if (0.75f > m_fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
@@ -150,15 +177,23 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	// ���� ���
 	else
 	{
-		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f �� �ӵ�(���)
+		if (8.f>= m_pTransform->m_vInfo[INFO_POS].z)
+		{	m_pTransform->m_vInfo[INFO_POS].z += 1.f;
+			
+		}
+		if (7.f < m_fAttackCoolDown)
+		{
+			m_bAttack = false;
+			m_fAttackCoolDown = 0.f;
+			m_bAttackEnd = true;
+
+		}
+		else if (m_iBossHp == 1 && m_bAttackEnd==true)
+			m_bShock = true;
+
 	}
 
-	if (7.f < m_fAttackCoolDown)
-	{
-		m_bAttack = false;
-		m_fAttackCoolDown = 0.f;
-	}
+	
 }
 
 CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, int iIndex)

@@ -81,7 +81,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	//m_pTransform->m_matWorld = matRot;
 
 	_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
-
+	if(!(fSight==0))
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
 	//if (fSight < 0.f)
 	//{
@@ -115,6 +115,9 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	//{	
 	//	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
 	//}
+
+
+
 	CGameObject::Update_Too(fTimeDelta);
 
 	return 0;

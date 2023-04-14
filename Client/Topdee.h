@@ -38,6 +38,7 @@ private:
 public:
 	void		SetMovePos(COL_DIR dir);
 	void		SetMovePos_zero();
+	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
