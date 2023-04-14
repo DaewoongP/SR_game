@@ -1,9 +1,12 @@
 #include "stdafx.h"
+#include"Boss3.h"
 #include "Boss3Hand.h"
 #include"..\Client\Toodee.h"
 #include"..\Client\Topdee.h"
 
 #include "Export_Function.h"
+
+_bool CBoss3Hand::m_bAttackEnd = false;
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
@@ -38,7 +41,6 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-
 	if (m_iBossHp == 1 && m_bAttackEnd==true)
 	{
 		m_bShock = true;
@@ -48,9 +50,27 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	if (m_fShockCollDown > 4.f)
 	{
 		m_bShock = false;
+		m_bAttackEnd = false;
 		m_fShockCollDown = 0.f;
 	}
+	if (m_bShock == true)
+	{
+		m_pCollider->Set_BoundingBox({ 6.f,6.f,6.f });
+	
+	}
+	if (m_bShock == false)
+		m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
 
+	if (7.f < m_fAttackCoolDown)
+	{
+		m_bAttack = false;
+		m_fAttackCoolDown = 0.f;
+		m_bAttackEnd = true;
+
+	}
+	else if (m_iBossHp == 1 && m_bAttackEnd == true)
+		m_bShock = true;
+	
 	__super::Update_GameObject(fTimeDelta);
 
 
@@ -175,21 +195,9 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
 	// ���� ���
-	else
+	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
 	{
-		if (8.f>= m_pTransform->m_vInfo[INFO_POS].z)
-		{	m_pTransform->m_vInfo[INFO_POS].z += 1.f;
-			
-		}
-		if (7.f < m_fAttackCoolDown)
-		{
-			m_bAttack = false;
-			m_fAttackCoolDown = 0.f;
-			m_bAttackEnd = true;
-
-		}
-		else if (m_iBossHp == 1 && m_bAttackEnd==true)
-			m_bShock = true;
+			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
 
 	}
 

@@ -225,13 +225,13 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	fAttackCoolDown += fTimeDelta;
 
 	// 회전하고 
-	if(0.75f > fAttackCoolDown)
+	if (0.75f > fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
 
 	// 내려 찍기
-	else if(0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
+	else if (0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
 	{
-		if(5.f > m_pTransform->m_vInfo[INFO_POS].z)
+		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
 	}
 	else if (1.f < fAttackCoolDown && 6.f > fAttackCoolDown)
@@ -244,7 +244,10 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	{
 		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 		dynamic_cast<CBoss3Hand*>(pGameObject)->Set_Attack(true);
+
 	}
+	
+
 }
 
 CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
