@@ -6,7 +6,7 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CComponent(pGraphicDev)
 	, m_vScale(1.f, 1.f, 1.f)
 	, m_vAngle(0.f, 0.f, 0.f)
-	,m_bMove(true)
+	, m_bMove(true)
 
 {
 	ZeroMemory(&m_vInfo, sizeof(m_vInfo));

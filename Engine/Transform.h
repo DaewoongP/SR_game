@@ -13,7 +13,7 @@ private:
 	virtual ~CTransform();
 
 public:
-	const _matrix*		Get_WorldMatrixPointer() { return &m_matWorld; }
+	const _matrix*	Get_WorldMatrixPointer() { return &m_matWorld; }
 	void				Get_Info(INFO eType, _vec3* pInfo)
 	{
 		*pInfo = m_vInfo[eType];
