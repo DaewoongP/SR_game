@@ -11,6 +11,7 @@ class CCollider;
 class CRigidbody;
 class CJumpParticle;
 class CLandingParticle;
+class CSparkParticle;
 
 END
 class CToodee : public Engine::CGameObject
@@ -37,6 +38,11 @@ private:
 	void		DoFlip();
 	void		DoStrech();
 
+	void Render_Particle();
+	void Check_IsParticleDead();
+	void Set_WalkParticle();
+	void LandingParticle_logic(const _tchar* pTag);
+
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
@@ -44,6 +50,7 @@ private:
 	Engine::CRigidbody*		m_pRigid;
 	Engine::CJumpParticle*	m_pJumpParticle;
 	Engine::CLandingParticle*	m_pLandingParticle;
+	Engine::CSparkParticle*		m_pSparkParticle;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;

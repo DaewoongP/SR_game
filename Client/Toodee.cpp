@@ -35,6 +35,7 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	box.Offset(vPos);
 	m_pJumpParticle->Set_BoundingBox(box);
 	m_pLandingParticle->Set_BoundingBox(box);
+	m_pSparkParticle->Set_LifeTime();
 
 	return S_OK;
 }
@@ -76,22 +77,17 @@ void CToodee::SwapTrigger()
 
 void CToodee::LateUpdate_GameObject(void)
 {
-	if (m_pJumpParticle->IsDead())
-		m_pJumpParticle->End_Particle();
-	if (m_pLandingParticle->IsDead())
-		m_pLandingParticle->End_Particle();
+	Check_IsParticleDead();
 	__super::LateUpdate_GameObject();
 }
 void CToodee::Render_GameObject(void)
 {
-	m_pJumpParticle->Update_Particle();
-	m_pLandingParticle->Update_Particle();
+	Render_Particle();
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
-
 }
 
 void CToodee::OnCollisionEnter(const Collision * collision)
@@ -103,18 +99,8 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 		m_pTextureCom->Switch_Anim(L"Die");
 	}
 
-	if (collision->_dir == DIR_DOWN && m_bJumpable == false && 
-		!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"CrackCube") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"KeyCube") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"MoveCube") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube") || 
-		!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud"))
-	{
-		m_pLandingParticle->Reset();
-		m_pLandingParticle->Set_Size(1.f);
-		m_pLandingParticle->Start_Particle();
-	}
+	if (collision->_dir == DIR_DOWN)
+		LandingParticle_logic(collision->otherObj->m_pTag);
 
 	__super::OnCollisionEnter(collision);
 }
@@ -133,7 +119,11 @@ void CToodee::OnCollisionStay(const Collision * collision)
 		}
 		else if (m_bJumpable)
 			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
+			{
 				m_pTextureCom->Switch_Anim(L"Walk");
+				Set_WalkParticle();
+			}
+				
 			else
  				m_pTextureCom->Switch_Anim(L"Idle");
 	}
@@ -174,6 +164,10 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pLandingParticle = dynamic_cast<CLandingParticle*>(Engine::Clone_Proto(L"LandingParticle", this));
 	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"LandingParticle", pComponent });
+
+	pComponent = m_pSparkParticle = dynamic_cast<CSparkParticle*>(Engine::Clone_Proto(L"WalkParticle", this));
+	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"WalkParticle", pComponent });
 
 	return S_OK;
 }
@@ -244,4 +238,56 @@ void CToodee::DoStrech()
 	}
 	else
 		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
+}
+
+void CToodee::Render_Particle()
+{
+	m_pJumpParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
+	m_pSparkParticle->Update_Particle();
+}
+
+void CToodee::Check_IsParticleDead()
+{
+	if (m_pJumpParticle->IsDead())
+		m_pJumpParticle->End_Particle();
+	if (m_pLandingParticle->IsDead())
+		m_pLandingParticle->End_Particle();
+	if (m_pSparkParticle->IsDead())
+		m_pSparkParticle->End_Particle();
+}
+
+void CToodee::Set_WalkParticle()
+{
+	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
+	Engine::Ready_Frame(L"1Sec", 1.f);
+	if (Engine::IsPermit_Call(L"1Sec", fTimeDelta))
+	{
+		BoundingBox box;
+		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+		box._offsetMin = { -0.1f, -1.f, 0.f };
+		box._offsetMax = { 0.f, -0.8f, 0.f };
+		box.Offset(vPos);
+		m_pSparkParticle->Set_BoundingBox(box);
+		m_pSparkParticle->Reset();
+		m_pSparkParticle->Set_Size(0.8f);
+		m_pSparkParticle->Start_Particle();
+	}
+}
+
+void CToodee::LandingParticle_logic(const _tchar* pTag)
+{
+	if (m_bJumpable)
+		return;
+	if (!lstrcmp(pTag, L"MapCube") ||
+		!lstrcmp(pTag, L"CrackCube") ||
+		!lstrcmp(pTag, L"KeyCube") ||
+		!lstrcmp(pTag, L"MoveCube") ||
+		!lstrcmp(pTag, L"GravityCube") ||
+		!lstrcmp(pTag, L"PinkCloud"))
+	{
+		m_pLandingParticle->Reset();
+		m_pLandingParticle->Set_Size(1.f);
+		m_pLandingParticle->Start_Particle();
+	}
 }

@@ -67,6 +67,7 @@ protected:
 	_bool					m_bTrigger;
 
 	_float					m_fAnimSpeed;
+	_bool					m_bChangedTex;
 };
 
 END

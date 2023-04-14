@@ -168,9 +168,11 @@
     <ClInclude Include="JumpParticle.h">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
     </ClInclude>
-    <ClInclude Include="LandingParticle.h" />
     <ClInclude Include="SparkParticle.h">
       <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClInclude>
+    <ClInclude Include="LandingParticle.h">
+      <Filter>Componnent\ParticleSystem\Landing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +304,11 @@
     <ClCompile Include="JumpParticle.cpp">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
     </ClCompile>
-    <ClCompile Include="LandingParticle.cpp" />
     <ClCompile Include="SparkParticle.cpp">
       <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClCompile>
+    <ClCompile Include="LandingParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Landing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

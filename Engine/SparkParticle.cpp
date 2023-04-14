@@ -25,7 +25,8 @@ CSparkParticle::CSparkParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPa
 }
 
 CSparkParticle::CSparkParticle(const CSparkParticle & rhs)
-	:CParticleSystem(rhs)
+	:CParticleSystem(rhs),
+	m_fLifeTime(rhs.m_fLifeTime)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -44,6 +45,8 @@ void CSparkParticle::ResetParticle(Particle * particle)
 		&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
+	particle->fAge = 0.f;
+	particle->fLifeTime = m_fLifeTime;
 }
 
 _int CSparkParticle::Update_Particle()
@@ -51,7 +54,21 @@ _int CSparkParticle::Update_Particle()
 	if (!m_bTrigger)
 		return 0;
 	__super::Update_Particle();
-
+	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
+	for (auto& it = m_Particles.begin(); it != m_Particles.end(); it++)
+	{
+		if (it->bIsAlive)
+		{
+			if (0 == it->fLifeTime)
+				break;
+			m_Size *= 0.995f;
+			it->fAge += fTimeDelta;
+			if (it->fAge > it->fLifeTime)
+				it->bIsAlive = false;
+		}
+		else
+			ResetParticle(&(*it));
+	}
 	__super::Render_Particle();
 	return -1;
 }

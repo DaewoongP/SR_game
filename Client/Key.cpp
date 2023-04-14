@@ -37,6 +37,7 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pSparkParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_AnimSpeed(0.1f);
 	m_pSparkParticle->Start_Particle();
+	m_pSparkParticle->Set_LifeTime(0.f);
 
 	++iKeyCnt;
 	return S_OK;

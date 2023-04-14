@@ -193,6 +193,7 @@ void CParticleSystem::AddParticle()
 
 void CParticleSystem::Free(void)
 {
+	m_Particles.clear();
 	if (!m_bClone)
 		Safe_Release(m_pTexture);
 	CComponent::Free();
