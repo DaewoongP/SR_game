@@ -63,11 +63,14 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 					   m_pTransform->m_vInfo[INFO_POS].y,
 					   m_pTransform->m_vInfo[INFO_POS].z - 1.f };
 	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+
 	//toodee topdee 카메라전환할때 위치돌리기
 	if (0  >m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-m_fAngle++ * fTimeDelta));
 	
 	BossLook(fTimeDelta);
+		m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+
 	D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 
 	_vec3 vBossToPlayer = m_vPlayerInfo - m_pTransform->m_vInfo[INFO_POS];
@@ -78,6 +81,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	//m_pTransform->m_matWorld = matRot;
 
 	_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
+
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
 	//if (fSight < 0.f)
 	//{
