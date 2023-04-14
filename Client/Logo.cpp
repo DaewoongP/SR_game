@@ -6,7 +6,6 @@
 #include "Export_Function.h"
 #include "BackGround.h"
 #include"Title.h"
-#include "Stage1.h"
 #include "UICamera.h"
 #include "StageCamera.h"
 #include "LogoCamera.h"
@@ -14,14 +13,13 @@
 #include "ShiningStar.h"
 #include "MenuSmoke.h"
 #include "MenuCubeSpr.h"
-
-//Å×½ºÆ®
-
 #include"Select.h"
 #include "Title.h"
+#include "PreStage.h"
+
 _bool CLogo::m_bStart = true;
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CScene(pGraphicDev), m_pLoading(nullptr)
+	: CScene(pGraphicDev)
 {
 }
 
@@ -38,9 +36,6 @@ HRESULT CLogo::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
-
-	m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE);
-	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
 	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
@@ -50,17 +45,14 @@ HRESULT CLogo::Ready_Scene(void)
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
 	int iExit = __super::Update_Scene(fTimeDelta);
-
-	if (true == m_pLoading->Get_Finish())
-	{
-		if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
 			m_bStart = true;
 		if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
 			m_bStart = false;
 
 		if (GetAsyncKeyState(VK_RETURN)&&m_bStart==true)
 		{
-			CScene*	pScene = CStage1::Create(m_pGraphicDev);
+			CScene*	pScene = CPreStage::Create(m_pGraphicDev);
 			NULL_CHECK_RETURN(pScene, -1);
 
 			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
@@ -69,8 +61,6 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 		}
 		else if (GetAsyncKeyState(VK_RETURN) && m_bStart==false)
 			PostQuitMessage(0);
-
-	}
 
 	return iExit;
 }
@@ -82,8 +72,6 @@ void CLogo::LateUpdate_Scene(void)
 
 void CLogo::Render_Scene(void)
 {
-	Engine::Render_Font(L"Font_Default", m_pLoading->Get_String(), &_vec2(20.f, 20.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-
 }
 
 HRESULT CLogo::Ready_Proto(void)
@@ -170,7 +158,6 @@ HRESULT CLogo::Ready_Layer_UI(const _tchar * pLayerTag)
 CLogo * CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CLogo *	pInstance = new CLogo(pGraphicDev);
-
 	if (FAILED(pInstance->Ready_Scene()))
 	{
 		Safe_Release(pInstance);
@@ -182,7 +169,5 @@ CLogo * CLogo::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CLogo::Free(void)
 {
-	Safe_Release(m_pLoading);
-
 	__super::Free();
 }
