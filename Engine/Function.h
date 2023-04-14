@@ -138,6 +138,20 @@ public: // operator
 	}
 };
 
+//릴리즈 없는 맵
+class CDeleteMap_MY
+{
+public:
+	explicit CDeleteMap_MY(void) {}
+	~CDeleteMap_MY(void) {}
+public: // operator	
+	template <typename T>
+	void operator () (T& Pair)
+	{
+		delete(Pair.second);
+	}
+};
+
 //A부터 B까지
 static float Lerp(float A, float B, float Alpha)
 {

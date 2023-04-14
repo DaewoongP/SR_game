@@ -10,9 +10,9 @@ typedef struct AnimInfo
 	_vec3 rotation;
 	_vec3 scale;
 	//언제까지 이동시켜라! 라고 사용할때 쓸 친구입니다.
-	_ulong TillTime;
+	_float TillTime;
 	//행동을 개시할 시간입니다.
-	_ulong ActionTime; 
+	_float ActionTime;
 }ANIMINFO;
 
 //재생할 애니메이션 클립입니다.
@@ -24,7 +24,7 @@ typedef struct AnimClip
 	//행동에 대한 정보를 담고있는 친구입니다.
 	vector<vector<ANIMINFO>> source;
 	//애니메이션이 종료될 시간입니다.
-	_ulong TotalTime;
+	_float TotalTime;
 	//하나의 애니메이션이 루프를 사용할지 아닐지를 정해주는 친구입니다.
 	_bool Useloop;
 }ANIMCLIP;
@@ -57,7 +57,7 @@ private:
 	map<_tchar*, ANIMCLIP*> m_clipMap;
 	//현재 재생해야할 애니메이션의 이름입니다.
 	_tchar*					m_AnimState;
-	_ulong					m_CurrentTime;
+	_float					m_CurrentTime;
 
 public:
 	static CAnimation* Create(LPDIRECT3DDEVICE9 pGraphicDev);

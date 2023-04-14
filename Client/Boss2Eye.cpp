@@ -13,7 +13,10 @@ CBoss2Eye::~CBoss2Eye()
 HRESULT CBoss2Eye::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+	m_pTransform->m_vScale = _vec3(2.0f, 1.5f, 2.0f);
 	return S_OK;
 }
 

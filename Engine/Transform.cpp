@@ -43,21 +43,28 @@ void CTransform::MakeMyMatrix(const _float& fTimeDelta)
 	for (size_t i = 0; i < INFO_POS; ++i)
 		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
 
-	// Å©±â º¯È¯
+	// í¬ê¸° ë³€í™˜
 	_matrix			matScale = GetScaleMat();
-	// È¸Àü º¯È¯
+	// íšŒì „ ë³€í™˜
 	_matrix			matRotation = GetRotMat();
-	// À§Ä¡ º¯È¯
+	// ìœ„ì¹˜ ë³€í™˜
 	_matrix			matTrans = GetTransMat(fTimeDelta);
 
-	//°øÀü º¯È¯
+	//ê³µì „ ë³€í™˜
 	_matrix			matRevolutionRotation = GetRevolutionRotMat();
 
 	m_matRT = m_matBillY * m_matBillX * matRotation * matTrans;
 	if (m_Parent != NULL)
 		m_matRT = m_matRT * matRevolutionRotation * m_Parent->m_matRT;
+	this;
+	//ë§¤íŠ¸ë¦­ìŠ¤ ìƒì„±
+	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
+	_tchar*	 name = m_pGameObject->m_pTag;
+	
+	if (m_Parent == NULL)
+		return;
 
-	//½ºÀÚÀÌ °ø(ºÎ¸ğÀÇ È¸ÀüÇà·Ä)ºÎ(ºÎ¸ğÀÇ ÀÌµ¿Çà·Ä)
+	//ìŠ¤ìì´ ê³µ(ë¶€ëª¨ì˜ íšŒì „í–‰ë ¬)ë¶€(ë¶€ëª¨ì˜ ì´ë™í–‰ë ¬)
 	m_matWorld = matScale *  m_matRT;
 }
 
@@ -171,7 +178,7 @@ void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 
 _matrix CTransform::GetRotMat()
 {
-	// È¸Àü º¯È¯
+	// íšŒì „ ë³€í™˜
 	_matrix			matRot[ROT_END];
 	_matrix			matRotation;
 
@@ -184,7 +191,7 @@ _matrix CTransform::GetRotMat()
 
 _matrix CTransform::GetRevolutionRotMat()
 {
-	// È¸Àü º¯È¯
+	// íšŒì „ ë³€í™˜
 	_matrix			matRot[ROT_END];
 	_matrix			matRotation;
 
@@ -200,7 +207,7 @@ _matrix CTransform::GetTransMat(const _float& fTimeDelta)
 	_vec3 vShake = { 0.0f,0.0f,0.0f };
 	Update_Shake(fTimeDelta, vShake);
 
-	// À§Ä¡ º¯È¯
+	// ìœ„ì¹˜ ë³€í™˜
 	_matrix			matTrans;
 	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x + vShake.x, m_vInfo[INFO_POS].y + vShake.y, m_vInfo[INFO_POS].z + vShake.z);
 	return matTrans;
@@ -208,7 +215,7 @@ _matrix CTransform::GetTransMat(const _float& fTimeDelta)
 
 _matrix CTransform::GetScaleMat()
 {
-	// Å©±â º¯È¯
+	// í¬ê¸° ë³€í™˜
 	_matrix matScale;
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 	return matScale;

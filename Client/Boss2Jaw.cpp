@@ -14,12 +14,18 @@ HRESULT CBoss2Jaw::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTextureCom->Add_Anim(L"Idle", 0, 16, 2, true);
+	m_pTextureCom->Add_Anim(L"Stump", 0, 9, 2, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTransform->m_vScale = _vec3(1.5f, 2, 2);
+	m_pTextureCom->m_bUseFrameAnimation = true;
 	return S_OK;
 }
 
 _int CBoss2Jaw::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
