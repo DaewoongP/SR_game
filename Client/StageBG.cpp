@@ -31,11 +31,6 @@ HRESULT CStage1BG::Ready_GameObject(void)
 	m_pLeafParticle2->Set_AnimSpeed(0.01f);
 	m_pLeafParticle2->Start_Particle();
 
-	BoundingBox box2;
-	box2._min = { 0.f, 1.f, 10.f };
-	box2._max = { 64.f, 60.f, 11.f };
-	m_pRainParticle->Set_BoundingBox(box2);
-	m_pRainParticle->Start_Particle();
 	return S_OK;
 }
 _int CStage1BG::Update_GameObject(const _float& fTimeDelta)
@@ -85,10 +80,6 @@ HRESULT CStage1BG::Add_Component(void)
 	NULL_CHECK_RETURN(m_pLeafParticle2, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"LeafParticle2", pComponent });
 
-	pComponent = m_pRainParticle = dynamic_cast<CRainParticle*>(Engine::Clone_Proto(L"RainParticle", this));
-	NULL_CHECK_RETURN(m_pRainParticle, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RainParticle", pComponent });
-
 	return S_OK;
 }
 
@@ -97,7 +88,6 @@ void CStage1BG::Render_Particle()
 	m_pLeafParticle0->Update_Particle();
 	m_pLeafParticle1->Update_Particle();
 	m_pLeafParticle2->Update_Particle();
-	m_pRainParticle->Update_Particle();
 }
 
 CStage1BG* CStage1BG::Create(LPDIRECT3DDEVICE9 pGraphicDev)

@@ -25,8 +25,6 @@ HRESULT CLightningCloud::Ready_GameObject(_vec3& vPos)
 	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
 	
-	
-
 
 	return S_OK;
 }

@@ -8,7 +8,6 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CLeafParticle;
-class CRainParticle;
 END
 class CStage1BG : public Engine::CGameObject
 {
@@ -32,8 +31,6 @@ private:
 	Engine::CLeafParticle*	m_pLeafParticle0;
 	Engine::CLeafParticle*	m_pLeafParticle1;
 	Engine::CLeafParticle*	m_pLeafParticle2;
-
-	Engine::CRainParticle*	m_pRainParticle;
 
 public:
 	static CStage1BG*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
