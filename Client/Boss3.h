@@ -56,6 +56,7 @@ private:
 	CGameObject* m_pBossRightPupil;	// 오른눈동자 주소
 	CGameObject* m_pLeftEyebrow;	// 왼 눈썹 주소
 	CGameObject* m_pRightEyebrow;	// 오른 눈썹 주소
+	CGameObject* m_pMouth;			// 보스3 입
 	
 	_float  m_fXAngle;			// 플레이어 전환 시 x축 회전 값
 	_float	m_fSpeed;			// 이동 속도

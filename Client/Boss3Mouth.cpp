@@ -12,16 +12,18 @@ CBoss3Mouth::~CBoss3Mouth()
 {
 }
 
-HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos, _int iIndex)
+HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y, vPos.z };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 	m_pTransform->m_bIsStatic = true;
 
-	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
+	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.1f, true);
+	m_pTextureCom->Switch_Anim(L"Attack");
+	m_pTextureCom->m_bUseFrameAnimation = false;
 
-	m_iIndex = iIndex;
+	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 
 	return S_OK;
 }
@@ -33,13 +35,13 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
+	m_pTextureCom->Update_Anim(fTimeDelta);
+
+	if (m_pTextureCom->IsAnimationEnd(L"Attack"))
+		m_pTextureCom->m_bUseFrameAnimation = false;
 
 	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	if (!lstrcmp(m_pTag, L"BossLeftPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f, +2.5f);
-
-	else if (!lstrcmp(m_pTag, L"BossRightPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f, -2.5f);
+	m_pTransform->Set_ParentTransform(m_pBoss3, -5.f, -1.f, 0.f);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -54,7 +56,7 @@ void CBoss3Mouth::LateUpdate_GameObject(void)
 void CBoss3Mouth::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_iIndex);
+	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
@@ -68,18 +70,18 @@ HRESULT CBoss3Mouth::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_Mouth", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_Mouth_Shoot", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Mouth", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Mouth_Shoot", pComponent });
 
 	return S_OK;
 }
 
-CBoss3Mouth * CBoss3Mouth::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)
+CBoss3Mouth * CBoss3Mouth::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
 	CBoss3Mouth* pInstance = new CBoss3Mouth(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos, iIndex)))
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

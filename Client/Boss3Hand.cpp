@@ -72,7 +72,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	else if (m_iBossHp == 1 && m_bAttackEnd == true)
 		m_bShock = true;
     
-    IdleMove(fTimeDelta);
+   IdleMove(fTimeDelta);
 	
 	__super::Update_GameObject(fTimeDelta);
 
@@ -219,7 +219,7 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
-	} */
+	}
 }
 
 void CBoss3Hand::IdleMove(const _float & fTimeDelta)
@@ -251,9 +251,7 @@ void CBoss3Hand::IdleMove(const _float & fTimeDelta)
 		{
 			m_fIdleAngle += 2.f;
 			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-7.5f));
-			m_f
-      
-      Cycle = 0.f;
+			m_fIdleCycle = 0.f;
 
 			if (m_fIdleAngle >= 10.f)
 			{

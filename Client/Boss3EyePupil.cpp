@@ -26,6 +26,16 @@ HRESULT CBoss3EyePupil::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	return S_OK;
 }
 
+_int CBoss3EyePupil::Update_Too(const _float & fTimeDelta)
+{
+	return 0;
+}
+
+_int CBoss3EyePupil::Update_Top(const _float & fTimeDelta)
+{
+	return 0;
+}
+
 _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
@@ -33,13 +43,7 @@ _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
-
-	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	if (!lstrcmp(m_pTag, L"BossLeftPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f, +2.5f);
-
-	else if (!lstrcmp(m_pTag, L"BossRightPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f, -2.5f);
+	LookAtPlayer();
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -73,6 +77,34 @@ HRESULT CBoss3EyePupil::Add_Component(void)
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Eye", pComponent });
 
 	return S_OK;
+}
+
+void CBoss3EyePupil::LookAtPlayer()
+{
+	_vec3 vPos, vDir;
+	CGameObject* pToodee = nullptr;
+	CGameObject* pTopdee = nullptr;
+
+	if (g_Is2D)
+	{
+		pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		vPos = pToodee->m_pTransform->m_vInfo[INFO_POS];
+	}
+
+	else
+	{
+		pTopdee = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
+	}
+	
+	D3DXVec3Normalize(&vDir, &(m_pTransform->m_vInfo[INFO_POS] - vPos));
+
+	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
+	if (!lstrcmp(m_pTag, L"BossLeftPupil"))
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f - vDir.y * 1.1f, +2.5f + vDir.x * 1.1f);
+
+	else if (!lstrcmp(m_pTag, L"BossRightPupil"))
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f - vDir.y * 1.1f, -2.5f + vDir.x * 1.1f);
 }
 
 CBoss3EyePupil * CBoss3EyePupil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

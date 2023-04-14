@@ -7,6 +7,7 @@
 #include "Boss3Eye.h"
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
+#include "Boss3Mouth.h"
 #include "Fireball.h"
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -61,6 +62,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossLeftEyebrow", pStageLayer, vPos, 2), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, vPos, 2), E_FAIL);
 
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, vPos), E_FAIL);
+
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 
@@ -78,6 +81,9 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		m_pLeftEyebrow->m_pTransform->m_vScale = { -1.2f, 1.2f, 1.f };
 		m_pRightEyebrow = Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow");
 		m_pRightEyebrow->m_pTransform->m_vScale = { 1.2f, 1.2f, 1.f };
+
+		m_pMouth = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Mouth");
+		m_pMouth->m_pTransform->m_vScale = { 8.f, 8.f, 1.f };
 
 		m_bCreateHand = false;
 	}
@@ -98,25 +104,25 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 					   m_pTransform->m_vInfo[INFO_POS].z - 1.f };
 	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
 
-	//toodee topdee 카메라전환할때 위치돌리기
-	if (0  >m_fAngle)
-		m_pTransform->Rotation(ROT_X, D3DXToRadian(-m_fAngle++ * fTimeDelta));
-	
-	BossLook(fTimeDelta);
-		m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
+	////toodee topdee 카메라전환할때 위치돌리기
+	//if (0  >m_fXAngle)
+	//	m_pTransform->Rotation(ROT_X, D3DXToRadian(-m_fXAngle++ * fTimeDelta));
+	//
+	//BossLook(fTimeDelta);
+	//	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
 
-	D3DXVec3Normalize(&m_vDirection, &m_vDirection);
+	//D3DXVec3Normalize(&m_vDirection, &m_vDirection);
 
-	_vec3 vBossToPlayer = m_vPlayerInfo - m_pTransform->m_vInfo[INFO_POS];
-	D3DXVec3Normalize(&vBossToPlayer, &vBossToPlayer);
-	//_matrix matRot = *m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
-	//D3DXMatrixRotationY(&matRot, D3DXToRadian(-45 * fTimeDelta));
-	//m_pTransform->m_matWorld = matRot;
-	//m_pTransform->m_matWorld = matRot;
+	//_vec3 vBossToPlayer = m_vPlayerInfo - m_pTransform->m_vInfo[INFO_POS];
+	//D3DXVec3Normalize(&vBossToPlayer, &vBossToPlayer);
+	////_matrix matRot = *m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	////D3DXMatrixRotationY(&matRot, D3DXToRadian(-45 * fTimeDelta));
+	////m_pTransform->m_matWorld = matRot;
+	////m_pTransform->m_matWorld = matRot;
 
-	_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
-	if(!(fSight==0))
-	m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
+	//_float fSight = D3DXVec3Dot(&vBossToPlayer, &m_vDirection);
+	//if(!(fSight==0))
+	//m_pTransform->Rotation(ROT_Y, D3DXToRadian(fSight));
 	//if (fSight < 0.f)
 	//{
 	//	if (m_pTransform->m_vInfo[INFO_POS].y > m_vPlayerInfo.y)
@@ -150,12 +156,10 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	//	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
 	//}
 
-/*
 	if (0.f > m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fXAngle)++ * fTimeDelta));
 
 	ShootBullet(fTimeDelta);
-*/
 
 	CGameObject::Update_Too(fTimeDelta);
 
@@ -285,11 +289,11 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	m_fAttackCoolDown += fTimeDelta;
 
 	// 회전하고 
-	if (0.75f > fAttackCoolDown)
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
+	if (0.75f > m_fAttackCoolDown)
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
 
 	// 내려 찍기
-	else if (0.75f < fAttackCoolDown && 1.f > fAttackCoolDown)
+	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
 		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
@@ -323,6 +327,8 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 
 	if (1.f < m_fShootCoolDown)
 	{
+		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
+
 		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer,);
