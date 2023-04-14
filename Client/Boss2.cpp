@@ -10,6 +10,7 @@
 #include "Boss2Jaw.h"
 #include "Boss2Nose.h"
 #include "Boss2EyeBrow.h"
+#include "Boss2TailBody.h"
 #include "Boss2Foot.h"
 #include "Boss2Body.h"
 #include "AbstractFactory.h"
@@ -33,12 +34,12 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_IDLE;
 	m_ePreState = B2_END;
 	m_bInit = false;
-	//?�머지 ?�치?????�환
+	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
 	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
 	m_fJumpPos[2] = _vec3(50,25,10);
-	m_iJumpPosidx = 0;//?�신 ?�치
+	m_iJumpPosidx = 0;//?ì‹  ?„ì¹˜
 	m_dwRestTime = 0;
 	ReadyPartten();
 
@@ -54,10 +55,10 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	//?�레?�어 가?�오�?
+	//?Œë ˆ?´ì–´ ê°€?¸ì˜¤ê¸?
 	if (!m_bInit)
 	{
-		//?�알 ?�쪽 ?�성
+		//?ˆì•Œ ?ìª½ ?ì„±
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
@@ -70,6 +71,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
 		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(7)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(7)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
@@ -81,7 +87,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->GetChild(12)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
 		dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(12)->m_pGameObject)->SetRotAngle(30,60);
 
-		//idle �ִϸ��̼��� ������.
+		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		AnimClip* clip = new AnimClip();
 		{
 			//Face
@@ -356,7 +362,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		}
 		m_pAnimation_Face->AddClip(L"Idle", clip);
 
-		//Scream �ִϸ��̼��� ������.
+		//Scream ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		clip = new AnimClip();
 		{
 			//Face
@@ -861,6 +867,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_pAnimation_Body->AddClip(L"Idle", clip);
 		m_pAnimation_Body->SetAnimation(L"Idle");
 
+
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
 	}
@@ -895,7 +902,7 @@ void CBoss2::SwapTrigger()
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
-	//?�이???�으�?충격 ??주겟??
+	//?…ì´???¿ìœ¼ë©?ì¶©ê²© ??ì£¼ê²Ÿ??
 	if (dynamic_cast<CCube*>(collision->otherObj))
 	{
 		m_bIsOnGround = true;
@@ -958,7 +965,7 @@ void CBoss2::CheckZFloor()
 		m_pTransform->m_vInfo[INFO_POS].z = 10;
 		m_pRigid->m_Velocity.z = 0;
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
-		//?�거 ?�떻�?꺼줄거임?
+		//?´ê±° ?´ë–»ê²?êº¼ì¤„ê±°ìž„?
 		m_bIsOnGround = true;
 	}
 }
@@ -997,7 +1004,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS] += _dir * (0.5f-m_dwActionTime);
 	if (D3DXVec3Length(&originlen) <1.f)
 	{
-		//?�음 ?�동?�로 ?�ㄱ
+		//?¤ìŒ ?‰ë™?¼ë¡œ ?±ã„±
 		CheckIsLastActionIdx();
 		m_dwRestTime = 1;
 	}
@@ -1005,7 +1012,7 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 
 void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
-	//그냥 ?�래�?addforce줄거??
+	//ê·¸ëƒ¥ ?„ëž˜ë¡?addforceì¤„ê±°??
 	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
@@ -1029,10 +1036,10 @@ void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 	}
 }
 
-//?�재 ?�테?�트가 같�?�??�니?�면 true �?변�?
+//?„ìž¬ ?¤í…Œ?´íŠ¸ê°€ ê°™ì?ê²??„ë‹ˆ?¼ë©´ true ë°?ë³€ê²?
 void CBoss2::SetPartten()
 {
-	//100 ?�쪽???�덤 ?�수 ?�성
+	//100 ?ˆìª½???œë¤ ?œìˆ˜ ?ì„±
 	int ranIdx = 0;
 
 	while (true)
@@ -1088,7 +1095,7 @@ void CBoss2::SetPartten()
 
 void CBoss2::ReadyPartten()
 {
-	//종료까�? ?�장
+	//ì¢…ë£Œê¹Œì? ?•ìž¥
 	funcAction.reserve(B2_END);
 	
 	BOSS2_STATE_FUNC func; //idle
@@ -1189,7 +1196,7 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 	{
 		float _x = Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer02_trans->m_vInfo[INFO_POS].x, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].x = _x;
-		//?�디�?y???�라가줘야??
+		//?‘ë””ë©?y???°ë¼ê°€ì¤˜ì•¼??
 		float _y = Lerp(m_pTransform->m_vInfo[INFO_POS].y, m_pPlayer02_trans->m_vInfo[INFO_POS].y, 0.1f);
 		m_pTransform->m_vInfo[INFO_POS].y = _y;
 		float _z = Lerp(m_pTransform->m_vInfo[INFO_POS].z, 4.f, 0.1f);
@@ -1210,12 +1217,12 @@ void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 
 void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 {
-	//?�디�??�래�?
+	//?¬ë””ë©??„ëž˜ë¡?
 	if (g_Is2D)
 	{
 		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
 	}
-	//?�디�?z�?
+	//?‘ë””ë©?zë¡?
 	else 
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();

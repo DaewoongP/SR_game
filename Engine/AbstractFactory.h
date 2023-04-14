@@ -77,6 +77,7 @@ public:
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}
+
 };
 
 END

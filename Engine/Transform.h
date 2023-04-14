@@ -93,6 +93,7 @@ public:
 		return nullptr; }
 	_int		GetChildCount() { return m_Child.size(); }
 	_matrix GetRotMat();
+	_matrix GetRevolutionRotMat();
 	_matrix GetTransMat(const _float& fTimeDelta);
 	_matrix GetScaleMat();
 private:
@@ -104,9 +105,12 @@ public:
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
 	_vec3		m_vAngle;
+	_vec3		m_vRevolutionAngle;
 	_matrix		m_matWorld;
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
+
+	_matrix		m_matRT;
 
 	_bool		m_bMove;
 
