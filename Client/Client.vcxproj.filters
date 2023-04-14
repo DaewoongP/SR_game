@@ -176,6 +176,15 @@
     <Filter Include="00. GameObject\04. Boss\Boss3\BossBullet">
       <UniqueIdentifier>{55b82e42-8559-4c6b-8465-80fa1d86fe33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow">
+      <UniqueIdentifier>{baf087b6-f728-4379-821a-b52b53d43cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil">
+      <UniqueIdentifier>{782344bb-3618-4d7a-9417-fb7e9503249d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth">
+      <UniqueIdentifier>{6eea6d7d-1554-4801-bab5-4474a213bb08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -391,6 +400,16 @@
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClInclude>
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Boss3EyePupil.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Eyebrow.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Mouth.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -602,6 +621,16 @@
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Boss3EyePupil.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Eyebrow.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Mouth.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

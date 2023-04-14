@@ -9,11 +9,11 @@ class CTexture;
 
 END
 
-class CBoss3Eye : public CGameObject
+class CBoss3EyePupil : public CGameObject
 {
 private:
-	explicit CBoss3Eye(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBoss3Eye();
+	explicit CBoss3EyePupil(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CBoss3EyePupil();
 
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
@@ -32,7 +32,7 @@ private:
 	_int					m_iIndex;	// 표정 텍스처 구분
 
 public:
-	static CBoss3Eye*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
+	static CBoss3EyePupil*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 
 protected:
 	virtual void Free(void) override;

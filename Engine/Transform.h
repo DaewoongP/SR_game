@@ -79,6 +79,8 @@ public:
 		m_fWeakPoint = (_float)iPower / fDuration;
 	}
 
+	void		Set_ParentTransform(CGameObject* pParentObject, _float fX, _float fY, _float fZ);
+
 public:
 	_bool		m_bIsStatic = true;
 	_vec3		m_vInfo[INFO_END];

@@ -158,7 +158,10 @@
     <ClInclude Include="BackgroundSpr.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Boss3Eye.h" />
+    <ClInclude Include="Boss3Eyebrow.h" />
+    <ClInclude Include="Boss3EyePupil.h" />
     <ClInclude Include="Boss3Hand.h" />
+    <ClInclude Include="Boss3Mouth.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
@@ -222,7 +225,10 @@
     <ClCompile Include="BackgroundSpr.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Boss3Eye.cpp" />
+    <ClCompile Include="Boss3Eyebrow.cpp" />
+    <ClCompile Include="Boss3EyePupil.cpp" />
     <ClCompile Include="Boss3Hand.cpp" />
+    <ClCompile Include="Boss3Mouth.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />

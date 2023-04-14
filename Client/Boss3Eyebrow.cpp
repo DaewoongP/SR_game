@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "Boss3Eye.h"
+#include "Boss3Eyebrow.h"
 #include "Export_Function.h"
 
-CBoss3Eye::CBoss3Eye(LPDIRECT3DDEVICE9 pGraphicDev)
+CBoss3Eyebrow::CBoss3Eyebrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
 	m_pBoss3 = nullptr;
 }
 
-CBoss3Eye::~CBoss3Eye()
+CBoss3Eyebrow::~CBoss3Eyebrow()
 {
 }
 
-HRESULT CBoss3Eye::Ready_GameObject(_vec3 & vPos, _int iIndex)
+HRESULT CBoss3Eyebrow::Ready_GameObject(_vec3 & vPos, _int iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{vPos.x, vPos.y, vPos.z};
+	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y, vPos.z };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 	m_pTransform->m_bIsStatic = true;
 
@@ -26,32 +26,31 @@ HRESULT CBoss3Eye::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	return S_OK;
 }
 
-_int CBoss3Eye::Update_GameObject(const _float & fTimeDelta)
+_int CBoss3Eyebrow::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	
+
 	__super::Update_GameObject(fTimeDelta);
 
-
 	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	if(!lstrcmp(m_pTag, L"Boss3LeftEye"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 1.f, +2.5f);
+	if (!lstrcmp(m_pTag, L"BossLeftEyebrow"))
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 4.f, +2.5f);
 
-	else if(!lstrcmp(m_pTag, L"Boss3RightEye"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 1.f, -2.5f);
+	else if (!lstrcmp(m_pTag, L"BossRightEyebrow"))
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 4.f, -2.5f);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }
 
-void CBoss3Eye::LateUpdate_GameObject(void)
+void CBoss3Eyebrow::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CBoss3Eye::Render_GameObject(void)
+void CBoss3Eyebrow::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(m_iIndex);
@@ -60,7 +59,7 @@ void CBoss3Eye::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-HRESULT CBoss3Eye::Add_Component(void)
+HRESULT CBoss3Eyebrow::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -75,9 +74,9 @@ HRESULT CBoss3Eye::Add_Component(void)
 	return S_OK;
 }
 
-CBoss3Eye * CBoss3Eye::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)
+CBoss3Eyebrow * CBoss3Eyebrow::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)
 {
-	CBoss3Eye* pInstance = new CBoss3Eye(pGraphicDev);
+	CBoss3Eyebrow* pInstance = new CBoss3Eyebrow(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos, iIndex)))
 	{
@@ -88,7 +87,7 @@ CBoss3Eye * CBoss3Eye::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int 
 	return pInstance;
 }
 
-void CBoss3Eye::Free(void)
+void CBoss3Eyebrow::Free(void)
 {
 	__super::Free();
 }

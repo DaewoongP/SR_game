@@ -63,7 +63,7 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bStaticON = false;
 			m_pTransform->m_vScale = {4.f, 2.f, 1.f};
-			m_pCollider->Set_BoundingBox({ 4.f, 2.f, 1.0f });
+			m_pCollider->Set_BoundingBox({ 3.f, 2.f, 1.0f });
 		}			
 	}
 
