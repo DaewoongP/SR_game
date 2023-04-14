@@ -25,7 +25,9 @@ public:
 
 public:
 	void SetMoveAble(_bool moveable) { m_bIsMoveable = moveable; }
-	void SetRotAngle(_float min, _float max) { m_fMin = min; m_fMax = max; }
+	void SetRotAngle(_float min, _float max) { 
+		m_fMin = min; 
+		m_fMax = max; }
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
