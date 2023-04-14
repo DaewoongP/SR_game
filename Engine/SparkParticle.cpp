@@ -1,13 +1,18 @@
 #include "stdafx.h"
-#include "WindParticle.h"
+#include "SparkParticle.h"
 
 #include "Export_Function.h"
-CWindParticle::CWindParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CSparkParticle::CSparkParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 	:CParticleSystem(pGraphicDev)
 {
 	m_pTexture = CTexture::Create(m_pGraphicDev,
 		TEX_NORMAL,
-		pPath);
+		pPath,
+		iTextureNum);
+	m_pTexture->Add_Anim(L"Idle", 0, iTextureNum - 1, 20.f, true);
+	m_pTexture->Switch_Anim(L"Idle");
+	m_pTexture->m_bUseFrameAnimation = true;
+	m_bIsWorld = isWorld;
 	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
 	// 적절하게 크기값 조절하면됨.
@@ -19,7 +24,7 @@ CWindParticle::CWindParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 		AddParticle();
 }
 
-CWindParticle::CWindParticle(const CWindParticle & rhs)
+CSparkParticle::CSparkParticle(const CSparkParticle & rhs)
 	:CParticleSystem(rhs),
 	m_fLifeTime(rhs.m_fLifeTime)
 {
@@ -27,23 +32,24 @@ CWindParticle::CWindParticle(const CWindParticle & rhs)
 		m_Particles.push_back(iter);
 }
 
-CWindParticle::~CWindParticle()
+CSparkParticle::~CSparkParticle()
 {
 }
 
-void CWindParticle::ResetParticle(Particle * particle)
+void CSparkParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 0.5f);
-	particle->vVelocity = { 20.f + rand() % 30, _float(rand() % 3), 0.f };
+	particle->vVelocity = { 0.f, 0.f, 0.f };
 	GetRandomVector(
 		&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
-	particle->vPos.x = m_BoundingBox._min.x;
+	particle->fAge = 0.f;
+	particle->fLifeTime = m_fLifeTime;
 }
 
-_int CWindParticle::Update_Particle()
+_int CSparkParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -53,13 +59,9 @@ _int CWindParticle::Update_Particle()
 	{
 		if (it->bIsAlive)
 		{
-			it->vPos += it->vVelocity * fTimeDelta;
-
-			if (m_BoundingBox.Intersect(it->vPos) == false)
-			{
-				ResetParticle(&(*it));
-			}
-
+			if (0 == it->fLifeTime)
+				break;
+			m_Size *= 0.995f;
 			it->fAge += fTimeDelta;
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
@@ -71,9 +73,9 @@ _int CWindParticle::Update_Particle()
 	return -1;
 }
 
-CWindParticle * CWindParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CSparkParticle * CSparkParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 {
-	CWindParticle *	pInstance = new CWindParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
+	CSparkParticle *	pInstance = new CSparkParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
 
 	if (FAILED(pInstance->Ready_Particle()))
 	{
@@ -84,12 +86,12 @@ CWindParticle * CWindParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tcha
 	return pInstance;
 }
 
-CComponent * CWindParticle::Clone(void)
+CComponent * CSparkParticle::Clone(void)
 {
-	return new CWindParticle(*this);
+	return new CSparkParticle(*this);
 }
 
-void CWindParticle::Free(void)
+void CSparkParticle::Free(void)
 {
 	__super::Free();
 }

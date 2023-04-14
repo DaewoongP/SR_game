@@ -83,8 +83,6 @@ void CTexture::Set_Loop(_tchar* name)
 	}
 	else
 		return;
-
-
 }
 
 void CTexture::Switch_Anim(_tchar * name)

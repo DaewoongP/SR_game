@@ -22,7 +22,9 @@
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="BlockExp.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CircularParticle.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionMgr.h" />
@@ -34,21 +36,25 @@
     <ClInclude Include="Export_Function.h" />
     <ClInclude Include="Export_System.h" />
     <ClInclude Include="Export_Utility.h" />
-    <ClInclude Include="Firework.h" />
     <ClInclude Include="FontMgr.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameMgr.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicDev.h" />
+    <ClInclude Include="GravityParticle.h" />
     <ClInclude Include="Include.h" />
+    <ClInclude Include="JumpParticle.h" />
+    <ClInclude Include="LandingParticle.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="LeafParticle.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MyFont.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ProtoMgr.h" />
+    <ClInclude Include="RainParticle.h" />
     <ClInclude Include="RcAlpha.h" />
     <ClInclude Include="RcCol.h" />
     <ClInclude Include="RcGradation.h" />
@@ -58,8 +64,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="Snow.h" />
+    <ClInclude Include="SlerpParticle.h" />
     <ClInclude Include="SoundMgr.h" />
+    <ClInclude Include="SparkParticle.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
@@ -75,24 +82,30 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BlockExp.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CircularParticle.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CubeTex.cpp" />
     <ClCompile Include="DInputMgr.cpp" />
-    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FontMgr.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="FrameMgr.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicDev.cpp" />
+    <ClCompile Include="GravityParticle.cpp" />
+    <ClCompile Include="JumpParticle.cpp" />
+    <ClCompile Include="LandingParticle.cpp" />
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="LeafParticle.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MyFont.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ProtoMgr.cpp" />
+    <ClCompile Include="RainParticle.cpp" />
     <ClCompile Include="RcAlpha.cpp" />
     <ClCompile Include="RcCol.cpp" />
     <ClCompile Include="RcGradation.cpp" />
@@ -102,8 +115,9 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="Snow.cpp" />
+    <ClCompile Include="SlerpParticle.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="SparkParticle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

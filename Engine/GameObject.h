@@ -34,6 +34,8 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 
 	void				Sort_Component();
+public:
+	void				Set_Dead() { m_bDead = true; }
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 

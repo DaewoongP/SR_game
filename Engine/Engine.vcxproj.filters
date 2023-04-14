@@ -64,13 +64,7 @@
     <ClInclude Include="VIBuffer.h">
       <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="Firework.h">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Snow.h">
       <Filter>Componnent\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
@@ -149,7 +143,6 @@
       <Filter>Componnent\Collider\Collision</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="WindParticle.h" />
     <ClInclude Include="RcAlpha.h">
       <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
@@ -158,6 +151,36 @@
     </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Manager\ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockExp.h">
+      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularParticle.h">
+      <Filter>Componnent\ParticleSystem\Circular</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpParticle.h">
+      <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="SparkParticle.h">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClInclude>
+    <ClInclude Include="LandingParticle.h">
+      <Filter>Componnent\ParticleSystem\Landing</Filter>
+    </ClInclude>
+    <ClInclude Include="SlerpParticle.h">
+      <Filter>Componnent\ParticleSystem\Slerp</Filter>
+    </ClInclude>
+    <ClInclude Include="WindParticle.h">
+      <Filter>Componnent\ParticleSystem\Wind</Filter>
+    </ClInclude>
+    <ClInclude Include="LeafParticle.h">
+      <Filter>Componnent\ParticleSystem\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="RainParticle.h">
+      <Filter>Componnent\ParticleSystem\Rain</Filter>
+    </ClInclude>
+    <ClInclude Include="GravityParticle.h">
+      <Filter>Componnent\ParticleSystem\Gravity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,13 +214,7 @@
     <ClCompile Include="VIBuffer.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="Firework.cpp">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Snow.cpp">
       <Filter>Componnent\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
@@ -273,12 +290,41 @@
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="WindParticle.cpp" />
     <ClCompile Include="RcGradation.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
     <ClCompile Include="RcAlpha.cpp">
       <Filter>Componnent\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockExp.cpp">
+      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Circular</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="SparkParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Spark</Filter>
+    </ClCompile>
+    <ClCompile Include="LandingParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Landing</Filter>
+    </ClCompile>
+    <ClCompile Include="SlerpParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Slerp</Filter>
+    </ClCompile>
+    <ClCompile Include="WindParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Wind</Filter>
+    </ClCompile>
+    <ClCompile Include="LeafParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="RainParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Rain</Filter>
+    </ClCompile>
+    <ClCompile Include="GravityParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Gravity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +425,36 @@
     </Filter>
     <Filter Include="Manager\ObjectPool">
       <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\BlockExp">
+      <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Spark">
+      <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Circular">
+      <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Jump">
+      <UniqueIdentifier>{d7d78ead-aab4-4266-ae54-9e6d2ba8e2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Landing">
+      <UniqueIdentifier>{f627f8ca-0cc5-4a6a-a380-a481c6e68f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Slerp">
+      <UniqueIdentifier>{7549ce95-d9ce-4df0-ac5f-b01bdb1dea25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Wind">
+      <UniqueIdentifier>{6790e254-c68f-4f23-a99c-ace4672a8f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Leaf">
+      <UniqueIdentifier>{49f9726a-afeb-49eb-99ff-ea9982059cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Rain">
+      <UniqueIdentifier>{7f9eeae1-e52f-4c19-9d6e-63cc58458c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Gravity">
+      <UniqueIdentifier>{9f72b7a2-8e41-445a-b535-2a80a2d125e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

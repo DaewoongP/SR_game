@@ -36,6 +36,8 @@ const	_ulong		FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 typedef VTXCOL PTCCOL;
 typedef VTXTEX PTCTEX;
 
+const	_ulong		FVF_PTC = D3DFVF_XYZ | D3DFVF_DIFFUSE |	D3DFVF_TEX1;
+
 // D3DFVF_TEXCOORDSIZE3 : 텍스처의 UV값이 FLOAT형 3개의 크기 만큼이며 괄호 안 숫자의 의미는 본래 버텍스의 UV 값이 여러개 있을 수 잇는데 그 중 첫 번째 값을 사용하겠다는 의미
 
 typedef	struct tagIndex16
@@ -71,6 +73,7 @@ struct Particle
 	float fAge;
 	_ulong dwColor;
 	_ulong dwColorFade;
+	_vec2	vTexUV;
 	bool bIsAlive;
 };
 

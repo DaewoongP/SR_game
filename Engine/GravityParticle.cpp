@@ -1,13 +1,14 @@
 #include "stdafx.h"
-#include "WindParticle.h"
+#include "GravityParticle.h"
 
 #include "Export_Function.h"
-CWindParticle::CWindParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CGravityParticle::CGravityParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 	:CParticleSystem(pGraphicDev)
 {
 	m_pTexture = CTexture::Create(m_pGraphicDev,
 		TEX_NORMAL,
 		pPath);
+	m_bIsWorld = isWorld;
 	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
 	// 적절하게 크기값 조절하면됨.
@@ -19,31 +20,29 @@ CWindParticle::CWindParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 		AddParticle();
 }
 
-CWindParticle::CWindParticle(const CWindParticle & rhs)
-	:CParticleSystem(rhs),
-	m_fLifeTime(rhs.m_fLifeTime)
+CGravityParticle::CGravityParticle(const CGravityParticle & rhs)
+	:CParticleSystem(rhs)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
 }
 
-CWindParticle::~CWindParticle()
+CGravityParticle::~CGravityParticle()
 {
 }
 
-void CWindParticle::ResetParticle(Particle * particle)
+void CGravityParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 0.5f);
-	particle->vVelocity = { 20.f + rand() % 30, _float(rand() % 3), 0.f };
-	GetRandomVector(
-		&particle->vPos,
+	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	particle->vVelocity = { 0.f, -20.f, 0.f };
+	GetRandomVector(&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
-	particle->vPos.x = m_BoundingBox._min.x;
+	particle->vPos.y = m_BoundingBox._max.y - (rand() % 30);
 }
 
-_int CWindParticle::Update_Particle()
+_int CGravityParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -54,15 +53,10 @@ _int CWindParticle::Update_Particle()
 		if (it->bIsAlive)
 		{
 			it->vPos += it->vVelocity * fTimeDelta;
-
 			if (m_BoundingBox.Intersect(it->vPos) == false)
 			{
 				ResetParticle(&(*it));
 			}
-
-			it->fAge += fTimeDelta;
-			if (it->fAge > it->fLifeTime)
-				it->bIsAlive = false;
 		}
 		else
 			ResetParticle(&(*it));
@@ -71,9 +65,9 @@ _int CWindParticle::Update_Particle()
 	return -1;
 }
 
-CWindParticle * CWindParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+CGravityParticle * CGravityParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
 {
-	CWindParticle *	pInstance = new CWindParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
+	CGravityParticle *	pInstance = new CGravityParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
 
 	if (FAILED(pInstance->Ready_Particle()))
 	{
@@ -84,12 +78,12 @@ CWindParticle * CWindParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tcha
 	return pInstance;
 }
 
-CComponent * CWindParticle::Clone(void)
+CComponent * CGravityParticle::Clone(void)
 {
-	return new CWindParticle(*this);
+	return new CGravityParticle(*this);
 }
 
-void CWindParticle::Free(void)
+void CGravityParticle::Free(void)
 {
 	__super::Free();
 }
