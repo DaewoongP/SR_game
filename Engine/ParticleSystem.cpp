@@ -11,6 +11,7 @@ CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphicDev) :
 	m_bTrigger(false),
 	m_fAnimSpeed(0.1f)
 {
+	D3DXMatrixIdentity(&m_matWorld);
 }
 
 CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
@@ -26,7 +27,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_pTexture(rhs.m_pTexture),
 	m_bIsWorld(rhs.m_bIsWorld),
 	m_bTrigger(rhs.m_bTrigger),
-	m_fAnimSpeed(rhs.m_fAnimSpeed)
+	m_fAnimSpeed(rhs.m_fAnimSpeed),
+	m_matWorld(rhs.m_matWorld)
 {
 	m_VB->AddRef();
 }
@@ -72,9 +74,7 @@ _int CParticleSystem::Update_Particle()
 
 void CParticleSystem::Render_Particle(void)
 {
-	_matrix mat;
-	D3DXMatrixIdentity(&mat);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &mat);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 	if (!m_Particles.empty())
 	{
 		PreRender();

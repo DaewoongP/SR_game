@@ -46,6 +46,7 @@
     <ClInclude Include="JumpParticle.h" />
     <ClInclude Include="LandingParticle.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="LeafParticle.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Management.h" />
     <ClInclude Include="MyFont.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="JumpParticle.cpp" />
     <ClCompile Include="LandingParticle.cpp" />
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="LeafParticle.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Management.cpp" />
     <ClCompile Include="MyFont.cpp" />

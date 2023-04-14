@@ -33,6 +33,7 @@
 #include "LandingParticle.h"
 #include "SlerpParticle.h"
 #include "WindParticle.h"
+#include "LeafParticle.h"
 
 BEGIN(Engine)
 

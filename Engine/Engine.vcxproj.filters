@@ -173,6 +173,9 @@
     <ClInclude Include="WindParticle.h">
       <Filter>Componnent\ParticleSystem\Wind</Filter>
     </ClInclude>
+    <ClInclude Include="LeafParticle.h">
+      <Filter>Componnent\ParticleSystem\Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -308,6 +311,9 @@
     <ClCompile Include="WindParticle.cpp">
       <Filter>Componnent\ParticleSystem\Wind</Filter>
     </ClCompile>
+    <ClCompile Include="LeafParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Leaf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -428,6 +434,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Wind">
       <UniqueIdentifier>{6790e254-c68f-4f23-a99c-ace4672a8f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Leaf">
+      <UniqueIdentifier>{49f9726a-afeb-49eb-99ff-ea9982059cbf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

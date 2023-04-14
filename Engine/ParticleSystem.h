@@ -68,6 +68,7 @@ protected:
 
 	_float					m_fAnimSpeed;
 	_bool					m_bChangedTex;
+	_matrix					m_matWorld;
 };
 
 END
