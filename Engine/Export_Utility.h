@@ -20,7 +20,6 @@
 #include "CubeTex.h"
 #include "Rigidbody.h"
 #include "Line.h"
-#include "Snow.h"
 
 #include "Shadow.h"
 
@@ -32,6 +31,7 @@
 #include "CircularParticle.h"
 #include "JumpParticle.h"
 #include "LandingParticle.h"
+#include "SlerpParticle.h"
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

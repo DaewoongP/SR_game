@@ -63,6 +63,13 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	DoFlip();
 	return 0;
 }
+_int CToodee::Update_Top(const _float & fTimedDelte)
+{
+	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC);
+	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS],
+		dynamic_cast<CTransform*>(otherTrans)->m_vInfo[INFO_POS]);
+	return 0;
+}
 void CToodee::SwapTrigger()
 {
 	if (g_Is2D)
@@ -71,6 +78,8 @@ void CToodee::SwapTrigger()
 	}
 	else 
 	{
+		Set_SlerpParticle();
+		
 		m_pRigid->m_bUseGrivaty = false;
 	}
 }
@@ -169,6 +178,10 @@ HRESULT CToodee::Add_Component(void)
 	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"WalkParticle", pComponent });
 
+	pComponent = m_pSlerpParticle = dynamic_cast<CSlerpParticle*>(Engine::Clone_Proto(L"SlerpParticle", this));
+	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SlerpParticle", pComponent });
+
 	return S_OK;
 }
 
@@ -245,6 +258,7 @@ void CToodee::Render_Particle()
 	m_pJumpParticle->Update_Particle();
 	m_pLandingParticle->Update_Particle();
 	m_pSparkParticle->Update_Particle();
+	m_pSlerpParticle->Update_Particle();
 }
 
 void CToodee::Check_IsParticleDead()
@@ -260,7 +274,7 @@ void CToodee::Check_IsParticleDead()
 void CToodee::Set_WalkParticle()
 {
 	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
-	Engine::Ready_Frame(L"1Sec", 1.f);
+	
 	if (Engine::IsPermit_Call(L"1Sec", fTimeDelta))
 	{
 		BoundingBox box;
@@ -290,4 +304,11 @@ void CToodee::LandingParticle_logic(const _tchar* pTag)
 		m_pLandingParticle->Set_Size(1.f);
 		m_pLandingParticle->Start_Particle();
 	}
+}
+
+void CToodee::Set_SlerpParticle()
+{
+	m_pSlerpParticle->Set_Size(1.5f);
+	m_pSlerpParticle->Reset();
+	m_pSlerpParticle->Start_Particle();
 }

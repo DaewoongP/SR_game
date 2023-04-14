@@ -34,7 +34,8 @@ HRESULT CMainApp::Ready_MainApp(void)
 	FAILED_CHECK_RETURN(Set_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
 
 	m_pCImguiMgr->GetInstance()->Ready_Imgui(m_pGraphicDev);
-
+	Engine::Ready_Frame(L"1Sec", 1.f);
+	Engine::Ready_Frame(L"0.001Sec", 1000.f);
 	return S_OK;
 }
 

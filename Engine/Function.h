@@ -101,6 +101,33 @@ static void GetRandomVectorIncircle(D3DXVECTOR3* out, _float radius)
 		break;
 	}
 }
+/* 구면선형보간 - output, 시작점, 끝점, 점간의 업벡터, 선형보간 중점과 원의 중점간 거리 k, 원하는 보간 값 s*/
+static void GetVectorSlerp(D3DXVECTOR3* out, D3DXVECTOR3* v1, D3DXVECTOR3* v2, D3DXVECTOR3* vUp, _float k, _float s)
+{
+	D3DXVECTOR3 v3, OV1, OV2, vCenter, vNormal1, vNormal2;
+	_float fRad;
+	D3DXMATRIX	matRot;
+	D3DXMatrixIdentity(&matRot);
+
+	D3DXVec3Lerp(&v3, v1, v2, 0.5f);
+	D3DXVec3Cross(&vCenter, &(*v1 - v3), vUp);
+	D3DXVec3Normalize(&vCenter, &vCenter);
+	vCenter *= k;
+	vCenter += v3;
+
+	OV1 = *v1 - vCenter;
+	OV2 = *v2 - vCenter;
+	
+	D3DXVec3Normalize(&vNormal1, &OV1);
+	D3DXVec3Normalize(&vNormal2, &OV2);
+
+	fRad = acosf(D3DXVec3Dot(&vNormal1, &vNormal2));
+	fRad *= s;
+
+	D3DXMatrixRotationAxis(&matRot, vUp, fRad);
+	D3DXVec3TransformCoord(out, &OV1, &matRot);
+	*out += vCenter;
+}
 //////////////////////////////////////////////////////////////////
 /////////////////////////////////Functor 함수객체//////////////////////////
 

@@ -36,7 +36,6 @@
     <ClInclude Include="Export_Function.h" />
     <ClInclude Include="Export_System.h" />
     <ClInclude Include="Export_Utility.h" />
-    <ClInclude Include="Firework.h" />
     <ClInclude Include="FontMgr.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameMgr.h" />
@@ -62,7 +61,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="Snow.h" />
+    <ClInclude Include="SlerpParticle.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="SparkParticle.h" />
     <ClInclude Include="stdafx.h" />
@@ -88,7 +87,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CubeTex.cpp" />
     <ClCompile Include="DInputMgr.cpp" />
-    <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FontMgr.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="FrameMgr.cpp" />
@@ -111,7 +109,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="Snow.cpp" />
+    <ClCompile Include="SlerpParticle.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="SparkParticle.cpp" />
     <ClCompile Include="stdafx.cpp">

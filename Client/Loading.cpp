@@ -150,6 +150,10 @@ _uint CLoading::Loading_ForStage(void)
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		1.f, 4, false)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SlerpParticle", CSlerpParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,
+		1.f, 5, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
 	m_bFinish = true;
 

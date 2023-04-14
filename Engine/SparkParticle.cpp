@@ -39,7 +39,7 @@ CSparkParticle::~CSparkParticle()
 void CSparkParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 0.5f);
 	particle->vVelocity = { 0.f, 0.f, 0.f };
 	GetRandomVector(
 		&particle->vPos,

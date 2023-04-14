@@ -12,6 +12,7 @@ class CRigidbody;
 class CJumpParticle;
 class CLandingParticle;
 class CSparkParticle;
+class CSlerpParticle;
 
 END
 class CToodee : public Engine::CGameObject
@@ -24,6 +25,7 @@ public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float& fTimeDelta) override;
+	virtual _int Update_Top(const _float& fTimedDelte) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void SwapTrigger();
@@ -42,6 +44,7 @@ private:
 	void Check_IsParticleDead();
 	void Set_WalkParticle();
 	void LandingParticle_logic(const _tchar* pTag);
+	void Set_SlerpParticle();
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
@@ -51,6 +54,7 @@ private:
 	Engine::CJumpParticle*	m_pJumpParticle;
 	Engine::CLandingParticle*	m_pLandingParticle;
 	Engine::CSparkParticle*		m_pSparkParticle;
+	Engine::CSlerpParticle*		m_pSlerpParticle;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;

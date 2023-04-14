@@ -22,7 +22,7 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
-
+	
 	__super::Update_GameObject(0.01f);
 	return S_OK;
 }
@@ -33,6 +33,9 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 }
 _int CTopdee::Update_Too(const _float & fTimeDelta)
 {
+	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC);
+	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS],
+		dynamic_cast<CTransform*>(otherTrans)->m_vInfo[INFO_POS]);
 	return 0;
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
@@ -53,6 +56,7 @@ void CTopdee::LateUpdate_GameObject(void)
 
 void CTopdee::Render_GameObject(void)
 {
+	m_pSlerpParticle->Update_Particle();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
@@ -74,6 +78,10 @@ void CTopdee::OnCollisionStay(const Collision * collision)
 
 void CTopdee::SwapTrigger()
 {
+	if (g_Is2D)
+	{
+		Set_SlerpParticle();
+	}
 }
 
 HRESULT CTopdee::Add_Component(void)
@@ -93,6 +101,10 @@ HRESULT CTopdee::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pSlerpParticle = dynamic_cast<CSlerpParticle*>(Engine::Clone_Proto(L"SlerpParticle", this));
+	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SlerpParticle", pComponent });
 	return S_OK;
 }
 
@@ -404,6 +416,13 @@ void CTopdee::DirApply(_int dir, _int & x, _int & y)
 		x += 2;
 	if (dir & 8)
 		x -= 2;
+}
+
+void CTopdee::Set_SlerpParticle()
+{
+	m_pSlerpParticle->Reset();
+	m_pSlerpParticle->Set_Size(1.5f);
+	m_pSlerpParticle->Start_Particle();
 }
 
 

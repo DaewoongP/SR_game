@@ -64,13 +64,7 @@
     <ClInclude Include="VIBuffer.h">
       <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="Firework.h">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Snow.h">
       <Filter>Componnent\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
@@ -174,6 +168,9 @@
     <ClInclude Include="LandingParticle.h">
       <Filter>Componnent\ParticleSystem\Landing</Filter>
     </ClInclude>
+    <ClInclude Include="SlerpParticle.h">
+      <Filter>Componnent\ParticleSystem\Slerp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -206,13 +203,7 @@
     <ClCompile Include="VIBuffer.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="Firework.cpp">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Componnent\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Snow.cpp">
       <Filter>Componnent\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
@@ -309,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="LandingParticle.cpp">
       <Filter>Componnent\ParticleSystem\Landing</Filter>
+    </ClCompile>
+    <ClCompile Include="SlerpParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Slerp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +418,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Landing">
       <UniqueIdentifier>{f627f8ca-0cc5-4a6a-a380-a481c6e68f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Slerp">
+      <UniqueIdentifier>{7549ce95-d9ce-4df0-ac5f-b01bdb1dea25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
