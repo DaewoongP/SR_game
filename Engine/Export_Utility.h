@@ -32,6 +32,8 @@
 #include "JumpParticle.h"
 #include "LandingParticle.h"
 #include "SlerpParticle.h"
+#include "WindParticle.h"
+
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);

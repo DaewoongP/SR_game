@@ -1,55 +1,95 @@
 #include "stdafx.h"
 #include "WindParticle.h"
 
+#include "Export_Function.h"
+CWindParticle::CWindParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+	:CParticleSystem(pGraphicDev)
+{
+	m_pTexture = CTexture::Create(m_pGraphicDev,
+		TEX_NORMAL,
+		pPath);
+	// 객체의 Ready에서도 변경 가능
+	m_Size = fSize;
+	// 적절하게 크기값 조절하면됨.
+	m_VBSize = 8;
+	m_VBOffset = 0;
+	m_VBBatchSize = 8;
 
-//CWindParticle::CWindParticle(BoundingBox* boundingBox, int numParticles)
-//{
-//	m_BoundingBox = *boundingBox;
-//	m_fSize = 0.25f;
-//	m_dwSize = 2048;
-//	m_dwOffset = 0;
-//	m_dwBatchSize = 512;
-//
-//	for (int i = 0; i < numParticles; i++)
-//		addParticle();
-//}
-//
-//void CWindParticle::resetParticle(Particle* attribute)
-//{
-//	attribute->bIsAlive = true;
-//
-//	// get random x, z coordinate for the position of the snow flake.
-//	GetRandomVector(
-//		&attribute->vPos,
-//		&m_BoundingBox._min,
-//		&m_BoundingBox._max);
-//
-//	// no randomness for height (y-coordinate).  Snow flake
-//	// always starts at the top of bounding box.
-//	attribute->vPos.y = m_BoundingBox._max.y;
-//
-//	// snow flakes fall downwards and slightly to the left
-//	attribute->vVelocity.x = GetRandomFloat(0.0f, 1.0f) * -3.0f;
-//	attribute->vVelocity.y = GetRandomFloat(0.0f, 1.0f) * -10.0f;
-//	attribute->vVelocity.z = 0.0f;
-//
-//	// white snow flake
-//	attribute->dwColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-//}
-//
-//void CWindParticle::update(float timeDelta)
-//{
-//	list<Particle>::iterator i;
-//	for (i = m_ParticlesList.begin(); i != m_ParticlesList.end(); i++)
-//	{
-//		i->vPos += i->vVelocity* timeDelta;
-//
-//		// is the point outside bounds?
-//		if (m_BoundingBox.isPointInside(i->vPos) == false)
-//		{
-//			// nope so kill it, but we want to recycle dead 
-//			// particles, so respawn it instead.
-//			resetParticle(&(*i));
-//		}
-//	}
-//}
+	for (int i = 0; i < iParticleNum; i++)
+		AddParticle();
+}
+
+CWindParticle::CWindParticle(const CWindParticle & rhs)
+	:CParticleSystem(rhs),
+	m_fLifeTime(rhs.m_fLifeTime)
+{
+	for (auto& iter : rhs.m_Particles)
+		m_Particles.push_back(iter);
+}
+
+CWindParticle::~CWindParticle()
+{
+}
+
+void CWindParticle::ResetParticle(Particle * particle)
+{
+	particle->bIsAlive = true;
+	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 0.5f);
+	particle->vVelocity = { 20.f + rand() % 30, _float(rand() % 3), 0.f };
+	GetRandomVector(
+		&particle->vPos,
+		&m_BoundingBox._min,
+		&m_BoundingBox._max);
+	particle->vPos.x = m_BoundingBox._min.x;
+}
+
+_int CWindParticle::Update_Particle()
+{
+	if (!m_bTrigger)
+		return 0;
+	__super::Update_Particle();
+	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
+	for (auto& it = m_Particles.begin(); it != m_Particles.end(); it++)
+	{
+		if (it->bIsAlive)
+		{
+			it->vPos += it->vVelocity * fTimeDelta;
+
+			if (m_BoundingBox.Intersect(it->vPos) == false)
+			{
+				ResetParticle(&(*it));
+			}
+
+			it->fAge += fTimeDelta;
+			if (it->fAge > it->fLifeTime)
+				it->bIsAlive = false;
+		}
+		else
+			ResetParticle(&(*it));
+	}
+	__super::Render_Particle();
+	return -1;
+}
+
+CWindParticle * CWindParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
+{
+	CWindParticle *	pInstance = new CWindParticle(pGraphicDev, pPath, iTextureNum, fSize, iParticleNum, isWorld);
+
+	if (FAILED(pInstance->Ready_Particle()))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CComponent * CWindParticle::Clone(void)
+{
+	return new CWindParticle(*this);
+}
+
+void CWindParticle::Free(void)
+{
+	__super::Free();
+}

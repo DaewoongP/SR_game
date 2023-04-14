@@ -7,7 +7,6 @@ BEGIN(Engine)
 
 class CRcTex;
 class CTexture;
-
 END
 class CStage1BG : public Engine::CGameObject
 {
@@ -27,7 +26,6 @@ private:
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
-
 
 public:
 	static CStage1BG*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

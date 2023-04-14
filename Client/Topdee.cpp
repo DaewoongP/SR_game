@@ -34,7 +34,7 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 _int CTopdee::Update_Too(const _float & fTimeDelta)
 {
 	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC);
-	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS],
+	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, -1.f),
 		dynamic_cast<CTransform*>(otherTrans)->m_vInfo[INFO_POS]);
 	return 0;
 }
