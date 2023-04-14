@@ -80,10 +80,18 @@ public:
 		m_fWeakPoint = (_float)iPower / fDuration;
 	}
 
-	void SetParent(CTransform* trans) { if (trans != nullptr) m_Parent = trans;  trans->m_Child.push_back(this); }
+	void SetParent(CTransform* trans) {
+		if (trans != nullptr) 
+			m_Parent = trans;  
+		trans->m_Child.push_back(this); }
 	CTransform* GetParent() { return m_Parent; }
 	vector<CTransform*> GetChildren() { return m_Child; }
-	CTransform * GetChild(int index) { if (index <= m_Child.size())return m_Child[index]; else return nullptr; }
+	CTransform * GetChild(int index) { 
+		if (index <= m_Child.size())
+		return m_Child[index]; 
+	else 
+		return nullptr; }
+	_int		GetChildCount() { return m_Child.size(); }
 	_matrix GetRotMat();
 	_matrix GetTransMat(const _float& fTimeDelta);
 	_matrix GetScaleMat();

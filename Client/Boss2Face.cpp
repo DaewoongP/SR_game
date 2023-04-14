@@ -13,6 +13,10 @@ CBoss2Face::~CBoss2Face()
 HRESULT CBoss2Face::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 16, 2, true);
+	m_pTextureCom->Add_Anim(L"Stump", 0, 8, 2, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
@@ -20,6 +24,7 @@ HRESULT CBoss2Face::Ready_GameObject(_vec3 & vPos)
 _int CBoss2Face::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }

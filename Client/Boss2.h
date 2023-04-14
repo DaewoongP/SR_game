@@ -2,7 +2,7 @@
 #include "Include.h"
 #include "GameObject.h"
 
-//						반환타입, 보스안의 함수 사용하기 위함, 매개변수
+//						반환?�?? 보스?�의 ?�수 ?�용?�기 ?�함, 매개변??
 #define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
 
 BEGIN(Engine)
@@ -15,7 +15,7 @@ END
 
 enum BOSS2STATE
 {
-	B2_IDLE, //애니메이션/리깅/joint
+	B2_IDLE, //?�니메이??리깅/joint
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -23,8 +23,8 @@ enum BOSS2STATE
 	B2_END
 };
 
-//보스의 머리통임. 모든 생각/행동의 중추를 담당함.
-//보스는 중력을 쓰지 않을거임. 보니까 중력 안씀.
+//보스??머리?�임. 모든 ?�각/?�동??중추�??�당??
+//보스??중력???��? ?�을거임. 보니�?중력 ?��?.
 class CBoss2 :
 	public CGameObject
 {
@@ -38,9 +38,6 @@ public:
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
-	virtual void Render_GameObject(void) override;
-	virtual void Render_Too(void) override;
-	virtual void Render_Top(void) override;
 	virtual void SwapTrigger();
 
 	virtual void OnCollisionEnter(const class Collision* collision);
@@ -51,31 +48,31 @@ private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
 	void		CheckZFloor();
-	//점프 함수 기본값 설정
+	//?�프 ?�수 기본�??�정
 	void		Do_Jump_Ready(const _float& fTimeDelta);
-	//위로 상승한다
+	//?�로 ?�승?�다
 	void		Do_Jump_01(const _float& fTimeDelta);
-	//착지한다.
+	//착�??�다.
 	void		Do_Jump_02(const _float& fTimeDelta);
-	//휴식패턴
+	//?�식?�턴
 	void		Do_Rest(const _float& fTimeDelta);
-	//벨로시티 초기화 패턴
+	//벨로?�티 초기???�턴
 	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); CheckIsLastActionIdx(); }
 	
-	//스텀프 함수 기본값 설정
+	//?��????�수 기본�??�정
 	void		Do_Stump_Ready(const _float& fTimeDelta);
-	//toodee 혹은 topdee를 향해 n초간 가있는 패턴
+	//toodee ?��? topdee�??�해 n초간 가?�는 ?�턴
 	void		Do_Chase_Player(const _float& fTimeDelta);
-	//y로 살짝 올라가며, 회전을 주는 패턴
+	//y�??�짝 ?�라가�? ?�전??주는 ?�턴
 	void		Do_LittleUp_Turn(const _float& fTimeDelta);
-	//착지한다.
+	//착�??�다.
 	void		Do_Stump_02(const _float& fTimeDelta);
-	//회전 감소 패턴
+	//?�전 감소 ?�턴
 	void		Do_Turn_Minus(const _float& fTimeDelta);
 
 	//만세!
 	void        Do_Hurray(const _float& fTimeDelta);
-	//주먹 소환
+	//주먹 ?�환
 	void        Do_SummonFist(const _float& fTimeDelta);
 
 	void		SetPartten();
@@ -89,14 +86,14 @@ private:
 	_float		m_dwRestTime;
 	_float		m_dwActionTime;
 
-	//state, 함수포인터 vec를 가지는 vector
+	//state, ?�수?�인??vec�?가지??vector
 	vector<BOSS2_STATE_FUNC> funcAction;
 
-	//점프시 이동할 x 값
+	//?�프???�동??x �?
 	_vec3	   m_fJumpPos[3];
 	_int	   m_iJumpPosidx;
 
-	//찍기때 사용할 player의 위치를 받아오기 위함.
+	//찍기???�용??player???�치�?받아?�기 ?�함.
 	CTransform* m_pPlayer01_trans;
 	CTransform* m_pPlayer02_trans;
 
@@ -104,12 +101,10 @@ private:
 	_bool		m_bInit;
 
 private:
-	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
-	Engine::CAnimation*		m_pAnimation;
-
+	Engine::CAnimation*		m_pAnimation_Face;
+	Engine::CAnimation*		m_pAnimation_Body;
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

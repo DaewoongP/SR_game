@@ -50,9 +50,11 @@ void CTransform::MakeMyMatrix(const _float& fTimeDelta)
 	_matrix			matRotation = GetRotMat();
 	// 위치 변환
 	_matrix			matTrans = GetTransMat(fTimeDelta);
-
+	this;
 	//매트릭스 생성
 	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
+	_tchar*	 name = m_pGameObject->m_pTag;
+	
 	if (m_Parent == NULL)
 		return;
 

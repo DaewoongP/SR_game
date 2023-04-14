@@ -379,6 +379,12 @@
     <ClInclude Include="Boss2Nose.h">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClInclude>
+    <ClInclude Include="Boss2Body.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Foot.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -574,6 +580,12 @@
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClCompile>
     <ClCompile Include="Boss2Nose.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Body.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Foot.cpp">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClCompile>
   </ItemGroup>

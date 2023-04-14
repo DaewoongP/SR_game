@@ -13,6 +13,11 @@ CBoss2Nose::~CBoss2Nose()
 HRESULT CBoss2Nose::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 2, true);
+	m_pTextureCom->Add_Anim(L"Stump", 0, 5, 2, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTransform->m_vScale = _vec3(0.5f, 0.5f, 0.5f);
+	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
@@ -20,6 +25,7 @@ HRESULT CBoss2Nose::Ready_GameObject(_vec3 & vPos)
 _int CBoss2Nose::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
