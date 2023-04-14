@@ -74,7 +74,6 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
 		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
 		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
-		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
@@ -94,16 +93,16 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		//몸의 자식 경첩
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-3.0f, 0.5f, 0.0f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-3.0f, 0.5f, 0.0f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(6.0f, 0.5f, 0.0f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(6.0f, 0.5f, 0.0f), m_pTransform->GetChild(8)), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.0f, -0.5f, 0.3f), m_pTransform->GetChild(8)), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.0f, -0.5f, -0.5f), m_pTransform->GetChild(8)), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(4.0f, -0.5f, 0.2f), m_pTransform->GetChild(8)), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(4.0f, -0.5f, -0.2f), m_pTransform->GetChild(8)), E_FAIL);
 
 		//14
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.3f, -1.1f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.3f, -1.1f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.3f, -1.1f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.3f, -1.1f), m_pTransform), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.3f), m_pTransform), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.5f), m_pTransform), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.2f), m_pTransform), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.2f), m_pTransform), E_FAIL);
 		
 		// chain의 set_joint 호출 (7~10(발),11->0~4(조인트));  앞에놈은 먹는데 뒤에놈은 안먹음.
 		dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(14)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(7),m_pTransform->GetChild(8)->GetChild(0));
@@ -707,7 +706,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Face->AddClip(L"Scream", clip);
-		m_pAnimation_Face->SetAnimation(L"Idle");
+		m_pAnimation_Face->SetAnimation(L"Scream");
 
 		clip = new AnimClip();
 		{
@@ -718,7 +717,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_pTransform->GetChild(11));
 			clip->parts.push_back(m_pTransform->GetChild(12));
 			clip->source.resize(6);
-			clip->TotalTime = 2.5f;
+			clip->TotalTime = 2.9f;
 			clip->Useloop = true;
 			//LeftFront
 			{

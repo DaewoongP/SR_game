@@ -6,14 +6,18 @@
 class CBoss2JointSpot :
 	public CGameObject
 {
-public:
+private:
 	explicit CBoss2JointSpot(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CBoss2JointSpot();
 
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 
 public:
 	static CBoss2JointSpot*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+
+private:
+	HRESULT		Add_Component(void);
 
 private:
 	virtual void Free(void) override;

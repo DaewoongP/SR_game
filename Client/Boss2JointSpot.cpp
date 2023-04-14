@@ -10,6 +10,13 @@ CBoss2JointSpot::~CBoss2JointSpot()
 {
 }
 
+HRESULT CBoss2JointSpot::Ready_GameObject(_vec3 & vPos)
+{
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	return S_OK;
+}
+
 _int CBoss2JointSpot::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
@@ -27,6 +34,11 @@ CBoss2JointSpot * CBoss2JointSpot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 &
 	}
 
 	return pInstance;
+}
+
+HRESULT CBoss2JointSpot::Add_Component(void)
+{
+	return S_OK;
 }
 
 void CBoss2JointSpot::Free(void)

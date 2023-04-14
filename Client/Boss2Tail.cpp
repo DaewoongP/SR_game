@@ -20,8 +20,6 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_fLimitVelocity = 20.0f;
 	m_pRigid->m_bFreezePos_Z = true;
 
-	
-
 	return S_OK;
 }
 
