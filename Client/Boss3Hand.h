@@ -27,19 +27,28 @@ private:
 
 	void	FollowPlayer(const _float & fTimeDelta);
 	void	BossAttack(const _float & fTimeDelta);
+	void	IdleMove(const _float & fTimeDelta);
 
 private:
 	_int	m_iIndex;
 	_float  m_fAngle;
 	_float	m_fSpeed;
+
 	_float  m_fCoolDown;
 	_float  m_fAttackCoolDown;
+	_float  m_fIdleCycle;
+	_float  m_fIdleAngle;
 	_bool	m_bAttack;
 
+	_bool	m_bIdleMove;
+	_bool	m_bIdleStop;
+
 public:
-	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int iIndex);
+	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 
 protected:
 	virtual void Free(void) override;
 };
 
+#define BOSS3_CHASE 1.5f
+#define BOSS3_SPIN 0.5f
