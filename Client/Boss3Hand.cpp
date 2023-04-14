@@ -10,9 +10,9 @@ _bool CBoss3Hand::m_bAttackEnd = false;
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(25.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f),
+	m_fSpeed(25.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fIdleCycle(0.f), m_fIdleAngle(0.f),
 	m_iIndex(0),
-	m_bAttack(false)
+	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false)
 {
 }
 
@@ -25,11 +25,12 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
+	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-65.f));
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = true;
 
 	m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
-	m_pCollider->Set_Group(COL_OBJ);
+	m_pCollider->Set_Group(COL_ENV);
 
 	m_iIndex = iIndex;
 
@@ -40,7 +41,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
+    
 	if (m_iBossHp == 1 && m_bAttackEnd==true)
 	{
 		m_bShock = true;
@@ -70,6 +71,8 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	}
 	else if (m_iBossHp == 1 && m_bAttackEnd == true)
 		m_bShock = true;
+    
+    IdleMove(fTimeDelta);
 	
 	__super::Update_GameObject(fTimeDelta);
 
@@ -96,7 +99,7 @@ _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 	if (-100.f < m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
 
-	if(m_bAttack)
+	if (m_bAttack)
 		FollowPlayer(fTimeDelta);
 
 	CGameObject::Update_Top(fTimeDelta);
@@ -106,7 +109,7 @@ _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 
 void CBoss3Hand::LateUpdate_GameObject(void)
 {
-	__super::LateUpdate_GameObject();
+	CGameObject::LateUpdate_GameObject();
 }
 
 void CBoss3Hand::Render_GameObject(void)
@@ -114,7 +117,7 @@ void CBoss3Hand::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(m_iIndex);
 	m_pBufferCom->Render_Buffer();
-	__super::Render_GameObject();
+	CGameObject::Render_GameObject();
 }
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
@@ -134,12 +137,12 @@ void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 
 void CBoss3Hand::OnCollisionStay(const Collision * collision)
 {
-	__super::OnCollisionStay(collision);
+	CGameObject::OnCollisionStay(collision);
 }
 
 void CBoss3Hand::OnCollisionExit(const Collision * collision)
 {
-	__super::OnCollisionExit(collision);
+	CGameObject::OnCollisionExit(collision);
 }
 
 void CBoss3Hand::SwapTrigger()
@@ -173,14 +176,13 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
-	// �߰�� 4�ʵ��� �����ϰ�
-	if (1.f < m_fCoolDown && 4.f > m_fCoolDown)
+	// 추격을 진행하고
+	if (1.5f < m_fCoolDown && 1.5f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	// 4�� �� ��� ����
 	else if (4.f < m_fCoolDown && m_bAttackEnd==false)
 	{
 		BossAttack(fTimeDelta);
@@ -190,6 +192,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
+
 	// ȸ���ϰ� 
 	if (0.75f > m_fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
@@ -199,12 +202,82 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	{
 			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
 
+
+	/* // 회전하고 
+	if (0.5f > m_fAttackCoolDown)
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(360.f * fTimeDelta));
+
+	// 내려 찍기 (4.f)
+	else if (0.5f < m_fAttackCoolDown && 0.5f + BOSS3_SPIN  > m_fAttackCoolDown)
+	{
+		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수) */
+	}
+
+	else if (1.f < m_fAttackCoolDown)
+	{
+		m_bAttack = false;
+		m_fAttackCoolDown = 0.f;
+		m_fCoolDown = 0.f;
+	} */
+}
+
+void CBoss3Hand::IdleMove(const _float & fTimeDelta)
+{
+	m_fIdleCycle += fTimeDelta;
+
+	// 왼쪽으로 회전
+	if (m_bIdleMove && !m_bIdleStop)
+	{
+		if (m_fIdleCycle > 0.075f)
+		{
+			m_fIdleAngle += 2.f;
+			m_pTransform->Rotation(ROT_Y, D3DXToRadian(7.5f));
+			m_fIdleCycle = 0.f;
+
+			if (m_fIdleAngle >= 10.f)
+			{
+				m_fIdleAngle = 0.f;
+				m_bIdleMove = false;
+				m_bIdleStop = true;
+			}
+		}
+	}
+
+	// 오른쪽으로 회전
+	else if (!m_bIdleMove && !m_bIdleStop)
+	{
+		if (m_fIdleCycle > 0.075f)
+		{
+			m_fIdleAngle += 2.f;
+			m_pTransform->Rotation(ROT_Y, D3DXToRadian(-7.5f));
+			m_f
+      
+      Cycle = 0.f;
+
+			if (m_fIdleAngle >= 10.f)
+			{
+				m_fIdleAngle = 0.f;
+				m_bIdleMove = true;
+				m_bIdleStop = true;
+			}
+		}
+	}
+
+	// 잠깐 멈출 때
+	else if (m_bIdleStop)
+	{
+		if (m_fIdleCycle > 0.2f)
+		{
+			m_fIdleCycle = 0.f;
+			m_bIdleStop = false;
+		}			
 	}
 
 	
 }
 
-CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, int iIndex)
+CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)
 {
 	CBoss3Hand* pInstance = new CBoss3Hand(pGraphicDev);
 

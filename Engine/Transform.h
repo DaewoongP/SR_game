@@ -13,7 +13,7 @@ private:
 	virtual ~CTransform();
 
 public:
-	const _matrix*		Get_WorldMatrixPointer() { return &m_matWorld; }
+	const _matrix*	Get_WorldMatrixPointer() { return &m_matWorld; }
 	void				Get_Info(INFO eType, _vec3* pInfo)
 	{
 		*pInfo = m_vInfo[eType];
@@ -79,6 +79,8 @@ public:
 		m_iShakeAxis = (_int)eShake_Axis;
 		m_fWeakPoint = (_float)iPower / fDuration;
 	}
+
+	void		Set_ParentTransform(CGameObject* pParentObject, _float fX, _float fY, _float fZ);
 
 public:
 	_bool		m_bIsStatic = true;

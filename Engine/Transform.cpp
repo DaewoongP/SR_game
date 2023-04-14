@@ -6,7 +6,7 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CComponent(pGraphicDev)
 	, m_vScale(1.f, 1.f, 1.f)
 	, m_vAngle(0.f, 0.f, 0.f)
-	,m_bMove(true)
+	, m_bMove(true)
 
 {
 	ZeroMemory(&m_vInfo, sizeof(m_vInfo));
@@ -173,6 +173,47 @@ void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 		m_fShakePower = 0.0f;
 		m_vShakeOffset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
+}
+
+void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _float fY, _float fZ)
+{
+	// 초기화
+	D3DXMatrixIdentity(&m_matWorld);
+
+	// 스케일
+	_matrix matScale;
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	// 회전
+	_matrix matRot[ROT_END];
+	_matrix matRotation;
+	
+	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
+	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
+	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
+
+	matRotation = matRot[ROT_Y] * matRot[ROT_Y] * matRot[ROT_X];
+
+	//이동
+	_matrix matTrans;
+	D3DXMatrixTranslation(&matTrans, fX, fY, fZ);
+
+	// 부모 회전
+	_matrix matRotP[ROT_END];
+	_matrix matRotationP;
+
+	D3DXMatrixRotationX(&matRotP[ROT_X], pParentObject->m_pTransform->m_vAngle.x);
+	D3DXMatrixRotationY(&matRotP[ROT_Y], pParentObject->m_pTransform->m_vAngle.y);
+	D3DXMatrixRotationZ(&matRotP[ROT_Z], pParentObject->m_pTransform->m_vAngle.z);
+
+	matRotationP = matRotP[ROT_Y] * matRotP[ROT_Y] * matRotP[ROT_X];
+
+	// 부모 이동
+	_matrix matTransP;
+	_vec3 vTransP = pParentObject->m_pTransform->m_vInfo[INFO_POS];
+	D3DXMatrixTranslation(&matTransP, vTransP.x, vTransP.y, vTransP.z);
+
+	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans * matRotationP * matTransP;
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)

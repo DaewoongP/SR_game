@@ -92,12 +92,6 @@
     <Filter Include="01. Scene\Stages">
       <UniqueIdentifier>{627e2365-507d-4ba9-b8d1-addb89192073}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\01. Monster\Boss">
-      <UniqueIdentifier>{d8b2bab9-66d0-467a-b8d3-cb619470bd0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\01. Monster\Boss\FireBall">
-      <UniqueIdentifier>{06610006-bb98-4f94-a1f6-836539ed7637}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\00. Player\Toodee">
       <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
     </Filter>
@@ -172,6 +166,24 @@
     </Filter>
     <Filter Include="00. GameObject\04. Boss\Boss3">
       <UniqueIdentifier>{2dc22887-05a7-46f0-b662-307accbe57c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression">
+      <UniqueIdentifier>{f586ecf2-ffaf-4330-83fc-60930f5064aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye">
+      <UniqueIdentifier>{493e6576-c598-4cb9-80b6-0a99bd5a8e6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\BossBullet">
+      <UniqueIdentifier>{55b82e42-8559-4c6b-8465-80fa1d86fe33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow">
+      <UniqueIdentifier>{baf087b6-f728-4379-821a-b52b53d43cd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil">
+      <UniqueIdentifier>{782344bb-3618-4d7a-9417-fb7e9503249d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth">
+      <UniqueIdentifier>{6eea6d7d-1554-4801-bab5-4474a213bb08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -279,9 +291,6 @@
     <ClInclude Include="Loading.h">
       <Filter>01. Scene\Loading</Filter>
     </ClInclude>
-    <ClInclude Include="Fireball.h">
-      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
-    </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>00. GameObject\01. Monster</Filter>
     </ClInclude>
@@ -387,6 +396,26 @@
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="LogoCamera.h" />
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="StageCamera.h" />
+    <ClInclude Include="Boss3Eye.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Fireball.h">
+      <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Boss3EyePupil.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Eyebrow.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Mouth.h">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -473,9 +502,6 @@
     </ClCompile>
     <ClCompile Include="Loading.cpp">
       <Filter>01. Scene\Loading</Filter>
-    </ClCompile>
-    <ClCompile Include="Fireball.cpp">
-      <Filter>00. GameObject\01. Monster\Boss\FireBall</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
       <Filter>00. GameObject\01. Monster</Filter>
@@ -597,6 +623,26 @@
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoCamera.cpp" />
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="StageCamera.cpp" />
+    <ClCompile Include="Boss3Eye.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Fireball.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Boss3EyePupil.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Eyebrow.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eyebrow</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Mouth.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
