@@ -288,7 +288,8 @@ void CImguiUnit::CreateDefaultMapObject()
 void CImguiUnit::MapObjectInstall()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, );
+	if (nullptr == pStageLayer)
+		return;
 
 	if (Engine::Get_DIKeyState(DIK_F3) == Engine::KEYDOWN)
 	{

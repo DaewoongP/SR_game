@@ -5,7 +5,7 @@
 class CPreStage : public Engine::CScene
 {
 private:
-	explicit CPreStage(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID);
 	virtual ~CPreStage();
 
 public:
@@ -19,8 +19,9 @@ private:
 
 private:
 	CLoading*					m_pLoading;
+	LOADINGID					m_eLoadingID;
 public:
-	static CPreStage*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPreStage*		Create(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID);
 
 private:
 	virtual void		Free(void);

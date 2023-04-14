@@ -26,6 +26,7 @@
 #include "SwitchCube.h"
 #include "PortalCube.h"
 #include "Boss3.h"
+#include "Toodee.h"
 
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -40,13 +41,9 @@ CStage1::~CStage1()
 
 HRESULT CStage1::Ready_Scene(void)
 {
-
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-
-	/*m_pLoading = CLoading::Create(m_pGraphicDev, LOADING_STAGE1);
-	NULL_CHECK_RETURN(m_pLoading, E_FAIL);*/
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -65,7 +62,6 @@ void CStage1::LateUpdate_Scene(void)
 
 void CStage1::Render_Scene(void)
 {
-	//Engine::Render_Font(L"Font_Default", m_pLoading->Get_String(), &_vec2(20.f, 20.f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)

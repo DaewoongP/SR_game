@@ -20,7 +20,6 @@ private:
 public:
 	static CStage2*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-
 private:
 	virtual void		Free(void);
 };

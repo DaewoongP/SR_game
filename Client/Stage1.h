@@ -1,8 +1,6 @@
 #pragma once
-
 #include "Scene.h"
-#include "Toodee.h"
-#include "Loading.h"
+
 class CStage1 : public Engine::CScene
 {
 private:

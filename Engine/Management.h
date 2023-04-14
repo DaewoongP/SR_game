@@ -25,7 +25,6 @@ public:
 	_int			Update_Management(const _float& fTimeDelta);
 	void			LateUpdate_Management();
 	void			Render_Management(LPDIRECT3DDEVICE9 pGraphicDev);
-
 private:
 	CScene*			m_pScene = nullptr;
 

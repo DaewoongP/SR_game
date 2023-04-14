@@ -4,6 +4,8 @@
 #include "StageCamera.h"
 #include "StageBG.h"
 #include "Cube.h"
+#include "Toodee.h"
+#include "Topdee.h"
 
 
 CStage2::CStage2(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -61,6 +63,9 @@ HRESULT CStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(40.f, 12.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(34.f, 32.f, 11.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

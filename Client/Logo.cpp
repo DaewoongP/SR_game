@@ -5,7 +5,7 @@
 
 #include "Export_Function.h"
 #include "BackGround.h"
-#include"Title.h"
+#include "Title.h"
 #include "UICamera.h"
 #include "StageCamera.h"
 #include "LogoCamera.h"
@@ -13,9 +13,9 @@
 #include "ShiningStar.h"
 #include "MenuSmoke.h"
 #include "MenuCubeSpr.h"
-#include"Select.h"
-#include "Title.h"
+#include "Select.h"
 #include "PreStage.h"
+#include "Stage1.h"
 
 _bool CLogo::m_bStart = true;
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -52,7 +52,7 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 
 		if (GetAsyncKeyState(VK_RETURN)&&m_bStart==true)
 		{
-			CScene*	pScene = CPreStage::Create(m_pGraphicDev);
+			CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
 			NULL_CHECK_RETURN(pScene, -1);
 
 			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
