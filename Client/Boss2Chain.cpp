@@ -81,10 +81,13 @@ void CBoss2Chain::SetChain()
 
 	//dir = 조인트간의 거리
 	_vec3 dir = m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS];
+	D3DXVec3Normalize(&dir, &dir);
+	_vec3 right;
+	D3DXVec3Normalize(&right, &m_pTransform->m_vInfo[INFO_RIGHT]);
 	//회전을 위한 내적
-	_float dot = D3DXVec3Dot(&m_pTransform->m_vInfo[INFO_RIGHT], &dir);
+	_float dot = D3DXVec3Dot(&dir, &right);
 	//값 적용
-	m_pTransform->m_vAngle.z = dot;
+	m_pTransform->m_vAngle.z = -acosf(dot);
 }
 
 CBoss2Chain * CBoss2Chain::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

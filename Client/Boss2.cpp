@@ -64,63 +64,77 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
-		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(4.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
-		
-		//11
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(11)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
-		dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(11)->m_pGameObject)->SetRotAngle(30.f,120.f);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(12)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
+		//Head Joint (0)
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(0.0f, -0.0f, 0.0f), m_pTransform), E_FAIL);
+		//Head Children
+		{
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
+			FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(7)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
+			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(0)->GetChild(7)->m_pGameObject)->SetRotAngle(30, 60);
+		}
 
-		dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(12)->m_pGameObject)->SetRotAngle(30,60);
+		//Body Joint (1)
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
+
+		//Body Children
+		{
+			//0~4
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(4.1f, -2.8f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.0f, 0.0f, 0.0f), m_pTransform->GetChild(1)), E_FAIL);
+			m_pTransform->GetChild(1)->GetChild(4)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
+			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(1)->GetChild(4)->m_pGameObject)->SetRotAngle(30.f, 120.f);
+
+			//5~8
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-1.0f, 0.0f, 0.3f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-1.0f, 0.0f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(1.0f, 0.0f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(1.0f, 0.0f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+
+			//9~12
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.3f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(9)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(0), m_pTransform->GetChild(1)->GetChild(5));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(10)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(1), m_pTransform->GetChild(1)->GetChild(6));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(11)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(2), m_pTransform->GetChild(1)->GetChild(7));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(12)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(3), m_pTransform->GetChild(1)->GetChild(8));
+		}
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
-		m_pTransform->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+		m_pTransform->GetChild(2)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(2)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		//몸의 자식 경첩
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.0f, -0.5f, 0.3f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.0f, -0.5f, -0.5f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(4.0f, -0.5f, 0.2f), m_pTransform->GetChild(8)), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(4.0f, -0.5f, -0.2f), m_pTransform->GetChild(8)), E_FAIL);
 
-		//14
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.3f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.2f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.2f), m_pTransform), E_FAIL);
 		
 		// chain의 set_joint 호출 (7~10(발),11->0~4(조인트));  앞에놈은 먹는데 뒤에놈은 안먹음.
-		dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(14)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(7),m_pTransform->GetChild(8)->GetChild(0));
-		dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(15)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(8),m_pTransform->GetChild(8)->GetChild(1));
-		dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(16)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(9),m_pTransform->GetChild(8)->GetChild(2));
-		dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(17)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(10),m_pTransform->GetChild(8)->GetChild(3));
+
 
 		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		AnimClip* clip = new AnimClip();
 		{
 			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(6));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
 			clip->source.resize(7);
 
 			// Face
@@ -389,13 +403,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		clip = new AnimClip();
 		{
 			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(6));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
 			clip->source.resize(7);
 
 			// Face
@@ -710,12 +724,12 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_pTransform->GetChild(7));
-			clip->parts.push_back(m_pTransform->GetChild(8));
-			clip->parts.push_back(m_pTransform->GetChild(9));
-			clip->parts.push_back(m_pTransform->GetChild(10));
-			clip->parts.push_back(m_pTransform->GetChild(11));
-			clip->parts.push_back(m_pTransform->GetChild(12));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
 			clip->source.resize(6);
 			clip->TotalTime = 2.9f;
 			clip->Useloop = true;
@@ -888,6 +902,87 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			}
 		}
 		m_pAnimation_Body->AddClip(L"Idle", clip);
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->source.resize(6);
+			clip->TotalTime = 2.9f;
+			clip->Useloop = false;
+			//LeftFront
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(2,50,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+
+			//Rightfront
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(2,50,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//LeftBack
+			{
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-2,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//RightBack
+			{
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(2,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//BackBody
+			{
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.8f,3.8f,3.8f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//FrontBody
+			{
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(3,4,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.3f,3.3f,3.3f),//scale
+					3.f,//tilltime
+					0.f//actionTime
+				});
+			}
+		}
+		m_pAnimation_Body->AddClip(L"Stump", clip);
 		m_pAnimation_Body->SetAnimation(L"Idle");
 
 
@@ -898,7 +993,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	CheckZFloor();
 	m_dwActionTime -= fTimeDelta;
 	m_dwRestTime -= fTimeDelta;
-	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	//(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
@@ -1043,6 +1138,7 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 
 void CBoss2::Do_Hurray(const _float & fTimeDelta)
 {
+	//재생되던 애니메이션을 stump로 바꾼다.
 }
 
 void CBoss2::Do_SummonFist(const _float & fTimeDelta)
