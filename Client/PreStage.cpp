@@ -33,6 +33,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 	{
 		if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN)
 		{
+			g_Is2D = true;
 			CScene*	pScene = nullptr;
 			switch (m_eLoadingID)
 			{

@@ -56,9 +56,6 @@
     <Filter Include="00. GameObject\00. Player">
       <UniqueIdentifier>{e1b87ab7-9a26-4ba9-b03f-757c123c1993}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\00. Player\Shadow">
-      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\01. Monster">
       <UniqueIdentifier>{e42c2326-cc06-46d3-8776-d1feffa77a98}</UniqueIdentifier>
     </Filter>
@@ -172,6 +169,9 @@
     </Filter>
     <Filter Include="01. Scene\Stages\PreStage">
       <UniqueIdentifier>{778a1c61-0e07-472e-b7b7-bfab93683edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\Tookee">
+      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
