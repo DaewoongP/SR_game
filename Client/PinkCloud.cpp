@@ -24,7 +24,8 @@ HRESULT CPinkCloud::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
+	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 3.f,2.f,1.0f });
+	m_pCollider->Set_Group(COL_ENV);
 	m_pCollider->m_bIsTrigger = false;
 	
 	return S_OK;

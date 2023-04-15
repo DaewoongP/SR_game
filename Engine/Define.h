@@ -9,6 +9,8 @@
 
 #define		CUBEX		32
 #define		CUBEY		18
+// 큐브의 가장 낮은 y값
+#define		LANDY		2
 
 #define		MAX_STR		256
 

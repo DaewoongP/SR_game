@@ -357,7 +357,7 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (10 == m_iMapObjectType) // 번개 구름
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer,
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer,
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
@@ -513,7 +513,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 
 		else if (10 == iter.iObjTypeNumber) // 번개 구름
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
 		else if (11 == iter.iObjTypeNumber && 2 > m_iPortalCubeCount) // 포탈 큐브

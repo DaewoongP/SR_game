@@ -1,8 +1,9 @@
-
+#pragma once
 #include "Cloud.h"
-#include"Lightning.h"
+BEGIN(Engine)
+class CRainParticle;
 
-
+END
 class CLightningCloud :
     public CCloud
 {
@@ -15,16 +16,21 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta);
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
-	virtual void Render_Too() override;
-	virtual void Render_Top() override;
+	virtual void Render_GameObject() override;
+	virtual void SwapTrigger();
 
 	virtual HRESULT		Add_Component(void);
 
+	BoundingBox Check_BoundingBox();
+	void Check_ParticleBox();
 public:
-	static CLightningCloud* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, CLayer* pLayer);
-	CLightning* m_pLightning;
+	static CLightningCloud* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+
 private:
 	virtual void Free(void) override;
 
-
+private:
+	CRainParticle*			m_pRainParticle;
+	BoundingBox				m_Box, m_InitBox;
+	_bool					m_bInit;
 };

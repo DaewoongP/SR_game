@@ -35,11 +35,11 @@ void CRainParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	particle->vVelocity = {0.f, -20.f, 0.f };
+	particle->vVelocity = {0.f, -30.f, 0.f };
 	GetRandomVector(&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
-	particle->vPos.y = m_BoundingBox._max.y - (rand() % 30);
+	particle->vPos.y = m_BoundingBox._max.y - (rand() % 8);
 }
 
 _int CRainParticle::Update_Particle()
@@ -55,7 +55,7 @@ _int CRainParticle::Update_Particle()
 			it->vPos += it->vVelocity * fTimeDelta;
 			if (m_BoundingBox.Intersect(it->vPos) == false)
 			{
-				ResetParticle(&(*it));
+				it->bIsAlive = false;
 			}
 		}
 		else
