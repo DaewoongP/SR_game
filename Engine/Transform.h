@@ -109,7 +109,7 @@ public:
 	_matrix		m_matWorld;
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
-
+	
 	_matrix		m_matRT;
 
 	_bool		m_bMove;

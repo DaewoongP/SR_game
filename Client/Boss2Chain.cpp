@@ -86,8 +86,13 @@ void CBoss2Chain::SetChain()
 	D3DXVec3Normalize(&right, &m_pTransform->m_vInfo[INFO_RIGHT]);
 	//회전을 위한 내적
 	_float dot = D3DXVec3Dot(&dir, &right);
+	
+	_float radian = acosf(dot);
 	//값 적용
-	m_pTransform->m_vAngle.z = -acosf(dot);
+	if (m_pTrans_Joint01->m_vInfo[INFO_POS].y < m_pTrans_Joint02->m_vInfo[INFO_POS].y)
+		radian = 2 * D3DX_PI- radian;
+
+	m_pTransform->m_vAngle.z = radian;
 }
 
 CBoss2Chain * CBoss2Chain::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

@@ -80,15 +80,15 @@ void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 			{
 				//지정된 rotation이 있다면 행동
 				if (clip->source[i][j].rotation != _vec3(0, 0, 0))
-					clip->parts[i]->m_vAngle = Lerp(clip->parts[i]->m_vAngle, clip->source[i][j].rotation,(1/clip->source[i][j].TillTime)* fTimeDelta);
+					clip->parts[i]->m_vAngle = Lerp(clip->parts[i]->m_vAngle, clip->source[i][j].rotation, fTimeDelta/ clip->source[i][j].TillTime);
 				
 				//지정된 scale이 있다면 행동
 				if (clip->source[i][j].scale != _vec3(0, 0, 0))
-					clip->parts[i]->m_vScale = Lerp(clip->parts[i]->m_vScale, clip->source[i][j].scale,(1/clip->source[i][j].TillTime) * fTimeDelta);
+					clip->parts[i]->m_vScale = Lerp(clip->parts[i]->m_vScale, clip->source[i][j].scale, fTimeDelta / clip->source[i][j].TillTime);
 
 				//지정된 trans가 있다면 행동
 				if (clip->source[i][j].trans != _vec3(0, 0, 0))
-					clip->parts[i]->m_vInfo[INFO_POS] = Lerp(clip->parts[i]->m_vInfo[INFO_POS], clip->source[i][j].trans, (1/clip->source[i][j].TillTime)* fTimeDelta);
+					clip->parts[i]->m_vInfo[INFO_POS] = Lerp(clip->parts[i]->m_vInfo[INFO_POS], clip->source[i][j].trans, fTimeDelta / clip->source[i][j].TillTime);
 			
 			}
 		}

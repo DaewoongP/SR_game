@@ -58,6 +58,8 @@ private:
 	void		Do_Rest(const _float& fTimeDelta);
 	//ë²¨ë¡œ?œí‹° ì´ˆê¸°???¨í„´
 	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); CheckIsLastActionIdx(); }
+
+	void		Do_Idle(const _float& fTimeDelta) { m_pAnimation_Body->SetAnimation(L"Idle"); m_dwRestTime = 2.0f; CheckIsLastActionIdx();}
 	
 	//?¤í????¨ìˆ˜ ê¸°ë³¸ê°??¤ì •
 	void		Do_Stump_Ready(const _float& fTimeDelta);
@@ -69,12 +71,14 @@ private:
 	void		Do_Stump_02(const _float& fTimeDelta);
 	//?Œì „ ê°ì†Œ ?¨í„´
 	void		Do_Turn_Minus(const _float& fTimeDelta);
-
 	//ë§Œì„¸!
 	void        Do_Hurray(const _float& fTimeDelta);
 	//ì£¼ë¨¹ ?Œí™˜
 	void        Do_SummonFist(const _float& fTimeDelta);
+	void        Do_Scream(const _float& fTimeDelta);
+	void		Do_ScreamEnd(const _float& fTimeDelta);
 
+	void		DoFlip();
 	void		SetPartten();
 	void		ReadyPartten();
 	void		CheckIsLastActionIdx();
@@ -85,6 +89,7 @@ private:
 	_int		m_iCurrentActionIdx;
 	_float		m_dwRestTime;
 	_float		m_dwActionTime;
+	_bool		m_bFlip_Y;
 
 	//state, ?¨ìˆ˜?¬ì¸??vecë¥?ê°€ì§€??vector
 	vector<BOSS2_STATE_FUNC> funcAction;
