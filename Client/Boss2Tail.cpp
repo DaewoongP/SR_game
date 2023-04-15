@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Boss2Tail.h"
+#include "Boss2.h"
 
 CBoss2Tail::CBoss2Tail(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_pPreTail(nullptr)
@@ -17,7 +18,7 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_bUseLimitVelocity = true;
-	m_pRigid->m_fLimitVelocity = 20.0f;
+	m_pRigid->m_fLimitVelocity = 8.0f;
 	m_pRigid->m_bFreezePos_Z = true;
 
 	return S_OK;
@@ -25,26 +26,40 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss2Tail::Update_GameObject(const _float & fTimeDelta)
 {
-	
+	//m_pRigid->m_fLimitVelocity = TAILVELOCITYLIMT;
+
 
 	if (m_pPreTail)
 	{
+		//첫 부모의 y 축 또는 z 축 회전 값의 정규화 만큼 더하면 회전때도 먹히려나
+		_matrix matBoss = dynamic_cast<CBoss2*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2"))->m_pTransform->m_matWorld;
+		_vec3 vBossX = { matBoss._11,matBoss._12,matBoss._13 };
+		_float fYDis = D3DXVec3Length(&vBossX);
+		vBossX /= fYDis;
+
 		_vec3 vPrePos = {
-			m_pPreTail->Get_WorldMatrixPointer()->_41+1,
+			m_pPreTail->Get_WorldMatrixPointer()->_41 + vBossX.x * 0.5f,//offset 생각을 좀 해봐야 할듯...
 			m_pPreTail->Get_WorldMatrixPointer()->_42,
 			m_pPreTail->Get_WorldMatrixPointer()->_43 };
-		
+		//리지드 이동 방향 및 거리 계산용
 		_vec3 vDis = vPrePos - m_pTransform->m_vInfo[INFO_POS];
-
+		//거리 저장
 		_float fLength = D3DXVec3Length(&vDis);
+		//방향으로 사용
+		D3DXVec3Normalize(&vDis, &vDis);
+		
+		m_pRigid->AddForce(vDis, 1200.f, FORCE, fTimeDelta);
+		
+		vDis.z = 0.0f;
 
-		if (1.0f < fLength)
+		if (0.7f < fLength)
 		{
-			D3DXVec3Normalize(&vDis, &vDis);
-			m_pRigid->AddForce(vDis,2000.0f, FORCE, fTimeDelta);
+			_vec3 vRePosition = vPrePos - vDis;
 			
-		}
+			vRePosition.z = 0.0f;
 
+			m_pTransform->Set_Pos(vRePosition.x, vRePosition.y, m_pTransform->m_vInfo[INFO_POS].z);
+		}
 	}
 
 __super::Update_GameObject(fTimeDelta);
