@@ -14,7 +14,6 @@
 #include "Bat.h"
 #include "PinkCloud.h"
 #include"LightningCloud.h"
-#include"Lightning.h"
 #include "Topdee.h"
 #include "Spike.h"
 #include "GravityCube.h"
