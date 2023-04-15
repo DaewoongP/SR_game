@@ -31,7 +31,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45.f));
 	m_pTransform->m_bIsStatic = true;
-	
+	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
@@ -108,6 +108,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
 	if (m_iATKCount == 3)
@@ -139,12 +140,13 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	return 0;
 }
 
-_int CBoss3::Update_Top(const _float & fTimeDelta)
+_int CBoss3::Update_Top(const _float& fTimeDelta)
 {
+	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
-
 	FollowPlayer(fTimeDelta);
+	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -241,7 +243,7 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 		if (!m_pTransform->m_vInfo[INFO_POS].z == 9.f);
 		m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
-
+	
 	// 시간이 지나면 공격 시작 (3.5f)
 	else if (2.f + BOSS3_CHASE < m_fCoolDown)
 		BossAttack(fTimeDelta);
@@ -270,6 +272,8 @@ void CBoss3::LookAtPlayer()
 		// 이전에 회전한 수치만큼 원복했다가 새로운 수치만큼 다시 돌림
 		m_pTransform->Rotation(ROT_Y, m_fPreToo * 0.7f);
 		m_pTransform->Rotation(ROT_Y, -fX * 0.7f);
+	
+
 
 		// 현재 값을 저장
 		m_fPreToo = fX;

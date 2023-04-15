@@ -77,6 +77,8 @@ private:
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;
 
+
+	_vec3 m_vPrePos;
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

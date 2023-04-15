@@ -27,7 +27,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-65.f));
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = true;
-
+	m_vPrePos = vPos;
 	m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
 	m_pCollider->Set_Group(COL_ENV);
 
@@ -66,7 +66,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
-	//m_pTransform->m_vInfo[INFO_POS].z = 9.f;
+	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 
 	if (0.f > m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
@@ -78,6 +78,8 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
+	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
+
 	if(!m_pTransform->m_vInfo[INFO_POS].z == 5.f)
 	{
 		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
@@ -88,6 +90,7 @@ _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 
 	if (m_bAttack)
 		FollowPlayer(fTimeDelta);
+	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 
 	CGameObject::Update_Top(fTimeDelta);
 
