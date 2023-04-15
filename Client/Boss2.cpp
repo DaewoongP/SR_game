@@ -65,33 +65,6 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
-		FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
-		m_pTransform->GetChild(6)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(4.1f, -2.8f, -0.5f), m_pTransform), E_FAIL);
-		
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(11)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
-		//dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(11)->m_pGameObject)->SetRotAngle(30,120);
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(12)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
-		//dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(12)->m_pGameObject)->SetRotAngle(30,60);
-		
-		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
-		m_pTransform->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-
 		//Head Joint (0)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(0.0f, -0.0f, -0.0f), m_pTransform), E_FAIL);
 		//Head Children
@@ -141,7 +114,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		}
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(2)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(2)->m_vScale = _vec3(4.0f, 4.0f, 1.0f);
 		m_pTransform->GetChild(2)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
     
 		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
@@ -744,14 +717,6 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_pTransform->GetChild(7));
-			clip->parts.push_back(m_pTransform->GetChild(8));
-			clip->parts.push_back(m_pTransform->GetChild(9));
-			clip->parts.push_back(m_pTransform->GetChild(10));
-			clip->parts.push_back(m_pTransform->GetChild(11));
-			clip->parts.push_back(m_pTransform->GetChild(12));
-			clip->source.resize(6);
-			clip->TotalTime = 2.8f;
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
@@ -1485,7 +1450,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.8f,3.8f,3.8f),//scale
+					_vec3(1.f,1.f,1.f),//scale
 					2.f,//tilltime
 					0.f//actionTime
 				});
@@ -1496,7 +1461,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0.f, 0.f, 0.f) + _vec3(3,4,-0.5f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.3f,3.3f,3.3f),//scale
+					_vec3(1.f,1.f,1.f),//scale
 					2.f,//tilltime
 					0.f//actionTime
 				});
@@ -1822,19 +1787,22 @@ void CBoss2::ReadyPartten()
 	funcAction.push_back(func);
 	func.clear();
 
-	func.push_back(&CBoss2::Do_Scream);
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ScreamEnd);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
-	func.clear();
-
-	func.push_back(&CBoss2::Do_Scream);
+	func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Chase_Player);
+	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ScreamEnd);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Stump_02);
+	func.push_back(&CBoss2::Do_Turn_Minus);
+	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
-	func.clear();
 
 	/* //펀치
 	func.push_back(&CBoss2::Do_Hurray);
@@ -1866,7 +1834,16 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Turn_Minus);
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
-	func.clear();*/
+	func.clear();
+	
+	//소리지르기
+	func.push_back(&CBoss2::Do_Scream);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ScreamEnd);
+	func.push_back(&CBoss2::Do_Rest);
+	funcAction.push_back(func);
+	func.clear();
+	*/
 }
 
 void CBoss2::Do_Rest(const _float& fTimeDelta)
@@ -1877,10 +1854,15 @@ void CBoss2::Do_Rest(const _float& fTimeDelta)
 
 void CBoss2::DoFlip()
 {
-	if(m_bFlip_Y)
-		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
-	else
-		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
+	//스텀프 상태가 아니면
+	//if ()
+	//{
+		if (m_bFlip_Y)
+			m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
+		else
+			m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
+	//}
+	
 }
 
 void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
@@ -1921,7 +1903,7 @@ void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 	if(g_Is2D)
 		m_pRigid->AddTorque(_vec3(0, 1, 0), 100.f, IMPULSE, fTimeDelta);
 	else
-		m_pRigid->AddTorque(_vec3(0, 0, 1), 100.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddTorque(_vec3(1, 0, 0), 100.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 }
 

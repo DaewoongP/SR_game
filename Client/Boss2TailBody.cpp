@@ -35,7 +35,8 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(3.0f, 0.f, 0.05f), m_pTransform), E_FAIL);
-		m_pTransform->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
+		//m_pTransform->GetChild(0)->m_vScale = _vec3(-m_pTransform->GetParent()->m_vScale.x*2, -m_pTransform->GetParent()->m_vScale.y*2, -m_pTransform->GetParent()->m_vScale.z*2);
+		m_pTransform->GetChild(0)->m_vScale = _vec3(0.1f, 0.1f, 0.1f);
 		m_pTransform->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_0", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.1f)), E_FAIL);
