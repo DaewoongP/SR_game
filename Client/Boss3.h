@@ -65,7 +65,7 @@ private:
 	_float  m_fAttackCoolDown;	// 공격 쿨다운
 	_float  m_fCoolDown;		// 추격 쿨다운
 	_float  m_fShootCoolDown;	// 사격 쿨다운
-  
+	_float	m_fShootterm;
 	_vec3  m_vLookDot;
 	_vec3 m_vDirection;
 	_vec3 m_vPlayerInfo;
@@ -74,9 +74,10 @@ private:
 	BOSS3	m_ePreState;
 
 	_bool m_bATKEnd=false;
-	_int m_iBossHp = 1;
-	_bool m_bATKCnt;
-	_int m_iATKCount;
+	_int m_iBossHp = 1; //추후에 스테이지로 옮겨야함
+	_bool m_bATKCnt; //전기공격을할지안할지판단
+	_int m_iATKCount;// 카운트 3이되면 전기공격
+	_bool m_bShoot = true;
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
