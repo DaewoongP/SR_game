@@ -3,7 +3,8 @@
 
 #include "Export_Function.h"
 CRainParticle::CRainParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, _int iTextureNum, _float fSize, _int iParticleNum, _bool isWorld)
-	:CParticleSystem(pGraphicDev)
+	:CParticleSystem(pGraphicDev),
+	m_iRandOffset(8)
 {
 	m_pTexture = CTexture::Create(m_pGraphicDev,	
 		TEX_NORMAL,
@@ -21,7 +22,8 @@ CRainParticle::CRainParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 }
 
 CRainParticle::CRainParticle(const CRainParticle & rhs)
-	:CParticleSystem(rhs)
+	:CParticleSystem(rhs),
+	m_iRandOffset(rhs.m_iRandOffset)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -39,7 +41,7 @@ void CRainParticle::ResetParticle(Particle * particle)
 	GetRandomVector(&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
-	particle->vPos.y = m_BoundingBox._max.y - (rand() % 8);
+	particle->vPos.y = m_BoundingBox._max.y - (rand() % m_iRandOffset);
 }
 
 _int CRainParticle::Update_Particle()

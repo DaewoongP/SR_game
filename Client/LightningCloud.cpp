@@ -134,6 +134,7 @@ BoundingBox CLightningCloud::Check_BoundingBox()
 	box._min.y -= fDist ;
 	box._min.z = 10.f;
 	box._max = _vec3(colmax.x, colmin.y, colmax.z);
+	m_pRainParticle->Set_Offset(fDist);
 	return box;
 }
 
