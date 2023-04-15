@@ -52,6 +52,7 @@ _int CScene::Update_Scene(const _float & fTimeDelta)
 
 		if (STAGE_END == iResult)
 		{
+			// 현재 저장된 스테이지 아이디에서 다음 스테이지로 추가
 			m_eLoadingID = LOADINGID((_int)m_eLoadingID + 1);
 			CScene*	pScene = CPreStage::Create(m_pGraphicDev, m_eLoadingID);
 			NULL_CHECK_RETURN(pScene, -1);

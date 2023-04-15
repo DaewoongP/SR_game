@@ -62,6 +62,7 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 
 		if (STAGE_END == iResult)
 		{
+			// 콜리전 삭제 필수
 			Engine::Clear_Collision();
 			return STAGE_END;
 		}
