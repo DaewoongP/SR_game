@@ -13,7 +13,7 @@
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(25.f), m_fXAngle(0.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fShootCoolDown(0.f),
+	m_fSpeed(25.f), m_fXAngle(0.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fShootCoolDown(0.f), m_fPreToo(0.f), m_fPreTop(0.f),
 	m_bCreateHand(true)
 {
 	m_pBossLeft = nullptr;
@@ -42,13 +42,14 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	
+    
 	if (m_iBossHp == 1 && 12.f < m_fAttackCoolDown)
 	{
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
 		m_bATKCnt = false;
 	}
+
 	// Boss3 생성과 크기 조정
 	if (m_bCreateHand)
 	{
@@ -96,6 +97,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		m_bCreateHand = false;
 	}
 
+	LookAtPlayer();
+
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -106,11 +109,6 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
-
-	m_vLookDot = { m_pTransform->m_vInfo[INFO_POS].x - 1.f,
-					   m_pTransform->m_vInfo[INFO_POS].y,
-					   m_pTransform->m_vInfo[INFO_POS].z - 1.f };
-	m_vDirection = m_vLookDot - m_pTransform->m_vInfo[INFO_POS];
 
 	if (m_iATKCount == 3)
 	{
@@ -129,7 +127,6 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		m_bShoot = true;
 		m_fShootterm = 0.f;
 		m_iATKCount = 0;
-
 	}
 
 	if (0.f > m_fXAngle)
@@ -252,15 +249,55 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	
 }
 
-void CBoss3::BossLook(const _float& fTimeDelta)
+void CBoss3::LookAtPlayer()
 {
-	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-	NULL_CHECK_RETURN(pGameObject, );
-	m_vPlayerInfo = pGameObject->m_pTransform->m_vInfo[INFO_POS];
-	
-	m_pTransform->Compute_Lookattarget(&m_vPlayerInfo);
+	_vec3 vPos;
+	_float fX;
 
-	
+	CGameObject* pToodee = nullptr;
+	CGameObject* pTopdee = nullptr;
+
+	// 투디
+	if (g_Is2D)
+	{
+		pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		NULL_CHECK_RETURN(pToodee, );
+		vPos = pToodee->m_pTransform->m_vInfo[INFO_POS];
+
+		// 투디 x값 정규화
+		fX = (vPos.x - CUBEX) / CUBEX;
+
+		// 이전에 회전한 수치만큼 원복했다가 새로운 수치만큼 다시 돌림
+		m_pTransform->Rotation(ROT_Y, m_fPreToo * 0.7f);
+		m_pTransform->Rotation(ROT_Y, -fX * 0.7f);
+
+		// 현재 값을 저장
+		m_fPreToo = fX;
+	}
+
+	// 탑디
+	else
+	{
+		pTopdee = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		NULL_CHECK_RETURN(pTopdee, );
+		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
+
+		_vec3 vRight, vDir;
+
+		D3DXVec3Normalize(&vRight, &m_pTransform->m_vInfo[INFO_RIGHT]);
+		D3DXVec3Normalize(&vDir, &(vPos - m_pTransform->m_vInfo[INFO_POS]));
+
+		_float fAngle = acosf(D3DXVec3Dot(&vRight, &vDir));
+
+		// 플레이어의 y값이 보스 몸체의 y값보다 작아질 때 (치역 처리)
+		if (vPos.y < m_pTransform->m_vInfo[INFO_POS].y)
+			fAngle =  (2.f * D3DX_PI - fAngle) - 0.47f;
+
+		m_pTransform->Rotation(ROT_Y, m_fPreTop * 0.6f);
+		m_pTransform->Rotation(ROT_Y, -fAngle * 0.6f);
+
+		m_fPreTop = fAngle;
+	}
 }
 
 void CBoss3::BossAttack(const _float & fTimeDelta)
@@ -328,8 +365,6 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 			m_fShootCoolDown = 0.f;
 			
 	}
-	
-
 }
 
 CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

@@ -22,18 +22,9 @@ HRESULT CBoss3EyePupil::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_iIndex = iIndex;
 
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
+	NULL_CHECK_RETURN(m_pBoss3, E_FAIL);
 
 	return S_OK;
-}
-
-_int CBoss3EyePupil::Update_Too(const _float & fTimeDelta)
-{
-	return 0;
-}
-
-_int CBoss3EyePupil::Update_Top(const _float & fTimeDelta)
-{
-	return 0;
 }
 
 _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
@@ -88,23 +79,25 @@ void CBoss3EyePupil::LookAtPlayer()
 	if (g_Is2D)
 	{
 		pToodee = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		NULL_CHECK_RETURN(pToodee, );
 		vPos = pToodee->m_pTransform->m_vInfo[INFO_POS];
 	}
 
 	else
 	{
 		pTopdee = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		NULL_CHECK_RETURN(pTopdee, );
 		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
 	}
 	
-	D3DXVec3Normalize(&vDir, &(m_pTransform->m_vInfo[INFO_POS] - vPos));
+	D3DXVec3Normalize(&vDir, &(vPos - m_pBoss3->m_pTransform->m_vInfo[INFO_POS]));
 
 	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
 	if (!lstrcmp(m_pTag, L"BossLeftPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f - vDir.y * 1.1f, +2.5f + vDir.x * 1.1f);
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f + vDir.y, +2.5f - vDir.x);
 
 	else if (!lstrcmp(m_pTag, L"BossRightPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f - vDir.y * 1.1f, -2.5f + vDir.x * 1.1f);
+		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f , 1.f + vDir.y , -2.5f - vDir.x);
 }
 
 CBoss3EyePupil * CBoss3EyePupil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

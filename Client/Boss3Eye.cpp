@@ -22,6 +22,7 @@ HRESULT CBoss3Eye::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_iIndex = iIndex;
 
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
+	NULL_CHECK_RETURN(m_pBoss3, E_FAIL);
 
 	return S_OK;
 }

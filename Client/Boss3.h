@@ -39,9 +39,7 @@ public:
 private:
 	HRESULT Add_Component(void);
 	void	State_Change(const _float & fTimeDelta);
-
-	void	BossLook(const _float& fTimeDelta);
-
+	void	LookAtPlayer();								// 플레이어 방향으로 몸을 돌림
 
 	void	FollowPlayer(const _float & fTimeDelta);	// 추격 후 내려찍기를 시작할 함수
 	void	BossAttack(const _float & fTimeDelta);		// 내려찍는 공격
@@ -66,9 +64,9 @@ private:
 	_float  m_fCoolDown;		// 추격 쿨다운
 	_float  m_fShootCoolDown;	// 사격 쿨다운
 	_float	m_fShootterm;
-	_vec3  m_vLookDot;
-	_vec3 m_vDirection;
-	_vec3 m_vPlayerInfo;
+
+	_float	m_fPreToo;			// 정규화된 이전 투디 값을 저장해둠
+	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
 	BOSS3	m_eCurState;		
 	BOSS3	m_ePreState;
@@ -84,7 +82,6 @@ public:
 
 protected:
 	virtual void Free(void) override;
-
 };
 
 #define BOSS3_CHASE 1.5f

@@ -3,7 +3,7 @@
 #include "Export_Function.h"
 
 CBoss3Mouth::CBoss3Mouth(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev), m_bShootAnimation(false)
 {
 	m_pBoss3 = nullptr;
 }
@@ -19,9 +19,10 @@ HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 	m_pTransform->m_bIsStatic = true;
 
-	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.1f, true);
-	m_pTextureCom->Switch_Anim(L"Attack");
-	m_pTextureCom->m_bUseFrameAnimation = false;
+	m_pTextureCom->Add_Anim(L"Idle", 0, 0, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.2f, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 
@@ -37,8 +38,14 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
+	if(m_bShootAnimation)
+		m_pTextureCom->Switch_Anim(L"Attack");
+
 	if (m_pTextureCom->IsAnimationEnd(L"Attack"))
-		m_pTextureCom->m_bUseFrameAnimation = false;
+	{
+		m_bShootAnimation = false;
+		m_pTextureCom->Switch_Anim(L"Idle");
+	}
 
 	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
 	m_pTransform->Set_ParentTransform(m_pBoss3, -5.f, -1.f, 0.f);

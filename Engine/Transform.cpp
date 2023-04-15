@@ -175,6 +175,7 @@ void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 	}
 }
 
+// 보스3에 쓸려고 만들었는데 약간 꼬여있음 주의
 void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _float fY, _float fZ)
 {
 	// 초기화
@@ -198,22 +199,30 @@ void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _fl
 	_matrix matTrans;
 	D3DXMatrixTranslation(&matTrans, fX, fY, fZ);
 
-	// 부모 회전
-	_matrix matRotP[ROT_END];
-	_matrix matRotationP;
+	// 부모값 넣음
+	if (nullptr != pParentObject)
+	{
+		// 부모 회전
+		_matrix matRotP[ROT_END];
+		_matrix matRotationP;
 
-	D3DXMatrixRotationX(&matRotP[ROT_X], pParentObject->m_pTransform->m_vAngle.x);
-	D3DXMatrixRotationY(&matRotP[ROT_Y], pParentObject->m_pTransform->m_vAngle.y);
-	D3DXMatrixRotationZ(&matRotP[ROT_Z], pParentObject->m_pTransform->m_vAngle.z);
+		D3DXMatrixRotationX(&matRotP[ROT_X], pParentObject->m_pTransform->m_vAngle.x);
+		D3DXMatrixRotationY(&matRotP[ROT_Y], pParentObject->m_pTransform->m_vAngle.y);
+		D3DXMatrixRotationZ(&matRotP[ROT_Z], pParentObject->m_pTransform->m_vAngle.z);
 
-	matRotationP = matRotP[ROT_Y] * matRotP[ROT_Y] * matRotP[ROT_X];
+		matRotationP = matRotP[ROT_Y] * matRotP[ROT_Y] * matRotP[ROT_X];
 
-	// 부모 이동
-	_matrix matTransP;
-	_vec3 vTransP = pParentObject->m_pTransform->m_vInfo[INFO_POS];
-	D3DXMatrixTranslation(&matTransP, vTransP.x, vTransP.y, vTransP.z);
+		// 부모 이동
+		_matrix matTransP;
+		_vec3 vTransP = pParentObject->m_pTransform->m_vInfo[INFO_POS];
+		D3DXMatrixTranslation(&matTransP, vTransP.x, vTransP.y, vTransP.z);
 
-	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans * matRotationP * matTransP;
+		m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans * matRotationP * matTransP;
+	}
+
+	// 부모값 넣지 않음
+	else
+		m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
