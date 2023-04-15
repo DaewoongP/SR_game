@@ -80,6 +80,7 @@ public:
 		m_fWeakPoint = (_float)iPower / fDuration;
 	}
 
+	// 보스3에 쓸려고 만들었는데 약간 꼬여있음 주의
 	void		Set_ParentTransform(CGameObject* pParentObject, _float fX, _float fY, _float fZ);
 
 public:

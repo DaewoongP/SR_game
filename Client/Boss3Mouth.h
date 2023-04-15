@@ -16,7 +16,7 @@ private:
 	virtual ~CBoss3Mouth();
 
 public:
-	void	Set_Animation() { m_pTextureCom->m_bUseFrameAnimation = true; }
+	void	Set_Animation() { m_bShootAnimation = true; }
 
 	virtual HRESULT Ready_GameObject(_vec3& vPos);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
@@ -33,6 +33,7 @@ private:
 	CGameObject*			m_pBoss3;
 
 	_int					m_iIndex;	// 표정 텍스처 구분
+	_bool					m_bShootAnimation;
 
 public:
 	static CBoss3Mouth*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
