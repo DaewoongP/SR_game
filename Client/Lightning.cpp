@@ -107,6 +107,8 @@ HRESULT CLightning::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
+
+
 	return S_OK;
 }
 
