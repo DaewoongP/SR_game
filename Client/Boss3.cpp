@@ -161,8 +161,11 @@ void CBoss3::LateUpdate_GameObject(void)
 void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
+
 	__super::Render_GameObject();
 }
 
@@ -201,6 +204,11 @@ HRESULT CBoss3::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
+
 
 	return S_OK;
 }

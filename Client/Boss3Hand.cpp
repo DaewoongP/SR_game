@@ -104,7 +104,11 @@ void CBoss3Hand::LateUpdate_GameObject(void)
 
 void CBoss3Hand::Render_GameObject(void)
 {
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	if(!g_Is2D)
+	m_pShadowCom->Render_Shadow(m_pBufferCom, 0.75f, 0.75f, 1.f);
+
 	if (m_bShock == true)
 		m_pTextureCom->Set_Texture();
 	else
@@ -161,6 +165,10 @@ HRESULT CBoss3Hand::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
 
 	return S_OK;
 }
