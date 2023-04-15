@@ -42,9 +42,17 @@ _int CLightningCloud::Update_Too(const _float& fTimeDelta)
 {
 	if (m_bInit)
 	{
-		m_InitBox = m_Box = Check_BoundingBox();
-		m_pRainParticle->Set_BoundingBox(m_Box);
-		m_pRainParticle->Start_Particle();
+		m_InitBox1 = m_Box1 = Check_BoundingBox(1);
+		m_pRainParticle1->Set_BoundingBox(m_Box1);
+		m_pRainParticle1->Start_Particle();
+
+		m_InitBox2 = m_Box2 = Check_BoundingBox(2);
+		m_pRainParticle2->Set_BoundingBox(m_Box2);
+		m_pRainParticle2->Start_Particle();
+
+		m_InitBox3 = m_Box3 = Check_BoundingBox(3);
+		m_pRainParticle3->Set_BoundingBox(m_Box3);
+		m_pRainParticle3->Start_Particle();
 		m_bInit = false;
 	}
 	Check_ParticleBox();
@@ -68,7 +76,9 @@ void CLightningCloud::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pRainParticle->Update_Particle();
+	m_pRainParticle1->Update_Particle();
+	m_pRainParticle2->Update_Particle();
+	m_pRainParticle3->Update_Particle();
 	__super::Render_GameObject();
 }
 
@@ -76,10 +86,23 @@ void CLightningCloud::SwapTrigger()
 {
 	if (!g_Is2D)
 	{
-		m_InitBox = m_Box;
-		m_Box._max.y += 1.5f;
-		m_Box._min.y = m_Box._max.y - 7.f;
-		m_pRainParticle->Set_BoundingBox(m_Box);
+		m_pRainParticle1->Set_Offset(3);
+		m_InitBox1 = m_Box1;
+		m_Box1._max.y += 1.5f;
+		m_Box1._min.y = m_Box1._max.y - 7.f;
+		m_pRainParticle1->Set_BoundingBox(m_Box1);
+
+		m_pRainParticle2->Set_Offset(3);
+		m_InitBox2 = m_Box2;
+		m_Box2._max.y += 1.5f;
+		m_Box2._min.y = m_Box2._max.y - 7.f;
+		m_pRainParticle2->Set_BoundingBox(m_Box2);
+
+		m_pRainParticle3->Set_Offset(3);
+		m_InitBox3 = m_Box3;
+		m_Box3._max.y += 1.5f;
+		m_Box3._min.y = m_Box3._max.y - 7.f;
+		m_pRainParticle3->Set_BoundingBox(m_Box3);
 	}
 }
 
@@ -100,13 +123,21 @@ HRESULT CLightningCloud::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
-	pComponent = m_pRainParticle = dynamic_cast<CRainParticle*>(Engine::Clone_Proto(L"RainParticle", this));
-	NULL_CHECK_RETURN(m_pRainParticle, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RainParticle", pComponent });
+	pComponent = m_pRainParticle1 = dynamic_cast<CRainParticle*>(Engine::Clone_Proto(L"RainParticle", this));
+	NULL_CHECK_RETURN(m_pRainParticle1, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"RainParticle1", pComponent });
+
+	pComponent = m_pRainParticle2 = dynamic_cast<CRainParticle*>(Engine::Clone_Proto(L"RainParticle", this));
+	NULL_CHECK_RETURN(m_pRainParticle2, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"RainParticle2", pComponent });
+
+	pComponent = m_pRainParticle3 = dynamic_cast<CRainParticle*>(Engine::Clone_Proto(L"RainParticle", this));
+	NULL_CHECK_RETURN(m_pRainParticle3, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"RainParticle3", pComponent });
 	return S_OK;
 }
 
-BoundingBox CLightningCloud::Check_BoundingBox()
+BoundingBox CLightningCloud::Check_BoundingBox(size_t ParticleNum)
 {
 	BoundingBox box;
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
@@ -115,6 +146,22 @@ BoundingBox CLightningCloud::Check_BoundingBox()
 	_float fDist = len;
 	_vec3 colmin, colmax;
 	m_pCollider->Get_Point(&colmin, &colmax);
+	switch (ParticleNum)
+	{
+	case 1:
+		centerpos.x -= 2.f;
+		colmax.x -= 4.f;
+		break;
+	case 2:
+		colmin.x += 2.f;
+		colmax.x -= 2.f;
+		break;
+	case 3:
+		colmin.x += 4.f;
+		centerpos.x += 2.f;
+		break;
+	}
+	
 	vector<_tchar*> tagName;
 	tagName.push_back(L"MapCube");
 	tagName.push_back(L"MoveCube");
@@ -129,23 +176,62 @@ BoundingBox CLightningCloud::Check_BoundingBox()
 	if (_detectedCOL.size() >= 1)
 		fDist = _detectedCOL[0].dist;
 	else
-		return m_InitBox;
+	{
+		switch (ParticleNum)
+		{
+		case 1:
+			return m_InitBox1;
+		case 2:
+			return m_InitBox2;
+		case 3:
+			return m_InitBox3;
+		}
+	}
+
 	box._min = colmin;
 	box._min.y -= fDist ;
 	box._min.z = 10.f;
 	box._max = _vec3(colmax.x, colmin.y, colmax.z);
-	m_pRainParticle->Set_Offset(fDist);
+	switch (ParticleNum)
+	{
+	case 1:
+		m_pRainParticle1->Set_Offset(fDist);
+		break;
+	case 2:
+		m_pRainParticle2->Set_Offset(fDist);
+		break;
+	case 3:
+		m_pRainParticle3->Set_Offset(fDist);
+		break;
+	}
+	
 	return box;
 }
 
 void CLightningCloud::Check_ParticleBox()
 {
-	BoundingBox box = Check_BoundingBox();
-	if ((_int)m_Box._min.y != (_int)box._min.y)
+	BoundingBox box1, box2, box3;
+	box1 = Check_BoundingBox(1);
+	box2 = Check_BoundingBox(2);
+	box3 = Check_BoundingBox(3);
+
+	if ((_int)m_Box1._min.y != (_int)box1._min.y)
 	{
-		m_pRainParticle->Set_BoundingBox(box);
+		m_pRainParticle1->Set_BoundingBox(box1);
 	}
-	m_Box = box;
+	m_Box1 = box1;
+
+	if ((_int)m_Box2._min.y != (_int)box2._min.y)
+	{
+		m_pRainParticle2->Set_BoundingBox(box2);
+	}
+	m_Box2 = box2;
+
+	if ((_int)m_Box3._min.y != (_int)box3._min.y)
+	{
+		m_pRainParticle3->Set_BoundingBox(box3);
+	}
+	m_Box3 = box3;
 }
 
 CLightningCloud* CLightningCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)

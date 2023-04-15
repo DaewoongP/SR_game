@@ -20,8 +20,8 @@ public:
 	virtual void SwapTrigger();
 
 	virtual HRESULT		Add_Component(void);
-
-	BoundingBox Check_BoundingBox();
+	
+	BoundingBox Check_BoundingBox(size_t ParticleNum);
 	void Check_ParticleBox();
 public:
 	static CLightningCloud* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
@@ -30,7 +30,11 @@ private:
 	virtual void Free(void) override;
 
 private:
-	CRainParticle*			m_pRainParticle;
-	BoundingBox				m_Box, m_InitBox;
+	CRainParticle*			m_pRainParticle1;
+	CRainParticle*			m_pRainParticle2;
+	CRainParticle*			m_pRainParticle3;
+	BoundingBox				m_Box1, m_InitBox1;
+	BoundingBox				m_Box2, m_InitBox2;
+	BoundingBox				m_Box3, m_InitBox3;
 	_bool					m_bInit;
 };

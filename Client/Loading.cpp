@@ -186,7 +186,7 @@ _uint CLoading::Loading_ForStage1(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RainParticle", CRainParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/RainSpr/RainSpr_0.png", 1,
-		0.7f, 30, true)), E_FAIL);
+		0.7f, 15, true)), E_FAIL);
 
 	/*FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WindParticle", CWindParticle::Create(m_pGraphicDev,
 	L"../Resource/Texture/Export_Textures/Sprites/theme1SunSparkSpr/theme1SunSparkSpr_1.png", 1,
