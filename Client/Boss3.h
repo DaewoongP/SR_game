@@ -71,6 +71,10 @@ private:
 	BOSS3	m_eCurState;		
 	BOSS3	m_ePreState;
 
+	_bool m_bATKEnd=false;
+
+
+
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

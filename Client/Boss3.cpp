@@ -295,8 +295,8 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 내려 찍기
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
-		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
+		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
+			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
 	}
 
 	// 왼손 공격 명령
@@ -304,20 +304,21 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	{
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(false);
+		m_bATKEnd = true;
 	}
 
 	// 오른손 공격 명령
-	else if (5.f < m_fAttackCoolDown && 8.f > m_fAttackCoolDown)
+	else if (5.f < m_fAttackCoolDown && 8.f > m_fAttackCoolDown&&m_bATKEnd==true)
 	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
-		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(false);
+		//CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
+		//dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(false);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 	}		
 
 	else if (8.f < m_fAttackCoolDown)
 	{
 		m_fAttackCoolDown = 0.f;
-		m_fCoolDown = 0.f;		
+		m_fCoolDown = -1.5f;		
 	}
 }
 
