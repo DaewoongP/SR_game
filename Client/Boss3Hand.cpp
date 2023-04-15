@@ -182,7 +182,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	//else if (4.f < m_fCoolDown && m_bAttackEnd==false)
+	else if (4.f < m_fCoolDown )
 	{
 		BossAttack(fTimeDelta);
 	}

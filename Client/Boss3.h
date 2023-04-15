@@ -75,6 +75,7 @@ private:
 
 	_bool m_bATKEnd=false;
 	_int m_iBossHp = 1;
+	_bool m_bATKCnt;
 	_int m_iATKCount;
 
 public:
