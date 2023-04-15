@@ -50,6 +50,8 @@ HRESULT CStage1::Ready_Scene(void)
 
 _int CStage1::Update_Scene(const _float & fTimeDelta)
 {
+
+
 	return __super::Update_Scene(fTimeDelta);
 }
 

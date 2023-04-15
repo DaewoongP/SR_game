@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Boss3.h"
 #include "Export_Function.h"
+#include"StageCamera.h"
 #include "AbstractFactory.h"
 
 #include "Boss3Hand.h"
@@ -55,8 +56,10 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
+
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
+
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, vPos, 0), E_FAIL);
@@ -121,7 +124,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		}
 
 	}
-	if (m_bShoot==false && m_fShootterm > 4.9f)
+	if (m_bShoot==false && m_fShootterm > 4.9f)//5이상 주게되면 전기패턴 루프돌아버림
 	{
 		m_bShoot = true;
 		m_fShootterm = 0.f;
@@ -238,7 +241,8 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		
-		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
+		if (!m_pTransform->m_vInfo[INFO_POS].z == 9.f);
+		m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 
 	// 시간이 지나면 공격 시작 (3.5f)
@@ -272,16 +276,18 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	{
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
-
 		
+		 if (m_pTransform->m_vInfo[INFO_POS].z >5.f)
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 	}
 
 	// 왼손 공격 명령
 	else if (1.f < m_fAttackCoolDown && 5.f > m_fAttackCoolDown)
 	{
+		
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(false);
-	
+		
 		m_bATKEnd = true;
 	}
 
@@ -291,6 +297,9 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 		if (m_iBossHp == 1)
 			m_bATKCnt = true;
+		//if (m_pBossRight->m_pTransform->m_vInfo[INFO_POS].z >= 8.f)
+			//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
+
 	}		
 	
 	else if (8.f < m_fAttackCoolDown&&m_bATKCnt==false)
@@ -298,6 +307,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = -1.5f;		
 	}
+	
 }
 
 void CBoss3::ShootBullet(const _float & fTimeDelta)
@@ -316,7 +326,7 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, vPos), );
 
 			m_fShootCoolDown = 0.f;
-	
+			
 	}
 	
 

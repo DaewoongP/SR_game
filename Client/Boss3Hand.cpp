@@ -3,7 +3,7 @@
 #include "Boss3Hand.h"
 #include"..\Client\Toodee.h"
 #include"..\Client\Topdee.h"
-
+#include"StageCamera.h"
 #include "Export_Function.h"
 
 
@@ -66,7 +66,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
+	//m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 
 	if (0.f > m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
@@ -78,6 +78,11 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
+	if(!m_pTransform->m_vInfo[INFO_POS].z == 5.f)
+	{
+		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
+	}
+
 	if (-100.f < m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
 
@@ -169,7 +174,8 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	if (1.5f < m_fCoolDown && 1.5f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
-		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
+		if(!m_pTransform->m_vInfo[INFO_POS].z > 8.f);
+			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 
 	else if (4.f < m_fCoolDown )
@@ -190,11 +196,16 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
 	{
 			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
+			int i = 0;
+
+			if(7.f < m_pTransform->m_vInfo[INFO_POS].z)
+				dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 
 	}
 
 	else if (1.f < m_fAttackCoolDown)
 	{
+		m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
