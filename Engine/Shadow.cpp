@@ -71,13 +71,13 @@ void CShadow::Render_Shadow(CVIBuffer* VIBuffer, _float x, _float y, _float z)
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	matWorldStaticZ._43 += 0.001f;
+	//matWorldStaticZ._43 += 0.001f;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
 
 	VIBuffer->Render_Buffer();
 
-	matWorldStaticZ._43 = 11.0f;
+	matWorldStaticZ._43 = 8.0f;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
 
