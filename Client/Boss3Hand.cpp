@@ -54,11 +54,13 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	}
 	if (m_bShock == true)
 	{
-		m_pCollider->Set_BoundingBox({ 6.f,6.f,6.f });
+		CComponent* pComponent = nullptr;
+		pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage3_Boss_Hand_Cube_Blank", this));
+		NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+		m_vecComponent[ID_STATIC].push_back({ L"Stage3_Boss_Hand_Cube_Blank", pComponent });
 	
 	}
-	if (m_bShock == false)
-		m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
+
 
 	if (7.f < m_fAttackCoolDown)
 	{

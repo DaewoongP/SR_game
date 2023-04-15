@@ -319,13 +319,13 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		m_iATKCount++;
 
 	}		
-	else if (m_iBossHp==1&& m_iATKCount == 3 && 8.f < m_fAttackCoolDown)
+	/*else if (m_iBossHp==1&& m_iATKCount == 3 && 8.f < m_fAttackCoolDown)
 	{
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
 		m_fAttackCoolDown = 4.f;
 		m_iATKCount = 0;
-	}
+	}*/
 	else if (8.f < m_fAttackCoolDown)
 	{
 		m_fAttackCoolDown = 0.f;
