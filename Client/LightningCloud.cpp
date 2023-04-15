@@ -25,7 +25,6 @@ HRESULT CLightningCloud::Ready_GameObject(_vec3& vPos)
 	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
 	
-
 	return S_OK;
 }
 
@@ -79,9 +78,9 @@ HRESULT CLightningCloud::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Cloud_Texture", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"LightningCloud_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"LightningCloud_Texture", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
@@ -98,8 +97,6 @@ CLightningCloud* CLightningCloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& v
 		Safe_Release(pInstance);
 		return nullptr;
 	}
-
-	FAILED_CHECK_RETURN(FACTORY<CLightning>::Create(L"Lightning", pLayer, _vec3(30.f, 10.f, 10.f)), nullptr);
 
 	return pInstance;
 }

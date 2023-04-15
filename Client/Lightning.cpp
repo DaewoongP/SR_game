@@ -34,23 +34,21 @@ _int CLightning::Update_GameObject(const _float& fTimeDelta)
 
 	float slow = (rand() % 5 - 2);
 	m_fLightCycle -= fTimeDelta;
-	//_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+	
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	if (m_pTextureCom->IsAnimationEnd(L"Idle"))
 	{
 		m_pCollider->Set_BoundingBox({ 0.f,0.f,0.f });
-		if (m_fLightCycle<=0)
-		{	m_pTextureCom->Switch_Anim(L"Idle");
-			m_pTransform->Set_Pos(m_vPos.x + slow,
-				m_pTransform->m_vInfo[INFO_POS].y,
-				m_pTransform->m_vInfo[INFO_POS].z);
-			m_pTextureCom->Set_Loop(L"Idle");
+		if (m_fLightCycle <= 0)
+		{	
+			m_pTextureCom->Switch_Anim(L"Idle");
+			m_pTransform->m_vInfo[INFO_POS].x += slow;
+			m_pTextureCom->Reset_Anim();
 			m_fLightCycle = 1.0f;
-			
 		}
 	}
-	//	return OBJ_DEAD;
+	
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
@@ -71,7 +69,6 @@ _int CLightning::Update_Top(const _float& fTimeDelta)
 
 void CLightning::LateUpdate_GameObject(void)
 {
-
 	__super::LateUpdate_GameObject();
 }
 
