@@ -33,6 +33,8 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 	virtual void SwapTrigger() override;
+	_int Get_ATKCount() { return m_iATKCount; }
+
 
 private:
 	HRESULT Add_Component(void);
@@ -72,8 +74,8 @@ private:
 	BOSS3	m_ePreState;
 
 	_bool m_bATKEnd=false;
-
-
+	_int m_iBossHp = 1;
+	_int m_iATKCount;
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

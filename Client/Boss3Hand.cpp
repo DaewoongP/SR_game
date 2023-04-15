@@ -6,7 +6,6 @@
 
 #include "Export_Function.h"
 
-_bool CBoss3Hand::m_bAttackEnd = false;
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
@@ -42,16 +41,15 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
     
-	if (m_iBossHp == 1 && m_bAttackEnd==true)
+	if (m_bShock)
 	{
-		m_bShock = true;
+		//m_bShock = true;
 		m_fShockCollDown += fTimeDelta;
 
 	}
 	if (m_fShockCollDown > 4.f)
 	{
 		m_bShock = false;
-		m_bAttackEnd = false;
 		m_fShockCollDown = 0.f;
 	}
 	if (m_bShock == true)
@@ -66,11 +64,10 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	{
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
-		m_bAttackEnd = true;
+		//m_bAttackEnd = true;
 
 	}
-	else if (m_iBossHp == 1 && m_bAttackEnd == true)
-		m_bShock = true;
+
     
    IdleMove(fTimeDelta);
 	
@@ -183,7 +180,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
 	}
 
-	else if (4.f < m_fCoolDown && m_bAttackEnd==false)
+	//else if (4.f < m_fCoolDown && m_bAttackEnd==false)
 	{
 		BossAttack(fTimeDelta);
 	}

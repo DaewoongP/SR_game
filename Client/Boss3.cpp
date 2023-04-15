@@ -297,6 +297,8 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	{
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
+		m_iATKCount++;
+
 	}
 
 	// 왼손 공격 명령
@@ -304,6 +306,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	{
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(false);
+		m_iATKCount++;
 		m_bATKEnd = true;
 	}
 
@@ -313,8 +316,16 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		//CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 		//dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(false);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
-	}		
+		m_iATKCount++;
 
+	}		
+	else if (m_iBossHp==1&& m_iATKCount == 3 && 8.f < m_fAttackCoolDown)
+	{
+		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
+		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+		m_fAttackCoolDown = 4.f;
+		m_iATKCount = 0;
+	}
 	else if (8.f < m_fAttackCoolDown)
 	{
 		m_fAttackCoolDown = 0.f;
