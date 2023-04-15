@@ -3,10 +3,9 @@
 #include "Boss3Hand.h"
 #include"..\Client\Toodee.h"
 #include"..\Client\Topdee.h"
-
+#include"StageCamera.h"
 #include "Export_Function.h"
 
-_bool CBoss3Hand::m_bAttackEnd = false;
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
@@ -39,39 +38,22 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
+	
 	if (m_bDead)
 		return OBJ_DEAD;
     
-	if (m_iBossHp == 1 && m_bAttackEnd==true)
+	if (m_bShock)
 	{
-		m_bShock = true;
 		m_fShockCollDown += fTimeDelta;
 
 	}
-	if (m_fShockCollDown > 4.f)
+	if (m_fShockCollDown > 3.f)
 	{
 		m_bShock = false;
-		m_bAttackEnd = false;
 		m_fShockCollDown = 0.f;
 	}
-	if (m_bShock == true)
-	{
-		m_pCollider->Set_BoundingBox({ 6.f,6.f,6.f });
 	
-	}
-	if (m_bShock == false)
-		m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
 
-	if (7.f < m_fAttackCoolDown)
-	{
-		m_bAttack = false;
-		m_fAttackCoolDown = 0.f;
-		m_bAttackEnd = true;
-
-	}
-	else if (m_iBossHp == 1 && m_bAttackEnd == true)
-		m_bShock = true;
-    
    IdleMove(fTimeDelta);
 	
 	__super::Update_GameObject(fTimeDelta);
@@ -84,7 +66,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
+	//m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 
 	if (0.f > m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
@@ -96,6 +78,11 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
+	if(!m_pTransform->m_vInfo[INFO_POS].z == 5.f)
+	{
+		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
+	}
+
 	if (-100.f < m_fAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
 
@@ -115,7 +102,10 @@ void CBoss3Hand::LateUpdate_GameObject(void)
 void CBoss3Hand::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_iIndex);
+	if (m_bShock == true)
+		m_pTextureCom->Set_Texture();
+	else
+		m_pTextureCom2->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 	CGameObject::Render_GameObject();
 }
@@ -157,8 +147,12 @@ HRESULT CBoss3Hand::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CubeTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage3_Boss_Hand_Cube", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage3_Boss_Hand_Blank_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Stage3_Boss_Hand_Blank_Cube", pComponent });
+
+	pComponent = m_pTextureCom2 = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage3_Boss_Hand_Cube", this));
+	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Stage3_Boss_Hand_Cube", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
@@ -180,10 +174,11 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	if (1.5f < m_fCoolDown && 1.5f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
-		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
+		if(!m_pTransform->m_vInfo[INFO_POS].z > 8.f);
+			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 
-	else if (4.f < m_fCoolDown && m_bAttackEnd==false)
+	else if (4.f < m_fCoolDown )
 	{
 		BossAttack(fTimeDelta);
 	}
@@ -195,27 +190,22 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 
 	// ȸ���ϰ� 
 	if (0.75f > m_fAttackCoolDown)
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(270.f * fTimeDelta));
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
 
 	// ���� ���
 	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
 	{
 			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
+			int i = 0;
 
+			if(7.f < m_pTransform->m_vInfo[INFO_POS].z)
+				dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 
-	/* // 회전하고 
-	if (0.5f > m_fAttackCoolDown)
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(360.f * fTimeDelta));
-
-	// 내려 찍기 (4.f)
-	else if (0.5f < m_fAttackCoolDown && 0.5f + BOSS3_SPIN  > m_fAttackCoolDown)
-	{
-		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수) */
 	}
 
 	else if (1.f < m_fAttackCoolDown)
 	{
+		m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
@@ -290,5 +280,6 @@ CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _in
 
 void CBoss3Hand::Free(void)
 {
+	
 	__super::Free();
 }

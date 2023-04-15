@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Boss3.h"
 #include "Export_Function.h"
+#include"StageCamera.h"
 #include "AbstractFactory.h"
 
 #include "Boss3Hand.h"
@@ -41,7 +42,14 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	
+    
+	if (m_iBossHp == 1 && 12.f < m_fAttackCoolDown)
+	{
+		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
+		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+		m_bATKCnt = false;
+	}
+
 	// Boss3 생성과 크기 조정
 	if (m_bCreateHand)
 	{
@@ -49,8 +57,10 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
+
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
+
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, vPos, 0), E_FAIL);
@@ -100,6 +110,25 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
+	if (m_iATKCount == 3)
+	{
+		m_bShoot = false;
+		m_fShootterm += fTimeDelta;
+
+		if (m_fShootterm > 2.f)
+		{
+			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
+			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+		}
+
+	}
+	if (m_bShoot==false && m_fShootterm > 4.9f)//5이상 주게되면 전기패턴 루프돌아버림
+	{
+		m_bShoot = true;
+		m_fShootterm = 0.f;
+		m_iATKCount = 0;
+	}
+
 	if (0.f > m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fXAngle)++ * fTimeDelta));
 
@@ -115,7 +144,7 @@ _int CBoss3::Update_Top(const _float & fTimeDelta)
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
 
-	//FollowPlayer(fTimeDelta);
+	FollowPlayer(fTimeDelta);
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -209,12 +238,15 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		
-		m_pTransform->m_vInfo[INFO_POS].z = -2.f;
+		if (!m_pTransform->m_vInfo[INFO_POS].z == 9.f);
+		m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 
 	// 시간이 지나면 공격 시작 (3.5f)
 	else if (2.f + BOSS3_CHASE < m_fCoolDown)
 		BossAttack(fTimeDelta);
+
+	
 }
 
 void CBoss3::LookAtPlayer()
@@ -271,55 +303,67 @@ void CBoss3::LookAtPlayer()
 void CBoss3::BossAttack(const _float & fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
-
+	
 	// 회전하고 
 	if (0.75f > m_fAttackCoolDown)
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
-
+	
 	// 내려 찍기
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
-		if (5.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 80.f * fTimeDelta; // 80.f 는 속도(상수)
+		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
+			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
+		
+		 if (m_pTransform->m_vInfo[INFO_POS].z >5.f)
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 	}
 
 	// 왼손 공격 명령
 	else if (1.f < m_fAttackCoolDown && 5.f > m_fAttackCoolDown)
 	{
+		
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(false);
+		
+		m_bATKEnd = true;
 	}
 
 	// 오른손 공격 명령
-	else if (5.f < m_fAttackCoolDown && 8.f > m_fAttackCoolDown)
+	else if (5.f < m_fAttackCoolDown && 8.f > m_fAttackCoolDown&&m_bATKEnd==true)
 	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
-		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(false);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
-	}		
+		if (m_iBossHp == 1)
+			m_bATKCnt = true;
+		//if (m_pBossRight->m_pTransform->m_vInfo[INFO_POS].z >= 8.f)
+			//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
 
-	else if (8.f < m_fAttackCoolDown)
+	}		
+	
+	else if (8.f < m_fAttackCoolDown&&m_bATKCnt==false)
 	{
 		m_fAttackCoolDown = 0.f;
-		m_fCoolDown = 0.f;		
+		m_fCoolDown = -1.5f;		
 	}
+	
 }
 
 void CBoss3::ShootBullet(const _float & fTimeDelta)
+
 {
 	m_fShootCoolDown += fTimeDelta;
+	if (1.f < m_fShootCoolDown&&m_bShoot==true)
+	{		
+			++m_iATKCount;
+			dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
 
-	if (1.f < m_fShootCoolDown)
-	{
-		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
+			_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+			NULL_CHECK_RETURN(pStageLayer, );
 
-		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
-		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-		NULL_CHECK_RETURN(pStageLayer,);
+			FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, vPos), );
 
-		FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, vPos), );
-
-		m_fShootCoolDown = 0.f;
+			m_fShootCoolDown = 0.f;
+			
 	}
 }
 

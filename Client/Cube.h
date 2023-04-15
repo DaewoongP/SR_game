@@ -32,6 +32,7 @@ protected:
 protected:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
+	Engine::CTexture*	m_pTextureCom2;
 	Engine::CCollider * m_pCollider;
 
 public:
