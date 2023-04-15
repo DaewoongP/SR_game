@@ -22,7 +22,9 @@ public:
 
 public:
 	HRESULT				Ready_Loading(LOADINGID eID);
-	_uint				Loading_ForStage(void);
+	_uint				Loading_ForLogo(void);
+	_uint				Loading_ForStage1(void);
+	_uint				Loading_ForStage2(void);
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;

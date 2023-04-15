@@ -60,6 +60,12 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 
 		iResult = iter->second->Update_GameObject(fTimeDelta);
 
+		if (STAGE_END == iResult)
+		{
+			Engine::Clear_Collision();
+			return STAGE_END;
+		}
+
 		if (OBJ_DEAD == iResult)
 		{
 			Engine::Delete_Collider(iter->second);

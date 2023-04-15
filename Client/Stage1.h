@@ -1,7 +1,5 @@
 #pragma once
-
 #include "Scene.h"
-#include "Toodee.h"
 
 class CStage1 : public Engine::CScene
 {
@@ -22,7 +20,6 @@ private:
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 public:
 	static CStage1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	
 
 private:
 	virtual void		Free(void);

@@ -31,6 +31,8 @@ _int CSwallowPortal::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+	if (m_pTextureCom->IsAnimationEnd(L"Idle_Swallow"))
+		return STAGE_END;
 
 	__super::Update_GameObject(fTimeDelta);
 

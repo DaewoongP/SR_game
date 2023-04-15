@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Export_Utility.h"
+#include "..\Client\PreStage.h"
 
 IMPLEMENT_SINGLETON(CManagement)
 
@@ -51,6 +52,9 @@ void CManagement::LateUpdate_Management()
 {
 	NULL_CHECK(m_pScene);
 	m_pScene->LateUpdate_Scene();
+	if (dynamic_cast<CPreStage*>(m_pScene))
+		return;
+
 	// 충돌체크
 	Engine::Check_Collision(COL_OBJ, COL_OBJ);
 	Engine::Check_Collision(COL_OBJ, COL_ENV);
