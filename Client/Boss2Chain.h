@@ -23,12 +23,18 @@ public:
 	virtual void Render_Too(void) override;
 	virtual void Render_Top(void) override;
 
+public:
+	void	Set_Joint(CTransform* trans01 , CTransform* trans02) { m_pTrans_Joint01 = trans01; m_pTrans_Joint02 = trans02;}
+
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
-
+	
+	CTransform* m_pTrans_Joint01;
+	CTransform* m_pTrans_Joint02;
 private:
 	HRESULT		Add_Component(void);
+	void		SetChain();
 
 public:
 	static CBoss2Chain*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

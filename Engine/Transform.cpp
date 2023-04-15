@@ -65,7 +65,16 @@ void CTransform::MakeMyMatrix(const _float& fTimeDelta)
 		return;
 
 	//스자이 공(부모의 회전행렬)부(부모의 이동행렬)
-	m_matWorld = matScale *  m_matRT;
+	m_matWorld = matScale * m_matRT;
+
+	//부모의 스케일만큼 곱해줌.
+	_vec3 x = _vec3(m_matWorld._11, m_matWorld._12, m_matWorld._13) * m_Parent->Get_Scale().x;
+	_vec3 y = _vec3(m_matWorld._21, m_matWorld._22, m_matWorld._23) * m_Parent->Get_Scale().y;
+	_vec3 z = _vec3(m_matWorld._31, m_matWorld._32, m_matWorld._33) * m_Parent->Get_Scale().z;
+
+	m_matWorld._11 = x.x; m_matWorld._12 = x.y; m_matWorld._13 = x.z;
+	m_matWorld._21 = y.x; m_matWorld._22 = y.y; m_matWorld._23 = y.z;
+	m_matWorld._31 = z.x; m_matWorld._32 = z.y; m_matWorld._33 = z.z;
 }
 
 void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta)

@@ -387,6 +387,10 @@
     <ClInclude Include="Boss2Foot.h">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClInclude>
+    <ClInclude Include="Boss2Chain.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2JointSpot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -592,5 +596,9 @@
     <ClCompile Include="Boss2Foot.cpp">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClCompile>
+    <ClCompile Include="Boss2Chain.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2JointSpot.cpp" />
   </ItemGroup>
 </Project>

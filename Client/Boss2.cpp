@@ -13,6 +13,8 @@
 #include "Boss2TailBody.h"
 #include "Boss2Foot.h"
 #include "Boss2Body.h"
+#include "Boss2Chain.h"
+#include "Boss2JointSpot.h"
 #include "AbstractFactory.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
@@ -43,8 +45,9 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_dwRestTime = 0;
 	ReadyPartten();
 
-	m_pTransform->m_vScale = { 3.f, 3.f, 3.f };
-	m_pCollider->Set_BoundingBox(_vec3(4, 4, 2));
+	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pCollider->Set_BoundingBox(_vec3(8, 6, 2));
+	m_pCollider->Set_BoundOffset(_vec3(2,0,0));
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pRigid->m_bUseGrivaty = false;
 
@@ -62,7 +65,6 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform), E_FAIL);
@@ -90,17 +92,69 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
 		m_pTransform->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
+		//Head Joint (0)
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(0.0f, -0.0f, -0.0f), m_pTransform), E_FAIL);
+		//Head Children
+		{
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Face>::Create(L"Boss2Face", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Jaw>::Create(L"Boss2Jaw", pStageLayer, _vec3(-1.f, -1.f, -0.1f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-2.1f, 0.6f, -0.3f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Eye>::Create(L"Boss2Eye", pStageLayer, _vec3(-0.3f, 0.6f, -0.3f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Nose>::Create(L"Boss2EyeNose", pStageLayer, _vec3(-1.6f, 0.2f, -0.7f), m_pTransform->GetChild(0)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-2.1f, 1.4f, -0.5f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(5)->m_vAngle = _vec3(0, 0, D3DXToRadian(-50.f));
+			FAILED_CHECK_RETURN(FACTORY<CBoss2EyeBrow>::Create(L"Boss2EyeBrow", pStageLayer, _vec3(-0.3f, 1.4f, -0.5f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(6)->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform->GetChild(0)), E_FAIL);
+			m_pTransform->GetChild(0)->GetChild(7)->m_vScale = _vec3(3.3f, 3.3f, 3.3f);
+			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(0)->GetChild(7)->m_pGameObject)->SetRotAngle(30, 60);
+		}
+		//Body Joint (1)
+		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
+		//Body Children
+		{
+			//0~4
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(-2.1f, -3.4f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(0.f, -3.4f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(2.1f, -2.8f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Foot>::Create(L"Boss2Foot", pStageLayer, _vec3(4.1f, -2.8f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.0f, 0.0f, 0.0f), m_pTransform->GetChild(1)), E_FAIL);
+			m_pTransform->GetChild(1)->GetChild(4)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
+			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(1)->GetChild(4)->m_pGameObject)->SetRotAngle(30.f, 120.f);
+
+			//5~8
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-1.0f, 0.0f, 0.3f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(-1.0f, 0.0f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(1.0f, 0.0f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(1.0f, 0.0f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+
+			//9~12
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.3f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.5f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CBoss2Chain>::Create(L"Boss2Chain", pStageLayer, _vec3(0.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(9)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(0), m_pTransform->GetChild(1)->GetChild(5));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(10)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(1), m_pTransform->GetChild(1)->GetChild(6));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(11)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(2), m_pTransform->GetChild(1)->GetChild(7));
+			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(12)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(3), m_pTransform->GetChild(1)->GetChild(8));
+		}
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(3.0f, 0.5f, 0.0f), m_pTransform), E_FAIL);
+		m_pTransform->GetChild(2)->m_vScale = _vec3(4.0f, 4.0f, 2.0f);
+		m_pTransform->GetChild(2)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
+    
 		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		AnimClip* clip = new AnimClip();
 		{
 			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(6));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
 			clip->source.resize(7);
 
 			// Face
@@ -292,7 +346,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-1.1f,1.4f,-0.5f),//trans
+					_vec3(-1.1f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -300,7 +354,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.8f,-0.5f),//trans
+					_vec3(-2.1f,1.8f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -308,7 +362,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-3.1f,1.8f,-0.5f),//trans
+					_vec3(-3.1f,1.8f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -316,7 +370,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.4f,-0.5f),//trans
+					_vec3(-2.1f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -328,7 +382,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(0.7f,1.4f,-0.5f),//trans
+				_vec3(0.7f,1.4f,-0.2f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -336,7 +390,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-0.3f,1.9f,-0.5f),//trans
+				_vec3(-0.3f,1.9f,-0.2f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -344,7 +398,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-1.3f,1.9f,-0.5f),//trans
+				_vec3(-1.3f,1.9f,-0.2f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -352,7 +406,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-0.3f,1.4f,-0.5f),//trans
+				_vec3(-0.3f,1.4f,-0.2f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -369,13 +423,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		clip = new AnimClip();
 		{
 			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(6));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
 			clip->source.resize(7);
 
 			// Face
@@ -614,7 +668,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-1.1f,1.4f,-0.5f),//trans
+					_vec3(-1.1f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
 					0.5f,//tilltime
@@ -622,7 +676,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.8f,-0.5f),//trans
+					_vec3(-2.1f,1.8f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
 					0.5f,//tilltime
@@ -630,7 +684,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-3.1f,1.8f,-0.5f),//trans
+					_vec3(-3.1f,1.8f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
 					0.5f,//tilltime
@@ -638,7 +692,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.4f,-0.5f),//trans
+					_vec3(-2.1f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
 					0.5f,//tilltime
@@ -650,7 +704,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(0.7f,1.4f,-0.5f),//trans
+					_vec3(0.7f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
 					0.5f,//tilltime
@@ -658,7 +712,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(-0.3f,1.9f,-0.5f),//trans
+					_vec3(-0.3f,1.9f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
 					0.5f,//tilltime
@@ -666,7 +720,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(-1.3f,1.9f,-0.5f),//trans
+					_vec3(-1.3f,1.9f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
 					0.5f,//tilltime
@@ -674,7 +728,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(-0.3f,1.4f,-0.5f),//trans
+					_vec3(-0.3f,1.4f,-0.2f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
 					0.5f,//tilltime
@@ -698,12 +752,243 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_pTransform->GetChild(12));
 			clip->source.resize(6);
 			clip->TotalTime = 2.8f;
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+			clip->source.resize(8);
+			clip->TotalTime = 2.0f;
 			clip->Useloop = true;
 			//LeftFront
 			{
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(2,3,0),//trans
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.f//actionTime
+				});
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+
+			//Rightfront
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f)+_vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.0f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//LeftBack
+			{
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.0f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//RightBack
+			{
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,-2,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//BackBody
+			{
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
+					_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					1.f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-1,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					1.f,//tilltime
+					1.0f//actionTime
+				});
+			}
+			//FrontBody
+			{
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					1.0f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(0,-0.5f,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					1.f,//tilltime
+					1.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[6].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[7].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+			}
+
+		}
+		m_pAnimation_Body->AddClip(L"Idle", clip);
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+			clip->source.resize(8);
+			clip->TotalTime = 2.9f;
+			clip->Useloop = true;
+			//LeftFront
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-5,3,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -728,12 +1013,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					2.f//actionTime
 				});
 			}
-
 			//Rightfront
 			{
 				clip->source[1].push_back(
 					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(2,3,0),//trans
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(-5,3,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -789,7 +1073,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(4.1f, -2.8f, -0.2f) + _vec3(2,-6,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					0.f//actionTime
 				});
@@ -805,7 +1089,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(4.1f, -2.8f,- 0.2f) + _vec3(3,5,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					2.f//actionTime
 				});
@@ -816,7 +1100,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.8f,3.8f,3.8f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					0.f//actionTime
 				});
@@ -825,7 +1109,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(3.f, 0.3f, 0.1f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.8f,3.8f,3.8f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					1.5f,//tilltime
 					0.5f//actionTime
 				});
@@ -834,7 +1118,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.8f,3.8f,3.8f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					2.0f//actionTime
 				});
@@ -845,7 +1129,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0.f, 0.f, 0.f) + _vec3(0,2,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.3f,3.3f,3.3f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					0.f//actionTime
 				});
@@ -853,7 +1137,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0.f, 0.f, 0.f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.3f,3.3f,3.3f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					1.5f,//tilltime
 					0.5f//actionTime
 				});
@@ -861,21 +1145,395 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0.f, 0.f, 0.f) + _vec3(0,-2,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(3.3f,3.3f,3.3f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					2.f//actionTime
 				});
 			}
-		}
-		m_pAnimation_Body->AddClip(L"Idle", clip);
-		m_pAnimation_Body->SetAnimation(L"Idle");
+			//joint
+			{
+				clip->source[6].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[7].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
 
+		}
+		m_pAnimation_Body->AddClip(L"Jump", clip);
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+			clip->source.resize(8);
+			clip->TotalTime = 2.0f;
+			clip->Useloop = true;
+			//LeftFront
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.f//actionTime
+				});
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+
+			//Rightfront
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.0f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//LeftBack
+			{
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.0f//actionTime
+				});
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//RightBack
+			{
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.5f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					0.5f,//tilltime
+					1.f//actionTime
+				});
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					0.5f,//tilltime
+					1.5f//actionTime
+				});
+			}
+			//BackBody
+			{
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.8f,3.8f,3.8f),//scale
+					1.f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-1,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.8f,3.8f,3.8f),//scale
+					1.f,//tilltime
+					1.0f//actionTime
+				});
+			}
+			//FrontBody
+			{
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.3f,3.3f,3.3f),//scale
+					1.0f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(0,-0.5f,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.3f,3.3f,3.3f),//scale
+					1.f,//tilltime
+					1.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[6].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[7].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+			}
+
+		}
+		m_pAnimation_Body->AddClip(L"Stump", clip);
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->source.resize(1);
+			clip->TotalTime = 0.7f;
+			clip->Useloop = true;
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					_float angle = GetRandomFloat(-30, 30);
+					_float scale = GetRandomFloat(1.2f, 1.6f);
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.0f) + _vec3(GetRandomFloat(-1,1),GetRandomFloat(-1,1),GetRandomFloat(-1,0)),//trans
+						_vec3(0,0,0) + _vec3(0,0,D3DXToRadian(angle)),//rotation
+						_vec3(scale,scale,scale),//scale
+						0.1f,//tilltime
+						0.1f * i//actionTime
+					});
+				}
+			}
+		}
+		m_pAnimation_Body->AddClip(L"Scream", clip);
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+			clip->parts.push_back(m_pTransform->GetChild(1));
+			clip->parts.push_back(m_pTransform->GetChild(0));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+			clip->source.resize(8);
+			clip->TotalTime = 2.0f;
+			clip->Useloop = false;
+			//LeftFront
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-4,50,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+
+			//Rightfront
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(4,50,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//LeftBack
+			{
+				clip->source[2].push_back(
+					ANIMINFO{
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-4,-3,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//RightBack
+			{
+				clip->source[3].push_back(
+					ANIMINFO{
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-2,-3,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(1.f,1.f,1.f),//scale
+					0.5f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//BackBody
+			{
+				clip->source[4].push_back(
+					ANIMINFO{
+					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.8f,3.8f,3.8f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//FrontBody
+			{
+				clip->source[5].push_back(
+					ANIMINFO{
+					_vec3(0.f, 0.f, 0.f) + _vec3(3,4,-0.5f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(3.3f,3.3f,3.3f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[6].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(-4,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[7].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(4,0,0),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					2.f,//tilltime
+					0.f//actionTime
+				});
+			}
+
+		}
+		m_pAnimation_Body->AddClip(L"Punch", clip);
+		m_pAnimation_Body->SetAnimation(L"Scream");
 
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
 	}
 	
 	CheckZFloor();
+	DoFlip();
 	m_dwActionTime -= fTimeDelta;
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
@@ -906,9 +1564,10 @@ void CBoss2::SwapTrigger()
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
 	//?…ì´???¿ìœ¼ë©?ì¶©ê²© ??ì£¼ê²Ÿ??
-	if (dynamic_cast<CCube*>(collision->otherObj))
+	if (dynamic_cast<CCube*>(collision->otherObj)&&collision->_dir == DIR_DOWN)
 	{
 		m_bIsOnGround = true;
+		m_pAnimation_Body->SetAnimation(L"Idle");
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
 	}
 		
@@ -975,7 +1634,6 @@ void CBoss2::CheckZFloor()
 
 void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 {
-	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	if (m_iJumpPosidx == 0)
 		if (rand() % 2 == 0)
 			m_iJumpPosidx = m_iJumpPosidx;
@@ -993,9 +1651,14 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 			m_iJumpPosidx--;
 		else
 			m_iJumpPosidx = m_iJumpPosidx;
+
+	m_bFlip_Y = m_pTransform->m_vInfo[INFO_POS].x <= m_fJumpPos[m_iJumpPosidx].x;
+
 	m_bIsOnGround = false;
 	m_dwActionTime = 0.5f;
+	m_pAnimation_Body->SetAnimation(L"Jump");
 	m_iCurrentActionIdx++;
+	
 }
 
 void CBoss2::Do_Jump_01(const _float& fTimeDelta)
@@ -1023,20 +1686,46 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 
 void CBoss2::Do_Hurray(const _float & fTimeDelta)
 {
+	//재생되던 애니메이션을 stump로 바꾼다.
+	m_pAnimation_Body->SetAnimation(L"Punch");
+	//애니메이션 종료까지 대기
+	CheckIsLastActionIdx();
+	m_dwRestTime = 2.0f;
 }
 
 void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 {
+	//손을 소환함.
 	for (size_t i = 0; i < sizeof(m_fJumpPos)/sizeof(_vec3); i++)
 	{
-		//====================================
 		if (i != m_iJumpPosidx)
 		{
 			FAILED_CHECK_RETURN(CManagement::GetInstance()->Get_Layer(L"Layer_GameLogic")->
 				Add_GameObject(L"Boss2Hand", CBoss2Hand::Create(m_pGraphicDev, _vec3(m_fJumpPos[i].x, 50.f, 10.f))));
 		}
-		//====================================
 	}
+	//손 들어갈떄까지 대기
+	CheckIsLastActionIdx();
+	m_dwRestTime = 4.0f;
+}
+
+void CBoss2::Do_Scream(const _float & fTimeDelta)
+{
+	m_pAnimation_Body->SetAnimation(L"Scream");
+	m_pAnimation_Face->SetAnimation(L"Scream");
+	
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(4.0f, 40.0f, SHAKE_ALL);
+
+	m_dwRestTime = 2.0f;
+	CheckIsLastActionIdx();
+}
+
+void CBoss2::Do_ScreamEnd(const _float & fTimeDelta)
+{
+	m_pAnimation_Body->SetAnimation(L"Idle");
+	m_pAnimation_Face->SetAnimation(L"Idle");
+	m_dwRestTime = 1.0f;
+	CheckIsLastActionIdx();
 }
 
 //?„ìž¬ ?¤í…Œ?´íŠ¸ê°€ ê°™ì?ê²??„ë‹ˆ?¼ë©´ true ë°?ë³€ê²?
@@ -1109,6 +1798,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_ResetVelocity);
+	func.push_back(&CBoss2::Do_Idle);
+	func.push_back(&CBoss2::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
 
@@ -1119,47 +1810,55 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_ResetVelocity);
+	func.push_back(&CBoss2::Do_Idle);
+	func.push_back(&CBoss2::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
 
-	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Scream);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_ScreamEnd);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	funcAction.push_back(func);
-	func.clear();
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	funcAction.push_back(func);
-	func.clear();
-	/*func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	funcAction.push_back(func);
-	func.clear();*/
 
-	/*func.push_back(&CBoss2::Do_Stump_Ready);
+	func.push_back(&CBoss2::Do_Scream);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ScreamEnd);
+	func.push_back(&CBoss2::Do_Rest);
+	funcAction.push_back(func);
+	func.clear();
+
+	func.push_back(&CBoss2::Do_Scream);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ScreamEnd);
+	func.push_back(&CBoss2::Do_Rest);
+	funcAction.push_back(func);
+	func.clear();
+
+	/* //펀치
+	func.push_back(&CBoss2::Do_Hurray);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_SummonFist);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Idle);
+	func.push_back(&CBoss2::Do_Rest);
+	funcAction.push_back(func);
+	func.clear();
+
+	// 점프
+	func.push_back(&CBoss2::Do_Jump_Ready);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ResetVelocity);
+	funcAction.push_back(func);
+	func.clear();
+	
+	//찍기
+	func.push_back(&CBoss2::Do_Stump_Ready);
 	func.push_back(&CBoss2::Do_Chase_Player);
 	func.push_back(&CBoss2::Do_LittleUp_Turn);
 	func.push_back(&CBoss2::Do_Rest);
@@ -1174,6 +1873,14 @@ void CBoss2::Do_Rest(const _float& fTimeDelta)
 {
 	if (m_dwRestTime < 0)
 		CheckIsLastActionIdx();
+}
+
+void CBoss2::DoFlip()
+{
+	if(m_bFlip_Y)
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
+	else
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
 }
 
 void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
