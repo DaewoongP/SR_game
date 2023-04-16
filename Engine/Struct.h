@@ -61,7 +61,7 @@ struct Anim_Info
 	_int iStartIdx;
 	_int iEndIdx;
 	_float fCycle;
-	bool bisLoop;
+	_bool bisLoop;
 };
 
 struct Particle
@@ -69,12 +69,14 @@ struct Particle
 	_vec3 vPos;
 	_vec3 vVelocity;
 	_vec3 vAccel;
-	float fLifeTime;
-	float fAge;
+	_float fGenTime = 0;
+	_float fLifeTime;
+	_float fAge;
+	_float fSizeoverLifetime;
 	_ulong dwColor;
 	_ulong dwColorFade;
 	_vec2	vTexUV;
-	bool bIsAlive;
+	_bool bIsAlive;
 };
 
 struct BoundingBox

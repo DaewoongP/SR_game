@@ -156,7 +156,7 @@
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClInclude>
     <ClInclude Include="CircularParticle.h">
-      <Filter>Componnent\ParticleSystem\Circular</Filter>
+      <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClInclude>
     <ClInclude Include="JumpParticle.h">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
@@ -181,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="GravityParticle.h">
       <Filter>Componnent\ParticleSystem\Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleParticle.h">
+      <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -300,7 +303,7 @@
       <Filter>Componnent\ParticleSystem\BlockExp</Filter>
     </ClCompile>
     <ClCompile Include="CircularParticle.cpp">
-      <Filter>Componnent\ParticleSystem\Circular</Filter>
+      <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClCompile>
     <ClCompile Include="JumpParticle.cpp">
       <Filter>Componnent\ParticleSystem\Jump</Filter>
@@ -325,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="GravityParticle.cpp">
       <Filter>Componnent\ParticleSystem\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -432,9 +438,6 @@
     <Filter Include="Componnent\ParticleSystem\Spark">
       <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Componnent\ParticleSystem\Circular">
-      <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\ParticleSystem\Jump">
       <UniqueIdentifier>{d7d78ead-aab4-4266-ae54-9e6d2ba8e2d7}</UniqueIdentifier>
     </Filter>
@@ -455,6 +458,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Gravity">
       <UniqueIdentifier>{9f72b7a2-8e41-445a-b535-2a80a2d125e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Circle">
+      <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -9,7 +9,8 @@ CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphicDev) :
 	m_BoundingBox({0.f,0.f,0.f},{0.f,0.f,0.f}),
 	m_bIsWorld(true),
 	m_bTrigger(false),
-	m_fAnimSpeed(0.1f)
+	m_fAnimSpeed(0.1f),
+	m_pParticle(nullptr)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -28,7 +29,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_bIsWorld(rhs.m_bIsWorld),
 	m_bTrigger(rhs.m_bTrigger),
 	m_fAnimSpeed(rhs.m_fAnimSpeed),
-	m_matWorld(rhs.m_matWorld)
+	m_matWorld(rhs.m_matWorld),
+	m_pParticle(rhs.m_pParticle)
 {
 	m_VB->AddRef();
 }
@@ -96,13 +98,15 @@ void CParticleSystem::Render_Particle(void)
 
 		DWORD numParticlesInBatch = 0;
 
-		for (auto it = m_Particles.begin(); it != m_Particles.end(); it++)
+		for (auto& it : m_Particles)
 		{
-			if (it->bIsAlive)
+			if (it.bIsAlive)
 			{
-				v->vPos = it->vPos;
-				v->vTexUV = it->vTexUV;
-				v->dwColor = it->dwColor;
+				if (it.fGenTime != 0 && it.fGenTime > it.fAge)
+					continue;
+				v->vPos = it.vPos;
+				v->vTexUV = it.vTexUV;
+				v->dwColor = it.dwColor;
 				v++;
 				numParticlesInBatch++;
 	
@@ -151,11 +155,11 @@ bool CParticleSystem::IsEmpty()
 
 bool CParticleSystem::IsDead()
 {
-	for (const Particle& it : m_Particles)
+	for (const auto& iter : m_Particles)
 	{
-		if (it.bIsAlive == true) return false;
+		if (iter.bIsAlive)
+			return false;
 	}
-
 	return true;
 }
 
@@ -177,11 +181,8 @@ void CParticleSystem::RemoveDeadParticles()
 
 void CParticleSystem::Reset()
 {
-	list<Particle>::iterator it;
-	for (it = m_Particles.begin(); it != m_Particles.end(); it++)
-	{
-		ResetParticle(&(*it));
-	}
+	for (auto& iter : m_Particles)
+		ResetParticle(&iter);
 }
 
 void CParticleSystem::AddParticle()
@@ -218,6 +219,7 @@ void CParticleSystem::PreRender()
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
+
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }

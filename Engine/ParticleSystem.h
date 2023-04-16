@@ -15,7 +15,9 @@ public:
 	virtual void Reset();
 	virtual void ResetParticle(Particle* particle) PURE;
 	virtual void AddParticle();
-
+	// 업데이트 파티클 안에 렌더를 돌릴수있게 해놨음.
+	// 사실 이거를 분리하는게 맞는데 귀찮아서 걍 때려박음.
+	// 나중에 분리하려면 각 자식객체 파티클 클래스에서 렌더를 따로불러주면됨.
 	virtual _int	Update_Particle();
 	void			Render_Particle(void);
 
@@ -37,10 +39,15 @@ public:
 	bool IsDead();
 
 	void Start_Particle() { m_bTrigger = true; }
-	void End_Particle() { m_bTrigger = false; }
+	void End_Particle() 
+	{
+		m_bTrigger = false; 
+		Reset();
+	}
 	void Set_Size(_float fSize) { m_Size = fSize; }
 	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
 
+	void Set_World(_matrix mat) { m_matWorld = mat; }
 protected:
 	virtual void RemoveDeadParticles();
 	virtual void Free(void) override;
@@ -69,6 +76,8 @@ protected:
 	_float					m_fAnimSpeed;
 	_bool					m_bChangedTex;
 	_matrix					m_matWorld;
+
+	Particle*				m_pParticle;
 };
 
 END

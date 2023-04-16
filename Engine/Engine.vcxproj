@@ -24,6 +24,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="BlockExp.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="CircularParticle.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
@@ -84,6 +85,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BlockExp.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="CircularParticle.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />

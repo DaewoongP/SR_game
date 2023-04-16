@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "CircularParticle.h"
+#include "CircleParticle.h"
 
 #include "Export_Function.h"
-CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
+CCircleParticle::CCircleParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	const _tchar * pPath,
-	_int iTextureNum, 
-	_float fSize, 
-	_int iParticleNum, 
+	_int iTextureNum,
+	_float fSize,
+	_int iParticleNum,
 	_bool isWorld,
 	_float fLifeTime,
 	_float fRadius)
@@ -24,39 +24,52 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	m_VBSize = 8;
 	m_VBOffset = 0;
 	m_VBBatchSize = 8;
+	m_vUp = { 0,1, 0.2f };
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
 }
 
-CCircularParticle::CCircularParticle(const CCircularParticle & rhs)
+CCircleParticle::CCircleParticle(const CCircleParticle & rhs)
 	:CParticleSystem(rhs),
 	m_fLifeTime(rhs.m_fLifeTime),
-	m_fRadius(rhs.m_fRadius)
+	m_fRadius(rhs.m_fRadius),
+	m_vUp(rhs.m_vUp)
 {
+	m_fCurRad = 0;
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
 }
 
-CCircularParticle::~CCircularParticle()
+CCircleParticle::~CCircleParticle()
 {
 }
 
-void CCircularParticle::ResetParticle(Particle * particle)
+void CCircleParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	particle->dwColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.5f);
+	particle->dwColorFade = D3DXCOLOR(0.01f, 0.01f, 0.01f, 0.01f);
 	particle->vPos = m_BoundingBox.Get_Center();
-	particle->vVelocity = { 1.f, 0.f, 0.f };
-	GetRandomVectorIncircle(&particle->vVelocity, m_fRadius);
-	particle->vVelocity *= -1; // 속도값 계속 줄어들게 설정
-	//particle->fGenTime = GetRandomFloat(0.f, 3.f);
-	particle->fAge = 0.f;
-	particle->fLifeTime = m_fLifeTime + particle->fGenTime;
-	particle->fSizeoverLifetime = 0.995f;
-	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
+	// 파티클 기준 벨로시티 정하고 그거에서 360/개수 한만큼의 각도를 돌려서 출력
+	// 현재 기준 벨로시티 -> 1,0,0
+	_float offsetRad = 360.f / m_Particles.size();
+	_matrix mat;
+	D3DXMatrixIdentity(&mat);
+	D3DXMatrixRotationAxis(&mat, &m_vUp, D3DXToRadian(m_fCurRad));
+	D3DXVec3TransformCoord(&particle->vVelocity, &_vec3(10.f, 0.f, 0.f), &mat);
+	m_fCurRad += offsetRad;
+	if (m_fCurRad > 360)
+		m_fCurRad -= 360;
+	//particle->vVelocity.z *= 0.01f;
+
+	particle->fGenTime = 0;
+	particle->fAge = 0;
+	particle->fLifeTime = m_fLifeTime;
+	particle->fSizeoverLifetime = 1;
+	particle->vAccel = { 0,0,0 };
 }
 
-_int CCircularParticle::Update_Particle()
+_int CCircleParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -70,12 +83,17 @@ _int CCircularParticle::Update_Particle()
 			it->fAge += fTimeDelta;
 			if (it->fGenTime != 0 && it->fGenTime > it->fAge)
 				continue;
-
+			
 			it->vPos += it->vVelocity * fTimeDelta;
 			it->vVelocity += it->vAccel;
 			if (D3DXVec3Length(&it->vAccel) > D3DXVec3Length(&it->vVelocity))
 				it->vAccel = { 0.f, 0.f, 0.f };
 			m_Size *= it->fSizeoverLifetime;
+
+			if (m_BoundingBox.Intersect(it->vPos) == false)
+			{
+				it->bIsAlive = false;
+			}
 
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
@@ -85,7 +103,7 @@ _int CCircularParticle::Update_Particle()
 	return -1;
 }
 
-CCircularParticle * CCircularParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
+CCircleParticle * CCircleParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	const _tchar * pPath,
 	_int iTextureNum,
 	_float fSize,
@@ -94,11 +112,11 @@ CCircularParticle * CCircularParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	_float fLifeTime,
 	_float fRadius)
 {
-	CCircularParticle *	pInstance = new CCircularParticle(pGraphicDev, 
+	CCircleParticle *	pInstance = new CCircleParticle(pGraphicDev,
 		pPath,
-		iTextureNum, 
+		iTextureNum,
 		fSize,
-		iParticleNum, 
+		iParticleNum,
 		isWorld,
 		fLifeTime,
 		fRadius);
@@ -112,12 +130,12 @@ CCircularParticle * CCircularParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	return pInstance;
 }
 
-CComponent * CCircularParticle::Clone(void)
+CComponent * CCircleParticle::Clone(void)
 {
-	return new CCircularParticle(*this);
+	return new CCircleParticle(*this);
 }
 
-void CCircularParticle::Free(void)
+void CCircleParticle::Free(void)
 {
 	__super::Free();
 }
