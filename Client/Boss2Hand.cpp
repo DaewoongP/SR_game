@@ -219,6 +219,7 @@ void CBoss2Hand::D0_Drop(const _float & fTimeDelta)
 		vInfo.y -= B2H_DROP_YPOS - 5;
 		vInfo.z += 0.1f;
 		box.Offset(vInfo);
+		m_pFistparticle->Set_Size(5.f);
 		m_pFistparticle->Set_BoundingBox(box);
 		m_pFistparticle->Start_Particle();
 

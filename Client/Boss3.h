@@ -5,7 +5,7 @@
 BEGIN(Engine)
 
 class CRcTex;
-
+class CCircularParticle;
 END
 
 class CBoss3 : public CCube
@@ -82,7 +82,7 @@ private:
 	_vec3 m_vPrePos;
 
 	Engine::CShadow* m_pShadowCom;
-
+	Engine::CCircularParticle*	m_pLandingParticle;
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

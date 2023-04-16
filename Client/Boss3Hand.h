@@ -1,6 +1,9 @@
 #pragma once
 #include "Cube.h"
 
+BEGIN(Engine)
+class CCircularParticle;
+END
 class CBoss3Hand : public CCube
 {
 private:
@@ -51,7 +54,7 @@ private:
 
 
 	Engine::CShadow* m_pShadowCom;
-
+	Engine::CCircularParticle*	m_pLandingParticle;
 public:
 	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 

@@ -183,12 +183,13 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	if(!g_Is2D)
-	m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+		m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
 
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+	m_pLandingParticle->Update_Particle();
 }
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
@@ -254,6 +255,9 @@ HRESULT CBoss3::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
 
+	pComponent = m_pLandingParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BossLandingParticle",pComponent });
 
 	return S_OK;
 }
@@ -348,9 +352,17 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
 		else
+		{
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
-
-		// if (m_pTransform->m_vInfo[INFO_POS].z >4.5f)
+			BoundingBox box;
+			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
+			box.Offset(vInfo);
+			m_pLandingParticle->Set_Size(3.f);
+			m_pLandingParticle->Set_Options(0.8f, 0.3f);
+			m_pLandingParticle->Set_SizeLifeTime(1.f);
+			m_pLandingParticle->Set_BoundingBox(box);
+			m_pLandingParticle->Start_Particle();
+		}
 	}
 
 	// 왼손 공격 명령
@@ -382,7 +394,6 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 }
 
 void CBoss3::ShootBullet(const _float & fTimeDelta)
-
 {
 	m_fShootCoolDown += fTimeDelta;
 	if (1.f < m_fShootCoolDown&&m_bShoot==true)

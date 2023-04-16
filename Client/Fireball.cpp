@@ -26,8 +26,6 @@ HRESULT CFireball::Ready_GameObject(_vec3& vPos)
 
 	m_pCollider->Set_Options({ 2.f, 2.f, 2.f }, COL_ENV, false);
 
-
-
 	return S_OK;
 }
 
@@ -141,6 +139,7 @@ HRESULT CFireball::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider",pComponent });
+
 	return S_OK;
 }
 

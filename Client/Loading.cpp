@@ -208,6 +208,10 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		4.f, 40, false)), E_FAIL);
+	// 3보스 불덩이 소환 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/shineSpr/shineSpr_0.png", 1,
+		1.f, 10, false, 1.f, 10.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
