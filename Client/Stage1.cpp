@@ -26,6 +26,7 @@
 #include "Boss3.h"
 #include "Boss2.h"
 #include "Boss2Hand.h"
+#include "Boss2Stone.h"
 #include "Toodee.h"
 #include "Topdee.h"
 
@@ -90,6 +91,8 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(18.f, 10.f, 10.f)), E_FAIL);
+
+	//FAILED_CHECK_RETURN(FACTORY<CBoss2Stone>::Create(L"Boss2Stone", pLayer, _vec3(18.f, 10.f, 9.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

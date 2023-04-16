@@ -2,7 +2,7 @@
 #include "Boss2Chain.h"
 
 CBoss2Chain::CBoss2Chain(LPDIRECT3DDEVICE9 pGraphicDev):
-	CGameObject(pGraphicDev)
+	CBoss2Parts(pGraphicDev)
 {
 }
 
@@ -73,22 +73,22 @@ HRESULT CBoss2Chain::Add_Component(void)
 
 void CBoss2Chain::SetChain()
 {
-	//xΩ∫ƒ…¿œ = ±Ê¿Ã(¡∂¿Œ∆Æ 01(foot) - ¡∂¿Œ∆Æ02(¡∂¿Œ∆Æ))*0.5f << ≈ÿΩ∫√ƒ ≈©±‚∞° 2,2∂Ûº≠ 0.5 «ÿ¡‹
+	//xÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ = ÔøΩÔøΩÔøΩÔøΩ(ÔøΩÔøΩÔøΩÔøΩ∆Æ 01(foot) - ÔøΩÔøΩÔøΩÔøΩ∆Æ02(ÔøΩÔøΩÔøΩÔøΩ∆Æ))*0.5f << ÔøΩÿΩÔøΩÔøΩÔøΩ ≈©ÔøΩ‚∞° 2,2ÔøΩÔøΩ 0.5 ÔøΩÔøΩÔøΩÔøΩ
 	m_pTransform->m_vScale.x =
 		D3DXVec3Length(&_vec3(m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS])) * 0.5f;
-	//lerp (¡∂¿Œ∆Æ 01, ¡∂¿Œ∆Æ 02 , 0.5f) << ¡∂¿Œ∆Æ 1 2¿« ¡ﬂ¡°
+	//lerp (ÔøΩÔøΩÔøΩÔøΩ∆Æ 01, ÔøΩÔøΩÔøΩÔøΩ∆Æ 02 , 0.5f) << ÔøΩÔøΩÔøΩÔøΩ∆Æ 1 2ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
 	m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTrans_Joint01->m_vInfo[INFO_POS], m_pTrans_Joint02->m_vInfo[INFO_POS],0.5f);
 
-	//dir = ¡∂¿Œ∆Æ∞£¿« ∞≈∏Æ
+	//dir = ÔøΩÔøΩÔøΩÔøΩ∆ÆÔøΩÔøΩÔøΩÔøΩ ÔøΩ≈∏ÔøΩ
 	_vec3 dir = m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS];
 	D3DXVec3Normalize(&dir, &dir);
 	_vec3 right;
 	D3DXVec3Normalize(&right, &m_pTransform->m_vInfo[INFO_RIGHT]);
-	//»∏¿¸¿ª ¿ß«— ≥ª¿˚
+	//»∏ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
 	_float dot = D3DXVec3Dot(&dir, &right);
 	
 	_float radian = acosf(dot);
-	//∞™ ¿˚øÎ
+	//ÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
 	if (m_pTrans_Joint01->m_vInfo[INFO_POS].y < m_pTrans_Joint02->m_vInfo[INFO_POS].y)
 		radian = 2 * D3DX_PI- radian;
 

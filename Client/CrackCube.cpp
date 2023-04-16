@@ -38,6 +38,7 @@ _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (m_pExpParticle->IsDead())
 		return OBJ_DEAD;
+	}
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return OBJ_NOEVENT;

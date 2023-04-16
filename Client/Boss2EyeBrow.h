@@ -1,14 +1,14 @@
 #pragma once
 #include "GameObject.h"
 #include "Include.h"
-
+#include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
 END
 
 class CBoss2EyeBrow :
-	public CGameObject
+	public CBoss2Parts
 {
 public:
 	explicit CBoss2EyeBrow(LPDIRECT3DDEVICE9 pGraphicDev);

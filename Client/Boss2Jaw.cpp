@@ -2,7 +2,7 @@
 #include "Boss2Jaw.h"
 
 CBoss2Jaw::CBoss2Jaw(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 

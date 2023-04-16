@@ -2,7 +2,7 @@
 #include "Boss2Nose.h"
 
 CBoss2Nose::CBoss2Nose(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 

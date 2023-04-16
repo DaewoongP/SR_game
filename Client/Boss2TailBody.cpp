@@ -35,7 +35,7 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(3.0f, 0.f, 0.05f), m_pTransform), E_FAIL);
-		//m_pTransform->GetChild(0)->m_vScale = _vec3(-m_pTransform->GetParent()->m_vScale.x*2, -m_pTransform->GetParent()->m_vScale.y*2, -m_pTransform->GetParent()->m_vScale.z*2);
+		
 		m_pTransform->GetChild(0)->m_vScale = _vec3(0.1f, 0.1f, 0.1f);
 		m_pTransform->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 
@@ -43,19 +43,6 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_0"))->
 			Set_PreTail(m_pTransform->GetChild(0));
 
-	/*	for (size_t i = 0; i < 20; i++)
-		{
-			TCHAR	szFileName[256] = L"";
-			TCHAR	szFileName2[256] = L"";
-
-			wsprintf(szFileName, L"Boss2Tail_%d", i + 1);
-			wsprintf(szFileName2, L"Boss2Tail_%d", i);
-
-			FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(szFileName, pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.1 * i + 0.3f)), E_FAIL);
-
-			dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", szFileName))->
-				Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", szFileName2)->m_pTransform);
-		}*/
 		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail_1", pStageLayer, _vec3(0.0f, 0.0f, 10.0f + 0.15f)), E_FAIL);
 
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_1"))->
@@ -155,49 +142,6 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 		dynamic_cast<CBoss2Tail*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_18"))->
 			Set_PreTail(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2Tail_17")->m_pTransform);
 
-		//CTransform*	pTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Proto_Transform", ID_DYNAMIC));
-
-		
-		//dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->m_pGameObject)->m_fTimer = 0.1f;
-
-		/*FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.2f;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.3f;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.4f;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.5f;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.6f;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		dynamic_cast<CBoss2Tail*>(m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_pGameObject)->m_fTimer = 0.7zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzf;
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-
-		FAILED_CHECK_RETURN(FACTORY<CBoss2Tail>::Create(L"Boss2Tail", pStageLayer, _vec3(1.0, 0.f, 0.1f), m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vScale = _vec3(1.0f, 1.f, 1.0f);
-		m_pTransform->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-*/
 		m_bInit = true;
 	}
 

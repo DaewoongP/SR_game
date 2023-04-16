@@ -1,14 +1,14 @@
 #pragma once
 #include "GameObject.h"
 #include "Include.h"
-
+#include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
 END
 
 class CBoss2Foot :
-	public CGameObject
+	public CBoss2Parts
 {
 public:
 	explicit CBoss2Foot(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -23,6 +23,7 @@ public:
 	virtual void Render_Too(void) override;
 	virtual void Render_Top(void) override;
 
+	void SetAnim(_tchar* name) { m_pTextureCom->Switch_Anim(name); }
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;

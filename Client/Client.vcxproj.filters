@@ -429,6 +429,8 @@
     <ClInclude Include="PreStage.h">
       <Filter>01. Scene\Stages\PreStage</Filter>
     </ClInclude>
+    <ClInclude Include="Boss2Parts.h" />
+    <ClInclude Include="Boss2Stone.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -676,5 +678,7 @@
     <ClCompile Include="PreStage.cpp">
       <Filter>01. Scene\Stages\PreStage</Filter>
     </ClCompile>
+    <ClCompile Include="Boss2Parts.cpp" />
+    <ClCompile Include="Boss2Stone.cpp" />
   </ItemGroup>
 </Project>
