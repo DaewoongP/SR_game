@@ -178,9 +178,14 @@ _uint CLoading::Loading_ForStage1(void)
 	
 	Set_String(L"Particle Loading..........");
 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CBlockExp::Create(m_pGraphicDev,
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
 		9, 0.8f, 1, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BossScream", CTexParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/bossScream/ScreamParticle1.png", 1,
+		1.f, 1, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SparkParticle", CSparkParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png",
 		10, 1.f, 2, false)), E_FAIL);

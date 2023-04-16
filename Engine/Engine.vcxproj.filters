@@ -151,9 +151,6 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>Manager\ObjectPool</Filter>
     </ClInclude>
-    <ClInclude Include="BlockExp.h">
-      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
-    </ClInclude>
     <ClInclude Include="CircularParticle.h">
       <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="CircleParticle.h">
       <Filter>Componnent\ParticleSystem\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="TexParticle.h">
+      <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,9 +297,6 @@
     <ClCompile Include="RcAlpha.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="BlockExp.cpp">
-      <Filter>Componnent\ParticleSystem\BlockExp</Filter>
-    </ClCompile>
     <ClCompile Include="CircularParticle.cpp">
       <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClCompile>
@@ -329,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="CircleParticle.cpp">
       <Filter>Componnent\ParticleSystem\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="TexParticle.cpp">
+      <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,9 +430,6 @@
     <Filter Include="Manager\ObjectPool">
       <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Componnent\ParticleSystem\BlockExp">
-      <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\ParticleSystem\Spark">
       <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
     </Filter>
@@ -459,6 +456,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Circle">
       <UniqueIdentifier>{6c846a54-851e-4b1f-97ff-3fc96efb2b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\TexParticle">
+      <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

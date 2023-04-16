@@ -6,7 +6,7 @@ BEGIN(Engine)
 class CCubeTex;
 class CTexture;
 class CCollider;
-class CBlockExp;
+class CTexParticle;
 END	
 
 class CCrackCube :
@@ -36,7 +36,7 @@ private:
 	Engine::CCubeTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
-	Engine::CBlockExp*	m_pExpParticle;
+	Engine::CTexParticle*	m_pExpParticle;
 private:
 	//블럭이 사라지는 시간 *.*초
 	_float m_fBlockTime;

@@ -26,7 +26,7 @@
 #include "RcGradation.h"
 #include "RcAlpha.h"
 
-#include "BlockExp.h"
+#include "TexParticle.h"
 #include "SparkParticle.h"
 #include "CircularParticle.h"
 #include "JumpParticle.h"

@@ -77,7 +77,7 @@ HRESULT CKeyCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
-	pComponent = m_pExpParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
+	pComponent = m_pExpParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BlockExp", this));
 	NULL_CHECK_RETURN(m_pExpParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
 

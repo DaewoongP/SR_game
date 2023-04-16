@@ -28,6 +28,8 @@ public:
 		m_fTimer = 0;
 		m_CurIdx = 0; 
 	}
+
+	size_t			Get_TextureSize() { return m_vecTexture.size(); }
 public:
 	_bool			m_bUseFrameAnimation;
 

@@ -53,8 +53,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseGrivaty = false;
 
 	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
-
-	
+	m_pScreamParticle->Set_SizeLifeTime(1.05f);
 	return S_OK;
 }
 
@@ -1510,6 +1509,7 @@ void CBoss2::Render_GameObject()
 {
 	m_pCircleParticle->Update_Particle();
 	m_pJumpParticle->Update_Particle();
+	m_pScreamParticle->Update_Particle();
 }
 
 void CBoss2::SwapTrigger()
@@ -1601,6 +1601,10 @@ HRESULT CBoss2::Add_Component(void)
 	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"Boss2JumpParticle", this));
 	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss2JumpParticle", pComponent });
+
+	pComponent = m_pScreamParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BossScream", this));
+	NULL_CHECK_RETURN(m_pScreamParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BossScream", pComponent });
 
 	return S_OK;
 }
@@ -1747,6 +1751,11 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	
 	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(4.0f, 40.0f, SHAKE_ALL);
 
+	BoundingBox box;
+	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+	m_pScreamParticle->Set_BoundingBox(box);
+	m_pScreamParticle->Start_Particle();
+
 	m_dwRestTime = 2.0f;
 	CheckIsLastActionIdx();
 }
@@ -1756,6 +1765,7 @@ void CBoss2::Do_ScreamEnd(const _float & fTimeDelta)
 	m_pAnimation_Body->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_dwRestTime = 1.0f;
+	m_pScreamParticle->End_Particle();
 	CheckIsLastActionIdx();
 }
 
