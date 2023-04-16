@@ -2331,9 +2331,9 @@ void CBoss2::SetPartten()
 		if (ran <3)
 			m_eCurrentState = B2_STUMP;
 		else if (ran == 3)
-			m_eCurrentState = B2_PUNCH;
+			m_eCurrentState = B2_STUMP;
 		else
-			m_eCurrentState = B2_PUNCH;
+			m_eCurrentState = B2_STUMP;
 		break;
 	case B2_PUNCH:
 		if (ran <4)
