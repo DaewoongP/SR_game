@@ -3,7 +3,7 @@
 #include "Boss2.h"
 
 CBoss2Tail::CBoss2Tail(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_pPreTail(nullptr)
+	:CGameObject(pGraphicDev), m_pPreTail(nullptr), m_fStartZ(0.0f), m_fZRatio(0.0f)
 {
 }
 
@@ -20,6 +20,8 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 8.0f;
 	m_pRigid->m_bFreezePos_Z = true;
+
+	m_fStartZ = vPos.z;
 
 	return S_OK;
 }
@@ -54,13 +56,14 @@ _int CBoss2Tail::Update_GameObject(const _float & fTimeDelta)
 
 		if (0.7f < fLength)
 		{
-			_vec3 vRePosition = vPrePos - vDis;
-			
-			vRePosition.z = 0.0f;
+			_float fZ = matBoss._43 + 0.35f + m_fStartZ - 10.0f;
 
-			m_pTransform->Set_Pos(vRePosition.x, vRePosition.y, m_pTransform->m_vInfo[INFO_POS].z);
+			_vec3 vRePosition = vPrePos - vDis;
+
+			m_pTransform->Set_Pos(vRePosition.x, vRePosition.y, fZ);
 		}
 	}
+	
 
 __super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -104,7 +107,30 @@ __super::Update_GameObject(fTimeDelta);
 			}
 		}
 	}*/
-
+if (!g_Is2D)
+	{
+		if (0.8f < m_fZRatio)
+		{
+			m_fTimer += fTimeDelta;
+			if (1.0f < m_fTimer)
+			{
+				m_fTimer = 1.0f;
+			}
+			m_fZRatio = Lerp(1.0f, 0.8f, m_fTimer);
+		}
+	}
+	if (g_Is2D)
+	{
+		if (1.0f > m_fZRatio)
+		{
+			m_fTimer += fTimeDelta;
+			if (1.0f < m_fTimer)
+			{
+				m_fTimer = 1.0f;
+			}
+			m_fZRatio = Lerp(0.8f, 1.0f, m_fTimer);
+		}
+	}
 	return 0;
 }
 
@@ -120,6 +146,8 @@ _int CBoss2Tail::Update_Top(const _float & fTimeDelta)
 
 void CBoss2Tail::LateUpdate_GameObject(void)
 {
+	
+		m_pTransform->m_matWorld._42 *= m_fZRatio;
 	__super::LateUpdate_GameObject();
 }
 

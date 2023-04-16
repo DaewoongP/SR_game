@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_bHealth = 3;
-	m_eCurrentState = B2_PUNCH;
+	m_eCurrentState = B2_STUMP;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
@@ -114,12 +114,12 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(12)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(3), m_pTransform->GetChild(1)->GetChild(8));
 		
 			FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(0.0f, 0.0f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
-			m_pTransform->GetChild(1)->GetChild(13)->m_vScale = _vec3(0.0f, 0.0f, 0.0f);
+			m_pTransform->GetChild(1)->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 0.0f);
 			m_pTransform->GetChild(1)->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 		}
 
-		
-    
+		//애니메이션
+		{
 		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
 		AnimClip* clip = new AnimClip();
 		{
@@ -1977,7 +1977,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			}
 		}
 		m_pAnimation_Body->AddClip(L"ThrowEnd", clip);
-
+		}
 
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
 		m_bInit = true;
