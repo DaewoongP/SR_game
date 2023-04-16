@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_bHealth = 3;
-	m_eCurrentState = B2_SCREAM;
+	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
@@ -2079,7 +2079,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				for (int i = 0; i < 18; i++)
 				{
 					wsprintf(_name,L"Boss2Tail_%d", i);
-					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transforms", ID_DYNAMIC);
+					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
 					if (tr != nullptr)
 					{
 						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
@@ -2333,7 +2333,7 @@ void CBoss2::SetPartten()
 		else if (ran == 3)
 			m_eCurrentState = B2_STUMP;
 		else
-			m_eCurrentState = B2_STUMP;
+			m_eCurrentState = B2_PUNCH;
 		break;
 	case B2_PUNCH:
 		if (ran <4)
