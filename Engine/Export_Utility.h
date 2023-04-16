@@ -35,6 +35,7 @@
 #include "WindParticle.h"
 #include "LeafParticle.h"
 #include "RainParticle.h"
+#include "CircleParticle.h"
 
 BEGIN(Engine)
 

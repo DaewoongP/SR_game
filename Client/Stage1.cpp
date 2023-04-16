@@ -95,6 +95,10 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	/*FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretLeft", pLayer, _vec3(2.f, 15.f, 10.f), 0), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretRight", pLayer, _vec3(60.f, 5.f, 10.f), 1), E_FAIL);*/
 
+
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(34.f, 12.f, 10.f)), E_FAIL);
+
+
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
