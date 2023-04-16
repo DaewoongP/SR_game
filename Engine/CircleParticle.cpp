@@ -45,7 +45,6 @@ void CCircleParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	particle->dwColorFade = D3DXCOLOR(0.01f, 0.01f, 0.01f, 0.01f);
 	particle->vPos = m_BoundingBox.Get_Center();
 	// 파티클 기준 벨로시티 정하고 그거에서 360/개수 한만큼의 각도를 돌려서 출력
 	// 현재 기준 벨로시티 -> 1,0,0

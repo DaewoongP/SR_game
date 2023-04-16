@@ -54,13 +54,13 @@ void CCircularParticle::ResetParticle(Particle * particle)
 	particle->vPos = m_BoundingBox.Get_Center();
 	particle->vVelocity = { 1.f, 0.f, 0.f };
 	GetRandomVectorIncircle(&particle->vVelocity, m_fRadius);
-	particle->vVelocity *= -1; // 속도값 계속 줄어들게 설정
 	if (m_bSetRandomGenTime)
-		particle->fGenTime = GetRandomFloat(0.f, 1.f);		
+		particle->fGenTime = GetRandomFloat(0.f, 3.f);		
 	particle->fAge = 0.f;
 	particle->fLifeTime = m_fLifeTime + particle->fGenTime;
 	particle->fSizeoverLifetime = m_fSizeoverLifetime;
 	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
+	particle->vAccel *= -0.5;
 }
 
 _int CCircularParticle::Update_Particle()

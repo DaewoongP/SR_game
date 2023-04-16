@@ -21,7 +21,6 @@ public:
 	{
 		m_vUp = vUp;
 		m_fLifeTime = fLife;
-		Reset();
 	}
 public:
 	static CCircleParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev,

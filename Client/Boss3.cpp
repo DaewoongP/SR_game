@@ -369,8 +369,8 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 			BoundingBox box;
 			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
 			box.Offset(vInfo);
-			m_pLandingParticle->Set_Size(3.f);
-			m_pLandingParticle->Set_Options(0.8f, 0.3f);
+			m_pLandingParticle->Set_Size(2.f);
+			m_pLandingParticle->Set_Options(2.f, 25.f);
 			m_pLandingParticle->Set_SizeLifeTime(1.f);
 			m_pLandingParticle->Set_BoundingBox(box);
 			m_pLandingParticle->Start_Particle();

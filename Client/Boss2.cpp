@@ -2205,12 +2205,11 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(2.f, 3.f, 0.f));
 	else
 		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(-5.f, 3.f, 0.f));
-	m_pJumpParticle->Set_Size(4.f);
+	m_pJumpParticle->Set_Size(5.f);
 	m_pJumpParticle->Set_SizeLifeTime(0.999f);
 	m_pJumpParticle->Set_LiftTime(0.8f);
 	m_pJumpParticle->Set_BoundingBox(box);
 	m_pJumpParticle->Start_Particle();
-
 }
 
 void CBoss2::Do_Jump_01(const _float& fTimeDelta)

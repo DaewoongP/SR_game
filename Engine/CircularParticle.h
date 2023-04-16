@@ -22,7 +22,6 @@ public:
 	{
 		m_fRadius = fRad;
 		m_fLifeTime = fLife;
-		Reset();
 	}
 	void Set_SizeLifeTime(_float sizetime) { m_fSizeoverLifetime = sizetime; }
 	void Set_RandomGen() { m_bSetRandomGenTime = true; }
