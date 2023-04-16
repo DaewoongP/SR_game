@@ -419,7 +419,7 @@
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="BossHandPart.h">
+    <ClInclude Include="Boss3HandPart.h">
       <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
     </ClInclude>
   </ItemGroup>
@@ -650,7 +650,7 @@
     <ClCompile Include="LogoCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="BossHandPart.cpp">
+    <ClCompile Include="Boss3HandPart.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
     </ClCompile>
   </ItemGroup>

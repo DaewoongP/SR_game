@@ -24,10 +24,14 @@ private:
 	HRESULT Add_Component(void);
 
 private:
+
+
+
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 
 	CGameObject*			m_pBoss3;
+
 
 	_int					m_iIndex;	// 표정 텍스처 구분
 

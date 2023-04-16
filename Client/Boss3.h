@@ -33,6 +33,9 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 	virtual void SwapTrigger() override;
+
+	void MakeChain();
+
 	_int Get_ATKCount() { return m_iATKCount; }
 
 
@@ -50,6 +53,13 @@ private:
 	_bool   m_bCreateHand;			// 한번만 양손 생성 + 표정 생성
 	CGameObject* m_pBossLeft;		// 왼손 주소
 	CGameObject* m_pBossRight;		// 오른손 주소
+	CGameObject* m_pBossLeftPart;
+	CGameObject* m_pBossRightPart;
+	CGameObject* m_pBossLeftPart1;
+	CGameObject* m_pBossRightPart1;
+
+
+
 	CGameObject* m_pBossLeftEye;	// 왼눈 주소	
 	CGameObject* m_pBossRightEye;	// 오른눈 주소
 	CGameObject* m_pBossLeftPupil;	// 왼눈동자 주소	

@@ -5,6 +5,7 @@
 #include "AbstractFactory.h"
 
 #include "Boss3Hand.h"
+#include"Boss3HandPart.h"
 #include "Boss3Eye.h"
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
@@ -60,6 +61,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
+		
+
 
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
@@ -72,9 +75,18 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, vPos, 2), E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, vPos), E_FAIL);
+		
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart", pStageLayer, _vec3{ vPos.x - 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart", pStageLayer, _vec3{ vPos.x + 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart1", pStageLayer, _vec3{ vPos.x - 5.f,vPos.y,vPos.z }, 4), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart1", pStageLayer, _vec3{ vPos.x + 5.f,vPos.y,vPos.z }, 4), E_FAIL);
 
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
+		MakeChain();
+
+
 
 		m_pBossLeftEye = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye");
 		m_pBossLeftEye->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
@@ -188,6 +200,14 @@ void CBoss3::OnCollisionExit(const Collision * collision)
 
 void CBoss3::SwapTrigger()
 {
+}
+
+void CBoss3::MakeChain()
+{
+	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart");
+	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart");
+	//m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
+//	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
 }
 
 HRESULT CBoss3::Add_Component(void)
