@@ -68,6 +68,15 @@ void CTopdee::Render_GameObject(void)
 
 void CTopdee::OnCollisionEnter(const Collision * collision)
 {
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Boss3Left") && collision->_dir==DIR_FRONT || 
+		!lstrcmp(collision->otherObj->m_pTag, L"Boss3Right") && collision->_dir == DIR_FRONT||
+		!lstrcmp(collision->otherObj->m_pTag, L"Boss3") && collision->_dir == DIR_FRONT)
+	{
+		//m_pTextureCom->Switch_Anim(L"Die");
+		int i = 0;
+	}
+
+
 	__super::OnCollisionEnter(collision);
 }
 
@@ -191,11 +200,15 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[0].tag, L"InstallGrid") ||
 			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"InstallCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"SwitchCube")
+			!lstrcmp(_detectedCOL[0].tag, L"SwitchCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"Boss3")||
+			!lstrcmp(_detectedCOL[0].tag, L"Boss3Left")||
+			!lstrcmp(_detectedCOL[0].tag, L"Boss3Right")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
 		{
+
 			if (dir < 4)
 			{
 				COL_DIR destdir;
@@ -235,8 +248,7 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 				if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[destdir])
 					m_byPlayerInputDir &= fdir[dir];
 			}
-
-			
+		
 		}
 	}
 }

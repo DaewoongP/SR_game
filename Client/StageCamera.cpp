@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StageCamera.h"
+#include"Boss3.h"
 #include "Export_Function.h"
 
 CStage1Camera::CStage1Camera(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -60,7 +61,7 @@ void CStage1Camera::Rotation_View(const _float& fTimeDelta)
 	vAt.y -= sinf(D3DXToRadian(fRadian))*9.0f;
 	vEye.y -= sinf(D3DXToRadian(fRadian))*22.0f;
 	vEye.z -= (1 - cosf(D3DXToRadian(fRadian)))*22.0f;
-
+	
 	_vec3 vDir;
 	vDir = vEye - vAt;
 	D3DXVec3TransformCoord(&vDir, &vDir, &matRotX);
@@ -102,6 +103,8 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 	//카메라 쉐이크 사용 예
 	if (Engine::Get_DIKeyState(DIK_F5) == Engine::KEYDOWN)
 		m_pTransform->Set_Shake(1.0f, 100.0f, SHAKE_X);
+
+
 }
 
 void CStage1Camera::Move_Camera(const _float & fTimeDelta)

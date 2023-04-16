@@ -33,6 +33,8 @@ public:
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
+	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
+
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);

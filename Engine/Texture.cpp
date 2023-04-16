@@ -100,6 +100,7 @@ void CTexture::Switch_Anim(_tchar * name)
 	m_bisLoop = m_CurrentAnim.bisLoop;
 }
 
+
 void CTexture::Update_Anim(const _float & fTimeDelta)
 {
 	m_fTimer += fTimeDelta;
@@ -123,6 +124,18 @@ void CTexture::Set_Texture(const _uint & iIndex)
 	else
 		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
 }
+
+//void CTexture::Set_Cube(_tchar* pProtoTag)
+//{
+//	auto iter = find(m_vecTexture.begin(), m_vecTexture.end(), pProtoTag);
+//	if (iter != m_vecTexture.end())
+//	{
+//		m_pGraphicDev->SetTexture(0, m_vecTexture[pProtoTag]);
+//	}
+//	else
+//		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
+//
+//}
 
 _bool CTexture::IsAnimationEnd(_tchar* name)
 {

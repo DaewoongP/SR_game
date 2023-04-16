@@ -96,6 +96,10 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"KeyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png", 11)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Key_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png", 21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spike_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/spikesSpr/spikesSpr_%d.png", 13)), E_FAIL);
+
+	// 보스 총알 생성
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fireball_Create_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/b1FireballStaticSpr/b1FireballStaticSpr_0.png")), E_FAIL);
+	// 보스 총알 발사
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fireball_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/b1FireballSpr/b1FireballSpr_%d.png", 9)), E_FAIL);
 
 	//박쥐
@@ -134,6 +138,17 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Foot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HandSpr/boss2HandSpr_%d.png", 12)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Chain", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/boss2LimbSpr_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Stone", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme2pigStatueSpr/theme2pigStatueSpr_0.png")), E_FAIL);
+	// 3보스 눈썹 + 눈알
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3EyeSpr/boss3EyeSpr_%d.png", 3)), E_FAIL);
+	// 3보스 입
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/boss3MouthSpr_%d.png", 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth_Shoot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/CompleteMouth/Lip%d.png", 6)), E_FAIL);
+	// 3보스 사슬
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPartSpr_%d.png", 6)), E_FAIL);
+	// 레이저 터렛
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser_Turret", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireSpr_%d.png", 2)), E_FAIL);
+	// 레이저
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireLaserSpr_0.png")), E_FAIL);
 
 	Set_String(L"Buffer Loading.......");
 
@@ -159,7 +174,8 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Gravity_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/GravBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage3Boss.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Boss3Hand%d.dds", 2)), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds" )), E_FAIL);
+	
 	Set_String(L"Particle Loading..........");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CBlockExp::Create(m_pGraphicDev,

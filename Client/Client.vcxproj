@@ -172,7 +172,12 @@
     <ClInclude Include="Boss2Stone.h" />
     <ClInclude Include="Boss2Tail.h" />
     <ClInclude Include="Boss2TailBody.h" />
+    <ClInclude Include="Boss3Eye.h" />
+    <ClInclude Include="Boss3Eyebrow.h" />
+    <ClInclude Include="Boss3EyePupil.h" />
     <ClInclude Include="Boss3Hand.h" />
+    <ClInclude Include="Boss3Mouth.h" />
+    <ClInclude Include="Boss3HandPart.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
@@ -181,6 +186,9 @@
     <ClInclude Include="DefaultUnit.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
+    <ClInclude Include="Laser.h" />
+    <ClInclude Include="LaserTurret.h" />
+    <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="MenuCubeSpr.h" />
@@ -250,7 +258,12 @@
     <ClCompile Include="Boss2Stone.cpp" />
     <ClCompile Include="Boss2Tail.cpp" />
     <ClCompile Include="Boss2TailBody.cpp" />
+    <ClCompile Include="Boss3Eye.cpp" />
+    <ClCompile Include="Boss3Eyebrow.cpp" />
+    <ClCompile Include="Boss3EyePupil.cpp" />
     <ClCompile Include="Boss3Hand.cpp" />
+    <ClCompile Include="Boss3Mouth.cpp" />
+    <ClCompile Include="Boss3HandPart.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />
@@ -258,6 +271,9 @@
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
+    <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="LaserTurret.cpp" />
+    <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />

@@ -13,7 +13,7 @@ private:
 	virtual ~CTransform();
 
 public:
-	const _matrix*		Get_WorldMatrixPointer() { return &m_matWorld; }
+	const _matrix*	Get_WorldMatrixPointer() { return &m_matWorld; }
 	void				Get_Info(INFO eType, _vec3* pInfo)
 	{
 		*pInfo = m_vInfo[eType];
@@ -64,6 +64,7 @@ public:
 
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
+	
 public:
 	HRESULT		Ready_Transform(void);
 	virtual		_int	Update_Component(const _float& fTimeDelta);
@@ -101,6 +102,7 @@ public:
 private:
 	CTransform* m_Parent;
 	vector<CTransform*> m_Child;
+	void		Set_ParentTransform(CGameObject* pParentObject, _float fX, _float fY, _float fZ);
 
 public:
 	_bool		m_bIsStatic = true;

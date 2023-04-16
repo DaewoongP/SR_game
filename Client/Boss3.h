@@ -1,14 +1,21 @@
 #pragma once
+#include "Include.h"
 #include "Cube.h"
+
+BEGIN(Engine)
+
+class CRcTex;
+
+END
 
 class CBoss3 : public CCube
 {
 	typedef enum Boss3State
 	{
-		B3_IDLE,		// Æò»ó½Ã
-		B3_ATTACK,		// ³»·Á Âï±â °ø°İ
-		B3_SHOOT,		// ÃÑ¾Ë ½î´Â °ø°İ
-		B3_DEAD			// »ç¸Á
+		B3_IDLE,		// ï¿½ï¿½ï¿½ï¿½
+		B3_ATTACK,		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		B3_SHOOT,		// ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		B3_DEAD			// ï¿½ï¿½ï¿½
 	}BOSS3;
 
 private:
@@ -17,42 +24,79 @@ private:
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
-	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual _int Update_Too(const _float & fTimeDelta);
 	virtual _int Update_Top(const _float & fTimeDelta);
+	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Top() override;
+
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 	virtual void SwapTrigger() override;
 
+	void MakeChain();
+
+	_int Get_ATKCount() { return m_iATKCount; }
+
+
 private:
 	HRESULT Add_Component(void);
-	void	State_Change(const _float & fTimeDelta);
-
-	void	FollowPlayer(const _float & fTimeDelta);	// Ãß°İ ÈÄ ³»·ÁÂï±â¸¦ ½ÃÀÛÇÒ ÇÔ¼ö
-	void	BossAttack(const _float & fTimeDelta);		// ³»·ÁÂï´Â °ø°İ
+	void	LookAtPlayer();								// í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œ ëª¸ì„ ëŒë¦¼
+	void	FollowPlayer(const _float & fTimeDelta);	// ì¶”ê²© í›„ ë‚´ë ¤ì°ê¸°ë¥¼ ì‹œì‘í•  í•¨ìˆ˜
+	void	BossAttack(const _float & fTimeDelta);		// ë‚´ë ¤ì°ëŠ” ê³µê²©
+	void	ShootBullet(const _float & fTimeDelta);		// ì´ì•Œ ì˜ëŠ” ê³µê²©
 
 private:
-	_bool   m_bCreateHand;		// ÇÑ¹ø¸¸ ¾ç ¼Õ »ı¼º
-	CGameObject* m_pBossLeft;	// ¿Ş¼Õ ÁÖ¼Ò
-	CGameObject* m_pBossRight;	// ¿À¸¥¼Õ ÁÖ¼Ò
-	
-	_float  m_fXAngle;			// ÇÃ·¹ÀÌ¾î ÀüÈ¯ ½Ã xÃà È¸Àü °ª
-	_float	m_fSpeed;			// ÀÌµ¿ ¼Óµµ
-	_float  m_fAttackCoolDown;	// °ø°İ Äğ´Ù¿î
-	_float  m_fCoolDown;		// Ãß°İ Äğ´Ù¿î
+	_bool   m_bCreateHand;			// í•œë²ˆë§Œ ì–‘ì† ìƒì„± + í‘œì • ìƒì„±
+	CGameObject* m_pBossLeft;		// ì™¼ì† ì£¼ì†Œ
+	CGameObject* m_pBossRight;		// ì˜¤ë¥¸ì† ì£¼ì†Œ
+	CGameObject* m_pBossLeftPart;
+	CGameObject* m_pBossRightPart;
+	CGameObject* m_pBossLeftPart1;
+	CGameObject* m_pBossRightPart1;
 
-	BOSS3	m_eCurState;
-	BOSS3	m_ePreState;
+
+
+	CGameObject* m_pBossLeftEye;	// ì™¼ëˆˆ ì£¼ì†Œ	
+	CGameObject* m_pBossRightEye;	// ì˜¤ë¥¸ëˆˆ ì£¼ì†Œ
+	CGameObject* m_pBossLeftPupil;	// ì™¼ëˆˆë™ì ì£¼ì†Œ	
+	CGameObject* m_pBossRightPupil;	// ì˜¤ë¥¸ëˆˆë™ì ì£¼ì†Œ
+	CGameObject* m_pLeftEyebrow;	// ì™¼ ëˆˆì¹ ì£¼ì†Œ
+	CGameObject* m_pRightEyebrow;	// ì˜¤ë¥¸ ëˆˆì¹ ì£¼ì†Œ
+	CGameObject* m_pMouth;			// ë³´ìŠ¤3 ì…
+
+	_float  m_fXAngle;			// í”Œë ˆì´ì–´ ì „í™˜ ì‹œ xì¶• íšŒì „ ê°’
+	_float	m_fSpeed;			// ì´ë™ ì†ë„
+	_float  m_fAttackCoolDown;	// ê³µê²© ì¿¨ë‹¤ìš´
+	_float  m_fCoolDown;		// ì¶”ê²© ì¿¨ë‹¤ìš´
+	_float  m_fShootCoolDown;	// ì‚¬ê²© ì¿¨ë‹¤ìš´
+	_float	m_fShootterm;
+
+	_float	m_fPreToo;			// ì •ê·œí™”ëœ ì´ì „ íˆ¬ë”” ê°’ì„ ì €ì¥í•´ë‘ 
+	_float  m_fPreTop;			// ì´ì „ íƒ‘ë”” ê°’ì„ ì €ì¥í•´ë‘ 
+
+	_float  m_fSaveToo;
+	_float  m_fSaveTop;
+
+	_bool m_bATKEnd=false;
+	_int m_iBossHp = 2; //ì¶”í›„ì— ìŠ¤í…Œì´ì§€ë¡œ ì˜®ê²¨ì•¼í•¨
+	_bool m_bATKCnt; //ì „ê¸°ê³µê²©ì„í• ì§€ì•ˆí• ì§€íŒë‹¨
+	_int m_iATKCount;// ì¹´ìš´íŠ¸ 3ì´ë˜ë©´ ì „ê¸°ê³µê²©
+	_bool m_bShoot = true;
+
+
+	_vec3 m_vPrePos;
+
+	Engine::CShadow* m_pShadowCom;
+
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;
-
 };
 
 #define BOSS3_CHASE 1.5f
