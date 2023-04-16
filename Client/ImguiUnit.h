@@ -40,6 +40,11 @@ private:
 	int m_iPortalCubeCount;					// 포탈 큐브 개수
 	CUBE_DIR	m_tPortalCubeDir;			// 포탈 큐브 방향
 
+	// 맵 오브젝트 중 레이저 터렛 관련
+	vector<_int> m_vecLaserTurretDir;		// 레이저 터렛 방향 저장용
+	CUBE_DIR	m_tLaserTurretDir;			// 레이저 터렛 방향
+	int			m_iLaserTurretCount;		// 레이저 터렛 개수
+
 	// 스테이지 저장용 변수
 	_int m_iStageNumber;
 
