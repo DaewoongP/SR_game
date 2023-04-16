@@ -2273,6 +2273,8 @@ void CBoss2::ReadyPartten()
 
 	func.push_back(&CBoss2::Do_Standing);
 	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_SummonRock);
+	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Throw);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_ThrowEnd);
@@ -2462,6 +2464,11 @@ void CBoss2::Do_Standing(const _float& fTimeDelta)
 
 void CBoss2::Do_SummonRock(const _float& fTimeDelta)
 {
+	//바위 소환
+
+	m_dwRestTime = 3.0f;
+
+	m_iCurrentActionIdx++;
 }
 
 void CBoss2::Do_Throw(const _float& fTimeDelta)
