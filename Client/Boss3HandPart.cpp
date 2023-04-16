@@ -22,7 +22,6 @@ HRESULT CBoss3HandPart::Ready_GameObject(_vec3& vPos,_int iIndex)
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 
 	m_pTransform->m_bIsStatic = true;
-
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 	NULL_CHECK_RETURN(m_pBoss3, E_FAIL);
 
@@ -47,110 +46,79 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
-		if (!lstrcmp(m_pTag, L"Boss3LPart"))
+		if (!lstrcmp(m_pTag, L"Boss3LPart")||!lstrcmp(m_pTag, L"Boss3LPartShadow"))
 		{
 		
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.3f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
-			//Rot2Hand();
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f,5.f);
+			if(!lstrcmp(m_pTag, L"Boss3LPartShadow"))
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
+		
 
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3RPart"))
+		else if (!lstrcmp(m_pTag, L"Boss3RPart")||!lstrcmp(m_pTag, L"Boss3RPartShadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.3f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			if(!lstrcmp(m_pTag, L"Boss3RPartShadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
-			//Rot2Hand();
 
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+			
 
 		}
-		else if(!lstrcmp(m_pTag, L"Boss3LPart1"))
+		else if(!lstrcmp(m_pTag, L"Boss3LPart1") || !lstrcmp(m_pTag, L"Boss3LPart1Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
 			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+			if (!lstrcmp(m_pTag, L"Boss3LPart1Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3RPart1"))
+		else if (!lstrcmp(m_pTag, L"Boss3RPart1") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
 			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
+			if (!lstrcmp(m_pTag, L"Boss3RPart1Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
 
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3LPart2"))
+		else if (!lstrcmp(m_pTag, L"Boss3LPart2") || !lstrcmp(m_pTag, L"Boss3LPart2Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-			
+			if (!lstrcmp(m_pTag, L"Boss3LPart2Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3RPart2"))
+		else if (!lstrcmp(m_pTag, L"Boss3RPart2") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-
+			if (!lstrcmp(m_pTag, L"Boss3RPart2Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3LPart3"))
+		else if (!lstrcmp(m_pTag, L"Boss3LPart3") || !lstrcmp(m_pTag, L"Boss3LPart3Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
 			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
-
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-
+			if (!lstrcmp(m_pTag, L"Boss3LPart3Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3RPart3"))
+		else if (!lstrcmp(m_pTag, L"Boss3RPart3") || !lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
 			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
-
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-
+			if (!lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
+				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
-		else if (!lstrcmp(m_pTag, L"Boss3LPart4"))
-		{
-			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.9f);
-			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
-
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-
-		}
-		else if (!lstrcmp(m_pTag, L"Boss3RPart4"))
-		{
-			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.9f);
-			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
-
-			//Rot2Hand();
-
-			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
-
-		}
-
-
-
+	
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -179,39 +147,15 @@ void CBoss3HandPart::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(m_iIndex);
+	if (!lstrcmp(m_pTag, L"Boss3LPartShadow") || !lstrcmp(m_pTag, L"Boss3RPartShadow")||
+		!lstrcmp(m_pTag, L"Boss3LPart1Shadow") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow")||
+		!lstrcmp(m_pTag, L"Boss3LPart2Shadow") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow")||
+		!lstrcmp(m_pTag, L"Boss3LPart3Shadow") || !lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
+		m_pTextureCom2->Set_Texture(m_iIndex);
+
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
-}
-
-void CBoss3HandPart::Rot2Hand()
-{
-	_vec3 vDir,vRight;
-
-
-	if (!lstrcmp(m_pTag, L"Boss3LPart"))
-	{
-		D3DXVec3Normalize(&vRight, &m_pTransform->m_vInfo[INFO_RIGHT]);
-		D3DXVec3Normalize(&vDir,&( m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS] - m_pTransform->m_vInfo[INFO_POS]));
-		_float fAngle = acosf(D3DXVec3Dot(&vRight, &vDir));
-		
-		m_pTransform->Rotation(ROT_Z, fAngle);
-
-
-	}
-	if (!lstrcmp(m_pTag, L"Boss3RPart"))
-	{
-		D3DXVec3Normalize(&vRight, &m_pTransform->m_vInfo[INFO_RIGHT]);
-		D3DXVec3Normalize(&vDir, &(m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS] - m_pTransform->m_vInfo[INFO_POS]));
-		_float fAngle = acosf(D3DXVec3Dot(&vRight, &vDir));
-
-		m_pTransform->Rotation(ROT_Z, fAngle);
-
-
-	}
-
-
-
 }
 
 
@@ -226,6 +170,10 @@ HRESULT CBoss3HandPart::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_HandPart", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_HandPart", pComponent });
+
+	pComponent = m_pTextureCom2 = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_HandPart_Shadow", this));
+	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Boss3_HandPart_Shadow", pComponent });
 
 	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
