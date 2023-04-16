@@ -87,7 +87,7 @@ public:
 		trans->m_Child.push_back(this); }
 	CTransform* GetParent() { return m_Parent; }
 	vector<CTransform*> GetChildren() { return m_Child; }
-	CTransform * GetChild(int index) { 
+	CTransform * GetChild(size_t index) { 
 		if (index <= m_Child.size())
 		return m_Child[index]; 
 	else 

@@ -30,11 +30,9 @@ HRESULT CLogoCamera::Ready_GameObject(void)
 
 _int CLogoCamera::Update_GameObject(const _float & fTimeDelta)
 {
-
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matViewSpace);
 
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProjection);
-	D3DXMatrixRotationZ(&m_matProjection, D3DXToRadian(45));
 
 	__super::Update_GameObject(fTimeDelta);
 

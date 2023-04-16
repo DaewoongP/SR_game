@@ -36,7 +36,6 @@ HRESULT CLogo::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
-	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
 	return S_OK;
