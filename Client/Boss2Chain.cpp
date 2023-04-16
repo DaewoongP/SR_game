@@ -2,7 +2,7 @@
 #include "Boss2Chain.h"
 
 CBoss2Chain::CBoss2Chain(LPDIRECT3DDEVICE9 pGraphicDev):
-	CGameObject(pGraphicDev)
+	CBoss2Parts(pGraphicDev)
 {
 }
 

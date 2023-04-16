@@ -2,7 +2,7 @@
 #include "Boss2Foot.h"
 
 CBoss2Foot::CBoss2Foot(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 
@@ -14,7 +14,10 @@ HRESULT CBoss2Foot::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTextureCom->Add_Anim(L"Idle", 0, 12, 2, true);
+	m_pTransform->m_vScale = _vec3(1, 0.5f, 1);
+	m_pTextureCom->Add_Anim(L"Idle", 7,9, 1, true);
+	m_pTextureCom->Add_Anim(L"Paper", 0, 1, 1, true);
+	m_pTextureCom->Add_Anim(L"Jump", 0, 7, 1, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	return S_OK;

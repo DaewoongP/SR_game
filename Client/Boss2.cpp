@@ -16,6 +16,7 @@
 #include "Boss2Chain.h"
 #include "Boss2JointSpot.h"
 #include "AbstractFactory.h"
+#include "Spike.h"
 
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
@@ -1258,7 +1259,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0,0,0) + _vec3(2,-3,-0.1f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
+					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
 					0.f//actionTime
 				});
@@ -1506,7 +1507,22 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 	{
 		m_bIsOnGround = true;
 		m_pAnimation_Body->SetAnimation(L"Idle");
+		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Idle");
+		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Idle");
+		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
+		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+	}
+
+	if (dynamic_cast<CSpike*>(collision->otherObj))
+	{
+		//하얀색으로 반짝이게
+
+
+		//2초동안 rest
+		m_dwRestTime = 2.0f;
+
+		//2초동안 무적임.
 	}
 		
 	__super::OnCollisionEnter(collision);
@@ -1605,6 +1621,11 @@ void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 	originlen = _vec3(m_fJumpPos[m_iJumpPosidx] - m_pTransform->m_vInfo[INFO_POS]);
 	D3DXVec3Normalize(&_dir, &originlen);
 
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Paper");
+
 	m_pTransform->m_vInfo[INFO_POS] += _dir * (0.5f-m_dwActionTime);
 	if (D3DXVec3Length(&originlen) <1.f)
 	{
@@ -1618,6 +1639,12 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
 	//ê·¸ëƒ¥ ?„ëž˜ë¡?addforceì¤„ê±°??
 	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
+
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Jump");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Jump");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Jump");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Jump");
+
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
 }
@@ -1628,6 +1655,10 @@ void CBoss2::Do_Hurray(const _float & fTimeDelta)
 	m_pAnimation_Body->SetAnimation(L"Punch");
 	//애니메이션 종료까지 대기
 	CheckIsLastActionIdx();
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Paper");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Paper");
 	m_dwRestTime = 2.0f;
 }
 
@@ -1644,6 +1675,10 @@ void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 	}
 	//손 들어갈떄까지 대기
 	CheckIsLastActionIdx();
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Idle");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Idle");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
+	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
 	m_dwRestTime = 4.0f;
 }
 

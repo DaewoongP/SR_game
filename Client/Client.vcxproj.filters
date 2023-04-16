@@ -391,6 +391,8 @@
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClInclude>
     <ClInclude Include="Boss2JointSpot.h" />
+    <ClInclude Include="Boss2Parts.h" />
+    <ClInclude Include="Boss2Stone.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -600,5 +602,7 @@
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClCompile>
     <ClCompile Include="Boss2JointSpot.cpp" />
+    <ClCompile Include="Boss2Parts.cpp" />
+    <ClCompile Include="Boss2Stone.cpp" />
   </ItemGroup>
 </Project>

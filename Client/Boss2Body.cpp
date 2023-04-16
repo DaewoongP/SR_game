@@ -2,7 +2,7 @@
 #include "Boss2Body.h"
 
 CBoss2Body::CBoss2Body(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 
