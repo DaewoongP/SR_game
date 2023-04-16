@@ -113,6 +113,8 @@ public:
 	
 	_matrix		m_matRT;
 
+	_matrix		m_matPerantScale;
+
 	_bool		m_bMove;
 
 	//쉐이크 변수

@@ -735,12 +735,18 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 			//LeftFront
 			{
+				//0번항목?
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-2,0),//trans
+					//원래 위치					추가될 윛
+					_vec3(0.0f,0.0f,0.0f) + _vec3(-1,-2,0),//trans
+					//원래 회전값		추가될 회전값
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					//스케일
 					_vec3(0.f,0.f,0.f),//scale
+					//애니메이션 재생 총시간
 					0.2f,//tilltime
+					//시작 시간
 					0.f//actionTime
 				});
 
@@ -1764,17 +1770,18 @@ void CBoss2::ReadyPartten()
 	funcAction.reserve(B2_END);
 	
 	BOSS2_STATE_FUNC func; //idle
-	func.push_back(&CBoss2::Do_Jump_Ready);
+
+	func.push_back(&CBoss2::Do_Standing);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
+	func.push_back(&CBoss2::Do_SummonRock);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
+	func.push_back(&CBoss2::Do_Throw);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	func.push_back(&CBoss2::Do_Idle);
-	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ThrowEnd);
 	funcAction.push_back(func);
 	func.clear();
+
+	
 
 	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
@@ -1978,6 +1985,37 @@ void CBoss2::CheckIsLastActionIdx()
 		SetPartten();
 	else
 		m_iCurrentActionIdx++; 
+}
+
+void CBoss2::Do_Standing(const _float& fTimeDelta)
+{
+	m_pAnimation_Body->SetAnimation(L"HandsUp");
+
+	m_dwRestTime = 3.0f;
+	
+	m_iCurrentActionIdx++;
+}
+
+void CBoss2::Do_SummonRock(const _float& fTimeDelta)
+{
+	//바위 소환
+
+	m_dwRestTime = 3.0f;
+
+	m_iCurrentActionIdx++;
+}
+
+void CBoss2::Do_Throw(const _float& fTimeDelta)
+{
+	m_pAnimation_Body->SetAnimation(L"Throwing");
+	m_dwRestTime = 1.0f;
+
+	m_iCurrentActionIdx++;
+}
+
+void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
+{
+	m_pAnimation_Body->SetAnimation(L"ThrowEnd");
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

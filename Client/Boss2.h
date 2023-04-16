@@ -85,7 +85,17 @@ private:
 	void		ReadyPartten();
 	void		CheckIsLastActionIdx();
 
-private:
+	//던지기
+	void		Do_Standing(const _float& fTimeDelta);
+	//쉬기
+	//바위 소환 
+	void		Do_SummonRock(const _float& fTimeDelta);
+	//쉬기
+	//손만 내리기
+	void		Do_Throw(const _float& fTimeDelta);
+	//다시 재위치
+	void		Do_ThrowEnd(const _float& fTimeDelta);
+private:	
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;
 	_int		m_iCurrentActionIdx;
