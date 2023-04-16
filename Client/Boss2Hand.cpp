@@ -25,9 +25,8 @@ HRESULT CBoss2Hand::Ready_GameObject(_vec3 & vPos)
 
 	m_fStartY = vPos.y;
 
-	m_pCollider->Set_BoundingBox(_vec3(9,5,3));
+	m_pCollider->Set_BoundingBox(_vec3(9,5,1));
 	m_pCollider->Set_BoundOffset(_vec3(0.0f, -(m_pTransform->m_vScale.y - m_pCollider->Get_BoundSize().y*0.5f), -1.0f));
-	m_pCollider->m_bIsTrigger = true;
 
 	m_pRigid->m_bUseGrivaty = false;
 	//충돌 전부 OFF
