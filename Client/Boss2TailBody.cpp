@@ -6,7 +6,7 @@
 
 
 CBoss2TailBody::CBoss2TailBody(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 
@@ -19,7 +19,9 @@ HRESULT CBoss2TailBody::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 
-	
+	m_OriginTexture = 0;
+	m_WhiteTexture = 5;
+	m_CurrentTexture = m_OriginTexture;
 
 	m_bInit = false;
 
@@ -209,7 +211,7 @@ void CBoss2TailBody::LateUpdate_GameObject(void)
 void CBoss2TailBody::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }

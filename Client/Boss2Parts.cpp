@@ -24,14 +24,18 @@ _int CBoss2Parts::Update_GameObject(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	//애니메이션 사용하도록 세팅된 친구라면? 애니메이션 재생
-	if (m_UseAnim)
-		m_pTextureCom->m_bUseFrameAnimation = true;
-	else
-		m_CurrentTexture = m_OriginTexture;
+	
 
 	//타이머가 0이라면 이거 수행하지마.
 	if (m_dwTimer < 0)
+	{
+		if (m_UseAnim)
+			m_pTextureCom->m_bUseFrameAnimation = true;
+		else
+			m_CurrentTexture = m_OriginTexture;
 		return 0;
+	}
+		
 	//
 	SetTexture_Blink((((int)(m_dwTimer * 10) / 4) % 2 == 0));
 

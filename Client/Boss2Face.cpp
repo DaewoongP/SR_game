@@ -21,6 +21,7 @@ HRESULT CBoss2Face::Ready_GameObject(_vec3 & vPos)
 	m_OriginTexture = 0;
 	m_WhiteTexture = 16;
 	m_CurrentTexture = m_OriginTexture;
+	m_UseAnim = true;
 	return S_OK;
 }
 
