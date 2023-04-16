@@ -26,6 +26,8 @@
 #include "Boss3.h"
 #include "Boss2.h"
 #include "Boss2Hand.h"
+#include "Toodee.h"
+#include "Topdee.h"
 
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
