@@ -54,6 +54,7 @@ _int CBoss2Parts::Update_Top(const _float & fTimeDelta)
 
 void CBoss2Parts::LateUpdate_GameObject(void)
 {
+	__super::LateUpdate_GameObject();
 }
 
 void CBoss2Parts::Render_GameObject(void)
