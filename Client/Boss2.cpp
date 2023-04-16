@@ -53,7 +53,6 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseGrivaty = false;
 
 	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
-	m_pScreamParticle->Set_SizeLifeTime(1.05f);
 	return S_OK;
 }
 
@@ -2272,6 +2271,7 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	BoundingBox box;
 	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
 	m_pScreamParticle->Set_BoundingBox(box);
+	m_pScreamParticle->Set_SizeLifeTime(1.07f);
 	m_pScreamParticle->Start_Particle();
 
 	m_dwRestTime = 2.0f;

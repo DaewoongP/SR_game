@@ -47,7 +47,7 @@ void CTexParticle::ResetParticle(Particle * particle)
 	particle->vPos = m_BoundingBox.Get_Center();
 	particle->fSizeoverLifetime = m_fSizeoverLifetime;
 	particle->fAge = 0.f;
-	particle->fLifeTime = 0.9f;
+	particle->fLifeTime = 1.5f;
 }
 
 _int CTexParticle::Update_Particle()
@@ -69,7 +69,11 @@ _int CTexParticle::Update_Particle()
 			m_Size *= it.fSizeoverLifetime;
 
 			if (it.fAge > it.fLifeTime)
+			{
+				m_Size = 1.f;
 				it.bIsAlive = false;
+			}
+				
 			continue;
 		}
 		if (m_pTexture->IsAnimationEnd(L"Idle") && true == it.bIsAlive)
