@@ -23,6 +23,7 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 	m_pShadow->m_bUseShadow = false;
 
+	m_pShadow->m_fOutLineScale = 2.0f;
 	m_pShadow->m_fOutLineHeight = 0.6f;
 
 	m_fStartZ = vPos.z;

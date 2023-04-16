@@ -69,6 +69,8 @@ void CKey::Render_GameObject(void)
 
 	m_pTextureCom->Set_Texture(0);
 
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
@@ -113,6 +115,11 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
 	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
 
 	return S_OK;
 }

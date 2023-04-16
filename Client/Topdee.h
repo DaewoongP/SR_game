@@ -8,6 +8,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CSlerpParticle;
+class CShadow;
 END
 class CTopdee : public Engine::CGameObject
 {
@@ -48,6 +49,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
+	Engine::CShadow*		m_pShadow;
 
 	//      LRUD
 	// 0000 0000

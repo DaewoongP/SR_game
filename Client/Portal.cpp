@@ -50,6 +50,7 @@ void CPortal::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -98,6 +99,11 @@ HRESULT CPortal::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider",pComponent });
 	m_pCollider->Set_BoundingBox({ 5.f, 5.f, 2.f });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
 
 	return S_OK;
 }

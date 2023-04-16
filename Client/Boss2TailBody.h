@@ -5,6 +5,8 @@
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
+class CShadow;
+
 END
 
 #define BOSETAILWAVESTART -90
@@ -30,6 +32,7 @@ public:
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
+	Engine::CShadow*		m_pShadow;
 
 	_bool m_bMetronome = true;
 	

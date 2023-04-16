@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 class CTexture;
+class CShadow;
+
 END
 
 
@@ -34,6 +36,8 @@ protected:
 	_int	m_CurrentTexture;
 	_bool	m_UseAnim;
 	Engine::CTexture*		m_pTextureCom;
+	Engine::CShadow*		m_pShadow;
+
 
 protected:
 	HRESULT		Add_Component(void);

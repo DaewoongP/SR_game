@@ -13,6 +13,7 @@ class CJumpParticle;
 class CLandingParticle;
 class CSparkParticle;
 class CSlerpParticle;
+class CShadow;
 
 END
 class CToodee : public Engine::CGameObject
@@ -57,6 +58,8 @@ private:
 	Engine::CLandingParticle*	m_pLandingParticle;
 	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CSlerpParticle*		m_pSlerpParticle;
+	Engine::CShadow*		m_pShadow;
+
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;
