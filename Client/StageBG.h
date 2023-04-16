@@ -7,7 +7,7 @@ BEGIN(Engine)
 
 class CRcTex;
 class CTexture;
-
+class CLeafParticle;
 END
 class CStage1BG : public Engine::CGameObject
 {
@@ -23,11 +23,14 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
+	void		Render_Particle();
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
-
+	Engine::CLeafParticle*	m_pLeafParticle0;
+	Engine::CLeafParticle*	m_pLeafParticle1;
+	Engine::CLeafParticle*	m_pLeafParticle2;
 
 public:
 	static CStage1BG*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

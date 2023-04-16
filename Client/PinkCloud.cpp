@@ -24,7 +24,8 @@ HRESULT CPinkCloud::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 2,2.f,1.0f });
+	m_pCollider->Set_BoundingBox({ m_pTransform->m_vScale.x + 3.f,2.f,1.0f });
+	m_pCollider->Set_Group(COL_ENV);
 	m_pCollider->m_bIsTrigger = false;
 	
 	return S_OK;
@@ -42,11 +43,13 @@ _int CPinkCloud::Update_GameObject(const _float & fTimeDelta)
 
 _int CPinkCloud::Update_Too(const _float & fTimeDelta)
 {
+	__super::Update_Too(fTimeDelta);
 	return S_OK;
 }
 
 _int CPinkCloud::Update_Top(const _float & fTimeDelta)
 {
+	__super::Update_Top(fTimeDelta);
 	return S_OK;
 }
 

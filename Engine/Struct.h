@@ -16,11 +16,12 @@ const	_ulong		FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
 typedef	 struct tagVertexTexture
 {
 	_vec3			vPos;		// 위치
+	_ulong			dwColor;	// 색상
 	_vec2			vTexUV;		// 색상
 
 }VTXTEX;
 
-const	_ulong		FVF_TEX = D3DFVF_XYZ | D3DFVF_TEX1;
+const	_ulong		FVF_TEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 typedef	 struct tagVertexCube
 {
@@ -34,6 +35,8 @@ const	_ulong		FVF_CUBE = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 
 typedef VTXCOL PTCCOL;
 typedef VTXTEX PTCTEX;
+
+const	_ulong		FVF_PTC = D3DFVF_XYZ | D3DFVF_DIFFUSE |	D3DFVF_TEX1;
 
 // D3DFVF_TEXCOORDSIZE3 : 텍스처의 UV값이 FLOAT형 3개의 크기 만큼이며 괄호 안 숫자의 의미는 본래 버텍스의 UV 값이 여러개 있을 수 잇는데 그 중 첫 번째 값을 사용하겠다는 의미
 
@@ -58,7 +61,7 @@ struct Anim_Info
 	_int iStartIdx;
 	_int iEndIdx;
 	_float fCycle;
-	bool bisLoop;
+	_bool bisLoop;
 };
 
 struct Particle
@@ -66,11 +69,14 @@ struct Particle
 	_vec3 vPos;
 	_vec3 vVelocity;
 	_vec3 vAccel;
-	float fLifeTime;
-	float fAge;
+	_float fGenTime = 0;
+	_float fLifeTime;
+	_float fAge;
+	_float fSizeoverLifetime;
 	_ulong dwColor;
 	_ulong dwColorFade;
-	bool bIsAlive;
+	_vec2	vTexUV;
+	_bool bIsAlive;
 };
 
 struct BoundingBox

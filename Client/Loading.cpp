@@ -26,8 +26,14 @@ unsigned int CLoading::Thread_Main(void * pArg)
 
 	switch (pLoading->Get_LoadingID())
 	{
-	case LOADING_STAGE:
-		iFlag = pLoading->Loading_ForStage();
+	case LOADING_LOGO:
+		iFlag = pLoading->Loading_ForLogo();
+		break;
+	case LOADING_STAGE1:
+		iFlag = pLoading->Loading_ForStage1();
+		break;
+	case LOADING_STAGE2:
+		iFlag = pLoading->Loading_ForStage2();
 		break;
 	
 	case LOADING_BOSS:
@@ -52,17 +58,28 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 	return S_OK;
 }
 
-_uint CLoading::Loading_ForStage(void)
+_uint CLoading::Loading_ForLogo(void)
+{
+	
+	m_bFinish = true;
+
+	Set_String(L"Loading Complete!!!!!!!!");
+
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage1(void)
 {
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
 	/*Set_String(L"Sound/Bgm Loading..........");
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	Engine::PlayBGM(L"9.wav", 0.5f);*/
 	Set_String(L"Sound/Effect Loading..........");
-	
+
 
 
 	Set_String(L"Texture Loading....");
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme3BgSpr/theme3BgSpr_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"None_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/None/Alpha0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 73)), E_FAIL);
@@ -77,7 +94,7 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Back_Pig_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/pigSpr/Back_pigSpr_%d.png", 9)), E_FAIL);
 	//Key
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"KeyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png", 11)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Key_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png",21)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Key_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/keySpr/keySpr_%d.png", 21)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spike_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/spikesSpr/spikesSpr_%d.png", 13)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fireball_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/b1FireballSpr/b1FireballSpr_%d.png", 9)), E_FAIL);
 
@@ -98,8 +115,10 @@ _uint CLoading::Loading_ForStage(void)
 
 	//구름
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Cloud_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/cloudSpr/Cloud_%d.png", 6)), E_FAIL);
+	// 번개구름
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LightningCloud_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/lightningcloudSpr/cloudSpr_%d.png", 6)), E_FAIL);
 	//번개
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Lightning_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/lightningSpr/lightningSpr_%d.png", 8)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Lightning_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/lightningSpr/lightningSpr_%d.png", 9)), E_FAIL);
 	// 스위치 큐브
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
 	
@@ -137,16 +156,66 @@ _uint CLoading::Loading_ForStage(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CrackBlock_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/CrackBlock.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SwitchCube_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/SwitchCube.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Portal_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/PortalCube.dds")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Gravity_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/GravBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage3Boss.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Boss3Hand%d.dds", 2)), E_FAIL);
-	
-	
+
+	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CBlockExp::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
+		9, 0.8f, 1, false)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SparkParticle", CSparkParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png",
+		10, 1.f, 2, false)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WalkParticle", CSparkParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png",
+		1, 0.8f, 2, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircularParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		0.7f,10, false, 1.f, 10.f)), E_FAIL);
+	// 2보스 땅찍기원형파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LandingCircularParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_1.png", 1,
+		1.f, 100, false, 2.f, 50.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		1.f, 15, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LandingParticle", CLandingParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		1.f, 4, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SlerpParticle", CSlerpParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,
+		1.f, 5, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LeafParticle0", CLeafParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/theme2LeafSpr/theme2LeafSpr_0.png", 1,
+		1.f, 4, true)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LeafParticle1", CLeafParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/theme2LeafSpr/theme2LeafSpr_1.png", 1,
+		1.f, 4, true)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LeafParticle2", CLeafParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/theme2LeafSpr/theme2LeafSpr_2.png", 1,
+		1.f, 4, true)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RainParticle", CRainParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/RainSpr/RainSpr_0.png", 1,
+		0.7f, 15, true)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
 	m_bFinish = true;
+	Set_String(L"Loading1 Complete!!!!!!!!");
+	return 0;
+}
 
-	Set_String(L"Loading Complete!!!!!!!!");
-
+_uint CLoading::Loading_ForStage2(void)
+{
+	m_bFinish = true;
+	Set_String(L"Loading2 Complete!!!!!!!!");
 	return 0;
 }
 

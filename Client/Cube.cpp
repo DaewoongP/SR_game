@@ -25,13 +25,13 @@ HRESULT CCube::Ready_GameObject(_vec3& vPos)
 
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-	__super::Update_GameObject(fTimeDelta);
+	// Dead처리 ㄴㄴ
+	int iExit = __super::Update_GameObject(fTimeDelta);
+	
   
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 
-	return 0;
+	return iExit;
 }
 
 void CCube::LateUpdate_GameObject(void)

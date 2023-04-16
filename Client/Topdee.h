@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CSlerpParticle;
 END
 class CTopdee : public Engine::CGameObject
 {
@@ -35,6 +36,8 @@ private:
 
 	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
 	void		DirApply(_int dir,_int& x,_int& y);
+
+	void		Set_SlerpParticle();
 public:
 	void		SetMovePos(COL_DIR dir);
 	void		SetMovePos_zero();
@@ -43,6 +46,7 @@ private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
+	Engine::CSlerpParticle*	m_pSlerpParticle;
 
 	//      LRUD
 	// 0000 0000

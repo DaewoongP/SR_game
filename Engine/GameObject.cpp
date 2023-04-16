@@ -1,4 +1,3 @@
-#include "GameObject.h"
 #include "stdafx.h"
 #include "GameObject.h"
 #include "Transform.h"
@@ -56,9 +55,9 @@ void CGameObject::LateUpdate_GameObject(void)
 
 void CGameObject::Render_GameObject(void)
 {
-	m_pGraphicDev->SetTexture(0, nullptr);
 	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 	{
+		m_pGraphicDev->SetTexture(0, nullptr);
 		iter.second->Render_Component();
 	}
 }

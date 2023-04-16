@@ -60,6 +60,13 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 
 		iResult = iter->second->Update_GameObject(fTimeDelta);
 
+		if (STAGE_END == iResult)
+		{
+			// 콜리전 삭제 필수
+			Engine::Clear_Collision();
+			return STAGE_END;
+		}
+
 		if (OBJ_DEAD == iResult)
 		{
 			Engine::Delete_Collider(iter->second);
@@ -82,13 +89,25 @@ void CLayer::LateUpdate_Layer(void)
 		else
 			iter.second->LateUpdate_Top();
 		iter.second->LateUpdate_GameObject();
-		// Ʈ���� ȣ��
+		// Æ®¸®°Å È£Ãâ
 		if (bPreState != g_Is2D)
 		{
 			iter.second->SwapTrigger();
 		}
 	}
 	bPreState = g_Is2D;
+}
+
+void CLayer::Delete_In_Layer()
+{
+	for (auto& iter = m_uMapObject.begin(); iter != m_uMapObject.end(); ++iter)
+	{
+		if (!lstrcmp(L"MapCube", iter->first) ||
+			!lstrcmp(L"Toodee", iter->first) ||
+			!lstrcmp(L"Topdee", iter->first))
+			continue;
+		iter->second->m_bDead = true;
+	}	
 }
 
 

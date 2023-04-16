@@ -22,6 +22,11 @@ public:
 	_bool			IsAnimationEnd(_tchar* name);
 	_tchar*			Get_AnimState() { return m_CurrentAnimName; }
 	
+	void			Reset_Anim() 
+	{
+		m_fTimer = 0;
+		m_CurIdx = 0; 
+	}
 public:
 	_bool			m_bUseFrameAnimation;
 

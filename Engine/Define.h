@@ -9,11 +9,14 @@
 
 #define		CUBEX		32
 #define		CUBEY		18
+// 큐브의 가장 낮은 y값
+#define		LANDY		2
 
 #define		MAX_STR		256
 
 #define			OBJ_NOEVENT		0
 #define			OBJ_DEAD		1
+#define			STAGE_END		2
 
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(NULL, TEXT(_message), L"System Message", MB_OK)

@@ -23,7 +23,6 @@ private:
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 	
 private:
-	CLoading*			m_pLoading;
 	static _bool				m_bStart;
 public:
 	static CLogo*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

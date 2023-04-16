@@ -26,7 +26,7 @@ CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
 	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0),
-	m_tPortalCubeDir(CD_END)
+	m_tPortalCubeDir(CD_UP)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
@@ -288,7 +288,8 @@ void CImguiUnit::CreateDefaultMapObject()
 void CImguiUnit::MapObjectInstall()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, );
+	if (nullptr == pStageLayer)
+		return;
 
 	if (Engine::Get_DIKeyState(DIK_F3) == Engine::KEYDOWN)
 	{
@@ -356,7 +357,7 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (10 == m_iMapObjectType) // 번개 구름
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer,
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer,
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
 		}
 
@@ -513,7 +514,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 
 		else if (10 == iter.iObjTypeNumber) // 번개 구름
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::CreateParent(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
 		}
 
 		else if (11 == iter.iObjTypeNumber && 2 > m_iPortalCubeCount) // 포탈 큐브

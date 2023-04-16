@@ -26,18 +26,36 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	m_pCollider->Set_Options({ 1.f, 1.f, 2.f }, COL_ENV, true);
+	
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pCircularParticle->Set_BoundingBox(box);
+	m_pCircularParticle->Set_Size(0.7f);
+	m_pCircularParticle->Set_Options(0.2f, 10.f);
+	box._offsetMin = { -0.2f, -0.2f, 0.f };
+	box._offsetMax = { 0.2f, 0.2f, 0.f };
+	m_pSparkParticle->Set_BoundingBox(box);
+	m_pSparkParticle->Set_AnimSpeed(0.05f);
+	m_pSparkParticle->Start_Particle();
+	m_pSparkParticle->Set_LifeTime(0.f);
+
+	// 원숭이 원형파티클 옵션
+	/*BoundingBox box;
+	box.Offset(vPos);
+	box._offsetMin = { -CUBEX, -CUBEY, -5.f };
+	box._offsetMax = { CUBEX, CUBEY, 5.f };
+	m_pCircleTest->Set_BoundingBox(box);
+	m_pCircleTest->Set_Size(3.f);
+	m_pCircleTest->Set_Options({ 0,1,0 }, 10.f, 50.f);*/
+
 	++iKeyCnt;
 	return S_OK;
 }
 
 _int CKey::Update_GameObject(const _float& fTimeDelta)
 {	
-	if (m_bDead)
-	{
-		if (iKeyCnt > 0)
-			--iKeyCnt;
+	if (m_pCircularParticle->IsDead())
 		return OBJ_DEAD;
-	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
@@ -52,17 +70,27 @@ void CKey::LateUpdate_GameObject(void)
 
 void CKey::Render_GameObject(void)
 {
+	if (-1 == m_pCircularParticle->Update_Particle())
+		return; // 렌더링을 먼저 없애기 위한 용도
+	m_pSparkParticle->Update_Particle();
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
+
 	__super::Render_GameObject();
 }
 
 void CKey::OnCollisionEnter(const Collision* collision)
 {	
-	m_bDead = true;
+	if (iKeyCnt > 0)
+	{
+		--iKeyCnt;
+		m_bDead = true;
+	}
+	m_pCircularParticle->Start_Particle();
 	__super::OnCollisionEnter(collision);
 }
 
@@ -86,6 +114,14 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider",pComponent });
+
+	pComponent = m_pSparkParticle = dynamic_cast<CSparkParticle*>(Engine::Clone_Proto(L"SparkParticle", this));
+	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SparkParticle", pComponent });
+
+	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
+	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
 
 	return S_OK;
 }

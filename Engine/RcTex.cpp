@@ -35,15 +35,19 @@ HRESULT CRcTex::Ready_Buffer(void)
 	// 버텍스 버퍼 메모리 공간의 접근을 막는 행위, 3번 인자는 버텍스 버퍼에 저장된 버텍스들 중 첫 번째 버텍스의 주소를 반환한다.
 
 	pVertex[0].vPos = { -1.f, 1.f, 0.f };
+	pVertex[0].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	pVertex[0].vTexUV = { 0.f, 0.f };
 
 	pVertex[1].vPos = { 1.f, 1.f, 0.f };
+	pVertex[1].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	pVertex[1].vTexUV = { 1.f, 0.f };
 
 	pVertex[2].vPos = { 1.f, -1.f, 0.f };
+	pVertex[2].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	pVertex[2].vTexUV = { 1.f, 1.f };
 
 	pVertex[3].vPos = { -1.f, -1.f, 0.f };
+	pVertex[3].dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	pVertex[3].vTexUV = { 0.f, 1.f };
 
 	m_pVB->Unlock();

@@ -213,5 +213,10 @@ HRESULT CGravityCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
 
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Gravity_Cube", this));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Gravity_Cube", pComponent });
+
+	
 	return S_OK;
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Portal.h"
 #include "AbstractFactory.h"
-#include"Export_Function.h"
+#include "Export_Function.h"
 #include "SwallowPortal.h"
 #include "Toodee.h"
 #include "Topdee.h"

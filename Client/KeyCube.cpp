@@ -21,26 +21,37 @@ HRESULT CKeyCube::Ready_GameObject(_vec3& vPos)
 
 	m_pCollider->Set_BoundingBox({ 2.f, 2.f,2.f });
 	m_pCollider->Set_Group(COL_ENV);
+
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pExpParticle->Set_BoundingBox(box);
+	m_pExpParticle->Set_Size(3.f);
 	return S_OK;
 }
 
 _int CKeyCube::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDead)
+	if (m_pExpParticle->IsDead())
 		return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
-	return S_OK;
+	return OBJ_NOEVENT;
 }
 
 void CKeyCube::LateUpdate_GameObject(void)
 {
 	if (CKey::iKeyCnt == 0)
 		m_bDead = true;
+	if (m_bDead)
+		m_pExpParticle->Start_Particle();
+
 	__super::LateUpdate_GameObject();
 }
 
 void CKeyCube::Render_GameObject(void)
 {
+	if (-1 == m_pExpParticle->Update_Particle())
+		return;
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture();
@@ -65,6 +76,10 @@ HRESULT CKeyCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pExpParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
+	NULL_CHECK_RETURN(m_pExpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
 
 	return S_OK;
 }

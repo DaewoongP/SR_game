@@ -69,9 +69,10 @@ public:
 	virtual		_int	Update_Component(const _float& fTimeDelta);
 	virtual		void	LateUpdate_Component(void);
 
+	void Move_Floating(const _float& fTimeDelta, _float fPower = 10.0f, _float fSpeed = 60.0f);
 
 	void		Update_Shake(_float fTimeDelta, _vec3& vPos);
-	//½¦ÀÌÅ© ½Ã°£, ¼¼±â ÀÔ·Â ÇÔ¼ö
+	//ï¿½ï¿½ï¿½ï¿½Å© ï¿½Ã°ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Ô¼ï¿½
 	void		Set_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL)
 	{
 		m_fShakeTimer = fDuration;
@@ -116,7 +117,8 @@ public:
 
 	_bool		m_bMove;
 
-	//½¦ÀÌÅ© º¯¼ö
+	_float		m_fFloating = 0.0f;
+	//ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½
 	_bool	m_bUseWeak = false;
 	_float	m_fWeakPoint = 0.0f;
 	_int	m_iShakeAxis = Engine::SHAKE_END;

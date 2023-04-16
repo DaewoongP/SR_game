@@ -132,6 +132,12 @@ void CTransform::LateUpdate_Component(void)
 {
 }
 
+void CTransform::Move_Floating(const _float & fTimeDelta, _float fPower, _float fSpeed)
+{
+	m_fFloating += fTimeDelta * fSpeed;
+
+	m_vInfo[INFO_POS].y += fPower * sinf(D3DXToRadian(m_fFloating));
+}
 void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 {
 	if (m_fShakeTimer > 0.0f)

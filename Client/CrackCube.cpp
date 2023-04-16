@@ -22,14 +22,21 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 	m_bCrackDead = false;
 	m_pCollider->Set_Group(COL_ENV);
 	m_bShakeDir = (rand() % 2);
+
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pExpParticle->Set_BoundingBox(box);
+	m_pExpParticle->Set_Size(3.f);
 	return S_OK;
 }
 
 _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_fBlockTime <= 0.f)
+	if (m_bDead)
 	{
-		m_bDead = true;
+		m_pExpParticle->Start_Particle();
+	}
+	if (m_pExpParticle->IsDead())
 		return OBJ_DEAD;
 	}
 	__super::Update_GameObject(fTimeDelta);
@@ -44,12 +51,17 @@ _int CCrackCube::Update_Too(const _float& fTimeDelta)
 		m_fBlockTime -= fTimeDelta;
 		_vec3 ShakePos = m_pTransform->m_vInfo[INFO_POS];;
 		Shaking(ShakePos, fTimeDelta);
+
+		if (m_fBlockTime <= 0.f)
+			m_bDead = true;
 	}
 	return 0;
 }
 
 _int CCrackCube::Update_Top(const _float& fTimeDelta)
 {
+	if (m_fBlockTime <= 0.f)
+		m_bDead = true;
 	return 0;
 }
 
@@ -60,6 +72,9 @@ void CCrackCube::LateUpdate_GameObject(void)
 
 void CCrackCube::Render_GameObject(void)
 {
+	if (-1 == m_pExpParticle->Update_Particle())
+		return;
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture();
@@ -101,6 +116,10 @@ HRESULT CCrackCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pExpParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
+	NULL_CHECK_RETURN(m_pExpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
 	return S_OK;
 }
 
