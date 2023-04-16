@@ -22,7 +22,6 @@ HRESULT CBoss2Foot::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_OriginTexture = 0;
 	m_WhiteTexture = 12;
-	m_UseAnim = true;
 	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }

@@ -2064,28 +2064,10 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
 			//13
-			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
+			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount()-1; i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
-			//테일 
-			{
-				CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
-				if (tr != nullptr)
-				{
-					dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
-				}
-
-				_tchar	_name[256] = {0};
-				for (int i = 0; i < 18; i++)
-				{
-					wsprintf(_name,L"Boss2Tail_%d", i);
-					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
-					if (tr != nullptr)
-					{
-						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
-					}
-				}
-			}
+				
 			m_bHealth--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;

@@ -3,7 +3,7 @@
 #include "Boss2.h"
 
 CBoss2Tail::CBoss2Tail(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CBoss2Parts(pGraphicDev), m_pPreTail(nullptr), m_fStartZ(0.0f), m_fZRatio(0.0f)
+	:CGameObject(pGraphicDev), m_pPreTail(nullptr), m_fStartZ(0.0f), m_fZRatio(0.0f)
 {
 }
 
@@ -20,9 +20,7 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 8.0f;
 	m_pRigid->m_bFreezePos_Z = true;
-	m_OriginTexture = 0;
-	m_WhiteTexture = 5;
-	m_CurrentTexture = m_OriginTexture;
+
 	m_fStartZ = vPos.z;
 
 	return S_OK;
@@ -156,7 +154,7 @@ void CBoss2Tail::LateUpdate_GameObject(void)
 void CBoss2Tail::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_CurrentTexture);
+	m_pTextureCom->Set_Texture(0);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
