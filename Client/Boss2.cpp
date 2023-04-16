@@ -2079,7 +2079,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				for (int i = 0; i < 18; i++)
 				{
 					wsprintf(_name,L"Boss2Tail_%d", i);
-					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
+					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transforms", ID_DYNAMIC);
 					if (tr != nullptr)
 					{
 						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();

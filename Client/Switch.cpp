@@ -4,12 +4,13 @@
 #include "Export_Function.h"
 
 bool CSwitch::m_bSwtichON = false;
-
+_int CSwitch::m_iCnt = 0;
 CSwitch::CSwitch(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
 	m_pSwitchCube(nullptr),
 	m_iTextureIndex(0)
 {
+	
 }
 
 CSwitch::~CSwitch()
@@ -71,14 +72,21 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 		{
 			m_bSwtichON = true;
 			m_iTextureIndex = 1;
+			CSwitch::m_iCnt++;
 		}			
 	}
 }
 
 void CSwitch::OnCollisionExit(const Collision * collision)
 {
-	m_bSwtichON = false;
-	m_iTextureIndex = 0;	
+	CSwitch::m_iCnt--;
+	if (m_iCnt == 0)
+	{
+		m_bSwtichON = false;
+
+		m_iTextureIndex = 0;
+	}
+		
 }
 
 HRESULT CSwitch::Add_Component(void)
