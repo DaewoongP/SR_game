@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_bHealth = 3;
-	m_eCurrentState = B2_STUMP;
+	m_eCurrentState = B2_PUNCH;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
@@ -2313,9 +2313,9 @@ void CBoss2::SetPartten()
 		if (ran <3)
 			m_eCurrentState = B2_STUMP;
 		else if (ran == 3)
-			m_eCurrentState = B2_STUMP;
+			m_eCurrentState = B2_PUNCH;
 		else
-			m_eCurrentState = B2_STUMP;
+			m_eCurrentState = B2_PUNCH;
 		break;
 	case B2_PUNCH:
 		if (ran <4)
