@@ -4,7 +4,6 @@
 #include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
-class CTexture;
 END
 
 class CBoss2Chain :
@@ -25,10 +24,8 @@ public:
 
 public:
 	void	Set_Joint(CTransform* trans01 , CTransform* trans02) { m_pTrans_Joint01 = trans01; m_pTrans_Joint02 = trans02;}
-
 private:
 	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 	
 	CTransform* m_pTrans_Joint01;
 	CTransform* m_pTrans_Joint02;

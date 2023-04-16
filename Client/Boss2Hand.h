@@ -13,7 +13,7 @@ END
 
 #define B2H_APPEAR_YPOS 40.0f
 
-#define B2H_DROP_YPOS 25.0f
+#define B2H_DROP_YPOS 32.0f
 
 
 enum BOSS2HAND_STATE

@@ -34,11 +34,14 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CRigidbody*		m_pRigid;
 
+
 	CTransform* m_pPreTail;
 
 	_bool m_bMetronome = true;
 
+	_float m_fStartZ;
 
+	_float m_fZRatio;
 private:
 	HRESULT		Add_Component(void);
 

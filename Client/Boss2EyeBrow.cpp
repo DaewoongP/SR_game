@@ -15,6 +15,9 @@ HRESULT CBoss2EyeBrow::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(0.7f, 0.7f, 0.7f);
+	m_OriginTexture = 0;
+	m_WhiteTexture = 1;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -42,7 +45,7 @@ void CBoss2EyeBrow::LateUpdate_GameObject(void)
 void CBoss2EyeBrow::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }

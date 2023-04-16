@@ -2,6 +2,11 @@
 #include "GameObject.h"
 #include "Include.h"
 
+BEGIN(Engine)
+class CTexture;
+END
+
+
 class CBoss2Parts :
 	public CGameObject
 {
@@ -19,12 +24,18 @@ public:
 	virtual void Render_Top(void) override;
 
 public:
-	void Blink_White();
-
-private:
+	void TextureBlinkStart() { m_pTextureCom->m_bUseFrameAnimation = false; m_dwTimer = 2.0f; }
+	void SetTexture_Blink(_bool isWhite) { if (isWhite) m_CurrentTexture = m_WhiteTexture; else m_CurrentTexture = m_OriginTexture;}
+	CTexture*	GetTextureCom() { return m_pTextureCom; }
+protected:
 	_float	m_dwTimer;
+	_int	m_OriginTexture;
+	_int	m_WhiteTexture;
+	_int	m_CurrentTexture;
+	_bool	m_UseAnim;
+	Engine::CTexture*		m_pTextureCom;
 
-private:
+protected:
 	HRESULT		Add_Component(void);
 
 public:

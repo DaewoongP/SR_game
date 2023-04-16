@@ -4,7 +4,6 @@
 #include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
-class CTexture;
 END
 
 class CBoss2Body :
@@ -30,7 +29,6 @@ public:
 		m_fMax = max; }
 private:
 	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 
 private:
 	_float		m_fMin;

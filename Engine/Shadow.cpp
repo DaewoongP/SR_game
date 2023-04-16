@@ -4,12 +4,12 @@
 #include "Export_Function.h"
 
 CShadow::CShadow(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CComponent(pGraphicDev)
+	:CComponent(pGraphicDev), m_bUseOutLine(true), m_fOutLineHeight(0.0f), m_fOutLineScale(0.0f), m_bUseShadow(true)
 {
 }
 
 CShadow::CShadow(const CShadow & rhs)
-	: CComponent(rhs)
+	: CComponent(rhs), m_bUseOutLine(rhs.m_bUseOutLine), m_fOutLineHeight(rhs.m_fOutLineHeight), m_fOutLineScale(rhs.m_fOutLineScale), m_bUseShadow(rhs.m_bUseShadow)
 {
 }
 
@@ -19,6 +19,8 @@ CShadow::~CShadow()
 
 HRESULT CShadow::Ready_CComponent()
 {
+	m_fOutLineHeight = 0.001f;
+	m_fOutLineScale = 0.5f;
 	return S_OK;
 }
 
@@ -28,27 +30,36 @@ void CShadow::Render_Shadow(CVIBuffer* VIBuffer)
 
 	m_pGraphicDev->GetTransform(D3DTS_WORLD, &matWorld);
 
-	_vec3 vOutLineScale = { 1.05f, 1.05f, 1.0f };
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	D3DXMATRIX matOutLine;
+	D3DXMATRIX matWorldStaticZ;
 
-	D3DXMatrixScaling(&matOutLine, vOutLineScale.x, vOutLineScale.y, vOutLineScale.z);
+	if (m_bUseOutLine)
+	{
+		_vec3 vOutLineScale = { 1.0f + 0.1f * m_fOutLineScale, 1.0f + 0.1f * m_fOutLineScale, 1.0f };
 
-	D3DXMATRIX matWorldStaticZ = matOutLine * matWorld;
+		D3DXMATRIX matOutLine;
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	
-	matWorldStaticZ._43 += 0.001f;
+		D3DXMatrixScaling(&matOutLine, vOutLineScale.x, vOutLineScale.y, vOutLineScale.z);
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
+		matWorldStaticZ = matOutLine * matWorld;
 
-	VIBuffer->Render_Buffer();
+		matWorldStaticZ._43 += m_fOutLineHeight;
 
-	matWorldStaticZ._43 = 11.0f;
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
+		VIBuffer->Render_Buffer();
+	}
 
-	VIBuffer->Render_Buffer();
+	if (m_bUseShadow)
+	{
+		matWorldStaticZ = matWorld;
+		matWorldStaticZ._43 = 11.0f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
+
+		VIBuffer->Render_Buffer();
+	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
