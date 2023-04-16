@@ -92,7 +92,7 @@ private:
 	//손만 내리기
 	void		Do_Throw(const _float& fTimeDelta);
 	//다시 재위치
-	void		Do_ThrowOend(const _float& fTimeDelta);
+	void		Do_ThrowEnd(const _float& fTimeDelta);
 private:	
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;

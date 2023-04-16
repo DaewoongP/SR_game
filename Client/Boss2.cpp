@@ -739,11 +739,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					//원래 위치					추가될 윛
 					_vec3(-2.1f,10.2f,0.0f),//trans
 					//원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(90)),//rotation
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
 					//스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				}); 
@@ -757,11 +757,11 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					//원래 위치					추가될 윛
 					_vec3(6.3f,10.2f,0.0f),//trans
 																 //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(90)),//rotation
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
 																		//스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				});
@@ -773,13 +773,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				clip->source[2].push_back(
 					ANIMINFO{
 					//원래 위치					추가될 윛
-					_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
+					_vec3(-6.3f,-3.4f,0.0f),//trans
 																//원래 회전값		추가될 회전값
 					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
 																		 //스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				});
@@ -791,13 +791,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				clip->source[3].push_back(
 					ANIMINFO{
 					//원래 위치					추가될 윛
-					_vec3(4.2f,-2.8f,0.5f) + _vec3(0.0f,-0.4f,0.0f),//trans
+					_vec3(0.0f,-3.4f,0.0f),//trans
 															   //원래 회전값		추가될 회전값
 					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
 																		 //스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				});
@@ -814,7 +814,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 																	   //스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				});
@@ -832,7 +832,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 																	   //스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
-					0.1f,//tilltime
+					1.0f,//tilltime
 						 //시작 시간
 					0.f//actionTime
 				});
@@ -844,7 +844,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					_vec3(-3.0f, 2.0f, 0.0f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
+					1.0f,//tilltime
 					0.f//actionTime
 				});
 			}
@@ -852,10 +852,10 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[7].push_back(
 					ANIMINFO{
-					_vec3(3.0f, 2.0f, 0.0f),//trans
+					_vec3(3.0f, 2.0f, -1.0f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
+					1.0f,//tilltime
 					0.f//actionTime
 				});
 			}
@@ -866,7 +866,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					_vec3(-3.0f, -2.0f, 0.0f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
+					1.0f,//tilltime
 					0.f//actionTime
 				});
 			}
@@ -874,10 +874,10 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[9].push_back(
 					ANIMINFO{
-					_vec3(3.0f, -2.0f, 0.0f),//trans
+					_vec3(3.0f, -2.0f, -1.0f),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
+					1.0f,//tilltime
 					0.f//actionTime
 				});
 			}
@@ -908,7 +908,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					//원래 위치					추가될 윛
 					_vec3(-6.3f,0.0f,0.0f),//trans
 																	   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(90)),//rotation
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
 																		//스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
@@ -924,9 +924,9 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					//원래 위치					추가될 윛
-					_vec3(-4.2f,0.0f,0.0f),//trans
+					_vec3(-4.2f,0.0f,-1.0f),//trans
 																	  //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(90)),//rotation
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
 																		//스케일
 					_vec3(0.f,0.f,0.f),//scale
 									   //애니메이션 재생 총시간
@@ -1052,7 +1052,175 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			}
 		}
 		m_pAnimation_Body->AddClip(L"Throwing", clip);
-		//============================================================================================================================================================================================================================================================================
+
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
+			clip->parts.push_back(m_pTransform->GetChild(1));//몸통
+			clip->parts.push_back(m_pTransform->GetChild(0));//머리
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
+			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
+			clip->source.resize(10);
+			clip->TotalTime = 2.0f;
+			clip->Useloop = false;
+
+			//LeftFront
+			{
+				//0번항목?
+				clip->source[0].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(-2.1f,-3.4f,0.0f),//trans
+										   //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		//스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+
+			//RightFront
+			{
+				//0번항목?
+				clip->source[1].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(0.0f,-3.4f,1.0f),//trans
+										   //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		//스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+			//_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
+			//LeftBack
+			{
+				//0번항목?
+				clip->source[2].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(2.1f,-2.8f,0.0f),//trans
+										  //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																	   //스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+
+			//RightBack
+			{
+				//0번항목?
+				clip->source[3].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(4.1f,-2.8f,0.0f),//trans
+																	   //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																	   //스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+			//BackBody
+			{
+				//0번항목?
+				clip->source[4].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(3.0f,-0.7f,0.0f),//trans
+																  //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																	   //스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+
+			//frontHead
+			{
+				//0번항목?
+				clip->source[5].push_back(
+					ANIMINFO{
+					//원래 위치					추가될 윛
+					_vec3(0.0f,-0.5f,0.0f),//trans
+										  //원래 회전값		추가될 회전값
+					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																	   //스케일
+					_vec3(0.f,0.f,0.f),//scale
+									   //애니메이션 재생 총시간
+					0.6f,//tilltime
+						 //시작 시간
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[6].push_back(
+					ANIMINFO{
+					_vec3(-1.0f,0.0f,0.0f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.6f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//joint
+			{
+				clip->source[7].push_back(
+					ANIMINFO{
+					_vec3(-1.0f, 0.0f, 1.0f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.6f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//발joint
+			{
+				clip->source[8].push_back(
+					ANIMINFO{
+					_vec3(0.0f, 0.0f, 0.0f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.6f,//tilltime
+					0.f//actionTime
+				});
+			}
+			//발joint
+			{
+				clip->source[9].push_back(
+					ANIMINFO{
+					_vec3(0.0f, 0.0f, 1.0f),//trans
+					_vec3(0,0,0) + _vec3(0,0,0),//rotation
+					_vec3(0.f,0.f,0.f),//scale
+					0.6f,//tilltime
+					0.f//actionTime
+				});
+			}
+		}
+		m_pAnimation_Body->AddClip(L"ThrowEnd", clip);
 
 
 		clip = new AnimClip();
@@ -2106,6 +2274,8 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Standing);
 	func.push_back(&CBoss2::Do_Rest);
 	func.push_back(&CBoss2::Do_Throw);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ThrowEnd);
 	funcAction.push_back(func);
 	func.clear();
 
@@ -2285,7 +2455,7 @@ void CBoss2::Do_Standing(const _float& fTimeDelta)
 {
 	m_pAnimation_Body->SetAnimation(L"HandsUp");
 
-	m_dwRestTime = 1.0f;
+	m_dwRestTime = 3.0f;
 	
 	m_iCurrentActionIdx++;
 }
@@ -2297,10 +2467,14 @@ void CBoss2::Do_SummonRock(const _float& fTimeDelta)
 void CBoss2::Do_Throw(const _float& fTimeDelta)
 {
 	m_pAnimation_Body->SetAnimation(L"Throwing");
+	m_dwRestTime = 1.0f;
+
+	m_iCurrentActionIdx++;
 }
 
-void CBoss2::Do_ThrowOend(const _float& fTimeDelta)
+void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 {
+	m_pAnimation_Body->SetAnimation(L"ThrowEnd");
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
