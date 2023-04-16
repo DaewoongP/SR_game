@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_bHealth = 3;
-	m_eCurrentState = B2_PUNCH;
+	m_eCurrentState = B2_SCREAM;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
@@ -82,7 +82,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CBoss2Body>::Create(L"Boss2Body", pStageLayer, _vec3(0.f, 0.0f, 0.0f), m_pTransform->GetChild(0)), E_FAIL);
 			m_pTransform->GetChild(0)->GetChild(7)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
 			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(0)->GetChild(7)->m_pGameObject)->SetRotAngle(30, 60);
-		}
+		}//8
 		//Body Joint (1)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
 		//Body Children
@@ -116,7 +116,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(0.0f, 0.0f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
 			m_pTransform->GetChild(1)->GetChild(13)->m_vScale = _vec3(0.0f, 0.0f, 0.0f);
 			m_pTransform->GetChild(1)->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
-		}
+		}//13
 
 		
     
@@ -322,7 +322,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-1.1f,1.4f,-0.2f),//trans
+					_vec3(-1.1f,1.4f,-0.21f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -330,7 +330,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.8f,-0.2f),//trans
+					_vec3(-2.1f,1.8f,-0.21f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -338,7 +338,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-3.1f,1.8f,-0.2f),//trans
+					_vec3(-3.1f,1.8f,-0.21f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -346,7 +346,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(-2.1f,1.4f,-0.2f),//trans
+					_vec3(-2.1f,1.4f,-0.21f),//trans
 					_vec3(0,0,0),//rotation
 					_vec3(0.7f,0.7f,0.7f),//scale
 					0.5f,//tilltime
@@ -358,7 +358,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(0.7f,1.4f,-0.2f),//trans
+				_vec3(0.7f,1.4f,-0.21f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -366,7 +366,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-0.3f,1.9f,-0.2f),//trans
+				_vec3(-0.3f,1.9f,-0.21f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -374,7 +374,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-1.3f,1.9f,-0.2f),//trans
+				_vec3(-1.3f,1.9f,-0.21f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -382,7 +382,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			});
 			clip->source[6].push_back(
 				ANIMINFO{
-				_vec3(-0.3f,1.4f,-0.2f),//trans
+				_vec3(-0.3f,1.4f,-0.21f),//trans
 				_vec3(0,0,0),//rotation
 				_vec3(0.7f,0.7f,0.7f),//scale
 				0.5f,//tilltime
@@ -2030,13 +2030,22 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
 	{
-		//하얀색으로 반짝이게
-
-
-		//2초동안 rest
-		m_dwRestTime = 2.0f;
-
-		//2초동안 무적임.
+		if (m_bAttackAble)
+		{
+			//8
+			for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
+				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
+					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+			//13
+			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount()-1; i++)
+				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
+					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+				
+			m_bHealth--;
+			m_dwRestTime = 2.0f;
+			m_bAttackAble = false;
+		}
+	
 	}
 		
 	__super::OnCollisionEnter(collision);
@@ -2132,6 +2141,7 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 void CBoss2::Do_Jump_01(const _float& fTimeDelta)
 {
 	_vec3 _dir, originlen;
+	m_pCollider->m_bIsTrigger = true;
 	originlen = _vec3(m_fJumpPos[m_iJumpPosidx] - m_pTransform->m_vInfo[INFO_POS]);
 	D3DXVec3Normalize(&_dir, &originlen);
 
@@ -2153,7 +2163,7 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 {
 	//ê·¸ëƒ¥ ?„ëž˜ë¡?addforceì¤„ê±°??
 	m_pRigid->AddForce(_vec3(0, -1, 0), 130, IMPULSE, fTimeDelta);
-
+	m_pCollider->m_bIsTrigger = false;
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Jump");
@@ -2215,61 +2225,47 @@ void CBoss2::Do_ScreamEnd(const _float & fTimeDelta)
 	CheckIsLastActionIdx();
 }
 
-//?„ìž¬ ?¤í…Œ?´íŠ¸ê°€ ê°™ì?ê²??„ë‹ˆ?¼ë©´ true ë°?ë³€ê²?
 void CBoss2::SetPartten()
 {
-	//100 ?ˆìª½???œë¤ ?œìˆ˜ ?ì„±
 	int ranIdx = 0;
-
-	while (true)
+	int ran = (rand() % 5) + 1;
+	m_ePreState = m_eCurrentState;
+	switch (m_eCurrentState)
 	{
-		ranIdx = (rand() + 1) % 100;
-		switch (ranIdx)
-		{
-		case 0: //30% idle
-			if (m_eCurrentState != B2_THROW)
-			{
-				m_ePreState = m_eCurrentState;
-				m_eCurrentState = B2_THROW;
-				m_iCurrentActionIdx = 0;
-				return;
-			}
-			break;
-		case 100: //40% jump   
-			m_ePreState = m_eCurrentState;
+	case B2_THROW:
+		if (ran <4)
 			m_eCurrentState = B2_JUMPING;
-			m_iCurrentActionIdx = 0;
-			return;
-			break;
-		case 70: //10% scream
-			if (m_eCurrentState != B2_SCREAM)
-			{
-				m_ePreState = m_eCurrentState;
-				m_eCurrentState = B2_SCREAM;
-				m_iCurrentActionIdx = 0;
-				return;
-			}
-			break;
-		case 80: // 10% punch
-			if (m_eCurrentState != B2_PUNCH)
-			{
-				m_ePreState = m_eCurrentState;
-				m_eCurrentState = B2_PUNCH;
-				m_iCurrentActionIdx = 0;
-				return;
-			}
-			break;
-		case 90: // 10% stump
-			if (m_eCurrentState != B2_STUMP)
-			{
-				m_ePreState = m_eCurrentState;
-				m_eCurrentState = B2_STUMP;
-				m_iCurrentActionIdx = 0;
-				return;
-			}
-			break;
-		}
+		else
+			m_eCurrentState = B2_SCREAM;
+		break;
+		break;
+	case B2_JUMPING:
+		if (ran <4)
+			m_eCurrentState = B2_JUMPING;
+		else
+			m_eCurrentState = B2_SCREAM;
+		break;
+	case B2_SCREAM:
+		if (ran <3)
+			m_eCurrentState = B2_STUMP;
+		else if (ran == 3)
+			m_eCurrentState = B2_STUMP;
+		else
+			m_eCurrentState = B2_STUMP;
+		break;
+	case B2_PUNCH:
+		if (ran <4)
+			m_eCurrentState = B2_JUMPING;
+		else
+			m_eCurrentState = B2_SCREAM;
+		break;
+		break;
+	case B2_STUMP:
+		//찍기후엔 무조건 점프
+		m_eCurrentState = B2_JUMPING;
+		break;
 	}
+	m_iCurrentActionIdx = 0;
 }
 
 void CBoss2::ReadyPartten()
@@ -2366,6 +2362,17 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
+
+	//던지기
+	func.push_back(&CBoss2::Do_Standing);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_SummonRock);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_Throw);
+	func.push_back(&CBoss2::Do_Rest);
+	func.push_back(&CBoss2::Do_ThrowEnd);
+	funcAction.push_back(func);
+	func.clear();
 	*/
 }
 
@@ -2373,26 +2380,6 @@ void CBoss2::Do_Rest(const _float& fTimeDelta)
 {
 	if (m_dwRestTime < 0)
 		CheckIsLastActionIdx();
-}
-
-void CBoss2::Do_Rest_grivity(const _float& fTimeDelta)
-{
-	if (g_Is2D)
-	{
-		m_pRigid->m_bUseGrivaty = true;
-	}
-	else
-	{
-		m_pRigid->m_bUseGrivaty = false;
-		m_pRigid->m_Velocity.y = 0;
-	}
-
-	if (m_dwRestTime < 0)
-	{
-		CheckIsLastActionIdx();
-		m_pRigid->m_bUseGrivaty = false;
-		m_pRigid->m_Velocity.y = 0;
-	}
 }
 
 void CBoss2::DoFlip()
@@ -2469,20 +2456,22 @@ void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
 	{
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity.y = 0;
+		m_bAttackAble = false;
 		CheckIsLastActionIdx();
+		return;
 	}
 		
 	if(m_bIsOnGround)
 		m_pRigid->m_AngularVelocity *= 0.9f;
 	if (g_Is2D)
-	{
 		m_pRigid->m_bUseGrivaty = true;
-	}
 	else
 	{
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity.y = 0;
 	}
+	m_bAttackAble = true;
+
 }
 
 void CBoss2::CheckIsLastActionIdx()

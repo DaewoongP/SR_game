@@ -15,6 +15,9 @@ HRESULT CBoss2Chain::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale = _vec3(1.0f, 1.0f, 1.0f);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_OriginTexture = 0;
+	m_WhiteTexture = 1;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -43,7 +46,7 @@ void CBoss2Chain::LateUpdate_GameObject(void)
 void CBoss2Chain::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
@@ -77,7 +80,7 @@ void CBoss2Chain::SetChain()
 	m_pTransform->m_vScale.x =
 		D3DXVec3Length(&_vec3(m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS])) * 0.5f;
 	//lerp (����Ʈ 01, ����Ʈ 02 , 0.5f) << ����Ʈ 1 2�� ����
-	m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTrans_Joint01->m_vInfo[INFO_POS], m_pTrans_Joint02->m_vInfo[INFO_POS],0.5f);
+	m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTrans_Joint01->m_vInfo[INFO_POS], m_pTrans_Joint02->m_vInfo[INFO_POS],0.45f);
 
 	//dir = ����Ʈ���� �Ÿ�
 	_vec3 dir = m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS];

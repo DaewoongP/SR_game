@@ -20,6 +20,9 @@ HRESULT CBoss2Foot::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Add_Anim(L"Jump", 0, 7, 1, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
+	m_OriginTexture = 0;
+	m_WhiteTexture = 12;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -48,7 +51,7 @@ void CBoss2Foot::LateUpdate_GameObject(void)
 void CBoss2Foot::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }

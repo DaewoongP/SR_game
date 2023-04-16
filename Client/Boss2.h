@@ -56,7 +56,6 @@ private:
 	void		Do_Jump_02(const _float& fTimeDelta);
 	//?�식?�턴
 	void		Do_Rest(const _float& fTimeDelta);
-	void		Do_Rest_grivity(const _float& fTimeDelta);
 	//벨로?�티 초기???�턴
 	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); m_pRigid->m_bUseGrivaty = false; CheckIsLastActionIdx(); }
 
@@ -70,7 +69,7 @@ private:
 	void		Do_LittleUp_Turn(const _float& fTimeDelta);
 	//착�??�다.
 	void		Do_Stump_02(const _float& fTimeDelta);
-	//?�전 감소 ?�턴
+	//?�전 감소 ?�턴m_bAttackAble
 	void		Do_Turn_Minus(const _float& fTimeDelta);
 	//만세!
 	void        Do_Hurray(const _float& fTimeDelta);
@@ -117,6 +116,7 @@ private:
 	_bool		m_bIsOnGround;
 	_bool		m_bInit;
 
+	_bool		m_bAttackAble;
 	_int		m_bHealth;
 
 private:
