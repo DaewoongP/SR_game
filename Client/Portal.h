@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CShadow;
 
 END
 
@@ -35,6 +36,7 @@ private:
 	Engine::CRcTex*    m_pBufferCom;
 	Engine::CTexture*  m_pTextureCom;
 	Engine::CCollider* m_pCollider;
+	Engine::CShadow*		m_pShadow;
 
 	CGameObject* m_pPlayer1;
 	CGameObject* m_pPlayer2;

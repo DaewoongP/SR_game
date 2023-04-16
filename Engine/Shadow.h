@@ -30,6 +30,7 @@ public:
 
 
 	_bool	m_bUseShadow;
+	_bool	m_fShadowScale;
 
 
 private:

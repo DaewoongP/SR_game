@@ -7,6 +7,8 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 class CCircularParticle;
+class CShadow;
+
 END
 
 
@@ -66,6 +68,8 @@ private:
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	Engine::CCircularParticle*	m_pFistparticle;
+	Engine::CShadow*		m_pShadow;
+
 private:
 	BOSS2HAND_STATE m_state;
 	_float			m_dwActionTimer;

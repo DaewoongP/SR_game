@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
+class CShadow;
 
 END
 class CSpike : public Engine::CGameObject
@@ -32,6 +33,8 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
+	Engine::CShadow*		m_pShadow;
+
 public:
 	static CSpike* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

@@ -236,6 +236,10 @@ HRESULT CBoss2TailBody::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
 
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
 	return S_OK;
 }
 

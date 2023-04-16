@@ -70,6 +70,8 @@ void CBoss2Hand::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 
@@ -115,6 +117,10 @@ HRESULT CBoss2Hand::Add_Component(void)
 	pComponent = m_pFistparticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
 	NULL_CHECK_RETURN(m_pFistparticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss2LandParticle", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
 	return S_OK;
 }
