@@ -60,13 +60,13 @@ void CSwitch::Render_GameObject(void)
 
 void CSwitch::OnCollisionEnter(const Collision * collision)
 {
-	// �Ͻ������ const ����ȭ�ؼ� �÷��̾��� �浹 ����� �о��. �̰� �´���� �𸣰��
 	COL_DIR	tToodeeDir = const_cast<Collision*>(collision)->Get_ColDir();
 
-	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || !lstrcmp(L"Pig", collision->otherObj->m_pTag))
+	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
+		!lstrcmp(L"Pig", collision->otherObj->m_pTag) ||
+		!lstrcmp(L"Boss2", collision->otherObj->m_pTag) ||
+		!lstrcmp(L"Boss2Hand", collision->otherObj->m_pTag))
 	{
-		// �������, ��� ��� �ϴ°� ���� ���� �ڵ� ���� �ڵ� �־���, 
-		// ������ ���ġ ��ü�� ť��� ������ Pos�� �ֱ� ������ �������
 		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir || DIR_LEFT == tToodeeDir || DIR_RIGHT == tToodeeDir)
 		{
 			m_bSwtichON = true;

@@ -5,6 +5,7 @@ CBoss2Parts::CBoss2Parts(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
 	m_dwTimer = 0;
+	m_UseAnim = false;
 }
 
 CBoss2Parts::~CBoss2Parts()
@@ -18,9 +19,22 @@ HRESULT CBoss2Parts::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss2Parts::Update_GameObject(const _float & fTimeDelta)
 {
-	m_dwTimer += fTimeDelta;
+	m_dwTimer -= fTimeDelta;
 
 	__super::Update_GameObject(fTimeDelta);
+
+	//애니메이션 사용하도록 세팅된 친구라면? 애니메이션 재생
+	if (m_UseAnim)
+		m_pTextureCom->m_bUseFrameAnimation = true;
+	else
+		m_CurrentTexture = m_OriginTexture;
+
+	//타이머가 0이라면 이거 수행하지마.
+	if (m_dwTimer < 0)
+		return 0;
+	//
+	SetTexture_Blink((((int)(m_dwTimer * 10) / 4) % 2 == 0));
+
 	return 0;
 }
 
@@ -49,14 +63,6 @@ void CBoss2Parts::Render_Too(void)
 
 void CBoss2Parts::Render_Top(void)
 {
-}
-
-void CBoss2Parts::Blink_White()
-{
-	if (m_dwTimer > 0.5f)
-	{
-		//색 변경 로직
-	}
 }
 
 HRESULT CBoss2Parts::Add_Component(void)

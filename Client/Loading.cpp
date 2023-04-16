@@ -127,16 +127,16 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
 	
 	//Boss2 머리털
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 5)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
 	//Boss2 공격용 팔
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Hand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/Boss2_Hand.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyeSpr/boss2EyeSpr_0.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_EyeBrow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyebrowSpr/boss2EyebrowSpr_0.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Face", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2FaceSpr/boss2FaceSpr_%d.png", 16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Jaw", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2JawSpr/boss2JawSpr_%d.png",16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Nose", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2NoseSpr/boss2NoseSpr_%d.png",8)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Foot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HandSpr/boss2HandSpr_%d.png", 12)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Chain", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/boss2LimbSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyeSpr/boss2EyeSpr_%d.png",2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_EyeBrow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyebrowSpr/boss2EyebrowSpr_%d.png",2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Face", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2FaceSpr/boss2FaceSpr_%d.png", 17)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Jaw", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2JawSpr/boss2JawSpr_%d.png",17)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Nose", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2NoseSpr/boss2NoseSpr_%d.png",9)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Foot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HandSpr/boss2HandSpr_%d.png", 13)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Chain", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/boss2LimbSpr_%d.png",2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Stone", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme2pigStatueSpr/theme2pigStatueSpr_0.png")), E_FAIL);
 	// 3보스 눈썹 + 눈알
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3EyeSpr/boss3EyeSpr_%d.png", 3)), E_FAIL);

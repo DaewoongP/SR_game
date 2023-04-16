@@ -13,7 +13,7 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	, m_pRedTex(nullptr)
 	, m_pGreenTex(nullptr)
 	, m_eColor(GREEN)
-	, m_bRender(false)
+	, m_bRender(true)
 {
 }
 

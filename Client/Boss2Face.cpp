@@ -18,6 +18,9 @@ HRESULT CBoss2Face::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_OriginTexture = 0;
+	m_WhiteTexture = 16;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -46,7 +49,7 @@ void CBoss2Face::LateUpdate_GameObject(void)
 void CBoss2Face::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }

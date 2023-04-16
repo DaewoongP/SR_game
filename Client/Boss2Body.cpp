@@ -16,6 +16,9 @@ HRESULT CBoss2Body::Ready_GameObject(_vec3 & vPos)
 	m_bIsMoveable = true;
 	m_BounusAngle_z = 0;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_OriginTexture = 0;
+	m_WhiteTexture = 5;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -59,7 +62,7 @@ void CBoss2Body::LateUpdate_GameObject(void)
 void CBoss2Body::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
