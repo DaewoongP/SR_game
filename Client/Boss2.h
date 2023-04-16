@@ -15,7 +15,7 @@ END
 
 enum BOSS2STATE
 {
-	B2_IDLE, //?�니메이??리깅/joint
+	B2_THROW,
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -56,8 +56,9 @@ private:
 	void		Do_Jump_02(const _float& fTimeDelta);
 	//?�식?�턴
 	void		Do_Rest(const _float& fTimeDelta);
+	void		Do_Rest_grivity(const _float& fTimeDelta);
 	//벨로?�티 초기???�턴
-	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); CheckIsLastActionIdx(); }
+	void		Do_ResetVelocity(const _float& fTimeDelta) { m_pRigid->m_Velocity = _vec3(0, 0, 0); m_pRigid->m_AngularVelocity = _vec3(0, 0, 0); m_pRigid->m_bUseGrivaty = false; CheckIsLastActionIdx(); }
 
 	void		Do_Idle(const _float& fTimeDelta) { m_pAnimation_Body->SetAnimation(L"Idle"); m_dwRestTime = 2.0f; CheckIsLastActionIdx();}
 	
@@ -77,6 +78,7 @@ private:
 	void        Do_SummonFist(const _float& fTimeDelta);
 	void        Do_Scream(const _float& fTimeDelta);
 	void		Do_ScreamEnd(const _float& fTimeDelta);
+	void		Do_ResetRot(const _float& fTimeDelta) { m_pTransform->m_vAngle = _vec3(0, 0, 0); CheckIsLastActionIdx();}
 
 	void		DoFlip();
 	void		SetPartten();

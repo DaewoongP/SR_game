@@ -15,6 +15,7 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
 	D3DXMatrixIdentity(&m_matWorld);
 	D3DXMatrixIdentity(&m_matBillX);
 	D3DXMatrixIdentity(&m_matBillY);
+	m_YZValue = 1.f;
 }
 
 CTransform::CTransform(const CTransform & rhs)
@@ -27,6 +28,7 @@ CTransform::CTransform(const CTransform & rhs)
 	,m_bMove(rhs.m_bMove)
 	, m_Parent(rhs.m_Parent)
 	, m_Child(rhs.m_Child)
+	, m_YZValue(rhs.m_YZValue)
 {
 	for (size_t i = 0; i < INFO_END; ++i)
 		m_vInfo[i] = rhs.m_vInfo[i];
@@ -237,6 +239,20 @@ _matrix CTransform::GetScaleMat()
 			m_vScale.z * m_Parent->Get_Scale().z);
 	}
 	return matScale;
+}
+
+void CTransform::SwapYZ()
+{
+	for (int i = 0; i <GetChildCount(); i++)
+		GetChild(i)->SwapYZ();
+	
+	m_matWorld._42 *= m_YZValue;
+	m_matWorld._43 *= m_YZValue;
+	
+	if (!g_Is2D)
+		m_YZValue = Lerp(m_YZValue, 0.8f, 0.1f);
+	else 
+		m_YZValue = Lerp(m_YZValue, 1.f, 0.1f);
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
