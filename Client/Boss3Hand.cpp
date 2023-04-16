@@ -78,7 +78,7 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
-	if(!m_pTransform->m_vInfo[INFO_POS].z == 5.f)
+	if(!(m_pTransform->m_vInfo[INFO_POS].z == 5.f))
 	{
 		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 	}
@@ -174,7 +174,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	if (1.5f < m_fCoolDown && 1.5f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
-		if(!m_pTransform->m_vInfo[INFO_POS].z > 8.f);
+		if(!(m_pTransform->m_vInfo[INFO_POS].z > 8.f))
 			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 

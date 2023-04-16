@@ -13,7 +13,8 @@
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(25.f), m_fXAngle(0.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fShootCoolDown(0.f), m_fPreToo(0.f), m_fPreTop(0.f),
+	m_fSpeed(25.f), m_fXAngle(0.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
+	m_fShootCoolDown(0.f), m_fPreToo(0.f), m_fPreTop(0.f),
 	m_bCreateHand(true)
 {
 	m_pBossLeft = nullptr;
@@ -144,7 +145,7 @@ _int CBoss3::Update_Top(const _float & fTimeDelta)
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
 
-	FollowPlayer(fTimeDelta);
+	//FollowPlayer(fTimeDelta);
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -154,6 +155,11 @@ _int CBoss3::Update_Top(const _float & fTimeDelta)
 void CBoss3::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
+}
+
+void CBoss3::LateUpdate_Top()
+{
+
 }
 
 void CBoss3::Render_GameObject(void)
@@ -182,6 +188,15 @@ void CBoss3::OnCollisionExit(const Collision * collision)
 
 void CBoss3::SwapTrigger()
 {
+	// 플레이어 전환을 할 때마다 보스의 시점을 초기화해주는 부분
+	if(g_Is2D)
+		m_pTransform->m_vAngle.y = D3DXToRadian(-45.f);
+
+	else
+		m_pTransform->m_vAngle.y = D3DXToRadian(-75.f);
+
+	m_fPreToo = 0.f;
+	m_fPreTop = 0.f;
 }
 
 HRESULT CBoss3::Add_Component(void)
@@ -203,29 +218,6 @@ HRESULT CBoss3::Add_Component(void)
 	return S_OK;
 }
 
-void CBoss3::State_Change(const _float & fTimeDelta)
-{
-	if (m_ePreState != m_eCurState)
-	{
-		switch (m_eCurState)
-		{
-		case B3_IDLE:
-			break;
-
-		case B3_ATTACK:
-			break;
-
-		case B3_SHOOT:
-			break;
-
-		case B3_DEAD:
-			break;
-		}
-
-		m_ePreState = m_eCurState;
-	}	
-}
-
 void CBoss3::FollowPlayer(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
@@ -238,8 +230,8 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		
-		if (!m_pTransform->m_vInfo[INFO_POS].z == 9.f);
-		m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
+		if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.f))
+			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
 
 	// 시간이 지나면 공격 시작 (3.5f)

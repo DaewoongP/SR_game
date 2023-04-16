@@ -22,7 +22,7 @@ CTransform::CTransform(const CTransform & rhs)
 	, m_matWorld(rhs.m_matWorld)
 	, m_matBillX(rhs.m_matBillX)
 	, m_matBillY(rhs.m_matBillY)
-	,m_bMove(rhs.m_bMove)
+	, m_bMove(rhs.m_bMove)
 {
 	for (size_t i = 0; i < INFO_END; ++i)
 		m_vInfo[i] = rhs.m_vInfo[i];
@@ -36,7 +36,7 @@ void Engine::CTransform::Chase_Target(const _vec3* pTargetPos, const _float& fSp
 {
 	_vec3	vDir = *pTargetPos - m_vInfo[INFO_POS];
 
-	 m_vInfo[INFO_POS] += *D3DXVec3Normalize(&vDir, &vDir) * fSpeed * fTimeDelta;
+	m_vInfo[INFO_POS] += *D3DXVec3Normalize(&vDir, &vDir) * fSpeed * fTimeDelta;
 
 	_matrix		matRot, matTrans;
 
@@ -58,10 +58,10 @@ const _matrix* Engine::CTransform::Compute_Lookattarget(const _vec3* pTargetPos)
 	_matrix	matRot;
 	_vec3	vAxis, vUp;
 
-	return D3DXMatrixRotationAxis(&matRot, 
-								  D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vDir),
-								  acosf(D3DXVec3Dot(D3DXVec3Normalize(&vDir, &vDir), 
-												    D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
+	return D3DXMatrixRotationAxis(&matRot,
+		D3DXVec3Cross(&vAxis, &m_vInfo[INFO_UP], &vDir),
+		acosf(D3DXVec3Dot(D3DXVec3Normalize(&vDir, &vDir),
+			D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
 
 
@@ -130,7 +130,7 @@ void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 		{
 		case Engine::SHAKE_ALL:
 			m_vShakeOffset = _vec3(
-				(rand() %(int)m_fShakePower * 2 - m_fShakePower)*0.01f,
+				(rand() % (int)m_fShakePower * 2 - m_fShakePower)*0.01f,
 				(rand() % (int)m_fShakePower * 2 - m_fShakePower)*0.01f,
 				(rand() % (int)m_fShakePower * 2 - m_fShakePower)*0.01f);
 			break;
@@ -188,7 +188,7 @@ void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _fl
 	// 회전
 	_matrix matRot[ROT_END];
 	_matrix matRotation;
-	
+
 	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
 	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
 	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);

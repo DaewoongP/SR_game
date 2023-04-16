@@ -10,14 +10,6 @@ END
 
 class CBoss3 : public CCube
 {
-	typedef enum Boss3State
-	{
-		B3_IDLE,		// 평상시
-		B3_ATTACK,		// 내려 찍기 공격
-		B3_SHOOT,		// 총알 쏘는 공격
-		B3_DEAD			// 사망
-	}BOSS3;
-
 private:
 	explicit CBoss3(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CBoss3();
@@ -28,6 +20,8 @@ public:
 	virtual _int Update_Top(const _float & fTimeDelta);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void LateUpdate_Top() override;
+
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
@@ -38,12 +32,9 @@ public:
 
 private:
 	HRESULT Add_Component(void);
-	void	State_Change(const _float & fTimeDelta);
 	void	LookAtPlayer();								// 플레이어 방향으로 몸을 돌림
-
 	void	FollowPlayer(const _float & fTimeDelta);	// 추격 후 내려찍기를 시작할 함수
 	void	BossAttack(const _float & fTimeDelta);		// 내려찍는 공격
-
 	void	ShootBullet(const _float & fTimeDelta);		// 총알 쏘는 공격
 
 private:
@@ -68,8 +59,8 @@ private:
 	_float	m_fPreToo;			// 정규화된 이전 투디 값을 저장해둠
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
-	BOSS3	m_eCurState;		
-	BOSS3	m_ePreState;
+	_float  m_fSaveToo;
+	_float  m_fSaveTop;
 
 	_bool m_bATKEnd=false;
 	_int m_iBossHp = 1; //추후에 스테이지로 옮겨야함
