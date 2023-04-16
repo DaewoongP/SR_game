@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "Boss3.h"
 #include "Export_Function.h"
-#include"StageCamera.h"
+#include "StageCamera.h"
 #include "AbstractFactory.h"
 
 #include "Boss3Hand.h"
-#include"Boss3HandPart.h"
+#include "Boss3HandPart.h"
 #include "Boss3Eye.h"
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
@@ -59,13 +59,9 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
 		
-
-
-
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, vPos, 0), E_FAIL);
 
@@ -91,8 +87,6 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 		MakeChain();
-
-
 
 		m_pBossLeftEye = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye");
 		m_pBossLeftEye->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };

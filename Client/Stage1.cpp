@@ -13,19 +13,20 @@
 #include "Pig.h"
 #include "Bat.h"
 #include "PinkCloud.h"
-#include "LightningCloud.h"
+#include"LightningCloud.h"
+#include"Lightning.h"
+#include "Topdee.h"
 #include "Spike.h"
 #include "GravityCube.h"
 #include "Portal.h"
+#include "Fireball.h"
 #include "Spike.h"
 #include "Switch.h"
 #include "InstallGrid.h"
 #include "SwitchCube.h"
 #include "PortalCube.h"
 #include "Boss3.h"
-#include "Boss2.h"
-#include "Toodee.h"
-#include "Topdee.h"
+#include "Fireball.h"
 #include "LaserTurret.h"
 #include "Laser.h"
 
@@ -46,12 +47,13 @@ HRESULT CStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 	return S_OK;
 }
 
 _int CStage1::Update_Scene(const _float & fTimeDelta)
 {
+
+
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -85,10 +87,13 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+  
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(10.f, 7.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 10.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(20.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
+	/*FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretLeft", pLayer, _vec3(2.f, 15.f, 10.f), 0), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretRight", pLayer, _vec3(60.f, 5.f, 10.f), 1), E_FAIL);*/
 
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(34.f, 12.f, 10.f)), E_FAIL);
@@ -133,7 +138,7 @@ HRESULT CStage1::Ready_Layer_UI(const _tchar * pLayerTag)
 CStage1 * CStage1::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CStage1 *	pInstance = new CStage1(pGraphicDev);
-	
+
 	if (FAILED(pInstance->Ready_Scene()))
 	{
 		Safe_Release(pInstance);
