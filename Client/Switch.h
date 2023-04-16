@@ -33,9 +33,8 @@ private:
 	Engine::CCollider* m_pCollider;
 
 	CGameObject* m_pSwitchCube;
+
 	int m_iTextureIndex;
-	static _int	m_iCnt;
-	
 
 public:
 	static bool m_bSwtichON;

@@ -27,7 +27,6 @@ public:
 private:
 	bool	m_bSwitchON;
 
-
 private:
 	virtual void Free() override;
 };
