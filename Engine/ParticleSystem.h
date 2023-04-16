@@ -22,11 +22,7 @@ public:
 	void			Render_Particle(void);
 
 	void Set_Origin(const _vec3& origin) { m_vOrigin = origin; }
-	void Set_BoundingBox(const BoundingBox& boundingBox)
-	{
-		m_BoundingBox = boundingBox;
-		Reset();
-	}
+	void Set_BoundingBox(const BoundingBox& boundingBox) { m_BoundingBox = boundingBox; }
 	void SetEmitRate(const float& emitRate) { m_EmitRate = emitRate; }
 	void SetNumParticle(const int& numParticle)
 	{
@@ -43,13 +39,9 @@ public:
 		Reset();
 		m_bTrigger = true;
 	}
-	void End_Particle() 
-	{
-		m_bTrigger = false; 
-	}
+	void End_Particle() { m_bTrigger = false; }
 	void Set_Size(_float fSize) { m_Size = fSize; }
 	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
-
 	void Set_World(_matrix mat) { m_matWorld = mat; }
 protected:
 	virtual void RemoveDeadParticles();

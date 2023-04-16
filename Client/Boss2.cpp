@@ -2017,6 +2017,7 @@ void CBoss2::Render_GameObject()
 	m_pCircleParticle->Update_Particle();
 	m_pJumpParticle->Update_Particle();
 	m_pScreamParticle->Update_Particle();
+	__super::Render_GameObject();
 }
 
 void CBoss2::SwapTrigger()

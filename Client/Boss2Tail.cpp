@@ -151,16 +151,15 @@ _int CBoss2Tail::Update_Top(const _float & fTimeDelta)
 
 void CBoss2Tail::LateUpdate_GameObject(void)
 {
-	
-		m_pTransform->m_matWorld._42 *= m_fZRatio;
+	m_pTransform->m_matWorld._42 *= m_fZRatio;
 	__super::LateUpdate_GameObject();
 }
 
 void CBoss2Tail::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pShadow->Render_Shadow(m_pBufferCom);
 	m_pTextureCom->Set_Texture(m_CurrentTexture);
+	m_pShadow->Render_Shadow(m_pBufferCom);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
