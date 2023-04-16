@@ -116,6 +116,7 @@ void CBoss3Hand::Render_GameObject(void)
 		m_pTextureCom2->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 	CGameObject::Render_GameObject();
+	m_pLandingParticle->Update_Particle();
 }
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
@@ -171,6 +172,10 @@ HRESULT CBoss3Hand::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
 
+	pComponent = m_pLandingParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"LandingParticle",pComponent });
+
 	return S_OK;
 }
 
@@ -193,6 +198,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 
 	else if (4.f < m_fCoolDown )
 	{
+		m_pLandingParticle->Reset();
 		BossAttack(fTimeDelta);
 	}
 }
@@ -208,11 +214,20 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	// 내려 찍기 (4.f)
 	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
 	{
-			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
-			int i = 0;
+		m_pTransform->m_vInfo[INFO_POS].z += 1.f;
 
-			if(7.f < m_pTransform->m_vInfo[INFO_POS].z)
-				dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+		if (7.f < m_pTransform->m_vInfo[INFO_POS].z)
+		{
+			BoundingBox box;
+			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
+			box.Offset(vInfo);
+			m_pLandingParticle->Set_Size(2.f);
+			m_pLandingParticle->Set_Options(2.f, 20.f);
+			m_pLandingParticle->Set_SizeLifeTime(1.f);
+			m_pLandingParticle->Set_BoundingBox(box);
+			m_pLandingParticle->Start_Particle();
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+		}
 
 	}
 

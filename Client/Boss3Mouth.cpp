@@ -26,6 +26,8 @@ HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 
+	m_pFireParticle->Set_Color(D3DXCOLOR(1.f, 0.2f, 0.2f, 1.f));
+
 	return S_OK;
 }
 
@@ -38,8 +40,11 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
-	if(m_bShootAnimation)
+	if (m_bShootAnimation)
+	{
 		m_pTextureCom->Switch_Anim(L"Attack");
+	}
+		
 
 	if (m_pTextureCom->IsAnimationEnd(L"Attack"))
 	{
@@ -57,6 +62,16 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 
 void CBoss3Mouth::LateUpdate_GameObject(void)
 {
+	if (m_bShootAnimation)
+	{
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(-5.f, 3.f, 1.5f));
+		m_pFireParticle->Set_BoundingBox(box);
+		m_pFireParticle->Set_Size(2.f);
+		m_pFireParticle->Set_Options(0.1f);
+		m_pFireParticle->Set_RandomGen();
+		m_pFireParticle->Start_Particle();
+	}
 	__super::LateUpdate_GameObject();
 }
 
@@ -67,6 +82,7 @@ void CBoss3Mouth::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+	m_pFireParticle->Update_Particle();
 }
 
 HRESULT CBoss3Mouth::Add_Component(void)
@@ -80,6 +96,10 @@ HRESULT CBoss3Mouth::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_Mouth_Shoot", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Mouth_Shoot", pComponent });
+
+	pComponent = m_pFireParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"FireParticle", this));
+	NULL_CHECK_RETURN(m_pFireParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"FireParticle", pComponent });
 
 	return S_OK;
 }

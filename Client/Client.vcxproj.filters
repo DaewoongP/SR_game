@@ -639,9 +639,6 @@
     <ClCompile Include="MenuSmoke.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
@@ -761,6 +758,9 @@
     </ClCompile>
     <ClCompile Include="Laser.cpp">
       <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>

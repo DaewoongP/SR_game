@@ -35,8 +35,9 @@ private:
 	Engine::CShadow*		m_pShadow;
 
 	CGameObject* m_pSwitchCube;
-
 	int m_iTextureIndex;
+	static _int	m_iCnt;
+	
 
 public:
 	static bool m_bSwtichON;

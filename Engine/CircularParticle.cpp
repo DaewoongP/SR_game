@@ -24,6 +24,9 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	m_VBSize = 8;
 	m_VBOffset = 0;
 	m_VBBatchSize = 8;
+	m_bSetRandomGenTime = false;
+	m_fSizeoverLifetime = 0.995f;
+	m_dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
 }
@@ -31,7 +34,10 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 CCircularParticle::CCircularParticle(const CCircularParticle & rhs)
 	:CParticleSystem(rhs),
 	m_fLifeTime(rhs.m_fLifeTime),
-	m_fRadius(rhs.m_fRadius)
+	m_fRadius(rhs.m_fRadius),
+	m_bSetRandomGenTime(rhs.m_bSetRandomGenTime),
+	m_dwColor(rhs.m_dwColor),
+	m_fSizeoverLifetime(rhs.m_fSizeoverLifetime)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -44,16 +50,17 @@ CCircularParticle::~CCircularParticle()
 void CCircularParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	particle->dwColor = m_dwColor;
 	particle->vPos = m_BoundingBox.Get_Center();
 	particle->vVelocity = { 1.f, 0.f, 0.f };
 	GetRandomVectorIncircle(&particle->vVelocity, m_fRadius);
-	particle->vVelocity *= -1; // 속도값 계속 줄어들게 설정
-	//particle->fGenTime = GetRandomFloat(0.f, 3.f);
+	if (m_bSetRandomGenTime)
+		particle->fGenTime = GetRandomFloat(0.f, 3.f);		
 	particle->fAge = 0.f;
 	particle->fLifeTime = m_fLifeTime + particle->fGenTime;
-	particle->fSizeoverLifetime = 0.995f;
+	particle->fSizeoverLifetime = m_fSizeoverLifetime;
 	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
+	particle->vAccel *= -0.5;
 }
 
 _int CCircularParticle::Update_Particle()

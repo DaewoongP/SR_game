@@ -25,8 +25,9 @@ HRESULT CBoss2Hand::Ready_GameObject(_vec3 & vPos)
 
 	m_fStartY = vPos.y;
 
-	m_pCollider->Set_BoundingBox(_vec3(9,5,1));
+	m_pCollider->Set_BoundingBox(_vec3(9,5,3));
 	m_pCollider->Set_BoundOffset(_vec3(0.0f, -(m_pTransform->m_vScale.y - m_pCollider->Get_BoundSize().y*0.5f), -1.0f));
+	m_pCollider->m_bIsTrigger = true;
 
 	m_pRigid->m_bUseGrivaty = false;
 	//충돌 전부 OFF
@@ -222,9 +223,11 @@ void CBoss2Hand::D0_Drop(const _float & fTimeDelta)
 
 		BoundingBox box;
 		_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
-		vInfo.y -= B2H_DROP_YPOS - 5;
-		vInfo.z += 0.1f;
+		vInfo.y -= B2H_DROP_YPOS - 14;
+		vInfo.z += 0.2f;
 		box.Offset(vInfo);
+		m_pFistparticle->Set_Size(8.f);
+		m_pFistparticle->Set_Options(2.5f, 20.f);
 		m_pFistparticle->Set_BoundingBox(box);
 		m_pFistparticle->Start_Particle();
 

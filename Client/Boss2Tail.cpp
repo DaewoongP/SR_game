@@ -3,7 +3,7 @@
 #include "Boss2.h"
 
 CBoss2Tail::CBoss2Tail(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_pPreTail(nullptr), m_fStartZ(0.0f), m_fZRatio(0.0f)
+	:CBoss2Parts(pGraphicDev), m_pPreTail(nullptr), m_fStartZ(0.0f), m_fZRatio(0.0f)
 {
 }
 
@@ -20,12 +20,12 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseLimitVelocity = true;
 	m_pRigid->m_fLimitVelocity = 8.0f;
 	m_pRigid->m_bFreezePos_Z = true;
-
 	m_pShadow->m_bUseShadow = false;
-
 	m_pShadow->m_fOutLineScale = 2.0f;
 	m_pShadow->m_fOutLineHeight = 0.6f;
-
+	m_OriginTexture = 0;
+	m_WhiteTexture = 5;
+	m_CurrentTexture = m_OriginTexture;
 	m_fStartZ = vPos.z;
 
 	return S_OK;
@@ -45,14 +45,14 @@ _int CBoss2Tail::Update_GameObject(const _float & fTimeDelta)
 		vBossX /= fYDis;
 
 		_vec3 vPrePos = {
-			m_pPreTail->Get_WorldMatrixPointer()->_41 + vBossX.x * 0.5f,//offset »ý°¢À» Á» ÇØºÁ¾ß ÇÒµí...
+			m_pPreTail->Get_WorldMatrixPointer()->_41 + vBossX.x * 0.5f,//offset ìƒê°ì„ ì¢€ í•´ë´ì•¼ í• ë“¯...
 			m_pPreTail->Get_WorldMatrixPointer()->_42,
 			m_pPreTail->Get_WorldMatrixPointer()->_43 };
-		//¸®Áöµå ÀÌµ¿ ¹æÇâ ¹× °Å¸® °è»ê¿ë
+		//ë¦¬ì§€ë“œ ì´ë™ ë°©í–¥ ë° ê±°ë¦¬ ê³„ì‚°ìš©
 		_vec3 vDis = vPrePos - m_pTransform->m_vInfo[INFO_POS];
-		//°Å¸® ÀúÀå
+		//ê±°ë¦¬ ì €ìž¥
 		_float fLength = D3DXVec3Length(&vDis);
-		//¹æÇâÀ¸·Î »ç¿ë
+		//ë°©í–¥ìœ¼ë¡œ ì‚¬ìš©
 		D3DXVec3Normalize(&vDis, &vDis);
 		
 		m_pRigid->AddForce(vDis, 1200.f, FORCE, fTimeDelta);
@@ -159,8 +159,8 @@ void CBoss2Tail::LateUpdate_GameObject(void)
 void CBoss2Tail::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
 	m_pShadow->Render_Shadow(m_pBufferCom);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
