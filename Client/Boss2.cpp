@@ -2023,10 +2023,12 @@ void CBoss2::SwapTrigger()
 {
 	if (g_Is2D)
 	{
+		m_pCircleParticle->End_Particle();
 		m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
 	}
 	else
 	{
+		m_pCircleParticle->End_Particle();
 		m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 	}
 }
