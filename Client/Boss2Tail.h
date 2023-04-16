@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CRigidbody;
+class CShadow;
 END
 
 #define BOSETAILPARTWAVESTART -20
@@ -33,6 +34,7 @@ private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CShadow*		m_pShadow;
 
 
 	CTransform* m_pPreTail;

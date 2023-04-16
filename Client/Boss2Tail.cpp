@@ -21,6 +21,10 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_fLimitVelocity = 8.0f;
 	m_pRigid->m_bFreezePos_Z = true;
 
+	m_pShadow->m_bUseShadow = false;
+
+	m_pShadow->m_fOutLineHeight = 0.6f;
+
 	m_fStartZ = vPos.z;
 
 	return S_OK;
@@ -155,6 +159,7 @@ void CBoss2Tail::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
@@ -182,6 +187,10 @@ HRESULT CBoss2Tail::Add_Component(void)
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow", pComponent });
 
 	return S_OK;
 }
