@@ -16,7 +16,8 @@ private:
 public:
 	virtual void ResetParticle(Particle* particle) override;
 	virtual _int Update_Particle() override;
-
+	void Set_LiftTime(_float lifetime) { m_fLifeTime = lifetime; }
+	void Set_SizeLifeTime(_float size) { m_fSizeoverLifetime = size; }
 public:
 	static CJumpParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev,
 		const _tchar* pPath,
@@ -28,6 +29,9 @@ public:
 
 private:
 	virtual void Free(void) override;
+private:
+	_float		m_fSizeoverLifetime;
+	_float		m_fLifeTime;
 };
 
 END

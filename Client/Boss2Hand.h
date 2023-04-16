@@ -6,6 +6,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CCircularParticle;
 END
 
 
@@ -64,7 +65,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
-
+	Engine::CCircularParticle*	m_pFistparticle;
 private:
 	BOSS2HAND_STATE m_state;
 	_float			m_dwActionTimer;

@@ -12,6 +12,7 @@ class CCollider;
 class CRigidbody;
 class CAnimation;
 class CCircleParticle;
+class CJumpParticle;
 END
 
 enum BOSS2STATE
@@ -125,6 +126,7 @@ private:
 	Engine::CAnimation*			m_pAnimation_Face;
 	Engine::CAnimation*			m_pAnimation_Body;
 	Engine::CCircleParticle*	m_pCircleParticle;
+	Engine::CJumpParticle*		m_pJumpParticle;
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

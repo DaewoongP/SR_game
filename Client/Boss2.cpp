@@ -53,6 +53,8 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bUseGrivaty = false;
 
 	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
+
+	
 	return S_OK;
 }
 
@@ -1507,6 +1509,7 @@ void CBoss2::LateUpdate_GameObject(void)
 void CBoss2::Render_GameObject()
 {
 	m_pCircleParticle->Update_Particle();
+	m_pJumpParticle->Update_Particle();
 }
 
 void CBoss2::SwapTrigger()
@@ -1595,6 +1598,10 @@ HRESULT CBoss2::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCircleParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CircleParticle", pComponent });
 
+	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"Boss2JumpParticle", this));
+	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Boss2JumpParticle", pComponent });
+
 	return S_OK;
 }
 
@@ -1652,7 +1659,18 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 	m_dwActionTime = 0.5f;
 	m_pAnimation_Body->SetAnimation(L"Jump");
 	m_iCurrentActionIdx++;
-	
+
+	BoundingBox box;
+	if (m_bFlip_Y)
+		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(2.f, 3.f, 0.f));
+	else
+		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(-5.f, 3.f, 0.f));
+	m_pJumpParticle->Set_Size(4.f);
+	m_pJumpParticle->Set_SizeLifeTime(0.999f);
+	m_pJumpParticle->Set_LiftTime(0.8f);
+	m_pJumpParticle->Set_BoundingBox(box);
+	m_pJumpParticle->Start_Particle();
+
 }
 
 void CBoss2::Do_Jump_01(const _float& fTimeDelta)
@@ -1749,7 +1767,7 @@ void CBoss2::SetPartten()
 
 	while (true)
 	{
-		ranIdx = (rand() + 1) % 100;
+		ranIdx = 100;
 		switch (ranIdx)
 		{
 		case 0: //30% idle

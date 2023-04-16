@@ -191,10 +191,18 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircularParticle", CCircularParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		0.7f,10, false, 1.f, 10.f)), E_FAIL);
+	// 2보스 손찍기 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2LandParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		10.f, 20, false, 1.f, 20.f)), E_FAIL);
 	// 2보스 땅찍기원형파티클
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircleParticle", CCircleParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_1.png", 1,
 		1.f, 200, false, 10.f)), E_FAIL);
+	// 2보스 점프 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2JumpParticle", CJumpParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		4.f, 40, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
