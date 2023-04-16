@@ -26,6 +26,7 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	m_VBBatchSize = 8;
 	m_bSetRandomGenTime = false;
 	m_fSizeoverLifetime = 0.995f;
+	m_fRand = 3.f;
 	m_dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
@@ -37,7 +38,8 @@ CCircularParticle::CCircularParticle(const CCircularParticle & rhs)
 	m_fRadius(rhs.m_fRadius),
 	m_bSetRandomGenTime(rhs.m_bSetRandomGenTime),
 	m_dwColor(rhs.m_dwColor),
-	m_fSizeoverLifetime(rhs.m_fSizeoverLifetime)
+	m_fSizeoverLifetime(rhs.m_fSizeoverLifetime),
+	m_fRand(rhs.m_fRand)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -55,7 +57,7 @@ void CCircularParticle::ResetParticle(Particle * particle)
 	particle->vVelocity = { 1.f, 0.f, 0.f };
 	GetRandomVectorIncircle(&particle->vVelocity, m_fRadius);
 	if (m_bSetRandomGenTime)
-		particle->fGenTime = GetRandomFloat(0.f, 3.f);		
+		particle->fGenTime = GetRandomFloat(0.f, m_fRand);
 	particle->fAge = 0.f;
 	particle->fLifeTime = m_fLifeTime + particle->fGenTime;
 	particle->fSizeoverLifetime = m_fSizeoverLifetime;

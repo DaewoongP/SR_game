@@ -15,18 +15,16 @@ CBoss3Mouth::~CBoss3Mouth()
 HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	
+	m_pTransform->m_bIsStatic = true;
 	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y, vPos.z };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
-	m_pTransform->m_bIsStatic = true;
-
 	m_pTextureCom->Add_Anim(L"Idle", 0, 0, 1.f, false);
 	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.2f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
-
-	m_pFireParticle->Set_Color(D3DXCOLOR(1.f, 0.2f, 0.2f, 1.f));
 
 	return S_OK;
 }
@@ -35,7 +33,6 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
@@ -65,11 +62,15 @@ void CBoss3Mouth::LateUpdate_GameObject(void)
 	if (m_bShootAnimation)
 	{
 		BoundingBox box;
-		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(-5.f, 3.f, 1.5f));
+		const _matrix* mat = m_pTransform->Get_WorldMatrixPointer();
+		_vec3 vPos = { mat->_41, mat->_42, mat->_43 };
+		vPos.y -= 1.f;
+		vPos.z -= 2.f;
+		box.Offset(vPos);
 		m_pFireParticle->Set_BoundingBox(box);
-		m_pFireParticle->Set_Size(2.f);
-		m_pFireParticle->Set_Options(0.1f);
-		m_pFireParticle->Set_RandomGen();
+		m_pFireParticle->Set_Size(1.f);
+		m_pFireParticle->Set_Options(0.5f);
+		m_pFireParticle->Set_RandomGen(1.f);
 		m_pFireParticle->Start_Particle();
 	}
 	__super::LateUpdate_GameObject();
