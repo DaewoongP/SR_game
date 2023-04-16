@@ -5,7 +5,7 @@
 IMPLEMENT_SINGLETON(CCollisionMgr)
 
 CCollisionMgr::CCollisionMgr()
-	:m_fRangeOffset(1000.5f)
+	:m_fRangeOffset(1.5f)
 {
 }
 
@@ -258,14 +258,15 @@ vector<RayCollision> CCollisionMgr::Check_Collision_Ray(RAYCAST ray, CCollider* 
 		for (auto& iter = m_ColliderList[i].begin();
 		iter != m_ColliderList[i].end(); ++iter)
 		{
+			//일정거리 밖이면 탐색에서 제외
+			if (ray._Length *3.0f <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
+				continue;
+
 			//자기 자신이면 탐색에서 제외
 			if (shootObj == *iter)
 				continue;
 
-			//일정거리 밖이면 탐색에서 제외
-			if (ray._Length * 3 <= D3DXVec3Length(&_vec3(ray._origin - (*iter)->m_pGameObject->m_pTransform->m_vInfo[INFO_POS])))
-				continue;
-
+			//사이즈가 0이면?
 			if (tagName.size() == 0)
 			{
 				if (Collision_Ray(ray, *iter, &pDist))

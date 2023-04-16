@@ -59,7 +59,9 @@ public:
 
 		D3DXMatrixInverse(&m_matBillY, 0, &m_matBillY);
 	}
-	
+
+	void			MakeMyMatrix(const _float& fTimeDelta);
+
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
 public:
@@ -79,14 +81,39 @@ public:
 		m_fWeakPoint = (_float)iPower / fDuration;
 	}
 
+	void SetParent(CTransform* trans) {
+		if (trans != nullptr) 
+			m_Parent = trans;  
+		trans->m_Child.push_back(this); }
+	CTransform* GetParent() { return m_Parent; }
+	vector<CTransform*> GetChildren() { return m_Child; }
+	CTransform * GetChild(int index) { 
+		if (index <= m_Child.size())
+		return m_Child[index]; 
+	else 
+		return nullptr; }
+	_int		GetChildCount() { return m_Child.size(); }
+	_matrix GetRotMat();
+	_matrix GetRevolutionRotMat();
+	_matrix GetTransMat(const _float& fTimeDelta);
+	_matrix GetScaleMat();
+private:
+	CTransform* m_Parent;
+	vector<CTransform*> m_Child;
+
 public:
 	_bool		m_bIsStatic = true;
 	_vec3		m_vInfo[INFO_END];
 	_vec3		m_vScale;
 	_vec3		m_vAngle;
+	_vec3		m_vRevolutionAngle;
 	_matrix		m_matWorld;
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
+	
+	_matrix		m_matRT;
+
+	_matrix		m_matPerantScale;
 
 	_bool		m_bMove;
 

@@ -20,7 +20,7 @@
 #include "CubeTex.h"
 #include "Rigidbody.h"
 #include "Line.h"
-
+#include "Animation.h"
 #include "Shadow.h"
 
 #include "RcGradation.h"

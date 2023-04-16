@@ -192,10 +192,29 @@ public: // operator
 	}
 };
 
+//릴리즈 없는 맵
+class CDeleteMap_MY
+{
+public:
+	explicit CDeleteMap_MY(void) {}
+	~CDeleteMap_MY(void) {}
+public: // operator	
+	template <typename T>
+	void operator () (T& Pair)
+	{
+		delete(Pair.second);
+	}
+};
+
 //A부터 B까지
 static float Lerp(float A, float B, float Alpha)
 {
 	return A * (1 - Alpha) + B * Alpha;
+}
+
+static _vec3 Lerp(_vec3 A, _vec3 B, float Alpha)
+{
+	return _vec3(Lerp(A.x, B.x, Alpha), Lerp(A.y, B.y, Alpha), Lerp(A.z, B.z, Alpha));
 }
 
 template <typename T>

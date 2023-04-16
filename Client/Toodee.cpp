@@ -237,7 +237,6 @@ void CToodee::DoFlip()
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
 	else if (m_eKeyState == DIR_RIGHT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
-
 }
 
 void CToodee::DoStrech()

@@ -365,6 +365,7 @@ void CImguiUnit::MapObjectInstall()
 		{
 			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer,
 				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], (_int)m_tPortalCubeDir), );
+
 			m_vecPortalCubeDir.push_back(m_tPortalCubeDir);
 			++m_iPortalCubeCount;
 		}
