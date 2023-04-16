@@ -40,13 +40,17 @@ private:
 
 	_bool	m_bShock = false;
 
-	_int m_iBossHp=1;
+	_int m_iBossHp=2;
 	_float  m_fIdleCycle;
 	_float  m_fIdleAngle;
 	_bool	m_bAttack;
 
 	_bool	m_bIdleMove;
 	_bool	m_bIdleStop;
+	_vec3	m_vPrePos;
+
+
+	Engine::CShadow* m_pShadowCom;
 
 public:
 	static CBoss3Hand*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);

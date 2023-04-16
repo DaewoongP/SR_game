@@ -5,6 +5,7 @@
 #include "AbstractFactory.h"
 
 #include "Boss3Hand.h"
+#include"Boss3HandPart.h"
 #include "Boss3Eye.h"
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
@@ -32,7 +33,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 3.5f, 3.5f, 3.5f };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-45.f));
 	m_pTransform->m_bIsStatic = true;
-	
+	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
@@ -61,6 +62,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
+		
+
 
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
@@ -73,9 +76,18 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, vPos, 2), E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, vPos), E_FAIL);
+		
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart", pStageLayer, _vec3{ vPos.x - 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart", pStageLayer, _vec3{ vPos.x + 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart1", pStageLayer, _vec3{ vPos.x - 5.f,vPos.y,vPos.z }, 4), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart1", pStageLayer, _vec3{ vPos.x + 5.f,vPos.y,vPos.z }, 4), E_FAIL);
 
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
+		MakeChain();
+
+
 
 		m_pBossLeftEye = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye");
 		m_pBossLeftEye->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
@@ -109,6 +121,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
 	if (m_iATKCount == 3)
@@ -116,7 +129,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		m_bShoot = false;
 		m_fShootterm += fTimeDelta;
 
-		if (m_fShootterm > 2.f)
+		if (m_fShootterm > 2.f && m_iBossHp==1)
 		{
 			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
@@ -140,12 +153,14 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 	return 0;
 }
 
-_int CBoss3::Update_Top(const _float & fTimeDelta)
+_int CBoss3::Update_Top(const _float& fTimeDelta)
 {
+	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
 
-	//FollowPlayer(fTimeDelta);
+	FollowPlayer(fTimeDelta);
+	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -165,8 +180,12 @@ void CBoss3::LateUpdate_Top()
 void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	if(!g_Is2D)
+	m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
+
 	__super::Render_GameObject();
 }
 
@@ -199,6 +218,14 @@ void CBoss3::SwapTrigger()
 	m_fPreTop = 0.f;
 }
 
+void CBoss3::MakeChain()
+{
+	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart");
+	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart");
+	//m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
+//	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
+}
+
 HRESULT CBoss3::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
@@ -214,6 +241,11 @@ HRESULT CBoss3::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
+
 
 	return S_OK;
 }
@@ -233,7 +265,7 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 		if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.f))
 			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
 	}
-
+	
 	// 시간이 지나면 공격 시작 (3.5f)
 	else if (2.f + BOSS3_CHASE < m_fCoolDown)
 		BossAttack(fTimeDelta);
@@ -262,6 +294,8 @@ void CBoss3::LookAtPlayer()
 		// 이전에 회전한 수치만큼 원복했다가 새로운 수치만큼 다시 돌림
 		m_pTransform->Rotation(ROT_Y, m_fPreToo * 0.7f);
 		m_pTransform->Rotation(ROT_Y, -fX * 0.7f);
+	
+
 
 		// 현재 값을 저장
 		m_fPreToo = fX;
@@ -304,10 +338,11 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
-		
-		 if (m_pTransform->m_vInfo[INFO_POS].z >5.f)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
+		else
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+
+		// if (m_pTransform->m_vInfo[INFO_POS].z >4.5f)
 	}
 
 	// 왼손 공격 명령
@@ -326,8 +361,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 		if (m_iBossHp == 1)
 			m_bATKCnt = true;
-		//if (m_pBossRight->m_pTransform->m_vInfo[INFO_POS].z >= 8.f)
-			//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
+		
 
 	}		
 	

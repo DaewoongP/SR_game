@@ -185,6 +185,9 @@
     <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth">
       <UniqueIdentifier>{6eea6d7d-1554-4801-bab5-4474a213bb08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\BossHandPart">
+      <UniqueIdentifier>{11754176-34fe-4ded-96b5-118c9977a77f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. GameObject\02. MapObject\LaserTurret">
       <UniqueIdentifier>{1837f9b1-5acd-4180-88e0-7cf1d1bc4a49}</UniqueIdentifier>
     </Filter>
@@ -419,6 +422,9 @@
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Boss3HandPart.h">
+      <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
+    </ClInclude>
     <ClInclude Include="UICamera.h" />
     <ClInclude Include="LaserTurret.h">
       <Filter>00. GameObject\02. MapObject\LaserTurret</Filter>
@@ -650,6 +656,9 @@
     </ClCompile>
     <ClCompile Include="LogoCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3HandPart.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
     </ClCompile>
     <ClCompile Include="UICamera.cpp" />
     <ClCompile Include="LaserTurret.cpp">
