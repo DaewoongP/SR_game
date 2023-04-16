@@ -186,6 +186,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	if (1.5f < m_fCoolDown && 2.f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
+
 		if(m_pTransform->m_vInfo[INFO_POS].z <= 8.f);
 			m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
 	}
