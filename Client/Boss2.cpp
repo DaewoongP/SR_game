@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_bHealth = 3;
-	m_eCurrentState = B2_STUMP;
+	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
@@ -740,7 +740,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					//원래 위치					추가될 윛
-					_vec3(0.0f,0.0f,0.0f) + _vec3(-1,-2,0),//trans
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
 					//원래 회전값		추가될 회전값
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					//스케일
@@ -753,7 +753,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f),//trans
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.3f,//tilltime
@@ -771,7 +771,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-2,0),//trans
+					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -791,7 +791,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[1].push_back(
 					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,-2,0),//trans
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.2f,//tilltime
@@ -807,7 +807,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[1].push_back(
 					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f)+_vec3(0,-2,0),//trans
+					_vec3(0.f, -3.4f, -0.5f)+_vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -815,7 +815,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[1].push_back(
 					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-2,0),//trans
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -823,7 +823,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[1].push_back(
 					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-2,0),//trans
+					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -834,7 +834,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[2].push_back(
 					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,-2,0),//trans
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.2f,//tilltime
@@ -842,7 +842,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[2].push_back(
 					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-2,0),//trans
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -850,7 +850,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[2].push_back(
 					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,-2,0),//trans
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -858,7 +858,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[2].push_back(
 					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-2,0),//trans
+					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -869,7 +869,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[3].push_back(
 					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,-2,0),//trans
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.2f,//tilltime
@@ -877,7 +877,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[3].push_back(
 					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(0,-2,0),//trans
+					_vec3(4.1f, -2.8f, -0.2f) + _vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -885,7 +885,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[3].push_back(
 					ANIMINFO{
-					_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,-2,0),//trans
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -893,7 +893,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[3].push_back(
 					ANIMINFO{
-					_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,-2,0),//trans
+					_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,-1,0),//trans
 					_vec3(0,0,0) + _vec3(0,0,0),//rotation
 					_vec3(0.f,0.f,0.f),//scale
 					0.5f,//tilltime
@@ -2064,10 +2064,28 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
 			//13
-			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount()-1; i++)
+			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
-				
+			//테일 
+			{
+				CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
+				if (tr != nullptr)
+				{
+					dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+				}
+
+				_tchar	_name[256] = {0};
+				for (int i = 0; i < 18; i++)
+				{
+					wsprintf(_name,L"Boss2Tail_%d", i);
+					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
+					if (tr != nullptr)
+					{
+						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+					}
+				}
+			}
 			m_bHealth--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
@@ -2315,7 +2333,7 @@ void CBoss2::SetPartten()
 		else if (ran == 3)
 			m_eCurrentState = B2_STUMP;
 		else
-			m_eCurrentState = B2_STUMP;
+			m_eCurrentState = B2_PUNCH;
 		break;
 	case B2_PUNCH:
 		if (ran <4)
