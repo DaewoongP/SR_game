@@ -34,7 +34,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 
-	m_eCurrentState = B2_IDLE;
+	m_eCurrentState = B2_PUNCH;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜

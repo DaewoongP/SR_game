@@ -39,6 +39,7 @@ void CBackgroundSpr::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	__super::Render_GameObject();
 }
 
 HRESULT CBackgroundSpr::Add_Component(void)

@@ -46,21 +46,21 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
 	int iExit = __super::Update_Scene(fTimeDelta);
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
-			m_bStart = true;
-		if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
-			m_bStart = false;
+		m_bStart = true;
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+		m_bStart = false;
 
-		if (GetAsyncKeyState(VK_RETURN)&&m_bStart==true)
-		{
-			CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
-			NULL_CHECK_RETURN(pScene, -1);
+	if (GetAsyncKeyState(VK_RETURN) && m_bStart == true)
+	{
+		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
+		NULL_CHECK_RETURN(pScene, -1);
 
-			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
-			pScene->Update_Scene(fTimeDelta);
-			return 0;
-		}
-		else if (GetAsyncKeyState(VK_RETURN) && m_bStart==false)
-			PostQuitMessage(0);
+		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
+		pScene->Update_Scene(fTimeDelta);
+		return 0;
+	}
+	else if (GetAsyncKeyState(VK_RETURN) && m_bStart == false)
+		PostQuitMessage(0);
 
 	return iExit;
 }
@@ -77,20 +77,11 @@ void CLogo::Render_Scene(void)
 HRESULT CLogo::Ready_Proto(void)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
-
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcAlpha", CRcAlpha::Create(m_pGraphicDev)), E_FAIL);
-
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev)), E_FAIL);
-
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
-	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
-	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MenuCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCube.png")), E_FAIL);
-	
-	//FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Smoke_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuSmoke.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Select_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr_%d.png", 11)), E_FAIL);
-
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
 	return S_OK;
 }
@@ -112,14 +103,11 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	for (size_t i = 0; i < 50; i++)
 	{
-		_float fRandX = rand() % WINCX - WINCX * 0.5f;
-		_float fRandY = rand() % WINCY - WINCY * 0.5f;
+		_float fRandX = GetRandomFloat(-WINCX*0.5f, WINCX*0.5f);
+		_float fRandY = GetRandomFloat(-WINCY*0.5f, WINCY*0.5f);
 
-		
 		FAILED_CHECK_RETURN(FACTORY<CShiningStar>::Create(L"ShiningStar", pLayer, _vec3(fRandX, fRandY, 0.0f)), E_FAIL);
 	}
-
-	//FAILED_CHECK_RETURN(FACTORY<CMenuSmoke>::Create(L"MenuSmoke", pLayer, _vec3(0.0f, 0.0f, 0.0f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(300.0f, -300.0f, 0.0f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(-300.0f, 200.0f, 0.0f)), E_FAIL);

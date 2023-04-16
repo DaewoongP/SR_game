@@ -31,7 +31,6 @@ _int CSelect::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
-
 	return 0;
 }
 
@@ -45,6 +44,7 @@ void CSelect::Render_GameObject(void)
 
 
 	m_pBufferCom->Render_Buffer();
+	__super::Render_GameObject();
 }
 
 HRESULT CSelect::Add_Component(void)

@@ -152,9 +152,6 @@
     <Filter Include="00. GameObject\03. BackGroudObj">
       <UniqueIdentifier>{5ef426b5-219e-46de-bc40-f3e4b4edf3f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. BackGroundSpr">
-      <UniqueIdentifier>{ccda0f4c-d796-41be-9924-d3d2f1241391}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
@@ -372,36 +369,6 @@
     <ClInclude Include="Boss2.h">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClInclude>
-    <ClInclude Include="Boss2EyeBrow.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Face.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Hand.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Eye.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Jaw.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Nose.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2TailBody.h" />
-    <ClInclude Include="Boss2Tail.h" />
-    <ClInclude Include="Boss2Body.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Foot.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2Chain.h">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss2JointSpot.h" />
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClInclude>
@@ -429,8 +396,48 @@
     <ClInclude Include="PreStage.h">
       <Filter>01. Scene\Stages\PreStage</Filter>
     </ClInclude>
-    <ClInclude Include="Boss2Parts.h" />
-    <ClInclude Include="Boss2Stone.h" />
+    <ClInclude Include="Boss2Stone.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Tail.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2TailBody.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Body.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Chain.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Eye.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2EyeBrow.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Face.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Foot.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Hand.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Jaw.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2JointSpot.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Nose.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Parts.h">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -621,36 +628,6 @@
     <ClCompile Include="Boss2.cpp">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClCompile>
-    <ClCompile Include="Boss2EyeBrow.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Face.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Hand.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Eye.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Jaw.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Nose.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2TailBody.cpp" />
-    <ClCompile Include="Boss2Tail.cpp" />
-    <ClCompile Include="Boss2Body.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Foot.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2Chain.cpp">
-      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss2JointSpot.cpp" />
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
@@ -678,7 +655,47 @@
     <ClCompile Include="PreStage.cpp">
       <Filter>01. Scene\Stages\PreStage</Filter>
     </ClCompile>
-    <ClCompile Include="Boss2Parts.cpp" />
-    <ClCompile Include="Boss2Stone.cpp" />
+    <ClCompile Include="Boss2Tail.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2TailBody.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Body.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Chain.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Eye.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2EyeBrow.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Face.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Foot.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Hand.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Jaw.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2JointSpot.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Nose.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Parts.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Stone.cpp">
+      <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

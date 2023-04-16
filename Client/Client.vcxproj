@@ -160,6 +160,7 @@
     <ClInclude Include="Boss2.h" />
     <ClInclude Include="Boss2Body.h" />
     <ClInclude Include="Boss2Chain.h" />
+    <ClInclude Include="Boss2Eye.h" />
     <ClInclude Include="Boss2EyeBrow.h" />
     <ClInclude Include="Boss2Face.h" />
     <ClInclude Include="Boss2Foot.h" />
@@ -172,7 +173,6 @@
     <ClInclude Include="Boss2Tail.h" />
     <ClInclude Include="Boss2TailBody.h" />
     <ClInclude Include="Boss3Hand.h" />
-    <ClInclude Include="Boss2Eye.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
@@ -238,6 +238,7 @@
     <ClCompile Include="Boss2.cpp" />
     <ClCompile Include="Boss2Body.cpp" />
     <ClCompile Include="Boss2Chain.cpp" />
+    <ClCompile Include="Boss2Eye.cpp" />
     <ClCompile Include="Boss2EyeBrow.cpp" />
     <ClCompile Include="Boss2Face.cpp" />
     <ClCompile Include="Boss2Foot.cpp" />
@@ -250,7 +251,6 @@
     <ClCompile Include="Boss2Tail.cpp" />
     <ClCompile Include="Boss2TailBody.cpp" />
     <ClCompile Include="Boss3Hand.cpp" />
-    <ClCompile Include="Boss2Eye.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />

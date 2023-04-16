@@ -45,6 +45,7 @@ void CTitle::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
+	__super::Render_GameObject();
 }
 
 HRESULT CTitle::Add_Component(void)

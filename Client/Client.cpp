@@ -111,8 +111,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				pMainApp->Update_MainApp(fTimer_FPS60);
 				pMainApp->LateUpdate_MainApp();
                 pMainApp->Render_MainApp();
-
-               
 			} 
 			
 		}        
