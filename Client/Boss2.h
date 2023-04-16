@@ -11,6 +11,9 @@ class CTexture;
 class CCollider;
 class CRigidbody;
 class CAnimation;
+class CCircleParticle;
+class CJumpParticle;
+class CTexParticle;
 END
 
 enum BOSS2STATE
@@ -38,6 +41,7 @@ public:
 	virtual _int Update_Too(const _float& fTimeDelta) override;
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
+	virtual void Render_GameObject() override;
 	virtual void SwapTrigger();
 
 	virtual void OnCollisionEnter(const class Collision* collision);
@@ -120,10 +124,13 @@ private:
 	_int		m_bHealth;
 
 private:
-	Engine::CCollider*		m_pCollider;
-	Engine::CRigidbody*		m_pRigid;
-	Engine::CAnimation*		m_pAnimation_Face;
-	Engine::CAnimation*		m_pAnimation_Body;
+	Engine::CCollider*			m_pCollider;
+	Engine::CRigidbody*			m_pRigid;
+	Engine::CAnimation*			m_pAnimation_Face;
+	Engine::CAnimation*			m_pAnimation_Body;
+	Engine::CCircleParticle*	m_pCircleParticle;
+	Engine::CJumpParticle*		m_pJumpParticle;
+	Engine::CTexParticle*		m_pScreamParticle;
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

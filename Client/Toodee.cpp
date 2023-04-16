@@ -33,7 +33,6 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 
 	BoundingBox box;
 	box.Offset(vPos);
-	m_pJumpParticle->Set_BoundingBox(box);
 	m_pLandingParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_LifeTime();
 
@@ -225,8 +224,10 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
-		m_pJumpParticle->Reset();
-		m_pJumpParticle->Set_Size(0.8f);
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pJumpParticle->Set_BoundingBox(box);
+		m_pJumpParticle->Set_Size(1.f);
 		m_pJumpParticle->Start_Particle();
 	}
 }

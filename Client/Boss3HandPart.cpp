@@ -40,11 +40,9 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 
 	m_pBoss3RPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 	NULL_CHECK_RETURN(m_pBoss3RPart, E_FAIL);
+
+
 	_vec3 Lerp;
-
-	//D3DXVec3Lerp(&LerpL, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.5f);
-	//m_pTransform->m_vInfo[INFO_POS] = Lerp;
-
 
 
 	__super::Update_GameObject(fTimeDelta);
@@ -63,17 +61,97 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.3f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if(!lstrcmp(m_pTag, L"Boss3LPart1"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3RPart1"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
+
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3LPart2"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+			
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3RPart2"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3LPart3"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
+
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3RPart3"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
+
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3LPart4"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.9f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+
+			//Rot2Hand();
+
+			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
+
+		}
+		else if (!lstrcmp(m_pTag, L"Boss3RPart4"))
+		{
+			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.9f);
+			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
+
 			//Rot2Hand();
 
 			//m_pTransform->Set_ParentTransform(m_pBoss3, 0.f, 0.f, -5.f);
 
 		}
 
-	//	else if(!lstrcmp(m_pTag, L"Boss3RPart1"))
 
-	
 
-	
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;

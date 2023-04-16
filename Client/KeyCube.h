@@ -2,7 +2,7 @@
 #include "Cube.h"
 
 BEGIN(Engine)
-class CBlockExp;
+class CTexParticle;
 END
 class CKeyCube : public CCube
 {
@@ -24,7 +24,7 @@ public:
 private:
 	virtual void Free() override;
 private:
-	Engine::CBlockExp* m_pExpParticle;
+	Engine::CTexParticle* m_pExpParticle;
 };
 
 

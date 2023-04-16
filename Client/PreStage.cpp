@@ -5,6 +5,7 @@
 #include "UICamera.h"
 #include "Title.h"
 #include "Stage2.h"
+#include "Logo.h"
 
 CPreStage::CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
 	:CScene(pGraphicDev), m_pLoading(nullptr), m_eLoadingID(eID)
@@ -38,6 +39,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 			switch (m_eLoadingID)
 			{
 			case LOADING_LOGO:
+				pScene = CLogo::Create(m_pGraphicDev);
 				break;
 			case LOADING_STAGE1:
 				pScene = CStage1::Create(m_pGraphicDev);
