@@ -35,7 +35,6 @@ private:
 	CGameObject* m_pBoss3LPart;
 	CGameObject* m_pBoss3RPart;
 
-
 	_int	m_iIndex;
 
 	_bool  m_bSetTarget;

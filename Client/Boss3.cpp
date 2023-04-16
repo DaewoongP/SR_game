@@ -82,6 +82,11 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart1", pStageLayer, _vec3{ vPos.x - 5.f,vPos.y,vPos.z }, 4), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart1", pStageLayer, _vec3{ vPos.x + 5.f,vPos.y,vPos.z }, 4), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart2", pStageLayer, _vec3{ vPos.x - 8.f,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart2", pStageLayer, _vec3{ vPos.x + 8.f,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart3", pStageLayer, _vec3{ vPos.x - 10.f,vPos.y,vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart3", pStageLayer, _vec3{ vPos.x + 10.f,vPos.y,vPos.z }, 0), E_FAIL);
+
 
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
@@ -225,8 +230,14 @@ void CBoss3::MakeChain()
 {
 	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart");
 	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart");
-	//m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
-//	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
+	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2");
+	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart4");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart4");
 }
 
 HRESULT CBoss3::Add_Component(void)
