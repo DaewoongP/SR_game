@@ -2,7 +2,7 @@
 #include "Boss2EyeBrow.h"
 
 CBoss2EyeBrow::CBoss2EyeBrow(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CBoss2Parts(pGraphicDev)
 {
 }
 

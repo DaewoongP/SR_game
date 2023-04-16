@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Include.h"
+#include "Boss2Parts.h"
 
 BEGIN(Engine)
 class CRcTex;
@@ -8,7 +9,7 @@ class CTexture;
 END
 
 class CBoss2Jaw :
-	public CGameObject
+	public CBoss2Parts
 {
 public:
 	explicit CBoss2Jaw(LPDIRECT3DDEVICE9 pGraphicDev);

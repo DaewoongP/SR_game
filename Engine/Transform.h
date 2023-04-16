@@ -96,6 +96,7 @@ public:
 	_matrix GetRevolutionRotMat();
 	_matrix GetTransMat(const _float& fTimeDelta);
 	_matrix GetScaleMat();
+	void SwapYZ();
 private:
 	CTransform* m_Parent;
 	vector<CTransform*> m_Child;
@@ -123,6 +124,8 @@ public:
 	_float	m_fShakeTimer = 0.0f;
 	_float	m_fShakePower = 0;
 	_vec3	m_vShakeOffset;
+
+	_float m_YZValue;
 
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
