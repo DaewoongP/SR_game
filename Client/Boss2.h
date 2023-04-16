@@ -117,6 +117,8 @@ private:
 	_bool		m_bIsOnGround;
 	_bool		m_bInit;
 
+	_int		m_bHealth;
+
 private:
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
