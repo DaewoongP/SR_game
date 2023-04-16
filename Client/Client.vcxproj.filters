@@ -167,8 +167,6 @@
     <Filter Include="01. Scene\Stages\PreStage">
       <UniqueIdentifier>{778a1c61-0e07-472e-b7b7-bfab93683edb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\00. Player\Tookee">
-      <UniqueIdentifier>{a8f27c6d-4f2a-4439-a14b-9e39d6104b0c}</UniqueIdentifier>
     <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression">
       <UniqueIdentifier>{f586ecf2-ffaf-4330-83fc-60930f5064aa}</UniqueIdentifier>
     </Filter>
@@ -442,6 +440,7 @@
     </ClInclude>
     <ClInclude Include="Boss2Parts.h">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClInclude>
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="StageCamera.h" />
@@ -625,7 +624,6 @@
     <ClCompile Include="Title.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
@@ -721,6 +719,7 @@
     </ClCompile>
     <ClCompile Include="Boss2Stone.cpp">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
+    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
@@ -762,6 +761,9 @@
     </ClCompile>
     <ClCompile Include="Laser.cpp">
       <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

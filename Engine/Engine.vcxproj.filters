@@ -142,7 +142,6 @@
     <ClInclude Include="Collision.h">
       <Filter>Componnent\Collider\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="RcAlpha.h">
       <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
@@ -292,7 +291,6 @@
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager\SoundMgr</Filter>
     </ClCompile>
-    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="RcGradation.cpp">
       <Filter>Componnent\VIBuffer</Filter>
     </ClCompile>

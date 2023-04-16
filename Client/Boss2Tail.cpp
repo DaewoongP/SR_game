@@ -26,13 +26,13 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss2Tail::Update_GameObject(const _float & fTimeDelta)
 {
-	//m_pRigid->m_fLimitVelocity = TAILVELOCITYLIMT;
-
-
 	if (m_pPreTail)
 	{
-		//첫 부모의 y 축 또는 z 축 회전 값의 정규화 만큼 더하면 회전때도 먹히려나
-		_matrix matBoss = dynamic_cast<CBoss2*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2"))->m_pTransform->m_matWorld;
+		_matrix matBoss;
+		CGameObject* pObj = dynamic_cast<CBoss2*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2"));
+		if (pObj == nullptr)
+			return -1;
+		matBoss = pObj->m_pTransform->m_matWorld;
 		_vec3 vBossX = { matBoss._11,matBoss._12,matBoss._13 };
 		_float fYDis = D3DXVec3Length(&vBossX);
 		vBossX /= fYDis;

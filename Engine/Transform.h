@@ -13,7 +13,7 @@ private:
 	virtual ~CTransform();
 
 public:
-	const _matrix*	Get_WorldMatrixPointer() { return &m_matWorld; }
+	const _matrix*		Get_WorldMatrixPointer() { return &m_matWorld; }
 	void				Get_Info(INFO eType, _vec3* pInfo)
 	{
 		*pInfo = m_vInfo[eType];
@@ -24,7 +24,7 @@ public:
 	}
 
 	void Set_Pos(const _float& x, const _float& y, const _float& z)
-	{	
+	{
 		m_vInfo[INFO_POS] = { x,y,z };
 	}
 
@@ -61,10 +61,9 @@ public:
 	}
 
 	void			MakeMyMatrix(const _float& fTimeDelta);
-
+	void			Set_ParentTransform(CGameObject * pParentObject, _float fX, _float fY, _float fZ);
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
-	
 public:
 	HRESULT		Ready_Transform(void);
 	virtual		_int	Update_Component(const _float& fTimeDelta);
@@ -83,16 +82,18 @@ public:
 	}
 
 	void SetParent(CTransform* trans) {
-		if (trans != nullptr) 
-			m_Parent = trans;  
-		trans->m_Child.push_back(this); }
+		if (trans != nullptr)
+			m_Parent = trans;
+		trans->m_Child.push_back(this);
+	}
 	CTransform* GetParent() { return m_Parent; }
 	vector<CTransform*> GetChildren() { return m_Child; }
-	CTransform * GetChild(size_t index) { 
+	CTransform * GetChild(size_t index) {
 		if (index <= m_Child.size())
-		return m_Child[index]; 
-	else 
-		return nullptr; }
+			return m_Child[index];
+		else
+			return nullptr;
+	}
 	_int		GetChildCount() { return m_Child.size(); }
 	_matrix GetRotMat();
 	_matrix GetRevolutionRotMat();
@@ -102,7 +103,6 @@ public:
 private:
 	CTransform* m_Parent;
 	vector<CTransform*> m_Child;
-	void		Set_ParentTransform(CGameObject* pParentObject, _float fX, _float fY, _float fZ);
 
 public:
 	_bool		m_bIsStatic = true;
@@ -113,7 +113,7 @@ public:
 	_matrix		m_matWorld;
 	_matrix		m_matBillX;
 	_matrix		m_matBillY;
-	
+
 	_matrix		m_matRT;
 
 	_matrix		m_matPerantScale;

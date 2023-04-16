@@ -64,7 +64,6 @@
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shadow.h" />
-    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="SlerpParticle.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="SparkParticle.h" />
@@ -116,7 +115,6 @@
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shadow.cpp" />
-    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="SlerpParticle.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="SparkParticle.cpp" />

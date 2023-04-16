@@ -188,7 +188,6 @@
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
-    <ClInclude Include="Lightning.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="MenuCubeSpr.h" />
@@ -273,7 +272,6 @@
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
-    <ClCompile Include="Lightning.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />

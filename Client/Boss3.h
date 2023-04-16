@@ -10,14 +10,6 @@ END
 
 class CBoss3 : public CCube
 {
-	typedef enum Boss3State
-	{
-		B3_IDLE,		// ����
-		B3_ATTACK,		// ���� ��� ����
-		B3_SHOOT,		// �Ѿ� ��� ����
-		B3_DEAD			// ���
-	}BOSS3;
-
 private:
 	explicit CBoss3(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CBoss3();

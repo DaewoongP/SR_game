@@ -253,29 +253,6 @@ HRESULT CBoss3::Add_Component(void)
 	return S_OK;
 }
 
-void CBoss3::State_Change(const _float & fTimeDelta)
-{
-	if (m_ePreState != m_eCurState)
-	{
-		switch (m_eCurState)
-		{
-		case B3_IDLE:
-			break;
-
-		case B3_ATTACK:
-			break;
-
-		case B3_SHOOT:
-			break;
-
-		case B3_DEAD:
-			break;
-		}
-
-		m_ePreState = m_eCurState;
-	}	
-}
-
 void CBoss3::FollowPlayer(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
