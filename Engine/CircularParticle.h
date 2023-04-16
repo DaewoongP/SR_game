@@ -24,6 +24,9 @@ public:
 		m_fLifeTime = fLife;
 		Reset();
 	}
+	void Set_SizeLifeTime(_float sizetime) { m_fSizeoverLifetime = sizetime; }
+	void Set_RandomGen() { m_bSetRandomGenTime = true; }
+	void Set_Color(_ulong _color) { m_dwColor = _color; }
 public:
 	static CCircularParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev, 
 		const _tchar* pPath,
@@ -40,7 +43,10 @@ private:
 
 private:
 	_float	m_fLifeTime;
+	_float m_fSizeoverLifetime;
 	_float	m_fRadius;
+	_bool	m_bSetRandomGenTime;
+	_ulong	m_dwColor;
 };
 
 END

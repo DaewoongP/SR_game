@@ -8,7 +8,6 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
-
 END
 
 class CFireball : public Engine::CGameObject
