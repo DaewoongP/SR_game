@@ -9,7 +9,7 @@
 
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(25.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fIdleCycle(0.f), m_fIdleAngle(0.f),
+	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fIdleCycle(0.f), m_fIdleAngle(0.f),
 	m_iIndex(0),
 	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false)
 {
@@ -18,6 +18,7 @@ CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 CBoss3Hand::~CBoss3Hand()
 {
 }
+
 
 HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 {
@@ -80,7 +81,7 @@ _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
 	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
 
-	if(!m_pTransform->m_vInfo[INFO_POS].z == 5.f)
+	if(!m_pTransform->m_vInfo[INFO_POS].z == 3.f)
 	{
 		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 	}
@@ -182,7 +183,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	NULL_CHECK_RETURN(pGameObject, );
 
 	// 추격을 진행하고
-	if (1.5f < m_fCoolDown && 1.5f + BOSS3_CHASE > m_fCoolDown)
+	if (1.5f < m_fCoolDown && 2.f + BOSS3_CHASE > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 		if(!m_pTransform->m_vInfo[INFO_POS].z > 8.f);

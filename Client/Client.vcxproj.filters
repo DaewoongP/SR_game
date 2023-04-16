@@ -185,6 +185,9 @@
     <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Mouth">
       <UniqueIdentifier>{6eea6d7d-1554-4801-bab5-4474a213bb08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss3\BossHandPart">
+      <UniqueIdentifier>{11754176-34fe-4ded-96b5-118c9977a77f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -416,6 +419,9 @@
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="BossHandPart.h">
+      <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -643,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="LogoCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="BossHandPart.cpp">
+      <Filter>00. GameObject\04. Boss\Boss3\BossHandPart</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

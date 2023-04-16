@@ -72,7 +72,7 @@ private:
 	BOSS3	m_ePreState;
 
 	_bool m_bATKEnd=false;
-	_int m_iBossHp = 1; //추후에 스테이지로 옮겨야함
+	_int m_iBossHp = 2; //추후에 스테이지로 옮겨야함
 	_bool m_bATKCnt; //전기공격을할지안할지판단
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;

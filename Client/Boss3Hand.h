@@ -40,7 +40,7 @@ private:
 
 	_bool	m_bShock = false;
 
-	_int m_iBossHp=1;
+	_int m_iBossHp=2;
 	_float  m_fIdleCycle;
 	_float  m_fIdleAngle;
 	_bool	m_bAttack;

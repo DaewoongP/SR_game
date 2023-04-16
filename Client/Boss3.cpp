@@ -116,7 +116,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		m_bShoot = false;
 		m_fShootterm += fTimeDelta;
 
-		if (m_fShootterm > 2.f)
+		if (m_fShootterm > 2.f && m_iBossHp==1)
 		{
 			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
@@ -161,6 +161,7 @@ void CBoss3::LateUpdate_GameObject(void)
 void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	if(!g_Is2D)
 	m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
 
 	m_pTextureCom->Set_Texture();
@@ -324,10 +325,11 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
-			m_pTransform->m_vInfo[INFO_POS].z += 1.f; //* fTimeDelta; // 80.f 는 속도(상수)
-		
-		 if (m_pTransform->m_vInfo[INFO_POS].z >5.f)
+			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
+		else
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+
+		// if (m_pTransform->m_vInfo[INFO_POS].z >4.5f)
 	}
 
 	// 왼손 공격 명령
@@ -346,8 +348,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 		if (m_iBossHp == 1)
 			m_bATKCnt = true;
-		//if (m_pBossRight->m_pTransform->m_vInfo[INFO_POS].z >= 8.f)
-			//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
+		
 
 	}		
 	
