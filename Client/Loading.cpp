@@ -192,10 +192,6 @@ _uint CLoading::Loading_ForStage1(void)
 		L"../Resource/Texture/Export_Textures/Sprites/RainSpr/RainSpr_0.png", 1,
 		0.7f, 15, true)), E_FAIL);
 
-	/*FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WindParticle", CWindParticle::Create(m_pGraphicDev,
-	L"../Resource/Texture/Export_Textures/Sprites/theme1SunSparkSpr/theme1SunSparkSpr_1.png", 1,
-	1.f, 5, true)), E_FAIL);*/
-
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
 	m_bFinish = true;
 	Set_String(L"Loading1 Complete!!!!!!!!");

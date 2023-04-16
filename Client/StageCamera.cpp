@@ -21,7 +21,7 @@ CStage1Camera::~CStage1Camera()
 HRESULT CStage1Camera::Ready_GameObject(void)
 {
 	_matrix matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 1000.0f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 100.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 	m_pTransform->m_bUseWeak = true;
 
