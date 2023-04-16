@@ -30,7 +30,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_bIsStatic = true;
 	m_vPrePos = vPos;
 	m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
-	m_pCollider->Set_Group(COL_ENV);
+	m_pCollider->Set_Group(COL_OBJ);
 
 	m_iIndex = iIndex;
 

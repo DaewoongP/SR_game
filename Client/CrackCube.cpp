@@ -32,12 +32,10 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 
 _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDead)
-	{
-		m_pExpParticle->Start_Particle();
-	}
 	if (m_pExpParticle->IsDead())
 		return OBJ_DEAD;
+	if (m_bDead)
+		m_pExpParticle->Start_Particle();
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return OBJ_NOEVENT;
@@ -116,7 +114,7 @@ HRESULT CCrackCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
-	pComponent = m_pExpParticle = dynamic_cast<CBlockExp*>(Engine::Clone_Proto(L"BlockExp", this));
+	pComponent = m_pExpParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BlockExp", this));
 	NULL_CHECK_RETURN(m_pExpParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BlockExp", pComponent });
 	return S_OK;

@@ -21,12 +21,13 @@
 #include "GravityCube.h"
 #include "LightningCloud.h"
 #include "PortalCube.h"
+#include "LaserTurret.h"
 
 CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
-	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0),
-	m_tPortalCubeDir(CD_UP)
+	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0), m_iLaserTurretCount(0),
+	m_tPortalCubeDir(CD_UP), m_tLaserTurretDir(CD_LEFT)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
@@ -215,7 +216,7 @@ HRESULT CImguiUnit::MapObjectMenu()
 
 		// 맵 오브젝트 종류 선택 콤보 박스
 		const char* items[] = { "KEY", "KEY CUBE", "MOVE CUBE", "PORTAL", "CRACK CUBE", "SPIKE", "PINKCLOUD",
-			"SWITCH", "SWITCH CUBE", "GRAVITY CUBE", "LIGHTNING CLOUD", "PORTAL CUBE" };
+			"SWITCH", "SWITCH CUBE", "GRAVITY CUBE", "LIGHTNING CLOUD", "PORTAL CUBE", "LASER TURRET" };
 		ImGui::Combo("Map Object Type", &m_iMapObjectType, items, IM_ARRAYSIZE(items));
 
 		// 포탈 큐브 방향 설정
@@ -235,6 +236,17 @@ HRESULT CImguiUnit::MapObjectMenu()
 			ImGui::SameLine();
 			if (ImGui::Button("DOWN"))
 				m_tPortalCubeDir = CD_DOWN;
+		}
+
+		// 레이저 터렛 방향 설정
+		if (12 == m_iMapObjectType)
+		{
+			if (ImGui::Button("LEFT"))
+				m_tLaserTurretDir = CD_LEFT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("RIGHT"))
+				m_tLaserTurretDir = CD_RIGHT;
 		}
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
@@ -370,6 +382,14 @@ void CImguiUnit::MapObjectInstall()
 			++m_iPortalCubeCount;
 		}
 
+		else if (12 == m_iMapObjectType) // 레이저 터렛
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pStageLayer,
+				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], (_int)(m_tLaserTurretDir - 2)), );
+
+			m_vecLaserTurretDir.push_back(m_tLaserTurretDir);
+		}
+
 		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
 		tMapObjectInfo.iObjTypeNumber = m_iMapObjectType;
 
@@ -401,9 +421,14 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 		return E_FAIL;
 
 	dwByte = 0;
+	
+	DWORD	dwByte1 = 0;
 
 	for (auto&iter : m_vecPortalCubeDir)
 		WriteFile(hFile, &iter, sizeof(_int), &dwByte, nullptr);
+
+	for(auto& iter : m_vecLaserTurretDir)
+		WriteFile(hFile, &iter, sizeof(_int), &dwByte1, nullptr);
 
 	CloseHandle(hFile2);
 
@@ -414,6 +439,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 {
 	m_vecMapObjectInfo.clear();
 	m_vecPortalCubeDir.clear();
+	m_vecLaserTurretDir.clear();
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
@@ -448,14 +474,26 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 		return E_FAIL;
 
 	DWORD dwByte2 = 0;
-	int vPortalCubeInfo = {};
+	int i = 0;
 
-	while (true)
+	int vPortalCubeInfo = {};
+	int vLaserTurretInfo = {};
+
+	while (2 > i)
 	{
-		ReadFile(hFile, &vPortalCubeInfo, sizeof(int), &dwByte2, nullptr);
+		ReadFile(hFile2, &vPortalCubeInfo, sizeof(_int), &dwByte2, nullptr);
 		if (dwByte2 == 0)
 			break;
 		m_vecPortalCubeDir.push_back(vPortalCubeInfo);
+		++i;
+	}
+
+	while (true)
+	{
+		ReadFile(hFile2, &vLaserTurretInfo, sizeof(_int), &dwByte2, nullptr);
+		if (dwByte2 == 0)
+			break;
+		m_vecLaserTurretDir.push_back(vLaserTurretInfo);
 	}
 
 	CloseHandle(hFile2);
@@ -522,6 +560,13 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer, iter.vObjPos,
 				(_int)m_vecPortalCubeDir.at(m_iPortalCubeCount)), E_FAIL);
 			++m_iPortalCubeCount;
+		}
+
+		else if (12 == iter.iObjTypeNumber) // 레이저 터렛
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pStageLayer, iter.vObjPos,
+				(_int)(m_vecLaserTurretDir.at(m_iLaserTurretCount) - 2)), E_FAIL);
+			++m_iLaserTurretCount;
 		}
 	}
 

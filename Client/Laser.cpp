@@ -64,8 +64,8 @@ void CLaser::Render_GameObject(void)
 
 void CLaser::OnCollisionEnter(const Collision * collision)
 {
-	//m_bDead = true;
-	m_bUse = false;
+	m_bDead = true;
+	//m_bUse = false;
 }
 
 HRESULT CLaser::Add_Component(void)

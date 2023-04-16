@@ -39,15 +39,6 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pSparkParticle->Start_Particle();
 	m_pSparkParticle->Set_LifeTime(0.f);
 
-	// 원숭이 원형파티클 옵션
-	/*BoundingBox box;
-	box.Offset(vPos);
-	box._offsetMin = { -CUBEX, -CUBEY, -5.f };
-	box._offsetMax = { CUBEX, CUBEY, 5.f };
-	m_pCircleTest->Set_BoundingBox(box);
-	m_pCircleTest->Set_Size(3.f);
-	m_pCircleTest->Set_Options({ 0,1,0 }, 10.f, 50.f);*/
-
 	++iKeyCnt;
 	return S_OK;
 }

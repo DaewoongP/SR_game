@@ -52,6 +52,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pRigid->m_bUseGrivaty = false;
 
+	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
 	return S_OK;
 }
 
@@ -1980,6 +1981,7 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		}
 
 		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
+
 		m_bInit = true;
 	}
 	
@@ -2010,8 +2012,25 @@ void CBoss2::LateUpdate_GameObject(void)
 	__super::LateUpdate_GameObject();
 }
 
+void CBoss2::Render_GameObject()
+{
+	m_pCircleParticle->Update_Particle();
+	m_pJumpParticle->Update_Particle();
+	m_pScreamParticle->Update_Particle();
+}
+
 void CBoss2::SwapTrigger()
 {
+	if (g_Is2D)
+	{
+		m_pCircleParticle->End_Particle();
+		m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
+	}
+	else
+	{
+		m_pCircleParticle->End_Particle();
+		m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
+	}
 }
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
@@ -2026,6 +2045,14 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
 		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+		// 원형파티클 옵션
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+		box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+		m_pCircleParticle->Set_BoundingBox(box);
+		m_pCircleParticle->Set_Size(3.f);
+		m_pCircleParticle->Start_Particle();
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
@@ -2085,6 +2112,18 @@ HRESULT CBoss2::Add_Component(void)
 	NULL_CHECK_RETURN(m_pAnimation_Body, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
 
+	pComponent = m_pCircleParticle = dynamic_cast<CCircleParticle*>(Engine::Clone_Proto(L"CircleParticle", this));
+	NULL_CHECK_RETURN(m_pCircleParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircleParticle", pComponent });
+
+	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"Boss2JumpParticle", this));
+	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Boss2JumpParticle", pComponent });
+
+	pComponent = m_pScreamParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BossScream", this));
+	NULL_CHECK_RETURN(m_pScreamParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BossScream", pComponent });
+
 	return S_OK;
 }
 
@@ -2106,6 +2145,13 @@ void CBoss2::CheckZFloor()
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
 		//?´ê±° ?´ë–»ê²?êº¼ì¤„ê±°ìž„?
 		m_bIsOnGround = true;
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+		box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+		m_pCircleParticle->Set_BoundingBox(box);
+		m_pCircleParticle->Set_Size(3.f);
+		m_pCircleParticle->Start_Particle();
 	}
 }
 
@@ -2135,7 +2181,18 @@ void CBoss2::Do_Jump_Ready(const _float& fTimeDelta)
 	m_dwActionTime = 0.5f;
 	m_pAnimation_Body->SetAnimation(L"Jump");
 	m_iCurrentActionIdx++;
-	
+
+	BoundingBox box;
+	if (m_bFlip_Y)
+		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(2.f, 3.f, 0.f));
+	else
+		box.Offset(m_pTransform->m_vInfo[INFO_POS] - _vec3(-5.f, 3.f, 0.f));
+	m_pJumpParticle->Set_Size(4.f);
+	m_pJumpParticle->Set_SizeLifeTime(0.999f);
+	m_pJumpParticle->Set_LiftTime(0.8f);
+	m_pJumpParticle->Set_BoundingBox(box);
+	m_pJumpParticle->Start_Particle();
+
 }
 
 void CBoss2::Do_Jump_01(const _float& fTimeDelta)
@@ -2213,6 +2270,12 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	
 	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(4.0f, 40.0f, SHAKE_ALL);
 
+	BoundingBox box;
+	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+	m_pScreamParticle->Set_BoundingBox(box);
+	m_pScreamParticle->Set_SizeLifeTime(1.07f);
+	m_pScreamParticle->Start_Particle();
+
 	m_dwRestTime = 2.0f;
 	CheckIsLastActionIdx();
 }
@@ -2222,6 +2285,7 @@ void CBoss2::Do_ScreamEnd(const _float & fTimeDelta)
 	m_pAnimation_Body->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_dwRestTime = 1.0f;
+	m_pScreamParticle->End_Particle();
 	CheckIsLastActionIdx();
 }
 
@@ -2272,16 +2336,18 @@ void CBoss2::ReadyPartten()
 {
 	//ì¢…ë£Œê¹Œì? ?•ìž¥
 	funcAction.reserve(B2_END);
-	
+
 	BOSS2_STATE_FUNC func; //idle
 
-	func.push_back(&CBoss2::Do_Standing);
+	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_SummonRock);
+	func.push_back(&CBoss2::Do_Jump_01);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Throw);
+	func.push_back(&CBoss2::Do_Jump_02);
 	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ThrowEnd);
+	func.push_back(&CBoss2::Do_ResetVelocity);
+	func.push_back(&CBoss2::Do_Idle);
+	func.push_back(&CBoss2::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
 
@@ -2343,7 +2409,7 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
-	
+
 	//찍기
 	func.push_back(&CBoss2::Do_Stump_Ready);
 	func.push_back(&CBoss2::Do_Chase_Player);
@@ -2354,7 +2420,7 @@ void CBoss2::ReadyPartten()
 	func.push_back(&CBoss2::Do_ResetVelocity);
 	funcAction.push_back(func);
 	func.clear();
-	
+
 	//소리지르기
 	func.push_back(&CBoss2::Do_Scream);
 	func.push_back(&CBoss2::Do_Rest);
@@ -2375,7 +2441,6 @@ void CBoss2::ReadyPartten()
 	func.clear();
 	*/
 }
-
 void CBoss2::Do_Rest(const _float& fTimeDelta)
 {
 	if (m_dwRestTime < 0)

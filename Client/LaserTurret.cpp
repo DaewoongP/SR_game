@@ -85,7 +85,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		NULL_CHECK_RETURN(pStageLayer, );
 
 		// 레이저 오른쪽으로 발사
-		if (!lstrcmp(m_pTag, L"LaserTurretLeft"))
+		if (0 == m_iIndex)
 		{
 			FAILED_CHECK_RETURN(FACTORY<CLaser>::Create(L"Laser", pStageLayer, _vec3{ vPos.x + 1.f, vPos.y, vPos.z + 0.1f }, 1), );
 		}
