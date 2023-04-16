@@ -75,7 +75,6 @@ HRESULT CLaserTurret::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
-
 	return S_OK;
 }
 
@@ -83,7 +82,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
 
-	if (0.26f < m_fCoolDown)
+	if (0.2f < m_fCoolDown)
 	{
 		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
 

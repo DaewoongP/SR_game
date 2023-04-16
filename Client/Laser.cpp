@@ -30,12 +30,11 @@ HRESULT CLaser::Ready_GameObject(_vec3 & vPos, _int eDir)
 
 _int CLaser::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_bDead)
+	if (m_pColParticle->OverOneParticleIsDead())
 		return OBJ_DEAD;
 
 	if(LASER_RIGHT == m_eLaserDir)
 		m_pTransform->m_vInfo[INFO_POS].x += m_fSpeed * fTimeDelta;
-
 	else
 		m_pTransform->m_vInfo[INFO_POS].x -= m_fSpeed * fTimeDelta;
 
@@ -53,6 +52,8 @@ void CLaser::LateUpdate_GameObject(void)
 
 void CLaser::Render_GameObject(void)
 {
+	if (-1 == m_pColParticle->Update_Particle())
+		return;
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture();
@@ -65,8 +66,12 @@ void CLaser::Render_GameObject(void)
 
 void CLaser::OnCollisionEnter(const Collision * collision)
 {
+	BoundingBox box;
+	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+	m_pColParticle->Set_BoundingBox(box);
+	m_pColParticle->Set_Options({ 0.f, 0.f, 1.f }, 1.f);
+	m_pColParticle->Start_Particle();
 	m_bDead = true;
-	//m_bUse = false;
 }
 
 HRESULT CLaser::Add_Component(void)
@@ -88,6 +93,10 @@ HRESULT CLaser::Add_Component(void)
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
+	pComponent = m_pColParticle = dynamic_cast<CCircleParticle*>(Engine::Clone_Proto(L"RazorColParticle", this));
+	NULL_CHECK_RETURN(m_pColParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"RazorColParticle", pComponent });
 
 	return S_OK;
 }

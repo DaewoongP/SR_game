@@ -215,6 +215,10 @@ _uint CLoading::Loading_ForStage1(void)
 		L"../Resource/Texture/Export_Textures/Sprites/b1FireballStaticSpr/b1FireballStaticSpr_0.png", 1,
 		1.f, 5, false, 1.f, 10.f)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RazorColParticle", CCircleParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		0.5f, 10, false, 1.f)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		1.f, 15, false)), E_FAIL);

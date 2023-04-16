@@ -34,6 +34,16 @@ public:
 	bool IsEmpty();
 	bool IsDead();
 
+	_bool OverOneParticleIsDead() 
+	{
+		for (auto& iter : m_Particles)
+		{
+			if (iter.bIsAlive == false)
+				return true;
+		}
+		return false;
+	}
+
 	void Start_Particle() 
 	{ 
 		Reset();

@@ -9,7 +9,7 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CShadow;
-
+class CCircleParticle;
 END
 
 class CLaser : public Engine::CGameObject
@@ -41,6 +41,7 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pCollider;
 	Engine::CShadow*		m_pShadow;
+	Engine::CCircleParticle*	m_pColParticle;
 
 	_float m_fSpeed;
 	_bool  m_bUse;
