@@ -16,7 +16,14 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	m_fRadius = fRadius;
 	m_pTexture = CTexture::Create(m_pGraphicDev,
 		TEX_NORMAL,
-		pPath);
+		pPath,
+		iTextureNum);
+	if (iTextureNum > 1)
+	{
+		m_pTexture->Add_Anim(L"Idle", 0, iTextureNum - 1, 1.f, false);
+		m_pTexture->Switch_Anim(L"Idle");
+		m_pTexture->m_bUseFrameAnimation = true;
+	}
 	m_bIsWorld = isWorld;
 	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
