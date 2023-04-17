@@ -28,7 +28,7 @@ HRESULT CStage3::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(2, this);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(2, this);
-	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(2, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
