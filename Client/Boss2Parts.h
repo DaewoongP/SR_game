@@ -26,7 +26,13 @@ public:
 	virtual void Render_Top(void) override;
 
 public:
-	void TextureBlinkStart() { m_pTextureCom->m_bUseFrameAnimation = false; m_dwTimer = 2.0f; }
+	void TextureBlinkStart()
+	{
+		if (nullptr == m_pTextureCom)
+			return;
+		m_pTextureCom->m_bUseFrameAnimation = false;
+		m_dwTimer = 2.0f; 
+	}
 	void SetTexture_Blink(_bool isWhite) { if (isWhite) m_CurrentTexture = m_WhiteTexture; else m_CurrentTexture = m_OriginTexture;}
 	CTexture*	GetTextureCom() { return m_pTextureCom; }
 protected:

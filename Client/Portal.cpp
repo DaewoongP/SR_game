@@ -23,6 +23,8 @@ HRESULT CPortal::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
+	m_pCollider->Set_Group(COL_ENV);
+	m_pCollider->m_bIsTrigger = true;
 
 	return S_OK;
 }

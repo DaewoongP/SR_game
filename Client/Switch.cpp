@@ -25,8 +25,7 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 0.9f, 0.9f, 1.f };
 	m_pTransform->m_bIsStatic = false;
 
-	// ���� ť�꿡 z�ప ���� ��� �տ� �־�� �ϱ� ������ �ٿ�� �ڽ� ���� ��
-	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f });
+	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f }, {0.f, 0.5f, 0.f});
 
 	return S_OK;
 }

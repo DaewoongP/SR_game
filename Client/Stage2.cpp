@@ -22,6 +22,7 @@ CStage2::~CStage2()
 
 HRESULT CStage2::Ready_Scene(void)
 {
+	m_eLoadingID = LOADING_STAGE2;
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);

@@ -7,7 +7,9 @@
 #include "Toodee.h"
 #include "Topdee.h"
 #include "Boss3.h"
-
+#include "ImguiMgr.h"
+#include "ImguiStage.h"
+#include "ImguiUnit.h"
 CStage3::CStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -20,9 +22,14 @@ CStage3::~CStage3()
 
 HRESULT CStage3::Ready_Scene(void)
 {
+	m_eLoadingID = LOADING_STAGE3;
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(2, this);
+	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(2, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(2, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
@@ -63,10 +70,10 @@ HRESULT CStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(30.f, 10.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(36.f, 28.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 6.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(60.f, 10.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(20.f, 10.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 20.f, 10.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

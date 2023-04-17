@@ -2,9 +2,12 @@
 #include "Scene.h"
 #include "Export_Function.h"
 #include "..\Client\PreStage.h"
+#include "..\Client\Key.h"
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphicDev)
-	: m_pGraphicDev(pGraphicDev), m_eLoadingID(LOADING_STAGE1)
+	: m_pGraphicDev(pGraphicDev), m_eLoadingID(LOADING_END)
 {
+	// ±ÍÂú¾Æ¼­ ½ºÅÃ¿¡ ¿Ã·È´Ù°¡ ´õ±ÍÂú¾ÆÁ®¹ö¸²;
+	CKey::iKeyCnt = 0;
 	m_pGraphicDev->AddRef();
 }
 

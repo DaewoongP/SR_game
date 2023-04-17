@@ -5,31 +5,9 @@
 
 #include "Cube.h"
 #include "StageCamera.h"
-#include "MoveCube.h"
 #include "StageBG.h"
-#include "Key.h"
-#include "KeyCube.h"
-#include "CrackCube.h"
-#include "Pig.h"
-#include "Bat.h"
-#include "PinkCloud.h"
-#include "LightningCloud.h"
 #include "Toodee.h"
 #include "Topdee.h"
-#include "Spike.h"
-#include "GravityCube.h"
-#include "Portal.h"
-#include "Fireball.h"
-#include "Spike.h"
-#include "Switch.h"
-#include "InstallGrid.h"
-#include "SwitchCube.h"
-#include "PortalCube.h"
-#include "Boss3.h"
-#include "Fireball.h"
-#include "LaserTurret.h"
-#include "Laser.h"
-#include "Boss2.h"
 #include "ImguiMgr.h"
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
@@ -45,6 +23,7 @@ CStage1::~CStage1()
 
 HRESULT CStage1::Ready_Scene(void)
 {
+	m_eLoadingID = LOADING_STAGE1;
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
