@@ -227,21 +227,27 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 	{
 		m_pRigid->m_Velocity.x = -m_fSpeed;
-		
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
 	{
 		m_pRigid->m_Velocity.x = m_fSpeed;
-		
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
 
 	}
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = -m_fSpeed*0.2f;
-
+	{
+		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
+	{
+		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
 
+	}
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
 		Engine::StopSound(SOUND_EFFECT);
