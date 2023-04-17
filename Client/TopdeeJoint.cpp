@@ -19,23 +19,23 @@ HRESULT CTopdeeJoint::Ready_GameObject(_vec3 & vPos)
 
 _int CTopdeeJoint::Update_GameObject(const _float & fTimeDelta)
 {
-	_matrix		matWorld, matBill, matView;
+//	_matrix		matWorld, matBill, matView;
 	__super::Update_GameObject(fTimeDelta);
 
 
-	matWorld = *m_pTransform->Get_WorldMatrixPointer();
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	//matWorld = *m_pTransform->Get_WorldMatrixPointer();
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
 
-	D3DXMatrixIdentity(&matBill);
+	//D3DXMatrixIdentity(&matBill);
 
-	matBill._22 = matView._22;
-	matBill._23 = matView._23;
-	matBill._32 = matView._32;
-	matBill._33 = matView._33;
+	//matBill._22 = matView._22;
+	//matBill._23 = matView._23;
+	//matBill._32 = matView._32;
+	//matBill._33 = matView._33;
 
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-	matWorld = matBill * matWorld;
-	m_pTransform->m_matWorld = matWorld;
+	//D3DXMatrixInverse(&matBill, 0, &matBill);
+	//matWorld = matBill * matWorld;
+	//m_pTransform->m_matWorld = matWorld;
 
 	return 0;
 }
