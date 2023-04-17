@@ -228,6 +228,9 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::PlaySound_Effect(L"1.wav",SOUND_EFFECT, 1.f);
+
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 		BoundingBox box;
 		box.Offset(m_pTransform->m_vInfo[INFO_POS]);

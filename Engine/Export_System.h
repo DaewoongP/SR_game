@@ -51,6 +51,8 @@ inline HRESULT Ready_Sound();
 inline HRESULT Ready_Sound_Effect();
 
 inline void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline void PlaySound_Effect(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+
 inline void PlayBGM(TCHAR* pSoundKey, float fVolume);
 inline void StopSound(CHANNELID eID);
 inline void StopAll();
