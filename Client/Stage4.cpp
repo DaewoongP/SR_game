@@ -31,6 +31,8 @@ HRESULT CStage4::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(3, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(3, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	Engine::StopSound(SOUND_BGM);
+	Engine::PlayBGM(L"1.wav", 0.35f);
 	return S_OK;
 }
 

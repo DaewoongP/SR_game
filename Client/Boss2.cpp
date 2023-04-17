@@ -2056,6 +2056,8 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		m_pCircleParticle->Set_BoundingBox(box);
 		m_pCircleParticle->Set_Size(3.f);
 		m_pCircleParticle->Start_Particle();
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
@@ -2528,18 +2530,10 @@ void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 {
 	//?¬ë””ë©??„ëž˜ë¡?
 	if (g_Is2D)
-	{
-		StopSound(SOUND_EFFECT_ENEMY);
-		PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
-	}
 	//?‘ë””ë©?zë¡?
-	else
-	{
-		StopSound(SOUND_EFFECT_ENEMY);
-		PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
+	else 
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
-	}
 	CheckIsLastActionIdx();
 	m_dwRestTime = 3;
 }
