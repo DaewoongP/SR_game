@@ -28,6 +28,7 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
+	m_bRender = true;
 
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
 
@@ -90,12 +91,15 @@ void CToodee::LateUpdate_GameObject(void)
 }
 void CToodee::Render_GameObject(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
-	m_pShadow->Render_Shadow(m_pBufferCom);
-	m_pBufferCom->Render_Buffer();
-	__super::Render_GameObject();
-	Render_Particle();
+	if (m_bRender)
+	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+		m_pTextureCom->Set_Texture(0);
+		m_pShadow->Render_Shadow(m_pBufferCom);
+		m_pBufferCom->Render_Buffer();
+		__super::Render_GameObject();
+		Render_Particle();
+	}
 }
 
 void CToodee::OnCollisionEnter(const Collision * collision)

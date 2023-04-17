@@ -2,6 +2,7 @@
 
 #include "Include.h"
 #include "GameObject.h"
+#include "TopdeeParts.h"
 BEGIN(Engine)
 
 class CRcTex;
@@ -40,6 +41,7 @@ private:
 
 	void		Set_SlerpParticle();
 public:
+	void		SetRenderONOFF(_bool value) { m_bRender = value; }
 	void		SetMovePos(COL_DIR dir);
 	void		SetMovePos_zero();
 	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
@@ -61,8 +63,11 @@ private:
 	_bool					m_bIsMoveKeyPress = false;
 
 	CGameObject*			m_pGrabObj = nullptr;
-
+	_bool					m_bRender;
 	TOPDEESTATE				m_eState = TD_MOVE;
+
+	vector<CTopdeeParts*>   m_partVec;
+	_bool					m_bInit;
 
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }

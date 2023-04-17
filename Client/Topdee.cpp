@@ -3,10 +3,12 @@
 #include "MoveCube.h"
 #include "Export_Function.h"
 #include "PortalCube.h"
+#include "AbstractFactory.h"
 
 CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
+	m_bInit = true;
 }
 
 CTopdee::~CTopdee()
@@ -22,12 +24,35 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 	m_pCollider->m_bIsTrigger = true;
-	
+	m_bRender = true;
+
 	__super::Update_GameObject(0.01f);
 	return S_OK;
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bInit)
+	{
+		//실행해주는 코드
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+		//머리
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeHead", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Topdee_Head", 0, false), E_FAIL);
+		//몸통
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Topdee_Body", 0, false), E_FAIL);
+		//팔
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1), L"Topdee_Arm", 0, false), E_FAIL);
+		//팔
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1), L"Topdee_Arm", 0, false), E_FAIL);
+		//다리
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1), L"Topdee_Arm", 0, false), E_FAIL);
+		//다리
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1), L"Topdee_Arm", 0, false), E_FAIL);
+
+		m_bInit = false;
+	}
+
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -56,15 +81,18 @@ void CTopdee::LateUpdate_GameObject(void)
 
 void CTopdee::Render_GameObject(void)
 {
-	m_pSlerpParticle->Update_Particle();
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	if (m_bRender)
+	{
+		m_pSlerpParticle->Update_Particle();
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture(0);
-	m_pShadow->Render_Shadow(m_pBufferCom);
+		m_pTextureCom->Set_Texture(0);
+		m_pShadow->Render_Shadow(m_pBufferCom);
 
-	m_pBufferCom->Render_Buffer();
+		m_pBufferCom->Render_Buffer();
 
-	__super::Render_GameObject();
+		__super::Render_GameObject();
+	}
 }
 
 void CTopdee::OnCollisionEnter(const Collision * collision)
