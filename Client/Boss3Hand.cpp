@@ -37,6 +37,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	// 3보스용 옵션값
 	BoundingBox Testbox;
 	Testbox.Offset(vPos);
+	vPos.z -= 2.f;
 	m_pSparkParticle->Set_BoundingBox(Testbox);
 	m_pSparkParticle->Set_RandomGen(3.f);
 	m_pSparkParticle->Set_SizeLifeTime(1.f);
