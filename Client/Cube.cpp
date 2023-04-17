@@ -71,9 +71,9 @@ HRESULT CCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CubeTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage1_Cube",this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage_Cube",this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Stage1_Cube", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Stage_Cube", pComponent });
   
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
