@@ -47,6 +47,8 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pElecParticle->Set_SizeLifeTime(1.f);
 	m_pElecParticle->Set_Options(1.2f, 15.f);
 
+	m_pShadowCom->m_fShadowHeight = 12.f;
+
 	return S_OK;
 }
 
@@ -124,13 +126,13 @@ void CBoss3Hand::Render_GameObject(void)
 {
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	if(!g_Is2D)
-	m_pShadowCom->Render_Shadow(m_pBufferCom, 0.75f, 0.75f, 1.f);
 
 	if (m_bShock == true)
 		m_pTextureCom->Set_Texture();
 	else
 		m_pTextureCom2->Set_Texture();
+	if(!g_Is2D)
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
 	m_pBufferCom->Render_Buffer();
 	CGameObject::Render_GameObject();
 	m_pLandingParticle->Update_Particle();
