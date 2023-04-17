@@ -39,17 +39,6 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pSparkParticle->Set_LifeTime(0.f);
 	m_pSparkParticle->Start_Particle();
 
-	// 3보스용 옵션값
-	/*BoundingBox Testbox;
-	Testbox.Offset(vPos);
-	m_pSpark->Set_BoundingBox(Testbox);
-	m_pSpark->Set_RandomGen(3.f);
-	m_pSpark->Set_SizeLifeTime(1.f);
-	m_pSpark->Set_Options(1.2f, 15.f);
-	m_pElec->Set_BoundingBox(Testbox);
-	m_pElec->Set_RandomGen(3.f);
-	m_pElec->Set_SizeLifeTime(1.f);
-	m_pElec->Set_Options(1.2f, 15.f);*/
 	++iKeyCnt;
 	return S_OK;
 }
