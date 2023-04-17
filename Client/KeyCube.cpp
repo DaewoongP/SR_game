@@ -40,7 +40,10 @@ _int CKeyCube::Update_GameObject(const _float& fTimeDelta)
 void CKeyCube::LateUpdate_GameObject(void)
 {
 	if (CKey::iKeyCnt == 0)
+	{
+		PlaySound_Effect(L"57.wav", SOUND_EFFECT_GIMMICK,1.f);
 		m_bDead = true;
+	}
 	if (m_bDead)
 		m_pExpParticle->Start_Particle();
 

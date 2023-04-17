@@ -106,10 +106,15 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 	{
 		m_pTextureCom->Switch_Anim(L"Die");
 	}
+	if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
+	}
 
 	if (collision->_dir == DIR_DOWN)
 		LandingParticle_logic(collision->otherObj->m_pTag);
-
+	
 	__super::OnCollisionEnter(collision);
 }
 
@@ -141,6 +146,7 @@ void CToodee::OnCollisionStay(const Collision * collision)
 
 void CToodee::OnCollisionExit(const Collision * collision)
 {
+
 	m_bJumpable = false;
 	__super::OnCollisionExit(collision);
 }
@@ -229,7 +235,8 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
 		Engine::StopSound(SOUND_EFFECT);
-		Engine::PlaySound_Effect(L"1.wav",SOUND_EFFECT, 1.f);
+		Engine::PlaySound_Effect(L"54.wav",SOUND_EFFECT, 1.f);
+		//ÂøÁö¼Ò¸® 59¹ø,±¸¸§ÂøÁö 58¹ø
 
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 		BoundingBox box;

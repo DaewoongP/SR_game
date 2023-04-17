@@ -76,7 +76,7 @@ _uint CLoading::Loading_ForLogo(void)
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
 	Set_String(L"Sound/Bgm Loading..........");
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
-	Engine::PlayBGM(L"BGM_9.wav", 0.5f);
+	Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
 	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 
