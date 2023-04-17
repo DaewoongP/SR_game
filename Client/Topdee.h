@@ -3,13 +3,14 @@
 #include "Include.h"
 #include "GameObject.h"
 #include "TopdeeParts.h"
+#include "TopdeeJoint.h"
 BEGIN(Engine)
 
 class CRcTex;
-class CTexture;
 class CCollider;
 class CSlerpParticle;
 class CShadow;
+class CAnimation;
 END
 class CTopdee : public Engine::CGameObject
 {
@@ -52,11 +53,13 @@ private:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
 	Engine::CShadow*		m_pShadow;
-
+	Engine::CAnimation*     m_pAnimation_Arm;
+	Engine::CAnimation*     m_pAnimation_Leg;
 	//      LRUD
 	// 0000 0000
 	_byte					m_byPlayerInputDir;
 	_byte					m_byLookDir;
+	_vec3					m_LookVec;
 	_float					m_fSpeed = 10.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
@@ -68,6 +71,7 @@ private:
 
 	vector<CTopdeeParts*>   m_partVec;
 	_bool					m_bInit;
+	_bool					m_bWalkingAnim;
 
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }

@@ -29,6 +29,8 @@ public:
 	virtual void Render_Top(void) override;
 
 	void	SetRenderState(_bool value) { m_RenderState = value; }
+	void	SetTextureIdx(_int idx) { m_TextureIdx = idx; }
+	_int	GetTextureIdx() { return m_TextureIdx; }
 
 protected:
 	_float	m_dwTimer;
