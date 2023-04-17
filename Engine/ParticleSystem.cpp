@@ -10,7 +10,8 @@ CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphicDev) :
 	m_bIsWorld(true),
 	m_bTrigger(false),
 	m_fAnimSpeed(0.1f),
-	m_pParticle(nullptr)
+	m_pParticle(nullptr),
+	m_bIsAnim(false)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -30,7 +31,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_bTrigger(rhs.m_bTrigger),
 	m_fAnimSpeed(rhs.m_fAnimSpeed),
 	m_matWorld(rhs.m_matWorld),
-	m_pParticle(rhs.m_pParticle)
+	m_pParticle(rhs.m_pParticle),
+	m_bIsAnim(rhs.m_bIsAnim)
 {
 	m_VB->AddRef();
 }

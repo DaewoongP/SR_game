@@ -74,6 +74,7 @@ protected:
 	DWORD					m_VBBatchSize;
 
 	CTexture*				m_pTexture;
+	_bool					m_bIsAnim;
 
 	_bool					m_bIsWorld;
 	_bool					m_bTrigger;

@@ -38,7 +38,18 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	m_pSparkParticle->Set_AnimSpeed(0.05f);
 	m_pSparkParticle->Set_LifeTime(0.f);
 	m_pSparkParticle->Start_Particle();
-	
+
+	// 3보스용 옵션값
+	/*BoundingBox Testbox;
+	Testbox.Offset(vPos);
+	m_pSpark->Set_BoundingBox(Testbox);
+	m_pSpark->Set_RandomGen(3.f);
+	m_pSpark->Set_SizeLifeTime(1.f);
+	m_pSpark->Set_Options(1.2f, 15.f);
+	m_pElec->Set_BoundingBox(Testbox);
+	m_pElec->Set_RandomGen(3.f);
+	m_pElec->Set_SizeLifeTime(1.f);
+	m_pElec->Set_Options(1.2f, 15.f);*/
 	++iKeyCnt;
 	return S_OK;
 }
@@ -119,7 +130,6 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
-
 
 	return S_OK;
 }

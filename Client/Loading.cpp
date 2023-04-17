@@ -218,11 +218,11 @@ _uint CLoading::Loading_ForLogo(void)
 	// 3보스 전기 파티클
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SparkCircularParticle", CCircularParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/boss3SparkSpr/boss3SparkSpr_%d.png", 5,
-		1.f, 20, false, 1.f, 10.f)), E_FAIL);
+		2.f, 20, false, 1.f, 10.f)), E_FAIL);
 	// 3보스 파란전기 파티클
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ElectrictCircularParticle", CCircularParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/boss3ElectrictySpr/boss3ElectrictySpr_%d.png", 5,
-		1.f, 20, false, 1.f, 10.f)), E_FAIL);
+		2.f, 20, false, 1.f, 10.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RazorColParticle", CCircleParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,

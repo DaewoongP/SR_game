@@ -20,6 +20,7 @@ CCircularParticle::CCircularParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 		iTextureNum);
 	if (iTextureNum > 1)
 	{
+		m_bIsAnim = true;
 		m_pTexture->Add_Anim(L"Idle", 0, iTextureNum - 1, 1.f, false);
 		m_pTexture->Switch_Anim(L"Idle");
 		m_pTexture->m_bUseFrameAnimation = true;
@@ -95,6 +96,11 @@ _int CCircularParticle::Update_Particle()
 
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
+		}
+		if (m_pTexture->IsAnimationEnd(L"Idle") && m_bIsAnim)
+		{
+			it->bIsAlive = false;
+			m_pTexture->Reset_Anim();
 		}
 	}
 	__super::Render_Particle();
