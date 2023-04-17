@@ -14,7 +14,8 @@
 #include "Bat.h"
 #include "PinkCloud.h"
 #include"LightningCloud.h"
-#include"Lightning.h"
+//#include"Lightning.h"
+#include "Toodee.h"
 #include "Topdee.h"
 #include "Spike.h"
 #include "GravityCube.h"
@@ -91,7 +92,7 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 15.f, 10.f)), E_FAIL);
 	/*FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretLeft", pLayer, _vec3(2.f, 15.f, 10.f), 0), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurretRight", pLayer, _vec3(60.f, 5.f, 10.f), 1), E_FAIL);*/
 

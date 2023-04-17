@@ -420,17 +420,26 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 	if (INVALID_HANDLE_VALUE == hFile2)
 		return E_FAIL;
 
-	dwByte = 0;
-	
-	DWORD	dwByte1 = 0;
+	DWORD dwByte1 = 0;
 
 	for (auto&iter : m_vecPortalCubeDir)
-		WriteFile(hFile, &iter, sizeof(_int), &dwByte, nullptr);
-
-	for(auto& iter : m_vecLaserTurretDir)
 		WriteFile(hFile, &iter, sizeof(_int), &dwByte1, nullptr);
 
 	CloseHandle(hFile2);
+
+	TCHAR dataFile3[128] = { 0 };
+	_stprintf_s(dataFile3, _T("../Data/LaserTurretPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile3 = CreateFile(dataFile3, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile3)
+		return E_FAIL;
+
+	DWORD dwByte2 = 0;
+
+	for (auto& iter : m_vecLaserTurretDir)
+		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte2, nullptr);
+
+	CloseHandle(hFile3);
 
 	return S_OK;
 }
@@ -473,20 +482,31 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 	if (INVALID_HANDLE_VALUE == hFile2)
 		return E_FAIL;
 
-	DWORD dwByte2 = 0;
-	int i = 0;
+	DWORD dwByte1 = 0;
 
 	int vPortalCubeInfo = {};
-	int vLaserTurretInfo = {};
 
-	while (2 > i)
+	while (true)
 	{
-		ReadFile(hFile2, &vPortalCubeInfo, sizeof(_int), &dwByte2, nullptr);
-		if (dwByte2 == 0)
+		ReadFile(hFile2, &vPortalCubeInfo, sizeof(_int), &dwByte1, nullptr);
+		if (dwByte1 == 0)
 			break;
 		m_vecPortalCubeDir.push_back(vPortalCubeInfo);
-		++i;
 	}
+
+	CloseHandle(hFile2);
+
+	TCHAR dataFile3[128] = { 0 };
+	_stprintf_s(dataFile3, _T("../Data/LaserTurretPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile3 = CreateFile(dataFile3, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile2)
+		return E_FAIL;
+
+	DWORD dwByte2 = 0;
+
+	int vLaserTurretInfo = {};
 
 	while (true)
 	{
@@ -496,7 +516,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 		m_vecLaserTurretDir.push_back(vLaserTurretInfo);
 	}
 
-	CloseHandle(hFile2);
+	CloseHandle(hFile3);
 
 	for (auto& iter : m_vecMapObjectInfo)
 	{
