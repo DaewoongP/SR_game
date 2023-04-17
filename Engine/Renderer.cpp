@@ -42,8 +42,6 @@ void CRenderer::Clear_RenderGroup(void)
 
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
-	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
 	for (auto& iter : m_RenderGroup[RENDER_PRIORITY])
 	{
 		iter->Render_GameObject();
@@ -53,8 +51,6 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 		else
 			iter->Render_Top();
 	}
-	pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
 }
 
 void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)

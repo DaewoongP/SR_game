@@ -15,9 +15,9 @@ public:
 	void Release();
 	
 	HRESULT SaveGrid(_int iStageNumber);
-	HRESULT LoadGrid(_int iStageNumber);
+	HRESULT LoadGrid(_int iStageNumber, CScene* pScene = nullptr);
 	HRESULT SaveCube(_int iStageNumber);
-	HRESULT LoadCube(_int iStageNumber);
+	HRESULT LoadCube(_int iStageNumber, CScene* pScene = nullptr);
 
 private:
 	// 그리드 메뉴

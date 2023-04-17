@@ -198,6 +198,8 @@
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Stage4.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -282,6 +284,8 @@
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Stage4.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

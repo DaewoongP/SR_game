@@ -5,6 +5,7 @@
 #include "Logo.h"
 
 #include"ImguiMgr.h"
+#include "PreStage.h"
 
 CMainApp::CMainApp()
 	: m_pDeviceClass(nullptr), m_pManagementClass(nullptr), m_pGraphicDev(nullptr)
@@ -31,7 +32,11 @@ HRESULT CMainApp::Ready_MainApp(void)
 
 	srand((unsigned int)time(NULL));
 	FAILED_CHECK_RETURN(Ready_DefaultSetting(&m_pGraphicDev), E_FAIL);
-	FAILED_CHECK_RETURN(Set_Scene(m_pGraphicDev, &m_pManagementClass), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Create_Management(&m_pManagementClass), E_FAIL);
+	m_pManagementClass->AddRef();
+	Ready_Proto();
+	CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_LOGO);
+	m_pManagementClass->Set_Scene(pScene);
 
 	m_pCImguiMgr->GetInstance()->Ready_Imgui(m_pGraphicDev);
 	Engine::Ready_Frame(L"1Sec", 1.f);
@@ -64,6 +69,18 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_End();
 }
 
+HRESULT CMainApp::Ready_Proto()
+{
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MenuCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCube.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Select_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr_%d.png", 11)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
+	return S_OK;
+}
+
 HRESULT CMainApp::Ready_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 {
 	FAILED_CHECK_RETURN(Engine::Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass), E_FAIL);
@@ -77,23 +94,6 @@ HRESULT CMainApp::Ready_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 
 	// dinput
 	FAILED_CHECK_RETURN(Engine::Ready_DInput(g_hInst, g_hWnd), E_FAIL);
-
-	//(*ppGraphicDev)->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	//(*ppGraphicDev)->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-
-	return S_OK;
-}
-
-HRESULT CMainApp::Set_Scene(LPDIRECT3DDEVICE9 pGraphicDev, CManagement ** ppManagement)
-{
-	CScene*		pScene = nullptr;
-	pScene = CLogo::Create(pGraphicDev);
-	NULL_CHECK_RETURN(pScene, E_FAIL);
-
-	FAILED_CHECK_RETURN(Engine::Create_Management(ppManagement), E_FAIL);
-	(*ppManagement)->AddRef();
-
-	FAILED_CHECK_RETURN((*ppManagement)->Set_Scene(pScene), E_FAIL);
 
 	return S_OK;
 }

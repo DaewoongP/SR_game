@@ -30,7 +30,9 @@
 #include "LaserTurret.h"
 #include "Laser.h"
 #include "Boss2.h"
-
+#include "ImguiMgr.h"
+#include "ImguiStage.h"
+#include "ImguiUnit.h"
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -46,15 +48,16 @@ HRESULT CStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-
+	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(0, this);
+	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(0, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(0, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(0, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
 
 _int CStage1::Update_Scene(const _float & fTimeDelta)
 {
-
-
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -92,8 +95,6 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(24.f, 10.f, 10.f)), E_FAIL);
-  
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)

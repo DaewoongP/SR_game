@@ -16,9 +16,9 @@ public:
 	void Release();
 
 	HRESULT SaveMonster(_int iStageNumber);
-	HRESULT LoadMonster(_int iStageNumber);
+	HRESULT LoadMonster(_int iStageNumber, CScene* pScene = nullptr);
 	HRESULT SaveMapObject(_int iStageNumber);
-	HRESULT LoadMapObject(_int iStageNumber);
+	HRESULT LoadMapObject(_int iStageNumber, CScene* pScene = nullptr);
 
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;

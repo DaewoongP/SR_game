@@ -480,6 +480,10 @@
     <ClInclude Include="Laser.h">
       <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="Stage3.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -765,5 +769,9 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="Stage3.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage4.cpp" />
   </ItemGroup>
 </Project>

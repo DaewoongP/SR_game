@@ -156,7 +156,7 @@ HRESULT CImguiUnit::SaveMonster(_int iStageNumber)
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
+HRESULT CImguiUnit::LoadMonster(_int iStageNumber, CScene* pScene)
 {
 	m_vecMonsterInfo.clear();
 
@@ -172,7 +172,10 @@ HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
 	OBJINFO vMonsterInfo = {};
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (pStageLayer == nullptr)
+		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+	else
+		return E_FAIL;
 
 	CGameObject* pGameObject = nullptr;
 
@@ -435,14 +438,17 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
+HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 {
 	m_vecMapObjectInfo.clear();
 	m_vecPortalCubeDir.clear();
 	m_vecLaserTurretDir.clear();
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (pStageLayer == nullptr)
+		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+	else
+		return E_FAIL;
 
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
