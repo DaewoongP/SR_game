@@ -27,6 +27,8 @@ private:
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pTextureCom2;
+
 	Engine::CTexture* m_pCreateTextureCom;
 	Engine::CCollider* m_pCollider;
 	Engine::CShadow* m_pShadowCom;
@@ -34,7 +36,6 @@ private:
 	CGameObject* m_pBoss3;
 	CGameObject* m_pBoss3LPart;
 	CGameObject* m_pBoss3RPart;
-
 
 	_int	m_iIndex;
 

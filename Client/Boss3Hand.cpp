@@ -34,17 +34,34 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 	m_iIndex = iIndex;
 
+	// 3보스용 옵션값
+	BoundingBox Testbox;
+	Testbox.Offset(vPos);
+	vPos.z -= 2.f;
+	m_pSparkParticle->Set_BoundingBox(Testbox);
+	m_pSparkParticle->Set_RandomGen(3.f);
+	m_pSparkParticle->Set_SizeLifeTime(1.f);
+	m_pSparkParticle->Set_Options(1.2f, 15.f);
+	m_pElecParticle->Set_BoundingBox(Testbox);
+	m_pElecParticle->Set_RandomGen(3.f);
+	m_pElecParticle->Set_SizeLifeTime(1.f);
+	m_pElecParticle->Set_Options(1.2f, 15.f);
+
 	return S_OK;
 }
 
 _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
-	
 	if (m_bDead)
 		return OBJ_DEAD;
     
 	if (m_bShock)
 	{
+		if (m_fShockCollDown == 0.f)
+		{
+			m_pSparkParticle->Start_Particle();
+			m_pElecParticle->Start_Particle();
+		}
 		m_fShockCollDown += fTimeDelta;
 
 	}
@@ -116,6 +133,9 @@ void CBoss3Hand::Render_GameObject(void)
 		m_pTextureCom2->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 	CGameObject::Render_GameObject();
+	m_pLandingParticle->Update_Particle();
+	m_pSparkParticle->Update_Particle();
+	m_pElecParticle->Update_Particle();
 }
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
@@ -171,6 +191,18 @@ HRESULT CBoss3Hand::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
 
+	pComponent = m_pLandingParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"LandingParticle",pComponent });
+
+	pComponent = m_pSparkParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"SparkCircularParticle", this));
+	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SparkCircularParticle",pComponent });
+
+	pComponent = m_pElecParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"ElectrictCircularParticle", this));
+	NULL_CHECK_RETURN(m_pElecParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"ElectrictCircularParticle",pComponent });
+
 	return S_OK;
 }
 
@@ -193,6 +225,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 
 	else if (4.f < m_fCoolDown )
 	{
+		m_pLandingParticle->Reset();
 		BossAttack(fTimeDelta);
 	}
 }
@@ -208,11 +241,20 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 	// 내려 찍기 (4.f)
 	else if(8.f >= m_pTransform->m_vInfo[INFO_POS].z)
 	{
-			m_pTransform->m_vInfo[INFO_POS].z += 1.f;
-			int i = 0;
+		m_pTransform->m_vInfo[INFO_POS].z += 1.f;
 
-			if(7.f < m_pTransform->m_vInfo[INFO_POS].z)
-				dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+		if (7.f < m_pTransform->m_vInfo[INFO_POS].z)
+		{
+			BoundingBox box;
+			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
+			box.Offset(vInfo);
+			m_pLandingParticle->Set_Size(2.f);
+			m_pLandingParticle->Set_Options(2.f, 20.f);
+			m_pLandingParticle->Set_SizeLifeTime(1.f);
+			m_pLandingParticle->Set_BoundingBox(box);
+			m_pLandingParticle->Start_Particle();
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+		}
 
 	}
 

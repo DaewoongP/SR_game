@@ -10,6 +10,7 @@ class CTexture;
 class CCollider;
 class CSparkParticle;
 class CCircularParticle;
+class CShadow;
 END
 class CKey : public Engine::CGameObject
 {
@@ -33,6 +34,8 @@ private:
 	Engine::CCollider* m_pCollider;
 	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CCircularParticle*		m_pCircularParticle;
+	Engine::CShadow*		m_pShadow;
+
 	
 public:
 	static CKey* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

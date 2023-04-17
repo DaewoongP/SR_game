@@ -30,8 +30,6 @@ CLogo::~CLogo()
 
 HRESULT CLogo::Ready_Scene(void)
 {
-	FAILED_CHECK_RETURN(Ready_Proto(), E_FAIL);
-
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -49,9 +47,9 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
 		m_bStart = false;
 
-	if (GetAsyncKeyState(VK_RETURN) && m_bStart == true)
+	if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN && m_bStart == true)
 	{
-		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
+		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE3);
 		NULL_CHECK_RETURN(pScene, -1);
 
 		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
@@ -71,18 +69,6 @@ void CLogo::LateUpdate_Scene(void)
 
 void CLogo::Render_Scene(void)
 {
-}
-
-HRESULT CLogo::Ready_Proto(void)
-{
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MenuCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCube.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Select_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr_%d.png", 11)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
-	return S_OK;
 }
 
 HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)

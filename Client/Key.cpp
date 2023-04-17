@@ -36,17 +36,8 @@ HRESULT CKey::Ready_GameObject(_vec3& vPos)
 	box._offsetMax = { 0.2f, 0.2f, 0.f };
 	m_pSparkParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_AnimSpeed(0.05f);
-	m_pSparkParticle->Start_Particle();
 	m_pSparkParticle->Set_LifeTime(0.f);
-
-	// 원숭이 원형파티클 옵션
-	/*BoundingBox box;
-	box.Offset(vPos);
-	box._offsetMin = { -CUBEX, -CUBEY, -5.f };
-	box._offsetMax = { CUBEX, CUBEY, 5.f };
-	m_pCircleTest->Set_BoundingBox(box);
-	m_pCircleTest->Set_Size(3.f);
-	m_pCircleTest->Set_Options({ 0,1,0 }, 10.f, 50.f);*/
+	m_pSparkParticle->Start_Particle();
 
 	++iKeyCnt;
 	return S_OK;
@@ -77,6 +68,8 @@ void CKey::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
+
+	m_pShadow->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -122,6 +115,10 @@ HRESULT CKey::Add_Component(void)
 	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
 	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
 	return S_OK;
 }

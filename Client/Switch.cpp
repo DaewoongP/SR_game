@@ -4,12 +4,13 @@
 #include "Export_Function.h"
 
 bool CSwitch::m_bSwtichON = false;
-
+_int CSwitch::m_iCnt = 0;
 CSwitch::CSwitch(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
 	m_pSwitchCube(nullptr),
 	m_iTextureIndex(0)
 {
+	
 }
 
 CSwitch::~CSwitch()
@@ -24,8 +25,7 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 0.9f, 0.9f, 1.f };
 	m_pTransform->m_bIsStatic = false;
 
-	// ���� ť�꿡 z�ప ���� ��� �տ� �־�� �ϱ� ������ �ٿ�� �ڽ� ���� ��
-	m_pCollider->Set_BoundingBox({ 1.f, 2.5f, 2.1f });
+	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f }, {0.f, 0.5f, 0.f});
 
 	return S_OK;
 }
@@ -52,6 +52,7 @@ void CSwitch::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(m_iTextureIndex);
+	m_pShadow->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -60,25 +61,32 @@ void CSwitch::Render_GameObject(void)
 
 void CSwitch::OnCollisionEnter(const Collision * collision)
 {
-	// �Ͻ������ const ����ȭ�ؼ� �÷��̾��� �浹 ����� �о��. �̰� �´���� �𸣰��
 	COL_DIR	tToodeeDir = const_cast<Collision*>(collision)->Get_ColDir();
 
-	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || !lstrcmp(L"Pig", collision->otherObj->m_pTag))
+	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
+		!lstrcmp(L"Pig", collision->otherObj->m_pTag) ||
+		!lstrcmp(L"Boss2", collision->otherObj->m_pTag) ||
+		!lstrcmp(L"Boss2Hand", collision->otherObj->m_pTag))
 	{
-		// �������, ��� ��� �ϴ°� ���� ���� �ڵ� ���� �ڵ� �־���, 
-		// ������ ���ġ ��ü�� ť��� ������ Pos�� �ֱ� ������ �������
 		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir || DIR_LEFT == tToodeeDir || DIR_RIGHT == tToodeeDir)
 		{
 			m_bSwtichON = true;
 			m_iTextureIndex = 1;
+			CSwitch::m_iCnt++;
 		}			
 	}
 }
 
 void CSwitch::OnCollisionExit(const Collision * collision)
 {
-	m_bSwtichON = false;
-	m_iTextureIndex = 0;	
+	CSwitch::m_iCnt--;
+	if (m_iCnt == 0)
+	{
+		m_bSwtichON = false;
+
+		m_iTextureIndex = 0;
+	}
+		
 }
 
 HRESULT CSwitch::Add_Component(void)
@@ -96,6 +104,11 @@ HRESULT CSwitch::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
 
 	return S_OK;
 }

@@ -11,19 +11,16 @@ private:
 		_float fSize = 1.f,
 		_int iParticleNum = 1,
 		_bool isWorld = true,
-		_float fLifeTime = 1.f,
-		_float fRadius = 10.f);
+		_float fLifeTime = 1.f);
 	explicit CCircleParticle(const CCircleParticle& rhs);
 	virtual ~CCircleParticle();
 public:
 	virtual void ResetParticle(Particle* particle) override;
 	virtual _int Update_Particle() override;
-	void Set_Options(_vec3 vUp, _float fLife = 1.f, _float fRad = 10.f)
+	void Set_Options(_vec3 vUp, _float fLife = 1.f)
 	{
 		m_vUp = vUp;
-		m_fRadius = fRad;
 		m_fLifeTime = fLife;
-		Reset();
 	}
 public:
 	static CCircleParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev,
@@ -32,8 +29,7 @@ public:
 		_float fSize = 1.f,
 		_int iParticleNum = 1,
 		_bool isWorld = true,
-		_float fLifeTime = 1.f,
-		_float fRadius = 10.f);
+		_float fLifeTime = 1.f);
 	virtual CComponent* Clone(void) override;
 
 private:
@@ -41,7 +37,6 @@ private:
 
 private:
 	_float	m_fLifeTime;
-	_float	m_fRadius;
 
 	_float	m_fCurRad;
 	_vec3	m_vUp;

@@ -75,9 +75,26 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart", pStageLayer, _vec3{ vPos.x - 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart", pStageLayer, _vec3{ vPos.x + 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPartShadow", pStageLayer, _vec3{ vPos.x  ,vPos.y,vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPartShadow", pStageLayer, _vec3{ vPos.x  ,vPos.y,vPos.z }, 0), E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart1", pStageLayer, _vec3{ vPos.x - 5.f,vPos.y,vPos.z }, 4), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart1", pStageLayer, _vec3{ vPos.x + 5.f,vPos.y,vPos.z }, 4), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart1Shadow", pStageLayer, _vec3{ vPos.x  ,vPos.y ,vPos.z }, 1), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart1Shadow", pStageLayer, _vec3{ vPos.x  ,vPos.y ,vPos.z }, 1), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart2", pStageLayer, _vec3{ vPos.x - 8.f,vPos.y,vPos.z }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart2", pStageLayer, _vec3{ vPos.x + 8.f,vPos.y,vPos.z }, 2), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart2Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart2Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z }, 0), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart3", pStageLayer, _vec3{ vPos.x - 10.f,vPos.y,vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart3", pStageLayer, _vec3{ vPos.x + 10.f,vPos.y,vPos.z }, 0), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart3Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z },2 ), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart3Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z },2 ), E_FAIL);
 
 		m_pBossLeft = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
@@ -178,12 +195,13 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	if(!g_Is2D)
-	m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+		m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
 
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+	m_pLandingParticle->Update_Particle();
 }
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
@@ -219,8 +237,14 @@ void CBoss3::MakeChain()
 {
 	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart");
 	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart");
-	//m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
-//	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1");
+	m_pBossLeftPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2");
+	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3");
+	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart4");
+	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart4");
 }
 
 HRESULT CBoss3::Add_Component(void)
@@ -243,6 +267,9 @@ HRESULT CBoss3::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
 
+	pComponent = m_pLandingParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BossLandingParticle",pComponent });
 
 	return S_OK;
 }
@@ -337,9 +364,17 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
 		else
+		{
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
-
-		// if (m_pTransform->m_vInfo[INFO_POS].z >4.5f)
+			BoundingBox box;
+			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
+			box.Offset(vInfo);
+			m_pLandingParticle->Set_Size(2.f);
+			m_pLandingParticle->Set_Options(2.f, 25.f);
+			m_pLandingParticle->Set_SizeLifeTime(1.f);
+			m_pLandingParticle->Set_BoundingBox(box);
+			m_pLandingParticle->Start_Particle();
+		}
 	}
 
 	// 왼손 공격 명령
@@ -371,7 +406,6 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 }
 
 void CBoss3::ShootBullet(const _float & fTimeDelta)
-
 {
 	m_fShootCoolDown += fTimeDelta;
 	if (1.f < m_fShootCoolDown&&m_bShoot==true)

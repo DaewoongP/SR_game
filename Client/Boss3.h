@@ -5,7 +5,7 @@
 BEGIN(Engine)
 
 class CRcTex;
-
+class CCircularParticle;
 END
 
 class CBoss3 : public CCube
@@ -73,7 +73,7 @@ private:
 	_float  m_fSaveTop;
 
 	_bool m_bATKEnd=false;
-	_int m_iBossHp = 2; //추후에 스테이지로 옮겨야함
+	_int m_iBossHp = 1; //추후에 스테이지로 옮겨야함
 	_bool m_bATKCnt; //전기공격을할지안할지판단
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;
@@ -82,7 +82,7 @@ private:
 	_vec3 m_vPrePos;
 
 	Engine::CShadow* m_pShadowCom;
-
+	Engine::CCircularParticle*	m_pLandingParticle;
 
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

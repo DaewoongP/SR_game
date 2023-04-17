@@ -19,6 +19,10 @@ HRESULT CBoss2Jaw::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTransform->m_vScale = _vec3(1.5f, 2, 2);
 	m_pTextureCom->m_bUseFrameAnimation = true;
+	m_OriginTexture = 0;
+	m_WhiteTexture = 16;
+	m_UseAnim = true;
+	m_CurrentTexture = m_OriginTexture;
 	return S_OK;
 }
 
@@ -47,7 +51,9 @@ void CBoss2Jaw::LateUpdate_GameObject(void)
 void CBoss2Jaw::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(m_CurrentTexture);
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
@@ -71,6 +77,10 @@ HRESULT CBoss2Jaw::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss2_Jaw", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
 	return S_OK;
 }

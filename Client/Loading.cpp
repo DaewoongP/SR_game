@@ -2,6 +2,14 @@
 #include "Loading.h"
 
 #include "Export_Function.h"
+#include "ImguiMgr.h"
+#include "imgui.h"
+#include "PreStage.h"
+#include "Logo.h"
+#include "Stage1.h"
+#include "Stage2.h"
+#include "Stage3.h"
+#include "Stage4.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -35,14 +43,19 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE2:
 		iFlag = pLoading->Loading_ForStage2();
 		break;
-	
+	case LOADING_STAGE3:
+		iFlag = pLoading->Loading_ForStage3();
+		break;
+	case LOADING_STAGE4:
+		iFlag = pLoading->Loading_ForStage4();
+		break;
 	case LOADING_BOSS:
 		break;
 	}
 	
 	LeaveCriticalSection(&(pLoading->Get_Crt()));
 
-	//_endthreadex(0);
+	_endthreadex(0);
 
 	return iFlag;
 }
@@ -60,16 +73,6 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 _uint CLoading::Loading_ForLogo(void)
 {
-	
-	m_bFinish = true;
-
-	Set_String(L"Loading Complete!!!!!!!!");
-
-	return 0;
-}
-
-_uint CLoading::Loading_ForStage1(void)
-{
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
 	/*Set_String(L"Sound/Bgm Loading..........");
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
@@ -77,9 +80,7 @@ _uint CLoading::Loading_ForStage1(void)
 	Set_String(L"Sound/Effect Loading..........");
 
 
-
 	Set_String(L"Texture Loading....");
-
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme3BgSpr/theme3BgSpr_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"None_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/None/Alpha0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 73)), E_FAIL);
@@ -125,18 +126,18 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Lightning_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/lightningSpr/lightningSpr_%d.png", 9)), E_FAIL);
 	// 스위치 큐브
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
-	
+
 	//Boss2 머리털
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 5)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
 	//Boss2 공격용 팔
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Hand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/Boss2_Hand.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyeSpr/boss2EyeSpr_0.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_EyeBrow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyebrowSpr/boss2EyebrowSpr_0.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Face", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2FaceSpr/boss2FaceSpr_%d.png", 16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Jaw", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2JawSpr/boss2JawSpr_%d.png",16)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Nose", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2NoseSpr/boss2NoseSpr_%d.png",8)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Foot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HandSpr/boss2HandSpr_%d.png", 12)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Chain", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/boss2LimbSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyeSpr/boss2EyeSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_EyeBrow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2EyebrowSpr/boss2EyebrowSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Face", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2FaceSpr/boss2FaceSpr_%d.png", 17)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Jaw", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2JawSpr/boss2JawSpr_%d.png", 17)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Nose", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2NoseSpr/boss2NoseSpr_%d.png", 9)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Foot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HandSpr/boss2HandSpr_%d.png", 13)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Chain", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2LimbSpr/boss2LimbSpr_%d.png", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Stone", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme2pigStatueSpr/theme2pigStatueSpr_0.png")), E_FAIL);
 	// 3보스 눈썹 + 눈알
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3EyeSpr/boss3EyeSpr_%d.png", 3)), E_FAIL);
@@ -145,6 +146,8 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth_Shoot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/CompleteMouth/Lip%d.png", 6)), E_FAIL);
 	// 3보스 사슬
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPartSpr_%d.png", 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart_Shadow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPart_ShadowSpr_%d.png", 3)), E_FAIL);
+
 	// 레이저 터렛
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser_Turret", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireSpr_%d.png", 2)), E_FAIL);
 	// 레이저
@@ -174,13 +177,18 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Gravity_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/GravBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage3Boss.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Boss3Hand%d.dds", 2)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds" )), E_FAIL);
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
+
 	Set_String(L"Particle Loading..........");
 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CBlockExp::Create(m_pGraphicDev,
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
 		9, 0.8f, 1, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BossScream", CTexParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/bossScream/ScreamParticle1.png", 1,
+		1.f, 1, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SparkParticle", CSparkParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png",
 		10, 1.f, 2, false)), E_FAIL);
@@ -190,11 +198,35 @@ _uint CLoading::Loading_ForStage1(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircularParticle", CCircularParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
-		0.7f,10, false, 1.f, 10.f)), E_FAIL);
+		0.7f, 10, false, 1.f, 10.f)), E_FAIL);
+	// 2보스 손찍기 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2LandParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		10.f, 20, false, 1.f, 20.f)), E_FAIL);
 	// 2보스 땅찍기원형파티클
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"LandingCircularParticle", CCircularParticle::Create(m_pGraphicDev,
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircleParticle", CCircleParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_1.png", 1,
-		1.f, 100, false, 2.f, 50.f)), E_FAIL);
+		1.f, 200, false, 10.f)), E_FAIL);
+	// 2보스 점프 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2JumpParticle", CJumpParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		4.f, 40, false)), E_FAIL);
+	// 3보스 불덩이 소환 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/b1FireballStaticSpr/b1FireballStaticSpr_0.png", 1,
+		1.f, 5, false, 1.f, 10.f)), E_FAIL);
+	// 3보스 전기 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SparkCircularParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/boss3SparkSpr/boss3SparkSpr_%d.png", 5,
+		2.f, 20, false, 1.f, 10.f)), E_FAIL);
+	// 3보스 파란전기 파티클
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ElectrictCircularParticle", CCircularParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/boss3ElectrictySpr/boss3ElectrictySpr_%d.png", 5,
+		2.f, 20, false, 1.f, 10.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RazorColParticle", CCircleParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		0.5f, 10, false, 1.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
@@ -223,6 +255,22 @@ _uint CLoading::Loading_ForStage1(void)
 		0.7f, 15, true)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
+	Set_String(L"Logo Loading..........");
+	m_pScene = CLogo::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+	m_bFinish = true;
+
+	Set_String(L"Loading Complete!!!!!!!!");
+
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage1(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage1::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 	m_bFinish = true;
 	Set_String(L"Loading1 Complete!!!!!!!!");
 	return 0;
@@ -230,8 +278,37 @@ _uint CLoading::Loading_ForStage1(void)
 
 _uint CLoading::Loading_ForStage2(void)
 {
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage2::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
 	m_bFinish = true;
 	Set_String(L"Loading2 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage3(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage3::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	Set_String(L"Loading3 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage4(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage4::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	Set_String(L"Loading4 Complete!!!!!!!!");
 	return 0;
 }
 

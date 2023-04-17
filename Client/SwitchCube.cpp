@@ -31,6 +31,19 @@ _int CSwitchCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+	if (CSwitch::m_bSwtichON)
+	{
+		m_pTransform->m_bIsStatic = false;
+		m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
+	}
+		
+		if (!CSwitch::m_bSwtichON)
+		{
+			m_pTransform->m_bIsStatic = true;
+			m_pCollider->Set_BoundingBox(_vec3(2, 2, 2));
+		}
+	
+
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -58,15 +71,13 @@ void CSwitchCube::Render_GameObject(void)
 
 void CSwitchCube::OnCollisionEnter(const Collision * collision)
 {
-	if (CSwitch::m_bSwtichON)
-	{
-		if(!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
-			!lstrcmp(L"Pig", collision->otherObj->m_pTag))
-			m_pTransform->m_bIsStatic = false;
-
-		else
-			m_pTransform->m_bIsStatic = true;
-	}
+	//if (CSwitch::m_bSwtichON)
+	//{
+	//	if(!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
+	//		!lstrcmp(L"Pig", collision->otherObj->m_pTag)||
+	//		!lstrcmp(L"Boss2", collision->otherObj->m_pTag))
+	//		
+	//}
 }
 
 HRESULT CSwitchCube::Add_Component(void)

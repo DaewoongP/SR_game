@@ -1,18 +1,18 @@
 #pragma once
 #include "GameObject.h"
 #include "Include.h"
-
+#include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
-class CTexture;
 class CRigidbody;
+class CShadow;
 END
 
 #define BOSETAILPARTWAVESTART -20
 #define BOSETAILPARTWAVEEND 20
 
 class CBoss2Tail :
-	public CGameObject
+	public CBoss2Parts
 {
 public:
 	explicit CBoss2Tail(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -31,14 +31,17 @@ public:
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CShadow*		m_pShadow;
+
 
 	CTransform* m_pPreTail;
 
 	_bool m_bMetronome = true;
 
+	_float m_fStartZ;
 
+	_float m_fZRatio;
 private:
 	HRESULT		Add_Component(void);
 

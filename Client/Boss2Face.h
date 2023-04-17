@@ -4,7 +4,6 @@
 #include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
-class CTexture;
 END
 
 class CBoss2Face :
@@ -25,7 +24,6 @@ public:
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 
 private:
 	HRESULT		Add_Component(void);

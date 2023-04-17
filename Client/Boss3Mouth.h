@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class CRcTex;
 class CTexture;
-
+class CCircularParticle;
 END
 
 class CBoss3Mouth : public CGameObject
@@ -29,6 +29,7 @@ private:
 private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
+	Engine::CCircularParticle*	m_pFireParticle;
 
 	CGameObject*			m_pBoss3;
 

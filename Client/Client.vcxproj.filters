@@ -480,6 +480,12 @@
     <ClInclude Include="Laser.h">
       <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="Stage3.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage4.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -639,9 +645,6 @@
     <ClCompile Include="MenuSmoke.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>00. GameObject\03. Etc\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
@@ -764,6 +767,15 @@
     </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>00. GameObject\99. Etc\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage3.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage4.cpp">
+      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #include "Boss2Stone.h"
 
 CBoss2Stone::CBoss2Stone(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev), m_iIndex(0), m_fTimer(0.0f)
 {
 }
 
@@ -16,6 +16,18 @@ HRESULT CBoss2Stone::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pRigid->m_bUseGrivaty = false;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	m_vStateSequence.push_back(&CBoss2Stone::Appear);
+	m_vStateSequence.push_back(&CBoss2Stone::Aim);
+	m_vStateSequence.push_back(&CBoss2Stone::Rest);
+	m_vStateSequence.push_back(&CBoss2Stone::GoToTarget);
+	m_vStateSequence.push_back(&CBoss2Stone::Dead);
+
+	m_pToodeeTrans = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC));
+	NULL_CHECK_RETURN(m_pToodeeTrans, -1);
+	m_pTopdeeTrans = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
+	NULL_CHECK_RETURN(m_pTopdeeTrans, -1);
+
 	return S_OK;
 }
 
@@ -24,8 +36,9 @@ _int CBoss2Stone::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	
 	__super::Update_GameObject(fTimeDelta);
+	(this->*m_vStateSequence[m_iIndex])(fTimeDelta);
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
@@ -60,6 +73,38 @@ void CBoss2Stone::OnCollisionStay(const Collision * collision)
 void CBoss2Stone::OnCollisionExit(const Collision * collision)
 {
 	__super::OnCollisionExit(collision);
+}
+
+void CBoss2Stone::Appear(const _float & fTimeDelta)
+{
+	m_fTimer += fTimeDelta;
+	if (1.0f < m_fTimer)
+	{
+		m_fTimer = 1.0f;
+	}
+	m_pTransform->m_vInfo[INFO_POS].y = Lerp(APPEAR_YPOS, FALLINGDEST_YPOS, m_fTimer);
+	if (1.0f == m_fTimer)
+	{
+		m_fTimer = 0.0f;
+		++m_iIndex;
+	}
+}
+
+void CBoss2Stone::Aim(const _float & fTimeDelta)
+{
+	
+}
+
+void CBoss2Stone::Rest(const _float & fTimeDelta)
+{
+}
+
+void CBoss2Stone::GoToTarget(const _float & fTimeDelta)
+{
+}
+
+void CBoss2Stone::Dead(const _float & fTimeDelta)
+{
 }
 
 HRESULT CBoss2Stone::Add_Component(void)

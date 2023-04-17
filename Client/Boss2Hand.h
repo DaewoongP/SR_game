@@ -6,13 +6,16 @@ class CRcTex;
 class CTexture;
 class CCollider;
 class CRigidbody;
+class CCircularParticle;
+class CShadow;
+
 END
 
 
 
 #define B2H_APPEAR_YPOS 40.0f
 
-#define B2H_DROP_YPOS 25.0f
+#define B2H_DROP_YPOS 32.0f
 
 
 enum BOSS2HAND_STATE
@@ -64,6 +67,8 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
+	Engine::CCircularParticle*	m_pFistparticle;
+	Engine::CShadow*		m_pShadow;
 
 private:
 	BOSS2HAND_STATE m_state;

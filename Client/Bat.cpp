@@ -34,6 +34,8 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
 	m_pCollider->Set_Options({ 2.f, 2.f, BATTOPZ }, COL_OBJ, true);
+
+	m_pTransform->m_vInfo[INFO_POS].z = BATTOPZ;
 	return S_OK;
 }
 

@@ -7,6 +7,7 @@ BEGIN(Engine)
 
 class CRcTex;
 class CTexture;
+class CShadow;
 
 END
 
@@ -28,6 +29,7 @@ private:
 private:
 	Engine::CRcTex*    m_pBufferCom;
 	Engine::CTexture*  m_pTextureCom;
+	Engine::CShadow*		m_pShadow;
 
 public:
 	static CSwallowPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

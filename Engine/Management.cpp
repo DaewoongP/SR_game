@@ -34,6 +34,7 @@ CGameObject * CManagement::Get_GameObject(const _tchar * pLayerTag, const _tchar
 HRESULT CManagement::Set_Scene(CScene * pScene)
 {
 	Safe_Release(m_pScene);
+	
 	Engine::Clear_RenderGroup();
 
 	m_pScene = pScene;

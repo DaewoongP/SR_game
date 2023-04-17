@@ -51,7 +51,6 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 		else
 			iter->Render_Top();
 	}
-
 }
 
 void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)

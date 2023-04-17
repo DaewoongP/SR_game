@@ -156,7 +156,7 @@ HRESULT CImguiUnit::SaveMonster(_int iStageNumber)
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
+HRESULT CImguiUnit::LoadMonster(_int iStageNumber, CScene* pScene)
 {
 	m_vecMonsterInfo.clear();
 
@@ -172,7 +172,10 @@ HRESULT CImguiUnit::LoadMonster(_int iStageNumber)
 	OBJINFO vMonsterInfo = {};
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (pStageLayer == nullptr)
+		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+	else
+		return E_FAIL;
 
 	CGameObject* pGameObject = nullptr;
 
@@ -422,7 +425,10 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 
 	DWORD dwByte1 = 0;
 
-	for (auto&iter : m_vecPortalCubeDir)
+  for (auto&iter : m_vecPortalCubeDir)
+		WriteFile(hFile, &iter, sizeof(_int), &dwByte1, nullptr);
+
+	for(auto& iter : m_vecLaserTurretDir)
 		WriteFile(hFile, &iter, sizeof(_int), &dwByte1, nullptr);
 
 	CloseHandle(hFile2);
@@ -444,14 +450,17 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 	return S_OK;
 }
 
-HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
+HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 {
 	m_vecMapObjectInfo.clear();
 	m_vecPortalCubeDir.clear();
 	m_vecLaserTurretDir.clear();
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (pStageLayer == nullptr)
+		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+	else
+		return E_FAIL;
 
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
@@ -485,13 +494,23 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber)
 	DWORD dwByte1 = 0;
 
 	int vPortalCubeInfo = {};
+	int vLaserTurretInfo = {};
 
-	while (true)
+	while (2 > i)
 	{
 		ReadFile(hFile2, &vPortalCubeInfo, sizeof(_int), &dwByte1, nullptr);
 		if (dwByte1 == 0)
 			break;
 		m_vecPortalCubeDir.push_back(vPortalCubeInfo);
+		++i;
+	}
+
+	while (true)
+	{
+		ReadFile(hFile2, &vLaserTurretInfo, sizeof(_int), &dwByte2, nullptr);
+		if (dwByte2 == 0)
+			break;
+		m_vecLaserTurretDir.push_back(vLaserTurretInfo);
 	}
 
 	CloseHandle(hFile2);

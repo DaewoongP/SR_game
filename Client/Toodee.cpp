@@ -33,7 +33,6 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 
 	BoundingBox box;
 	box.Offset(vPos);
-	m_pJumpParticle->Set_BoundingBox(box);
 	m_pLandingParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_LifeTime();
 
@@ -93,6 +92,7 @@ void CToodee::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 	Render_Particle();
@@ -181,6 +181,10 @@ HRESULT CToodee::Add_Component(void)
 	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"SlerpParticle", pComponent });
 
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+
 	return S_OK;
 }
 
@@ -225,8 +229,10 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
-		m_pJumpParticle->Reset();
-		m_pJumpParticle->Set_Size(0.8f);
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pJumpParticle->Set_BoundingBox(box);
+		m_pJumpParticle->Set_Size(1.f);
 		m_pJumpParticle->Start_Particle();
 	}
 }

@@ -15,10 +15,10 @@ CBoss3Mouth::~CBoss3Mouth()
 HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	
+	m_pTransform->m_bIsStatic = true;
 	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y, vPos.z };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
-	m_pTransform->m_bIsStatic = true;
-
 	m_pTextureCom->Add_Anim(L"Idle", 0, 0, 1.f, false);
 	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.2f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
@@ -33,13 +33,15 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
-	if(m_bShootAnimation)
+	if (m_bShootAnimation)
+	{
 		m_pTextureCom->Switch_Anim(L"Attack");
+	}
+		
 
 	if (m_pTextureCom->IsAnimationEnd(L"Attack"))
 	{
@@ -57,6 +59,20 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 
 void CBoss3Mouth::LateUpdate_GameObject(void)
 {
+	if (m_bShootAnimation)
+	{
+		BoundingBox box;
+		const _matrix* mat = m_pTransform->Get_WorldMatrixPointer();
+		_vec3 vPos = { mat->_41, mat->_42, mat->_43 };
+		vPos.y -= 1.f;
+		vPos.z -= 2.f;
+		box.Offset(vPos);
+		m_pFireParticle->Set_BoundingBox(box);
+		m_pFireParticle->Set_Size(1.f);
+		m_pFireParticle->Set_Options(0.5f);
+		m_pFireParticle->Set_RandomGen(1.f);
+		m_pFireParticle->Start_Particle();
+	}
 	__super::LateUpdate_GameObject();
 }
 
@@ -67,6 +83,7 @@ void CBoss3Mouth::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+	m_pFireParticle->Update_Particle();
 }
 
 HRESULT CBoss3Mouth::Add_Component(void)
@@ -80,6 +97,10 @@ HRESULT CBoss3Mouth::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_Mouth_Shoot", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Mouth_Shoot", pComponent });
+
+	pComponent = m_pFireParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"FireParticle", this));
+	NULL_CHECK_RETURN(m_pFireParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"FireParticle", pComponent });
 
 	return S_OK;
 }

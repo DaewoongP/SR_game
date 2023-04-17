@@ -25,16 +25,15 @@ HRESULT CBoss2Hand::Ready_GameObject(_vec3 & vPos)
 
 	m_fStartY = vPos.y;
 
-	m_pCollider->Set_BoundingBox(_vec3(9,5,1));
+	m_pCollider->Set_BoundingBox(_vec3(9,5,3));
 	m_pCollider->Set_BoundOffset(_vec3(0.0f, -(m_pTransform->m_vScale.y - m_pCollider->Get_BoundSize().y*0.5f), -1.0f));
+	m_pCollider->m_bIsTrigger = true;
 
 	m_pRigid->m_bUseGrivaty = false;
 	//충돌 전부 OFF
 	//m_pCollider->m_bIsTrigger = true;
 
 	m_state = B2H_APPEAR;
-
-
 	return S_OK;
 }
 
@@ -71,8 +70,12 @@ void CBoss2Hand::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
+
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
+
+	m_pFistparticle->Update_Particle();
 }
 
 void CBoss2Hand::OnCollisionEnter(const Collision * collision)
@@ -110,6 +113,14 @@ HRESULT CBoss2Hand::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pFistparticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pFistparticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Boss2LandParticle", pComponent });
+
+	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
+	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
 	return S_OK;
 }
@@ -185,6 +196,7 @@ void CBoss2Hand::D0_LittleUp(const _float & fTimeDelta)
 		}
 
 		m_pTransform->m_vInfo[INFO_POS].y = Lerp(B2H_APPEAR_YPOS, B2H_APPEAR_YPOS + 5, m_dwActionTimer);
+
 	}
 	else
 	{
@@ -204,9 +216,21 @@ void CBoss2Hand::D0_Drop(const _float & fTimeDelta)
 		}
 
 		m_pTransform->m_vInfo[INFO_POS].y = Lerp(B2H_APPEAR_YPOS + 5, B2H_DROP_YPOS, m_dwActionTimer);
+
 	}
 	else
 	{
+
+		BoundingBox box;
+		_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
+		vInfo.y -= B2H_DROP_YPOS - 14;
+		vInfo.z += 0.2f;
+		box.Offset(vInfo);
+		m_pFistparticle->Set_Size(8.f);
+		m_pFistparticle->Set_Options(2.5f, 20.f);
+		m_pFistparticle->Set_BoundingBox(box);
+		m_pFistparticle->Start_Particle();
+
 		Next_State();
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.8f, 100.0f, SHAKE_Y);
 	}

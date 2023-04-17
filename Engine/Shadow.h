@@ -24,6 +24,15 @@ public:
 	virtual CComponent * Clone(void) override;
 
 
+	_bool	m_bUseOutLine;
+	_float	m_fOutLineHeight;
+	_float	m_fOutLineScale;
+
+
+	_bool	m_bUseShadow;
+	_bool	m_fShadowScale;
+
+
 private:
 	virtual void Free() override;
 };

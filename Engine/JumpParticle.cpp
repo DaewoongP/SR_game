@@ -15,13 +15,16 @@ CJumpParticle::CJumpParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 	m_VBSize = 8;
 	m_VBOffset = 0;
 	m_VBBatchSize = 8;
-
+	m_fSizeoverLifetime = 0.995f;
+	m_fLifeTime = 0.3f;
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
 }
 
 CJumpParticle::CJumpParticle(const CJumpParticle & rhs)
-	:CParticleSystem(rhs)
+	:CParticleSystem(rhs),
+	m_fSizeoverLifetime(rhs.m_fSizeoverLifetime),
+	m_fLifeTime(rhs.m_fLifeTime)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -35,17 +38,19 @@ void CJumpParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	if (nullptr != m_pGameObject && m_bClone)
-		particle->vPos = m_pGameObject->m_pTransform->m_vInfo[INFO_POS];
-	particle->vPos.y -= 1.f;
+	particle->vPos = m_BoundingBox.Get_Center();
+	particle->vPos.y -= 2.f;
 	GetRandomVector(&particle->vVelocity, 
 		&m_BoundingBox._offsetMin,
 		&m_BoundingBox._offsetMax);
+	particle->vVelocity.y = fabs(particle->vVelocity.y);
+	particle->vVelocity.z = 0.f;
 	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
 	particle->vAccel.y += 2.f;
 	particle->vVelocity = particle->vAccel * 10.f;
 	particle->fAge = 0.f;
-	particle->fLifeTime = 0.3f;
+	particle->fLifeTime = m_fLifeTime;
+	particle->fSizeoverLifetime = m_fSizeoverLifetime;
 }
 
 _int CJumpParticle::Update_Particle()
@@ -63,13 +68,11 @@ _int CJumpParticle::Update_Particle()
 			it->vVelocity -= it->vAccel;
 			if (D3DXVec3Length(&it->vAccel) >= D3DXVec3Length(&it->vVelocity))
 				it->vAccel = { 0.f, 0.f, 0.f };
-			m_Size *= 0.995f;
+			m_Size *= it->fSizeoverLifetime;
 			it->fAge += fTimeDelta;
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
 		}
-		else
-			ResetParticle(&(*it));
 	}
 	__super::Render_Particle();
 	return -1;

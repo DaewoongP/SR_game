@@ -26,8 +26,8 @@ public:
 	void		Render_MainApp(void);
 
 private:
+	HRESULT			Ready_Proto();
 	HRESULT			Ready_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev);
-	HRESULT			Set_Scene(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagement);
 
 private:
 	Engine::CGraphicDev*		m_pDeviceClass;
