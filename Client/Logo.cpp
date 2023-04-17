@@ -49,7 +49,7 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN && m_bStart == true)
 	{
-		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE3);
+		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE4);
 		NULL_CHECK_RETURN(pScene, -1);
 
 		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);

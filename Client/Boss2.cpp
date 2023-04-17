@@ -1362,11 +1362,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					});
 				}
 			}
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 		}
 		m_pAnimation_Body->AddClip(L"Scream", clip);
 
 		clip = new AnimClip();
-		{
+		{	
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
@@ -2293,7 +2295,8 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	m_pScreamParticle->Set_BoundingBox(box);
 	m_pScreamParticle->Set_SizeLifeTime(1.07f);
 	m_pScreamParticle->Start_Particle();
-
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"0.wav", SOUND_EFFECT_ENEMY, 1.f);
 	m_dwRestTime = 2.0f;
 	CheckIsLastActionIdx();
 }
@@ -2525,10 +2528,18 @@ void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 {
 	//?¬ë””ë©??„ëž˜ë¡?
 	if (g_Is2D)
+	{
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 		m_pRigid->AddForce(_vec3(0, -1, 0), 100.f, IMPULSE, fTimeDelta);
+	}
 	//?‘ë””ë©?zë¡?
-	else 
+	else
+	{
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
+	}
 	CheckIsLastActionIdx();
 	m_dwRestTime = 3;
 }

@@ -361,10 +361,13 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 내려 찍기
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
+
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
 		else
 		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 			BoundingBox box;
 			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
@@ -418,7 +421,8 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 			NULL_CHECK_RETURN(pStageLayer, );
 
 			FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, vPos), );
-
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"1.wav", SOUND_EFFECT_ENEMY, 1.f);
 			m_fShootCoolDown = 0.f;
 			
 	}

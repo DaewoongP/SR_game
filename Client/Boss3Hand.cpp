@@ -245,6 +245,8 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 
 		if (7.f < m_pTransform->m_vInfo[INFO_POS].z)
 		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 			BoundingBox box;
 			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
 			box.Offset(vInfo);
