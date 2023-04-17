@@ -2,6 +2,11 @@
 #include "Loading.h"
 
 #include "Export_Function.h"
+#include "ImguiMgr.h"
+#include "imgui.h"
+#include "Stage1.h"
+#include "PreStage.h"
+#include "Stage2.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -75,8 +80,7 @@ _uint CLoading::Loading_ForStage1(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	Engine::PlayBGM(L"9.wav", 0.5f);*/
 	Set_String(L"Sound/Effect Loading..........");
-
-
+	
 
 	Set_String(L"Texture Loading....");
 
@@ -246,6 +250,11 @@ _uint CLoading::Loading_ForStage1(void)
 		0.7f, 15, true)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);
+
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage1::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 	m_bFinish = true;
 	Set_String(L"Loading1 Complete!!!!!!!!");
 	return 0;
@@ -253,6 +262,11 @@ _uint CLoading::Loading_ForStage1(void)
 
 _uint CLoading::Loading_ForStage2(void)
 {
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage2::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
 	m_bFinish = true;
 	Set_String(L"Loading2 Complete!!!!!!!!");
 	return 0;

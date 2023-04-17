@@ -35,27 +35,26 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 		if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN)
 		{
 			g_Is2D = true;
-			CScene*	pScene = nullptr;
+
 			switch (m_eLoadingID)
 			{
 			case LOADING_LOGO:
-				pScene = CLogo::Create(m_pGraphicDev);
+				m_pScene = CLogo::Create(m_pGraphicDev);
 				break;
 			case LOADING_STAGE1:
-				pScene = CStage1::Create(m_pGraphicDev);
+				
 				break;
 			case LOADING_STAGE2:
-				pScene = CStage2::Create(m_pGraphicDev);
+				
 				break;
 			case LOADING_BOSS:
 				break;
 			case LOADING_END:
 				break;
 			}
-
-			NULL_CHECK_RETURN(pScene, -1);
-
-			FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
+			CScene* pScene = m_pScene;
+			Engine::Set_Scene(pScene);
+			
 			pScene->Update_Scene(fTimeDelta);
 			return 0;
 		}

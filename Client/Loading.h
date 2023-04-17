@@ -16,7 +16,7 @@ public:
 	const _tchar*		Get_String(void)	{ return m_szString; }
 	void				Set_String(_tchar* pString) { lstrcpy(m_szString, pString); }
 
-
+	CScene*	Get_Scene() { return m_pScene; }
 public:
 	static unsigned int CALLBACK Thread_Main(void* pArg);
 
@@ -35,6 +35,7 @@ private:
 
 	CRITICAL_SECTION			m_Crt;
 
+	CScene*						m_pScene = nullptr;
 public:
 	static CLoading*		Create(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID);
 
