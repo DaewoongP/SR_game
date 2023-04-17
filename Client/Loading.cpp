@@ -7,6 +7,7 @@
 #include "Stage1.h"
 #include "PreStage.h"
 #include "Stage2.h"
+#include "Logo.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -65,7 +66,10 @@ HRESULT CLoading::Ready_Loading(LOADINGID eID)
 
 _uint CLoading::Loading_ForLogo(void)
 {
+	Set_String(L"Logo Loading..........");
 	
+	m_pScene = CLogo::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 	m_bFinish = true;
 
 	Set_String(L"Loading Complete!!!!!!!!");

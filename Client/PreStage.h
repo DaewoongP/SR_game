@@ -16,7 +16,7 @@ public:
 	virtual void		Render_Scene(void) override;
 
 	_bool		isLoadingFinished() { return m_pLoading->Get_Finish(); }
-	void Set_Scene(CScene* pScene) { m_pScene = pScene; }
+	void		Set_Scene(CScene* pScene) { m_pScene = pScene; }
 private:
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 private:

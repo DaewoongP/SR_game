@@ -22,7 +22,6 @@ HRESULT CPreStage::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	m_pLoading = CLoading::Create(m_pGraphicDev, m_eLoadingID);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
 
@@ -35,23 +34,6 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 		if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN)
 		{
 			g_Is2D = true;
-
-			switch (m_eLoadingID)
-			{
-			case LOADING_LOGO:
-				m_pScene = CLogo::Create(m_pGraphicDev);
-				break;
-			case LOADING_STAGE1:
-				
-				break;
-			case LOADING_STAGE2:
-				
-				break;
-			case LOADING_BOSS:
-				break;
-			case LOADING_END:
-				break;
-			}
 			CScene* pScene = m_pScene;
 			Engine::Set_Scene(pScene);
 			
