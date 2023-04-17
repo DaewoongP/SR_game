@@ -22,6 +22,7 @@
 #include "Line.h"
 #include "Animation.h"
 #include "Shadow.h"
+#include "BulletPool.h"
 
 #include "RcGradation.h"
 #include "RcAlpha.h"

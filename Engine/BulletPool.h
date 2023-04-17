@@ -10,14 +10,18 @@ private:
 	virtual ~CBulletPool();
 
 public:
-	HRESULT		Ready_BulletPool();
+	HRESULT			Ready_BulletPool();
+
+	CGameObject*	Use_Bullet(_vec3& vPos, _int eDir);
+	void			UnUse_Bullet();
 
 private:
-	vector<CGameObject*>	m_vecBulletPool;
+	vector<pair<CGameObject*, _bool>>	m_vecBulletPool;
+	_bool	m_bCreate;
 
 public:
 	static  CBulletPool* Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual CComponent * Clone(void) override;
+	virtual CComponent * Clone(void);
 
 private:
 	virtual void Free() override;
