@@ -25,6 +25,8 @@ public:
 	_uint				Loading_ForLogo(void);
 	_uint				Loading_ForStage1(void);
 	_uint				Loading_ForStage2(void);
+	_uint				Loading_ForStage3(void);
+	_uint				Loading_ForStage4(void);
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;

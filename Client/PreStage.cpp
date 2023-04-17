@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "PreStage.h"
 #include "Stage1.h"
+#include "Stage2.h"
+#include "Stage3.h"
 #include "Export_Function.h"
 #include "UICamera.h"
 #include "Title.h"
-#include "Stage2.h"
 #include "Logo.h"
 
 CPreStage::CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
