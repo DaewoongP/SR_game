@@ -34,19 +34,6 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 	m_iIndex = iIndex;
 
-	// 3보스용 옵션값
-	BoundingBox Testbox;
-	Testbox.Offset(vPos);
-	vPos.z -= 2.f;
-	m_pSparkParticle->Set_BoundingBox(Testbox);
-	m_pSparkParticle->Set_RandomGen(3.f);
-	m_pSparkParticle->Set_SizeLifeTime(1.f);
-	m_pSparkParticle->Set_Options(1.2f, 15.f);
-	m_pElecParticle->Set_BoundingBox(Testbox);
-	m_pElecParticle->Set_RandomGen(3.f);
-	m_pElecParticle->Set_SizeLifeTime(1.f);
-	m_pElecParticle->Set_Options(1.2f, 15.f);
-
 	m_pShadowCom->m_fShadowHeight = 12.f;
 
 	return S_OK;
@@ -61,6 +48,19 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	{
 		if (m_fShockCollDown == 0.f)
 		{
+			// 3보스용 옵션값
+			BoundingBox Testbox;
+			_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+			vPos.z -= 2.f;
+			Testbox.Offset(vPos);
+			m_pSparkParticle->Set_BoundingBox(Testbox);
+			m_pSparkParticle->Set_RandomGen(3.f);
+			m_pSparkParticle->Set_SizeLifeTime(1.f);
+			m_pSparkParticle->Set_Options(1.2f, 15.f);
+			m_pElecParticle->Set_BoundingBox(Testbox);
+			m_pElecParticle->Set_RandomGen(3.f);
+			m_pElecParticle->Set_SizeLifeTime(1.f);
+			m_pElecParticle->Set_Options(1.2f, 15.f);
 			m_pSparkParticle->Start_Particle();
 			m_pElecParticle->Start_Particle();
 		}
