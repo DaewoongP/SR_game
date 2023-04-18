@@ -1,6 +1,7 @@
+#pragma once
 #include "stdafx.h"
 #include "Toodee.h"
-
+#include "Tookee.h"
 #include "Export_Function.h"
 
 CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -17,7 +18,7 @@ CToodee::~CToodee()
 HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_bInit = true;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
@@ -41,6 +42,21 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bInit)
+	{
+		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
+		
+		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
+		if (otherTrans != nullptr)
+			SetTookee(dynamic_cast<CTookee*>(otherTrans->m_pGameObject));
+		m_bInit = false;
+	}
+	if (m_Tookee != nullptr)
+	{
+		m_Tookee->m_pTransform->m_vInfo[INFO_POS].x += (m_pTransform->m_vInfo[INFO_POS].x - m_prePos);
+		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
+	}
+	
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
 	return 0;
@@ -55,6 +71,12 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
+
+	if (m_pRigid->m_Velocity.x != 0&& m_Tookee!=nullptr)
+	{
+		m_Tookee->m_moveTrue = true;
+	}else if(m_Tookee != nullptr)
+		m_Tookee->m_moveTrue = false;
 
 	//텍스쳐컴의 애니가 die고 완료됐다면?
 	if (m_pTextureCom->IsAnimationEnd(L"Die"))
