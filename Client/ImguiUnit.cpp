@@ -171,8 +171,6 @@ HRESULT CImguiUnit::LoadMonster(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
 
 	CGameObject* pGameObject = nullptr;
 
@@ -417,8 +415,6 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
 
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
@@ -566,6 +562,20 @@ HRESULT CImguiUnit::Undo(_int iStageNumber)
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 	if (m_vecGameObject.empty())
 		return E_FAIL;
+	CGameObject* pGameObject = m_vecGameObject.back();
+
+	if (dynamic_cast<CMonster*>(pGameObject))
+	{
+		if (m_vecMonsterInfo.empty())
+			return E_FAIL;
+		m_vecMonsterInfo.pop_back();
+	}
+	else
+	{
+		if (m_vecMapObjectInfo.empty())
+			return E_FAIL;
+		m_vecMapObjectInfo.pop_back();
+	}
 	pStageLayer->Delete_LastObject(m_vecGameObject.back());
 	m_vecGameObject.pop_back();
 	return S_OK;

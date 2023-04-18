@@ -188,8 +188,7 @@ HRESULT CImguiStage::LoadGrid(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
+
 	while (true)
 	{
 		ReadFile(hFile, &vGrodInfo, sizeof(OBJINFO), &dwByte, nullptr);
@@ -326,8 +325,6 @@ HRESULT CImguiStage::LoadCube(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
 
 	while (true)
 	{
@@ -353,7 +350,20 @@ HRESULT CImguiStage::Undo(_int iStageNumber)
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 	if (m_vecGameObject.empty())
 		return E_FAIL;
-	pStageLayer->Delete_LastObject(m_vecGameObject.back());
+	CGameObject* pGameObject = m_vecGameObject.back();
+	if (!lstrcmp(pGameObject->m_pTag, L"InstallCube"))
+	{
+		if (m_vecCubeInfo.empty())
+			return E_FAIL;
+		m_vecCubeInfo.pop_back();
+	}
+	else if (!lstrcmp(pGameObject->m_pTag, L"InstallGrid"))
+	{
+		if (m_vecInstallGrid.empty())
+			return E_FAIL;
+		m_vecInstallGrid.pop_back();
+	}
+	pStageLayer->Delete_LastObject(pGameObject);
 	m_vecGameObject.pop_back();
 	return S_OK;
 }
