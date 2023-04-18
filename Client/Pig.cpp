@@ -220,6 +220,10 @@ void CPig::OnCollisionStay(const Collision * collision)
 
 		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
 	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike"))
+	{
+		m_bDead = true;
+	}
 
 	__super::OnCollisionStay(collision);
 }

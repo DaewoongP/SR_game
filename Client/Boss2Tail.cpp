@@ -22,7 +22,7 @@ HRESULT CBoss2Tail::Ready_GameObject(_vec3 & vPos)
 	m_pRigid->m_bFreezePos_Z = true;
 	m_pShadow->m_bUseShadow = false;
 	m_pShadow->m_fOutLineScale = 2.0f;
-	m_pShadow->m_fOutLineHeight = 0.6f;
+	m_pShadow->m_fOutLineHeight = 0.02f;
 	m_OriginTexture = 0;
 	m_WhiteTexture = 5;
 	m_CurrentTexture = m_OriginTexture;
@@ -112,7 +112,7 @@ __super::Update_GameObject(fTimeDelta);
 			}
 		}
 	}*/
-if (!g_Is2D)
+	if (!g_Is2D)
 	{
 		if (0.8f < m_fZRatio)
 		{
@@ -151,7 +151,7 @@ _int CBoss2Tail::Update_Top(const _float & fTimeDelta)
 
 void CBoss2Tail::LateUpdate_GameObject(void)
 {
-	m_pTransform->m_matWorld._42 *= m_fZRatio;
+	m_pTransform->m_matWorld._42;
 	__super::LateUpdate_GameObject();
 }
 
