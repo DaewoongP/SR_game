@@ -42,6 +42,7 @@ private:
 	_float m_fShockCollDown;
 
 	_bool	m_bShock = false;
+	_bool   m_bSpin = true;
 
 	_int m_iBossHp=2;
 	_float  m_fIdleCycle;

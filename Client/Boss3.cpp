@@ -53,6 +53,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 	{
 		if (m_fShockDown > 1.f && m_fShockDown < 1.2f)
 		{
+			Do_Scream(fTimeDelta);
+
 			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(true);
 			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(true);
 		}
@@ -94,6 +96,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 			m_fShockDown = 0.f;
 			m_bATKCnt = false;
+
+			End_Scream(fTimeDelta);
 		}
 	}
 
@@ -145,20 +149,14 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		m_pBossRight = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 		MakeChain();
 
-		m_pBossLeftEye = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye");
-		m_pBossLeftEye->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
-		m_pBossRightEye = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye");
-		m_pBossRightEye->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
 
-		m_pBossLeftPupil = Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil");
-		m_pBossLeftPupil->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
-		m_pBossRightPupil = Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil");
-		m_pBossRightPupil->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
 
-		m_pLeftEyebrow = Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow");
-		m_pLeftEyebrow->m_pTransform->m_vScale = { -1.2f, 1.2f, 1.f };
-		m_pRightEyebrow = Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow");
-		m_pRightEyebrow->m_pTransform->m_vScale = { 1.2f, 1.2f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_pTransform->m_vScale = { -1.2f, 1.2f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_pTransform->m_vScale = { 1.2f, 1.2f, 1.f };
 
 		m_pMouth = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Mouth");
 		m_pMouth->m_pTransform->m_vScale = { 8.f, 8.f, 1.f };
@@ -190,8 +188,12 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		// 스파크 이동 후 스파크 공격
 		if (m_fShootterm > 1.f && m_iBossHp==1)
 		{
+			
+
 			if (m_fShootterm > 1.f && m_fShootterm < 1.2f)
 			{
+				Do_Scream(fTimeDelta);
+
 				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(true);
 				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(true);
 			}
@@ -230,6 +232,8 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 				dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 				dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+
+				End_Scream(fTimeDelta);
 			}
 		}
 	}
@@ -287,7 +291,9 @@ void CBoss3::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+
 	m_pLandingParticle->Update_Particle();
+	m_pScreamParticle->Update_Particle();
 }
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
@@ -354,6 +360,10 @@ HRESULT CBoss3::Add_Component(void)
 	pComponent = m_pLandingParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
 	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BossLandingParticle",pComponent });
+
+	pComponent = m_pScreamParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BossScream", this));
+	NULL_CHECK_RETURN(m_pScreamParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BossScream", pComponent });
 
 	return S_OK;
 }
@@ -510,6 +520,23 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 		++m_iATKCount;
 		m_fShootCoolDown = 0.f;
 	}	
+}
+
+void CBoss3::Do_Scream(const _float & fTimeDelta)
+{
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(4.0f, 40.0f, SHAKE_ALL);
+
+	BoundingBox box;
+	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+	box.Offset(_vec3{vPos.x, vPos.y, 0.f});
+	m_pScreamParticle->Set_BoundingBox(box);
+	m_pScreamParticle->Set_SizeLifeTime(1.07f);
+	m_pScreamParticle->Start_Particle();
+}
+
+void CBoss3::End_Scream(const _float & fTimeDelta)
+{
+	m_pScreamParticle->End_Particle();
 }
 
 CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
