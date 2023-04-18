@@ -42,13 +42,22 @@ HRESULT CLogo::Ready_Scene(void)
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
 	int iExit = __super::Update_Scene(fTimeDelta);
-	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
+	{	
+		StopSound(SOUND_CAM);
+		PlaySound_Effect(L"61.wav", SOUND_CAM, 1.f); 
 		m_bStart = true;
-	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+	}
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYDOWN)
+	{
+			StopSound(SOUND_CAM);
+			PlaySound_Effect(L"61.wav", SOUND_CAM, 1.f);
 		m_bStart = false;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN && m_bStart == true)
 	{
+		StopSound(SOUND_CAM);
+		PlaySound_Effect(L"51.wav", SOUND_CAM, 1.f);
 		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
 		NULL_CHECK_RETURN(pScene, -1);
 

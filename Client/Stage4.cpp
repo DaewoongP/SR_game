@@ -32,7 +32,7 @@ HRESULT CStage4::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(3, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
-	Engine::PlayBGM(L"0.wav", 0.15f);
+	Engine::PlayBGM(L"0.wav", 0.35f);
 	return S_OK;
 }
 

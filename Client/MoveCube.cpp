@@ -288,7 +288,8 @@ void CMoveCube::MoveToPos(const _float& fTimeDelta)
 		break;
 	case Engine::CH_START:
 		//머리위로
-	{	Engine::PlaySound_Effect(L"65.wav", SOUND_EFFECT_GIMMICK, 1.f);
+	{	
+		PlaySound_Effect(L"65.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
@@ -309,13 +310,14 @@ void CMoveCube::MoveToPos(const _float& fTimeDelta)
 		break;
 	}
 	case Engine::CH_END:
-	{	StopSound(SOUND_EFFECT_GIMMICK);
-		PlaySound_Effect(L"10.wav", SOUND_EFFECT_GIMMICK, 1.f);
+	{	
 
 		dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_SOMETHING);
 		_vec3 vec = m_TargetPos - m_pTransform->m_vInfo[INFO_POS];
 		if (D3DXVec3Length(&vec)<0.3f)
 		{
+			StopSound(SOUND_EFFECT_GIMMICK);
+			PlaySound_Effect(L"10.wav", SOUND_EFFECT_GIMMICK, 1.f);
 			m_pTransform->m_vInfo[INFO_POS] = m_TargetPos;
 			dynamic_cast<CTopdee*>(m_Target)->TopdeeStateChange(TD_MOVE);
 			m_handleState = CH_NONE;

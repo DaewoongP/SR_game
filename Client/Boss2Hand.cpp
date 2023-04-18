@@ -232,6 +232,9 @@ void CBoss2Hand::D0_Drop(const _float & fTimeDelta)
 		m_pFistparticle->Start_Particle();
 
 		Next_State();
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
+		
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.8f, 100.0f, SHAKE_Y);
 	}
 }
