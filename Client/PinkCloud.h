@@ -14,7 +14,6 @@ public:
 	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void Render_Too() override;
 	virtual void Render_Top() override;
-
 	virtual HRESULT		Add_Component(void);
 
 public:

@@ -75,6 +75,7 @@ void CPinkCloud::Render_Top()
 	m_pBufferCom->Render_Buffer();
 }
 
+
 HRESULT CPinkCloud::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

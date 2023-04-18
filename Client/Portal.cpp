@@ -77,6 +77,8 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 
 	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );
 		m_bCreateSwallowPortal = false;
 	}

@@ -20,7 +20,7 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 
-	m_pTextureCom->Add_Anim(L"Idle_Swallow", 0, 16, 1.f, false);
+	m_pTextureCom->Add_Anim(L"Idle_Swallow", 0, 16, 2.5f, false);
 	m_pTextureCom->Switch_Anim(L"Idle_Swallow");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
@@ -30,11 +30,7 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 _int CSwallowPortal::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
-	{
-		StopSound(SOUND_EFFECT_GIMMICK);
-		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		return OBJ_DEAD;
-	}
 
 	if (m_pTextureCom->IsAnimationEnd(L"Idle_Swallow"))
 		return STAGE_END;

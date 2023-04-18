@@ -221,18 +221,24 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 
-		if(m_pTransform->m_vInfo[INFO_POS].z <= 8.f);
 			m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
+			
 	}
 
 	else if (4.f < m_fCoolDown )
 	{
+		if (m_bSpin)
+		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"79.wav", SOUND_EFFECT_ENEMY, 1.f);
+			m_bSpin = false;
+		}
 		m_pLandingParticle->Reset();
 		BossAttack(fTimeDelta);
 	}
 }
 
-void CBoss3Hand::BossAttack(const _float & fTimeDelta)
+void CBoss3Hand::BossAttack(const _float& fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
 
@@ -268,6 +274,7 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
+		m_bSpin = true;
 	}
 }
 

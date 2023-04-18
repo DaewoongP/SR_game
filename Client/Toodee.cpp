@@ -107,8 +107,17 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 	//스파이크랑 충돌시 본인 데드 트루
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
 		collision->_dir == DIR_DOWN)
-	{
 		m_pTextureCom->Switch_Anim(L"Die");
+	if (!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud") &&
+		collision->_dir == DIR_DOWN)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"58.wav", SOUND_EFFECT, 1.f);
+	}
+	if (collision->_dir == DIR_DOWN&&m_bJumpable==false)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"59.wav", SOUND_EFFECT, 1.f);
 	}
 	if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die")&&m_bDead==false)
 	{
@@ -231,12 +240,14 @@ void CToodee::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 	{
 		m_pRigid->m_Velocity.x = -m_fSpeed;
+		if(fabs(m_pRigid->m_Velocity.y)==0)
 		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
 
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
 	{
 		m_pRigid->m_Velocity.x = m_fSpeed;
+		if (fabs(m_pRigid->m_Velocity.y) == 0)
 		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
 
 	}
