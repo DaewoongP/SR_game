@@ -32,15 +32,12 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 	int iExit = __super::Update_Scene(fTimeDelta);
 	if (true == m_pLoading->Get_Finish())
 	{
-		if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN)
-		{
-			g_Is2D = true;
-			CScene* pScene = m_pScene;
-			Engine::Set_Scene(pScene);
-			
-			pScene->Update_Scene(fTimeDelta);
-			return 0;
-		}
+		g_Is2D = true;
+		CScene* pScene = m_pScene;
+		Engine::Set_Scene(pScene);
+
+		pScene->Update_Scene(fTimeDelta);
+		return 0;
 	}
 	return iExit;
 }
