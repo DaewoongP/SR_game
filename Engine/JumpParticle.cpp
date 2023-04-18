@@ -17,6 +17,7 @@ CJumpParticle::CJumpParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 	m_VBBatchSize = 8;
 	m_fSizeoverLifetime = 0.995f;
 	m_fLifeTime = 0.3f;
+	m_dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
 }
@@ -24,7 +25,8 @@ CJumpParticle::CJumpParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath
 CJumpParticle::CJumpParticle(const CJumpParticle & rhs)
 	:CParticleSystem(rhs),
 	m_fSizeoverLifetime(rhs.m_fSizeoverLifetime),
-	m_fLifeTime(rhs.m_fLifeTime)
+	m_fLifeTime(rhs.m_fLifeTime),
+	m_dwColor(rhs.m_dwColor)
 {
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
@@ -37,7 +39,7 @@ CJumpParticle::~CJumpParticle()
 void CJumpParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	particle->dwColor = m_dwColor;
 	particle->vPos = m_BoundingBox.Get_Center();
 	particle->vPos.y -= 2.f;
 	GetRandomVector(&particle->vVelocity, 

@@ -194,6 +194,9 @@
     <Filter Include="00. GameObject\02. MapObject\LaserTurret\Laser">
       <UniqueIdentifier>{bf1d8b1f-88ea-4870-92e1-b2061b0f15d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\Loading">
+      <UniqueIdentifier>{9d9dd0f3-56ed-4304-ab00-9f2a442701b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -381,9 +384,6 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClInclude>
-    <ClInclude Include="PortalCube.h">
-      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
-    </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
@@ -491,6 +491,12 @@
     </ClInclude>
     <ClInclude Include="TopdeeJoint.h">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingTex.h">
+      <Filter>00. GameObject\99. Etc\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -788,6 +794,9 @@
     </ClCompile>
     <ClCompile Include="TopdeeJoint.cpp">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingTex.cpp">
+      <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
