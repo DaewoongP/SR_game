@@ -572,6 +572,8 @@ HRESULT CImguiUnit::Undo(_int iStageNumber)
 	}
 	else
 	{
+		if (dynamic_cast<CPortalCube*>(pGameObject))
+			--m_iPortalCubeCount;
 		if (m_vecMapObjectInfo.empty())
 			return E_FAIL;
 		m_vecMapObjectInfo.pop_back();

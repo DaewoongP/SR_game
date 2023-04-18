@@ -42,6 +42,7 @@ HRESULT CPortalCube::Ready_GameObject(_vec3 & vPos)
 _int CPortalCube::Update_Too(const _float & fTimeDelta)
 {
 	//첫 업데이트때 다른 큐브를 가져오는 로직인거 같음.
+	// 맞음
 	if (m_bInit)
 	{
 		m_pOtherCube = Get_GameObject(L"Layer_GameLogic", L"PortalCube");
@@ -60,6 +61,8 @@ _int CPortalCube::Update_Top(const _float & fTimeDelta)
 
 _int CPortalCube::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 	__super::Update_GameObject(fTimeDelta);
 	m_dwCool += fTimeDelta;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
@@ -83,6 +86,7 @@ void CPortalCube::Render_GameObject(void)
 	m_pGraphicDev->GetTransform(D3DTS_VIEW,&view);
 	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &proj);
 	__super::Render_GameObject();
+	m_pPortalParticle->Update_Particle();
 }
 
 _vec3 CPortalCube::Trans_Velocity(_vec3 & velocity, CPortalCube* other)
@@ -121,11 +125,6 @@ void CPortalCube::ShootRay_Portal()
 	}
 }
 
-void CPortalCube::OnCollisionEnter(const Collision * collision)
-{
-	__super::OnCollisionEnter(collision);
-}
-
 _bool CPortalCube::Check_BoundingBox(CCollider * pSrc, CCollider * pDest)
 {
 	float	fX = fabs(pDest->Get_BoundCenter().x - pSrc->Get_BoundCenter().x);
@@ -140,6 +139,11 @@ _bool CPortalCube::Check_BoundingBox(CCollider * pSrc, CCollider * pDest)
 		return true;
 
 	return false;
+}
+
+void CPortalCube::OnCollisionEnter(const Collision * collision)
+{
+	__super::OnCollisionEnter(collision);
 }
 
 void CPortalCube::OnCollisionStay(const Collision * collision)
@@ -164,6 +168,8 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 					rigid->m_Velocity = Trans_Velocity(velocity, static_cast<CPortalCube*>(m_pOtherCube));
 				}
 				static_cast<CPortalCube*>(m_pOtherCube)->CoolReset();
+				Start_PortalParticle();
+				static_cast<CPortalCube*>(m_pOtherCube)->Start_PortalParticle();
 				CoolReset();
 			}
 		}
@@ -186,6 +192,8 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 					dynamic_cast<CTopdee*>(collision->otherObj)->SetMovePos_zero();
 				else if (dynamic_cast<CMoveCube*>(collision->otherObj))
 					dynamic_cast<CMoveCube*>(collision->otherObj)->SetMovePos(destdir);
+				Start_PortalParticle();
+				static_cast<CPortalCube*>(m_pOtherCube)->Start_PortalParticle();
 				static_cast<CPortalCube*>(m_pOtherCube)->CoolReset();
 				CoolReset();
 			}
@@ -213,6 +221,16 @@ _vec3 CPortalCube::Get_CubeHeadPos()
 	return _vec3(m_pTransform->m_vInfo[INFO_POS] + (m_DirVec*2));
 }
 
+void CPortalCube::Start_PortalParticle()
+{
+	BoundingBox box;
+	box.Offset(m_pTransform->m_vInfo[INFO_POS] + m_DirVec * 2);
+	m_pPortalParticle->Set_Color(D3DXCOLOR(0.4f, 0.8f, 0.7f, 0.8f));
+	m_pPortalParticle->Set_SizeLifeTime(0.997f);
+	m_pPortalParticle->Set_BoundingBox(box);
+	m_pPortalParticle->Set_Size(0.6f);
+	m_pPortalParticle->Start_Particle();
+}
 
 HRESULT CPortalCube::Add_Component(void)
 {
@@ -221,6 +239,10 @@ HRESULT CPortalCube::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Portal_Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Portal_Cube", pComponent });
+
+	pComponent = m_pPortalParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"JumpParticle", this));
+	NULL_CHECK_RETURN(m_pPortalParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"PortalParticle", pComponent });
 
 	return S_OK;
 }

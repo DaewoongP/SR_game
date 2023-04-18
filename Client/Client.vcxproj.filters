@@ -384,9 +384,6 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClInclude>
-    <ClInclude Include="PortalCube.h">
-      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
-    </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
@@ -497,6 +494,9 @@
     </ClInclude>
     <ClInclude Include="LoadingTex.h">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
