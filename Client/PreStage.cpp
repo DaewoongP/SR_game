@@ -35,7 +35,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 {
 	// 스테이지 이동전 돌 수 있는 업데이트 ~ 렌더 씬
 	int iExit = __super::Update_Scene(fTimeDelta);
-	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && true == m_pLoading->Get_Finish())
+	if (true == m_pLoading->Get_Finish())
 	{
 		g_Is2D = true;
 		CScene* pScene = m_pScene;
