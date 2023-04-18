@@ -178,6 +178,7 @@
     <ClInclude Include="Boss3Hand.h" />
     <ClInclude Include="Boss3Mouth.h" />
     <ClInclude Include="Boss3HandPart.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Boss3Hand.cpp" />
     <ClCompile Include="Boss3Mouth.cpp" />
     <ClCompile Include="Boss3HandPart.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />

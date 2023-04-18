@@ -10,6 +10,7 @@ class CTexture;
 class CCollider;
 class CShadow;
 class CCircleParticle;
+
 END
 
 class CLaser : public Engine::CGameObject
@@ -34,7 +35,6 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
-
 	virtual void OnCollisionEnter(const Collision* collision);
 
 private:
@@ -47,9 +47,9 @@ private:
 	Engine::CShadow*		m_pShadow;
 	Engine::CCircleParticle*	m_pColParticle;
 
-	_float m_fSpeed;
 	LASERDIR m_eLaserDir;
-	_bool	m_bUse;
+	_float	 m_fSpeed;
+	_bool	 m_bUse;
 
 public:
 	static CLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int eDir);

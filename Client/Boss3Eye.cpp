@@ -34,13 +34,7 @@ _int CBoss3Eye::Update_GameObject(const _float & fTimeDelta)
 	
 	__super::Update_GameObject(fTimeDelta);
 
-
-	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	if(!lstrcmp(m_pTag, L"Boss3LeftEye"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 1.f, +2.5f);
-
-	else if(!lstrcmp(m_pTag, L"Boss3RightEye"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.2f, 1.f, -2.5f);
+	m_pTransform->Set_ParentTransform(m_pBoss3);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
