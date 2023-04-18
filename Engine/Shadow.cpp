@@ -4,12 +4,12 @@
 #include "Export_Function.h"
 
 CShadow::CShadow(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CComponent(pGraphicDev), m_bUseOutLine(true), m_fOutLineHeight(0.0f), m_fOutLineScale(0.0f), m_bUseShadow(true), m_fShadowScale(0.0f)
+	:CComponent(pGraphicDev), m_bUseOutLine(true), m_fOutLineHeight(0.0f), m_fOutLineScale(0.0f), m_bUseShadow(true), m_fShadowScale(0.0f), m_fShadowHeight(0.0f)
 {
 }
 
 CShadow::CShadow(const CShadow & rhs)
-	: CComponent(rhs), m_bUseOutLine(rhs.m_bUseOutLine), m_fOutLineHeight(rhs.m_fOutLineHeight), m_fOutLineScale(rhs.m_fOutLineScale), m_bUseShadow(rhs.m_bUseShadow), m_fShadowScale(rhs.m_fShadowScale)
+	: CComponent(rhs), m_bUseOutLine(rhs.m_bUseOutLine), m_fOutLineHeight(rhs.m_fOutLineHeight), m_fOutLineScale(rhs.m_fOutLineScale), m_bUseShadow(rhs.m_bUseShadow), m_fShadowScale(rhs.m_fShadowScale), m_fShadowHeight(rhs.m_fShadowHeight)
 {
 }
 
@@ -22,6 +22,7 @@ HRESULT CShadow::Ready_CComponent()
 	m_fOutLineHeight = 0.001f;
 	m_fOutLineScale = 0.5f;
 	m_fShadowScale = 1.0f;
+	m_fShadowHeight = 11.0f;
 	return S_OK;
 }
 
@@ -59,7 +60,7 @@ void CShadow::Render_Shadow(CVIBuffer* VIBuffer)
 		_matrix matScale;
 		D3DXMatrixScaling(&matScale, m_fShadowScale, m_fShadowScale, m_fShadowScale);
 		matWorldStaticZ = matScale * matWorld;
-		matWorldStaticZ._43 = 11.0f;
+		matWorldStaticZ._43 = m_fShadowHeight;
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorldStaticZ);
 

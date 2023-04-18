@@ -37,6 +37,8 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
+	m_pShadowCom->m_fShadowHeight = 13.0f;
+
 	return S_OK;
 }
 
@@ -195,7 +197,7 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	if(!g_Is2D)
-		m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
 
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();

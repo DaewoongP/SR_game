@@ -486,6 +486,12 @@
     <ClInclude Include="Stage4.h">
       <Filter>01. Scene\Stages</Filter>
     </ClInclude>
+    <ClInclude Include="TopdeeParts.h">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClInclude>
+    <ClInclude Include="TopdeeJoint.h">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -776,6 +782,12 @@
     </ClCompile>
     <ClCompile Include="Stage4.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="TopdeeParts.cpp">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClCompile>
+    <ClCompile Include="TopdeeJoint.cpp">
+      <Filter>00. GameObject\00. Player\Topdee</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

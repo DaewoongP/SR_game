@@ -127,6 +127,14 @@ _uint CLoading::Loading_ForLogo(void)
 	// 스위치 큐브
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
 
+	//탑디 머리통
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeSpinningHead/topdeeSpinningHead_%d.png", 36)), E_FAIL);
+	//몸통
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Body", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeBody/topdeeSpr31_%d.png", 5)), E_FAIL);
+	//팔다리용
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Arm", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeArm/topdeePalmSpr_%d.png", 2)), E_FAIL);
+
+
 	//Boss2 머리털
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
 	//Boss2 공격용 팔
