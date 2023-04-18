@@ -55,7 +55,7 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 		m_bStart = false;
 	}
 	if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN && m_bStart == true)
-	{	
+	{
 		StopSound(SOUND_CAM);
 		PlaySound_Effect(L"51.wav", SOUND_CAM, 1.f);
 		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE3);

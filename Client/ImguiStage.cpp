@@ -224,7 +224,7 @@ HRESULT CImguiStage::CubeMenu()
 		}
 
 		// ť�� ��� ���� �޺� �ڽ�
-		const char* items[] = { "NONE", "STYLE" };
+		const char* items[] = { "STAGE1_0", "STAGE1_1", "STAGE2_0", "STAGE2_1", "STAGE3_0", "STAGE3_1", "INVISIBILITY CUBE"};
 		ImGui::Combo("Cube Style", &m_iCubeTextureNumber, items, IM_ARRAYSIZE(items));
 
 		// ����Ʈ ť�� ��Ÿ�� ����

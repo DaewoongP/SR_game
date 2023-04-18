@@ -184,6 +184,9 @@
     <ClInclude Include="TexParticle.h">
       <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClInclude>
+    <ClInclude Include="BulletPool.h">
+      <Filter>Componnent\BulletPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -330,6 +333,9 @@
     <ClCompile Include="TexParticle.cpp">
       <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClCompile>
+    <ClCompile Include="BulletPool.cpp">
+      <Filter>Componnent\BulletPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -459,6 +465,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\TexParticle">
       <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\BulletPool">
+      <UniqueIdentifier>{3d3228c4-5b7a-4449-9413-a86d9f56649e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

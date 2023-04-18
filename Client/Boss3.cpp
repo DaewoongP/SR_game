@@ -10,12 +10,11 @@
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
 #include "Boss3Mouth.h"
-#include "Fireball.h"
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fSpeed(25.f), m_fXAngle(0.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
-	m_fShootCoolDown(0.f), m_fPreToo(0.f), m_fPreTop(0.f),
+	m_fShootCoolDown(0.f), m_fPreToo(0.f), m_fPreTop(0.f), m_fShockDown(0.f),
 	m_bCreateHand(true)
 {
 	m_pBossLeft = nullptr;
@@ -46,16 +45,56 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-    
+	if (12.f < m_fAttackCoolDown)
+		m_fShockDown += fTimeDelta;
 
-	if (m_iBossHp == 1 && 12.f < m_fAttackCoolDown)
+	// 탑디일 때 스파크 타고 흐르는 애니메이션
+	if (m_iBossHp == 1 && 1.f < m_fShockDown)
 	{
-		m_fSoundCool += fTimeDelta;
-		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
-		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
-		StopSound(SOUND_EFFECT_ENEMY);
-		PlaySound_Effect(L"81.wav", SOUND_EFFECT_ENEMY, 1.f);
-		m_bATKCnt = false;
+		if (m_fShockDown > 1.f && m_fShockDown < 1.2f)
+		{
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(true);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(true);
+		}
+
+		else if (m_fShockDown > 1.2f && m_fShockDown < 1.4f)
+		{
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(false);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(false);
+
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1"))->Set_SparkOn(true);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1"))->Set_SparkOn(true);
+		}
+
+		else if (m_fShockDown > 1.4f && m_fShockDown < 1.6f)
+		{
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1"))->Set_SparkOn(false);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1"))->Set_SparkOn(false);
+
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2"))->Set_SparkOn(true);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2"))->Set_SparkOn(true);
+		}
+
+		else if (m_fShockDown > 1.6f && m_fShockDown < 1.8f)
+		{
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2"))->Set_SparkOn(false);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2"))->Set_SparkOn(false);
+
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3"))->Set_SparkOn(true);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3"))->Set_SparkOn(true);
+		}
+
+		else if (m_fShockDown > 1.8f && m_fShockDown < 2.f)
+		{
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3"))->Set_SparkOn(false);
+			dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3"))->Set_SparkOn(false);
+
+			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
+			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+
+			m_fShockDown = 0.f;
+			m_bATKCnt = false;
+		}
 	}
 
 	// Boss3 생성과 크기 조정
@@ -65,19 +104,19 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 10.f, vPos.y, vPos.z }, 0), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 10.f, vPos.y, vPos.z }, 1), E_FAIL);
-		
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, vPos, 0), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, vPos, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 20.f, vPos.y, vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 20.f, vPos.y, vPos.z }, 1), E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossLeftPupil", pStageLayer, vPos, 1), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossRightPupil", pStageLayer, vPos, 1), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, _vec3{ -4.2f, 1.f, +2.5f }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, _vec3{ -4.2f, 1.f, -2.5f }, 0), E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossLeftEyebrow", pStageLayer, vPos, 2), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, vPos, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossLeftPupil", pStageLayer, _vec3{-4.4f, 1.f, +2.5f}, 1), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossRightPupil", pStageLayer, _vec3{ -4.4f, 1.f, -2.5f }, 1), E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, vPos), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossLeftEyebrow", pStageLayer, _vec3{ -4.2f, 4.f, +2.5f }, 2), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, _vec3{ -4.2f, 4.f, -2.5f }, 2), E_FAIL);
+
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, _vec3{ -5.f, -1.f, 0.f }), E_FAIL);
 		
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3LPart", pStageLayer, _vec3{ vPos.x - 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart", pStageLayer, _vec3{ vPos.x + 2.f ,vPos.y,vPos.z }, 2), E_FAIL);
@@ -141,7 +180,6 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
-
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
 	if (m_iATKCount == 3)
@@ -149,20 +187,53 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		m_bShoot = false;
 		m_fShootterm += fTimeDelta;
 
-		if (m_fShootterm > 2.f && m_iBossHp==1)
+		// 스파크 이동 후 스파크 공격
+		if (m_fShootterm > 1.f && m_iBossHp==1)
 		{
-			if (m_bSpin)
+			if (m_fShootterm > 1.f && m_fShootterm < 1.2f)
 			{
-				StopSound(SOUND_EFFECT_ENEMY);
-				PlaySound_Effect(L"81.wav", SOUND_EFFECT_ENEMY, 1.f);
-				m_bSpin = false;
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(true);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(true);
 			}
-			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
-			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
-			
-		}
 
+			else if (m_fShootterm > 1.2f && m_fShootterm < 1.4f)
+			{
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart"))->Set_SparkOn(false);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart"))->Set_SparkOn(false);
+
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1"))->Set_SparkOn(true);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1"))->Set_SparkOn(true);
+			}
+
+			else if (m_fShootterm > 1.4f && m_fShootterm < 1.6f)
+			{
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1"))->Set_SparkOn(false);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1"))->Set_SparkOn(false);
+
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2"))->Set_SparkOn(true);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2"))->Set_SparkOn(true);
+			}
+
+			else if (m_fShootterm > 1.6f && m_fShootterm < 1.8f)
+			{
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2"))->Set_SparkOn(false);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2"))->Set_SparkOn(false);
+
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3"))->Set_SparkOn(true);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3"))->Set_SparkOn(true);
+			}
+
+			else if (m_fShootterm > 1.8f && m_fShootterm < 2.f)
+			{
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3"))->Set_SparkOn(false);
+				dynamic_cast<CBoss3HandPart*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3"))->Set_SparkOn(false);
+
+				dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
+				dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+			}
+		}
 	}
+
 	if (m_bShoot==false && m_fShootterm > 4.9f)//5이상 주게되면 전기패턴 루프돌아버림
 	{
 		StopSound(SOUND_EFFECT_ENEMY);
@@ -258,8 +329,6 @@ void CBoss3::MakeChain()
 	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2");
 	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3");
 	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3");
-	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart4");
-	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart4");
 }
 
 HRESULT CBoss3::Add_Component(void)
@@ -316,9 +385,7 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 			m_bSpin = false;
 		}
 		BossAttack(fTimeDelta);
-	}
-
-	
+  }
 }
 
 void CBoss3::LookAtPlayer()
@@ -342,8 +409,6 @@ void CBoss3::LookAtPlayer()
 		// 이전에 회전한 수치만큼 원복했다가 새로운 수치만큼 다시 돌림
 		m_pTransform->Rotation(ROT_Y, m_fPreToo * 0.7f);
 		m_pTransform->Rotation(ROT_Y, -fX * 0.7f);
-	
-
 
 		// 현재 값을 저장
 		m_fPreToo = fX;
@@ -411,7 +476,6 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 왼손 공격 명령
 	else if (1.f < m_fAttackCoolDown && 5.f > m_fAttackCoolDown)
 	{
-		
 		dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Attack(true);
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(false);
 		
@@ -424,11 +488,9 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Attack(true);
 		if (m_iBossHp == 1)
 			m_bATKCnt = true;
-		
-
 	}		
 	
-	else if (8.f < m_fAttackCoolDown&&m_bATKCnt==false)
+	else if (14.f < m_fAttackCoolDown&&m_bATKCnt==false)
 	{
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = -1.5f;	
@@ -440,21 +502,14 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 void CBoss3::ShootBullet(const _float & fTimeDelta)
 {
 	m_fShootCoolDown += fTimeDelta;
-	if (1.f < m_fShootCoolDown&&m_bShoot==true)
-	{		
-			++m_iATKCount;
-			dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
+	if (1.f < m_fShootCoolDown&&m_bShoot == true)
+	{
+		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_ShootBullet();
+		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
 
-			_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
-			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-			NULL_CHECK_RETURN(pStageLayer, );
-
-			FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, vPos), );
-			StopSound(SOUND_EFFECT_ENEMY);
-			PlaySound_Effect(L"1.wav", SOUND_EFFECT_ENEMY, 1.f);
-			m_fShootCoolDown = 0.f;
-			
-	}
+		++m_iATKCount;
+		m_fShootCoolDown = 0.f;
+	}	
 }
 
 CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

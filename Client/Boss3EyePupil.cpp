@@ -2,7 +2,7 @@
 #include "Boss3EyePupil.h"
 #include "Export_Function.h"
 
-CBoss3EyePupil::CBoss3EyePupil(LPDIRECT3DDEVICE9 pGraphicDev)\
+CBoss3EyePupil::CBoss3EyePupil(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
 	m_pBoss3 = nullptr;
@@ -33,6 +33,8 @@ _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 
 	__super::Update_GameObject(fTimeDelta);
+
+	m_pTransform->Set_ParentTransform(m_pBoss3);
 
 	LookAtPlayer();
 
@@ -72,9 +74,12 @@ HRESULT CBoss3EyePupil::Add_Component(void)
 
 void CBoss3EyePupil::LookAtPlayer()
 {
-	_vec3 vPos, vDir;
+	_vec3 vPos;
 	CGameObject* pToodee = nullptr;
 	CGameObject* pTopdee = nullptr;
+
+	m_pTransform->m_vInfo[INFO_POS].y -= m_vDir.y;
+	m_pTransform->m_vInfo[INFO_POS].z += m_vDir.x;
 
 	if (g_Is2D)
 	{
@@ -90,14 +95,10 @@ void CBoss3EyePupil::LookAtPlayer()
 		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
 	}
 	
-	D3DXVec3Normalize(&vDir, &(vPos - m_pBoss3->m_pTransform->m_vInfo[INFO_POS]));
+	D3DXVec3Normalize(&m_vDir, &(vPos - m_pBoss3->m_pTransform->m_vInfo[INFO_POS]));
 
-	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	if (!lstrcmp(m_pTag, L"BossLeftPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f, 1.f + vDir.y, +2.5f - vDir.x);
-
-	else if (!lstrcmp(m_pTag, L"BossRightPupil"))
-		m_pTransform->Set_ParentTransform(m_pBoss3, -4.4f , 1.f + vDir.y , -2.5f - vDir.x);
+	m_pTransform->m_vInfo[INFO_POS].y += m_vDir.y;
+	m_pTransform->m_vInfo[INFO_POS].z -= m_vDir.x;
 }
 
 CBoss3EyePupil * CBoss3EyePupil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

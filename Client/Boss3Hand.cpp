@@ -147,6 +147,7 @@ void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
 		dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead(); 
 	}
+
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
 	{
 		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
@@ -212,7 +213,6 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 {
 	m_fCoolDown += fTimeDelta;
 
-
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
@@ -265,7 +265,6 @@ void CBoss3Hand::BossAttack(const _float& fTimeDelta)
 			m_pLandingParticle->Start_Particle();
 			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
 		}
-
 	}
 
 	else if (1.f < m_fAttackCoolDown)
@@ -344,6 +343,5 @@ CBoss3Hand * CBoss3Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _in
 
 void CBoss3Hand::Free(void)
 {
-	
 	__super::Free();
 }
