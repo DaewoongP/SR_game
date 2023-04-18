@@ -27,7 +27,7 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_bRender = true;
 	m_LookVec = _vec3(0, 0, 0);
 
-	__super::Update_GameObject(0.01f);
+	__super::Update_GameObject(Engine::Get_Timer(L"Timer_FPS60"));
 	return S_OK;
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
@@ -100,7 +100,7 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		m_partVec[5]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 		m_bInit = false;
 
-		AnimClip* clip = new AnimClip();
+		AnimClip* clip = nullptr;
 		clip = new AnimClip();
 		{
 			//Face
