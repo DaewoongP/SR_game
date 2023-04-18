@@ -18,6 +18,7 @@ public:
 	virtual _int Update_Particle() override;
 	void Set_LiftTime(_float lifetime) { m_fLifeTime = lifetime; }
 	void Set_SizeLifeTime(_float size) { m_fSizeoverLifetime = size; }
+	void Set_Color(_ulong dwColor) { m_dwColor = dwColor; }
 public:
 	static CJumpParticle* Create(LPDIRECT3DDEVICE9 pGraphicDev,
 		const _tchar* pPath,
@@ -32,6 +33,7 @@ private:
 private:
 	_float		m_fSizeoverLifetime;
 	_float		m_fLifeTime;
+	_ulong		m_dwColor;
 };
 
 END

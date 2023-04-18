@@ -79,6 +79,11 @@ void CSpike::OnCollisionEnter(const Collision* collision)
 {
 	/*if (collision->otherObj != nullptr)
 		collision->otherObj->m_bDead = true;*/
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Pig"))
+	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"54.wav", SOUND_EFFECT_GIMMICK, 1.f);
+	}
 	__super::OnCollisionEnter(collision);
 }
 

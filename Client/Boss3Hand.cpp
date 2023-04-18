@@ -34,18 +34,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 	m_iIndex = iIndex;
 
-	// 3보스용 옵션값
-	BoundingBox Testbox;
-	Testbox.Offset(vPos);
-	vPos.z -= 2.f;
-	m_pSparkParticle->Set_BoundingBox(Testbox);
-	m_pSparkParticle->Set_RandomGen(3.f);
-	m_pSparkParticle->Set_SizeLifeTime(1.f);
-	m_pSparkParticle->Set_Options(1.2f, 15.f);
-	m_pElecParticle->Set_BoundingBox(Testbox);
-	m_pElecParticle->Set_RandomGen(3.f);
-	m_pElecParticle->Set_SizeLifeTime(1.f);
-	m_pElecParticle->Set_Options(1.2f, 15.f);
+	m_pShadowCom->m_fShadowHeight = 12.f;
 
 	return S_OK;
 }
@@ -59,6 +48,19 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	{
 		if (m_fShockCollDown == 0.f)
 		{
+			// 3보스용 옵션값
+			BoundingBox Testbox;
+			_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+			vPos.z -= 2.f;
+			Testbox.Offset(vPos);
+			m_pSparkParticle->Set_BoundingBox(Testbox);
+			m_pSparkParticle->Set_RandomGen(3.f);
+			m_pSparkParticle->Set_SizeLifeTime(1.f);
+			m_pSparkParticle->Set_Options(1.2f, 15.f);
+			m_pElecParticle->Set_BoundingBox(Testbox);
+			m_pElecParticle->Set_RandomGen(3.f);
+			m_pElecParticle->Set_SizeLifeTime(1.f);
+			m_pElecParticle->Set_Options(1.2f, 15.f);
 			m_pSparkParticle->Start_Particle();
 			m_pElecParticle->Start_Particle();
 		}
@@ -124,13 +126,13 @@ void CBoss3Hand::Render_GameObject(void)
 {
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	if(!g_Is2D)
-	m_pShadowCom->Render_Shadow(m_pBufferCom, 0.75f, 0.75f, 1.f);
 
 	if (m_bShock == true)
 		m_pTextureCom->Set_Texture();
 	else
 		m_pTextureCom2->Set_Texture();
+	if(!g_Is2D)
+	m_pShadowCom->Render_Shadow(m_pBufferCom);
 	m_pBufferCom->Render_Buffer();
 	CGameObject::Render_GameObject();
 	m_pLandingParticle->Update_Particle();
@@ -219,18 +221,24 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 
-		if(m_pTransform->m_vInfo[INFO_POS].z <= 8.f);
 			m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
+			
 	}
 
 	else if (4.f < m_fCoolDown )
 	{
+		if (m_bSpin)
+		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"79.wav", SOUND_EFFECT_ENEMY, 1.f);
+			m_bSpin = false;
+		}
 		m_pLandingParticle->Reset();
 		BossAttack(fTimeDelta);
 	}
 }
 
-void CBoss3Hand::BossAttack(const _float & fTimeDelta)
+void CBoss3Hand::BossAttack(const _float& fTimeDelta)
 {
 	m_fAttackCoolDown += fTimeDelta;
 
@@ -245,6 +253,8 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 
 		if (7.f < m_pTransform->m_vInfo[INFO_POS].z)
 		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 			BoundingBox box;
 			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
 			box.Offset(vInfo);
@@ -263,6 +273,7 @@ void CBoss3Hand::BossAttack(const _float & fTimeDelta)
 		m_bAttack = false;
 		m_fAttackCoolDown = 0.f;
 		m_fCoolDown = 0.f;
+		m_bSpin = true;
 	}
 }
 

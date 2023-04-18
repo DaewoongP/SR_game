@@ -32,7 +32,11 @@ HRESULT CKeyCube::Ready_GameObject(_vec3& vPos)
 _int CKeyCube::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_pExpParticle->IsDead())
+	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"57.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		return OBJ_DEAD;
+	}
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
 }
@@ -41,8 +45,10 @@ void CKeyCube::LateUpdate_GameObject(void)
 {
 	if (CKey::iKeyCnt == 0)
 		m_bDead = true;
+	
 	if (m_bDead)
-		m_pExpParticle->Start_Particle();
+	m_pExpParticle->Start_Particle();
+
 
 	__super::LateUpdate_GameObject();
 }

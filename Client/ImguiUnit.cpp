@@ -42,6 +42,9 @@ _int CImguiUnit::Update_Imgui_Unit()
 	MonsterMenu();
 	MapObjectMenu();
 
+	if (ImGui::Button("Undo"))
+		if (Undo(m_iStageNumber) != S_OK)
+			MSG_BOX("Undo Failed");
 	return S_OK;
 }
 
@@ -120,16 +123,10 @@ void CImguiUnit::MonsterInstall()
 		OBJINFO tMonsterInfo = {};
 
 		if (0 == m_iMonsterType) // 돼지
-		{
-			FAILED_CHECK_RETURN(FACTORY<CPig>::Create(L"Pig", pStageLayer,
-				m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeMonster<CPig>(pStageLayer, L"Pig");
 
 		else if (1 == m_iMonsterType) // 박쥐
-		{
-			FAILED_CHECK_RETURN(FACTORY<CBat>::Create(L"Bat", pStageLayer,
-				m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeMonster<CBat>(pStageLayer, L"Bat");
 
 		tMonsterInfo.vObjPos = m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS];
 		tMonsterInfo.iObjTypeNumber = m_iMonsterType;
@@ -174,8 +171,6 @@ HRESULT CImguiUnit::LoadMonster(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
 
 	CGameObject* pGameObject = nullptr;
 
@@ -311,75 +306,41 @@ void CImguiUnit::MapObjectInstall()
 		OBJINFO tMapObjectInfo = {};
 
 		if (0 == m_iMapObjectType) // 키
-		{
-			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CKey>(pStageLayer, L"Key");
 
 		else if (1 == m_iMapObjectType) // 키 큐브
-		{
-			FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CKeyCube>(pStageLayer, L"KeyCube");
 
 		else if (2 == m_iMapObjectType) // 무브 큐브
-		{
-			FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CMoveCube>(pStageLayer, L"MoveCube");
 
 		else if (3 == m_iMapObjectType) // 포탈
-		{
-			FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CPortal>(pStageLayer, L"Portal");
 
 		else if (4 == m_iMapObjectType) // 밟으면 없어지는 큐브
-		{
-			FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CCrackCube>(pStageLayer, L"CrackCube");
 
 		else if (5 == m_iMapObjectType) // 스파이크
-		{
-			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CSpike>(pStageLayer, L"Spike");
 
 		else if (6 == m_iMapObjectType) // 분홍구름
-		{
-			FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CPinkCloud>(pStageLayer, L"PinkCloud");
 
 		else if (7 == m_iMapObjectType) // 스위치
-		{
-			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Swtich", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CSwitch>(pStageLayer, L"Swtich");
 
 		else if (8 == m_iMapObjectType) // 스위치 큐브
-		{
-			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwtichCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CSwitchCube>(pStageLayer, L"SwtichCube");
 
 		else if (9 == m_iMapObjectType) // 중력 큐브
-		{
-			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CGravityCube>(pStageLayer, L"GravityCube");
 
 		else if (10 == m_iMapObjectType) // 번개 구름
-		{
-			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]), );
-		}
+			MakeGameObject<CLightningCloud>(pStageLayer, L"LightningCloud");
 
 		else if (11 == m_iMapObjectType && (2 >  m_iPortalCubeCount)) // 포탈 큐브, 맵에 최대로 설치 가능한 개수는 2개
 		{
-			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], (_int)m_tPortalCubeDir), );
+			MakeGameObjectTypeNum<CPortalCube>(pStageLayer, L"PortalCube", (_int)m_tPortalCubeDir);
 
 			m_vecPortalCubeDir.push_back(m_tPortalCubeDir);
 			++m_iPortalCubeCount;
@@ -387,8 +348,7 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (12 == m_iMapObjectType) // 레이저 터렛
 		{
-			FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pStageLayer,
-				m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], (_int)(m_tLaserTurretDir - 2)), );
+			MakeGameObjectTypeNum<CLaserTurret>(pStageLayer, L"LaserTurret", ((_int)m_tLaserTurretDir -2));
 
 			m_vecLaserTurretDir.push_back(m_tLaserTurretDir);
 		}
@@ -455,8 +415,6 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
 		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
-	else
-		return E_FAIL;
 
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
@@ -598,6 +556,33 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 	return S_OK;
 }
 
+HRESULT CImguiUnit::Undo(_int iStageNumber)
+{
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (m_vecGameObject.empty())
+		return E_FAIL;
+	CGameObject* pGameObject = m_vecGameObject.back();
+
+	if (dynamic_cast<CMonster*>(pGameObject))
+	{
+		if (m_vecMonsterInfo.empty())
+			return E_FAIL;
+		m_vecMonsterInfo.pop_back();
+	}
+	else
+	{
+		if (dynamic_cast<CPortalCube*>(pGameObject))
+			--m_iPortalCubeCount;
+		if (m_vecMapObjectInfo.empty())
+			return E_FAIL;
+		m_vecMapObjectInfo.pop_back();
+	}
+	pStageLayer->Delete_LastObject(m_vecGameObject.back());
+	m_vecGameObject.pop_back();
+	return S_OK;
+}
+
 CImguiUnit * CImguiUnit::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CImguiUnit* pInstance = new CImguiUnit(pGraphicDev);
@@ -606,4 +591,43 @@ CImguiUnit * CImguiUnit::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 		return nullptr;
 
 	return pInstance;
+}
+
+template<typename T>
+void CImguiUnit::MakeMonster(CLayer * pLayer, const _tchar * pObjTag)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultMonster->m_pTransform->m_vInfo[INFO_POS]);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
+
+template<typename T>
+void CImguiUnit::MakeGameObject(CLayer * pLayer, const _tchar * pObjTag)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS]);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
+
+template<typename T>
+void CImguiUnit::MakeGameObjectTypeNum(CLayer * pLayer, const _tchar * pObjTag, _int iNum)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS], iNum);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
 }

@@ -17,7 +17,7 @@ HRESULT CBackgroundSpr::Ready_GameObject(void)
 
 	m_pTransform->m_vScale.x = WINCX*0.5f;
 	m_pTransform->m_vScale.y = WINCY*0.5f;
-
+	m_pTransform->m_vInfo[INFO_POS].z = 100;
 	return S_OK;
 }
 
@@ -32,13 +32,10 @@ _int CBackgroundSpr::Update_GameObject(const _float & fTimeDelta)
 
 void CBackgroundSpr::Render_GameObject(void)
 {
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	__super::Render_GameObject();
 }
 

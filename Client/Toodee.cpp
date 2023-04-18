@@ -28,6 +28,7 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
+	m_bRender = true;
 
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
 
@@ -58,7 +59,7 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	//텍스쳐컴의 애니가 die고 완료됐다면?
 	if (m_pTextureCom->IsAnimationEnd(L"Die"))
 		m_bDead = true;
-
+	
 	DoFlip();
 	return 0;
 }
@@ -90,12 +91,15 @@ void CToodee::LateUpdate_GameObject(void)
 }
 void CToodee::Render_GameObject(void)
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
-	m_pShadow->Render_Shadow(m_pBufferCom);
-	m_pBufferCom->Render_Buffer();
-	__super::Render_GameObject();
-	Render_Particle();
+	if (m_bRender)
+	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+		m_pTextureCom->Set_Texture(0);
+		m_pShadow->Render_Shadow(m_pBufferCom);
+		m_pBufferCom->Render_Buffer();
+		__super::Render_GameObject();
+		Render_Particle();
+	}
 }
 
 void CToodee::OnCollisionEnter(const Collision * collision)
@@ -103,13 +107,27 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 	//스파이크랑 충돌시 본인 데드 트루
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
 		collision->_dir == DIR_DOWN)
-	{
 		m_pTextureCom->Switch_Anim(L"Die");
+	if (!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud") &&
+		collision->_dir == DIR_DOWN)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"58.wav", SOUND_EFFECT, 1.f);
+	}
+	if (collision->_dir == DIR_DOWN&&m_bJumpable==false)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"59.wav", SOUND_EFFECT, 1.f);
+	}
+	if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die")&&m_bDead==false)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
 	}
 
 	if (collision->_dir == DIR_DOWN)
 		LandingParticle_logic(collision->otherObj->m_pTag);
-
+	
 	__super::OnCollisionEnter(collision);
 }
 
@@ -141,6 +159,7 @@ void CToodee::OnCollisionStay(const Collision * collision)
 
 void CToodee::OnCollisionExit(const Collision * collision)
 {
+
 	m_bJumpable = false;
 	__super::OnCollisionExit(collision);
 }
@@ -209,25 +228,47 @@ void CToodee::Free(void)
 
 void CToodee::Key_Input(const _float & fTimeDelta)
 {
+	m_fWalkTime += fTimeDelta;
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_LEFT;
+	
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_RIGHT;
+	
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
+	{
 		m_pRigid->m_Velocity.x = -m_fSpeed;
+		if(fabs(m_pRigid->m_Velocity.y)==0)
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+
+	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
+	{
 		m_pRigid->m_Velocity.x = m_fSpeed;
+		if (fabs(m_pRigid->m_Velocity.y) == 0)
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+
+	}
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = -m_fSpeed*0.2f;
-
+	{
+		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
-		m_pRigid->m_Velocity.x = m_fSpeed*0.2f;
+	{
+		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
 
+	}
 	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
 	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::PlaySound_Effect(L"54.wav",SOUND_EFFECT, 1.f);
+		//착지소리 59번,구름착지 58번
+
 		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
 		BoundingBox box;
 		box.Offset(m_pTransform->m_vInfo[INFO_POS]);

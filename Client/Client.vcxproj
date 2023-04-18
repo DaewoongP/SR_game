@@ -190,6 +190,7 @@
     <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="LightningCloud.h" />
+    <ClInclude Include="LoadingTex.h" />
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
@@ -239,6 +240,8 @@
     <ClInclude Include="StageBG.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TopdeeJoint.h" />
+    <ClInclude Include="TopdeeParts.h" />
     <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +280,7 @@
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
+    <ClCompile Include="LoadingTex.cpp" />
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
@@ -326,6 +330,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Defaultunit.cpp" />
+    <ClCompile Include="TopdeeJoint.cpp" />
+    <ClCompile Include="TopdeeParts.cpp" />
     <ClCompile Include="UICamera.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

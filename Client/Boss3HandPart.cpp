@@ -20,7 +20,7 @@ HRESULT CBoss3HandPart::Ready_GameObject(_vec3& vPos,_int iIndex)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_iIndex = iIndex;
-	m_pTransform->m_vScale = { 2.f,1.f,1.f };
+	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 
 	m_pTransform->m_bIsStatic = true;

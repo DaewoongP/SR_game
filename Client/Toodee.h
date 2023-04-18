@@ -35,6 +35,7 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
+	void		SetRenderONOFF(_bool value) { m_bRender = value; }
 
 private:
 	HRESULT		Add_Component(void);
@@ -60,9 +61,12 @@ private:
 	Engine::CSlerpParticle*		m_pSlerpParticle;
 	Engine::CShadow*		m_pShadow;
 
+	_bool					m_bRender;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;
+	_float					m_fWalkTime = 0.f;
+
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
 	COL_DIR					m_eKeyState;
 public:

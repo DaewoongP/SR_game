@@ -36,6 +36,8 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
+	m_pShadowCom->m_fShadowHeight = 13.0f;
+
 	return S_OK;
 }
 
@@ -43,7 +45,6 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
 	if (12.f < m_fAttackCoolDown)
 		m_fShockDown += fTimeDelta;
 
@@ -235,9 +236,12 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 	if (m_bShoot==false && m_fShootterm > 4.9f)//5이상 주게되면 전기패턴 루프돌아버림
 	{
+		StopSound(SOUND_EFFECT_ENEMY);
 		m_bShoot = true;
 		m_fShootterm = 0.f;
 		m_iATKCount = 0;
+		m_bSpin = true;
+
 	}
 
 	if (0.f > m_fXAngle)
@@ -255,7 +259,6 @@ _int CBoss3::Update_Top(const _float& fTimeDelta)
 	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
-
 	FollowPlayer(fTimeDelta);
 	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 
@@ -278,7 +281,7 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	if(!g_Is2D)
-		m_pShadowCom->Render_Shadow(m_pBufferCom,0.75f,0.75f,0.8f);
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
 
 	m_pTextureCom->Set_Texture();
 	m_pBufferCom->Render_Buffer();
@@ -369,11 +372,20 @@ void CBoss3::FollowPlayer(const _float & fTimeDelta)
 		
 		if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.f))
 			m_pTransform->m_vInfo[INFO_POS].z -= 0.5f;
+		
 	}
 	
 	// 시간이 지나면 공격 시작 (3.5f)
 	else if (2.f + BOSS3_CHASE < m_fCoolDown)
+	{
+		if (m_bSpin)
+		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"79.wav", SOUND_EFFECT_ENEMY, 1.f);
+			m_bSpin = false;
+		}
 		BossAttack(fTimeDelta);
+  }
 }
 
 void CBoss3::LookAtPlayer()
@@ -433,16 +445,21 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	
 	// 회전하고 
 	if (0.75f > m_fAttackCoolDown)
+	{
+		
 		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
+	}
 	
 	// 내려 찍기
 	else if (0.75f < m_fAttackCoolDown && 1.f > m_fAttackCoolDown)
 	{
+
 		if (8.f > m_pTransform->m_vInfo[INFO_POS].z)
 			m_pTransform->m_vInfo[INFO_POS].z += 80.f* fTimeDelta; // 80.f 는 속도(상수)
 		else
 		{
-			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 			BoundingBox box;
 			_vec3 vInfo = m_pTransform->m_vInfo[INFO_POS];
 			box.Offset(vInfo);
@@ -451,6 +468,8 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 			m_pLandingParticle->Set_SizeLifeTime(1.f);
 			m_pLandingParticle->Set_BoundingBox(box);
 			m_pLandingParticle->Start_Particle();
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+
 		}
 	}
 
@@ -474,7 +493,8 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	else if (14.f < m_fAttackCoolDown&&m_bATKCnt==false)
 	{
 		m_fAttackCoolDown = 0.f;
-		m_fCoolDown = -1.5f;		
+		m_fCoolDown = -1.5f;	
+		m_bSpin = true;
 	}
 	
 }

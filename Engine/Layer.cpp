@@ -38,7 +38,7 @@ HRESULT CLayer::Add_GameObject(const _tchar * pObjTag, CGameObject * pGameObject
 		return E_FAIL;
 
 	pGameObject->Set_Tag(pObjTag);
-	m_uMapObject.insert({ pObjTag, pGameObject });
+	m_uMapObject.push_back({ pObjTag, pGameObject });
 
 	return S_OK;
 }
@@ -110,6 +110,48 @@ void CLayer::Delete_In_Layer()
 	}	
 }
 
+HRESULT CLayer::Delete_LastObject(CGameObject* pGameObject)
+{
+	if (!lstrcmp(pGameObject->m_pTag, L"LaserTurret"))
+	{
+		for (auto& iter = m_uMapObject.rbegin(); iter != m_uMapObject.rend(); ++iter)
+		{
+			if (!lstrcmp(iter->second->m_pTag, L"LaserTurret"))
+			{
+				Engine::Delete_Collider(iter->second);
+				Safe_Release(iter->second);
+				// reverse_iterator 삭제법.
+				std::advance(iter, 1);
+				m_uMapObject.erase(iter.base());
+				return S_OK;
+			}
+		}
+	}
+	else
+	{
+		for (auto& iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
+		{
+			if (!lstrcmp(iter->second->m_pTag, L"Laser"))
+			{
+				Engine::Delete_Collider(iter->second);
+				Safe_Release(iter->second);
+				iter = m_uMapObject.erase(iter);
+			}
+			else
+				++iter;
+		}
+		if (pGameObject == m_uMapObject.back().second)
+		{
+			Engine::Delete_Collider(m_uMapObject.back().second);
+			Safe_Release(m_uMapObject.back().second);
+			m_uMapObject.pop_back();
+
+			return S_OK;
+		}
+		else
+			return E_FAIL;
+	}
+}
 
 CLayer * CLayer::Create(void)
 {

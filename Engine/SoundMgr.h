@@ -15,6 +15,7 @@ public:
 	HRESULT Ready_Sound();
 	HRESULT Ready_Sound_Effect();
 	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+	void PlaySound_Effect(TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 	void PlayBGM(TCHAR* pSoundKey, float fVolume);
 	void StopSound(CHANNELID eID);
 	void StopAll();
@@ -24,6 +25,7 @@ private:
 
 	 //사운드 리소스 정보를 갖는 객체 
 	map<TCHAR*, FMOD_SOUND*> m_mapSound;
+	map<TCHAR*, FMOD_SOUND*> m_mapSound_Effect;
 
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	FMOD_CHANNEL* m_pChannelArr[MAXCHANNEL];

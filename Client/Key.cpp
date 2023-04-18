@@ -80,6 +80,8 @@ void CKey::OnCollisionEnter(const Collision* collision)
 {	
 	if (iKeyCnt > 0)
 	{
+			StopSound(SOUND_EFFECT_GIMMICK);
+			PlaySound_Effect(L"56.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		--iKeyCnt;
 		m_bDead = true;
 	}

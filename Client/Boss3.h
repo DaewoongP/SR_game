@@ -76,6 +76,9 @@ private:
 	_bool m_bATKCnt; //전기공격을할지안할지판단
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;
+	_bool	m_bSpin = true;
+	_float m_fSoundCool;
+	_bool m_bSound	;
 
 
 	_vec3 m_vPrePos;
