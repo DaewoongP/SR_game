@@ -10,6 +10,8 @@
 #include "BackgroundSpr.h"
 #include "StageCamera.h"
 #include "LogoCamera.h"
+#include "..\Engine\AbstractFactory.h"
+#include "LoadingTex.h"
 
 CPreStage::CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
 	:CScene(pGraphicDev), m_pLoading(nullptr), m_eLoadingID(eID)
@@ -53,7 +55,6 @@ void CPreStage::LateUpdate_Scene(void)
 
 void CPreStage::Render_Scene(void)
 {
-	Engine::Render_Font(L"Font_Default", m_pLoading->Get_String(), &_vec2(WINCX * 0.4f, WINCY * 0.7f), D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
@@ -62,6 +63,10 @@ HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+	
+	pGameObject = CTitle::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
 
 	pGameObject = CUICamera::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -70,6 +75,8 @@ HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CBackgroundSpr::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CLoadingTex>::Create(L"LoadingTex", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;

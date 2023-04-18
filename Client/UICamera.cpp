@@ -15,12 +15,12 @@ CUICamera::~CUICamera()
 
 HRESULT CUICamera::Ready_GameObject(void)
 {
-	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 1, 0);
+	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100);
 
 	_vec3 vEye, vAt, vUp;
 
-	vEye = { 0.0f,0.0f,-1.0f };
-	vAt = { 0.0f,0.0f,0.0f };
+	vEye = { 0.0f,0.0f,0.0f };
+	vAt = { 0.0f,0.0f,1.0f };
 	vUp = { 0.0f,1.0f,0.0f };
 
 	D3DXMatrixLookAtLH(&m_matViewSpace, &vEye, &vAt, &vUp);
