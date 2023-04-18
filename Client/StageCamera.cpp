@@ -95,11 +95,15 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 		// 2D -> 3D
 		if (g_Is2D)
 		{
+			Engine::StopSound(SOUND_CAM);
+			Engine::PlaySound_Effect(L"71.wav", SOUND_CAM, 0.5f);
 			g_Is2D = false;
 		}
 		// 3D -> 2D
 		else if (!g_Is2D)
 		{
+			Engine::StopSound(SOUND_CAM);
+			Engine::PlaySound_Effect(L"70.wav", SOUND_CAM, 0.5f);
 			g_Is2D = true;
 		}
 		

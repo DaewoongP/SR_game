@@ -30,9 +30,15 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 _int CSwallowPortal::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
+	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		return OBJ_DEAD;
+	}
+
 	if (m_pTextureCom->IsAnimationEnd(L"Idle_Swallow"))
 		return STAGE_END;
+
 
 	__super::Update_GameObject(fTimeDelta);
 

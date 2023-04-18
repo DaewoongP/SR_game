@@ -65,6 +65,8 @@ private:
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;
+	_float					m_fWalkTime = 0.f;
+
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
 	COL_DIR					m_eKeyState;
 public:

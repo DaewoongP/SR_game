@@ -489,7 +489,10 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS) &&
 		m_eState == TD_MOVE)
+	{
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
 		m_bIsMoving = true;
+	}
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_byPlayerInputDir |= 8;
@@ -504,17 +507,25 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 		m_byPlayerInputDir |= 1;
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
 		m_byPlayerInputDir &= 7;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
 		m_byPlayerInputDir &= 11;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
 		m_byPlayerInputDir &= 13;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
 		m_byPlayerInputDir &= 14;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN&&!m_bIsMoving)
 		m_eState = TD_FINDING;
 

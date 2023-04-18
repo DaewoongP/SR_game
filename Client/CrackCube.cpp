@@ -33,7 +33,11 @@ HRESULT CCrackCube::Ready_GameObject(_vec3& vPos)
 _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_pExpParticle->IsDead())
+	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"3.wav",SOUND_EFFECT_GIMMICK, 0.8f);
 		return OBJ_DEAD;
+	}
 	if (m_bDead)
 		m_pExpParticle->Start_Particle();
 	__super::Update_GameObject(fTimeDelta);
@@ -82,8 +86,12 @@ void CCrackCube::Render_GameObject(void)
 
 void CCrackCube::OnCollisionEnter(const Collision* collision)
 {
-	if(!lstrcmp(collision->otherObj->m_pTag, L"Toodee") &&collision->_dir == DIR_UP)
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") && collision->_dir == DIR_UP)
+	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"4.wav", SOUND_EFFECT_GIMMICK, 0.8f);
 		DoShootRay(DIR_UP);
+	}
 	__super::OnCollisionEnter(collision);
 }
 

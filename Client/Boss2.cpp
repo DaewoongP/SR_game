@@ -1362,11 +1362,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 					});
 				}
 			}
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 		}
 		m_pAnimation_Body->AddClip(L"Scream", clip);
 
 		clip = new AnimClip();
-		{
+		{	
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
 			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
@@ -2054,6 +2056,8 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		m_pCircleParticle->Set_BoundingBox(box);
 		m_pCircleParticle->Set_Size(3.f);
 		m_pCircleParticle->Start_Particle();
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
@@ -2278,6 +2282,7 @@ void CBoss2::Do_SummonFist(const _float & fTimeDelta)
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Idle");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
+
 	m_dwRestTime = 4.0f;
 }
 
@@ -2293,7 +2298,8 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	m_pScreamParticle->Set_BoundingBox(box);
 	m_pScreamParticle->Set_SizeLifeTime(1.07f);
 	m_pScreamParticle->Start_Particle();
-
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"76.wav", SOUND_EFFECT_ENEMY, 1.f);
 	m_dwRestTime = 2.0f;
 	CheckIsLastActionIdx();
 }

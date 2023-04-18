@@ -97,7 +97,10 @@ void PlaySound(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
 	return CSoundMgr::GetInstance()->PlaySound(pSoundKey, eID, fVolume);
 }
-
+void PlaySound_Effect(TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	return CSoundMgr::GetInstance()->PlaySound_Effect(pSoundKey, eID, fVolume);
+}
 void PlayBGM(TCHAR* pSoundKey, float fVolume)
 {
 	return CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);

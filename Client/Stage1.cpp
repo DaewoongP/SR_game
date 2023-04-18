@@ -2,7 +2,6 @@
 #include "Stage1.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
-
 #include "Cube.h"
 #include "StageCamera.h"
 #include "StageBG.h"
