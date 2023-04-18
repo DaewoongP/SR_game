@@ -217,6 +217,20 @@ static _vec3 Lerp(_vec3 A, _vec3 B, float Alpha)
 	return _vec3(Lerp(A.x, B.x, Alpha), Lerp(A.y, B.y, Alpha), Lerp(A.z, B.z, Alpha));
 }
 
+static _float _short_angle_dist(_float from, _float to) {
+	_float max_angle = D3DX_PI * 2;
+	_float difference = fmod(to - from, max_angle);
+	return fmod(2 * difference, max_angle) - difference;
+}
+
+static _float lerp_angle(_float from, _float to, _float weight)
+{
+	return from + _short_angle_dist(from, to) * weight;
+}
+
+
+	
+
 template <typename T>
 static void Value_Range(T Min, T Max, T* Value)
 {

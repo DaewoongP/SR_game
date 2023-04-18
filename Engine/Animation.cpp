@@ -35,6 +35,9 @@ HRESULT CAnimation::SetAnimation(_tchar * Name)
 	if (m_clipMap.find(Name)== m_clipMap.end())
 		return E_NOTIMPL;
 
+	if (!lstrcmp(m_AnimState, Name))
+		return S_OK;
+
 	//애니메이션의 현재 상태를 받은 매개변수로 지정해줍니다.
 	m_AnimState = Name;
 	//경과 시간을 초기화해줍니다.
