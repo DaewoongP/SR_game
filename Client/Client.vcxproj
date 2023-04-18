@@ -185,6 +185,7 @@
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultUnit.h" />
+    <ClInclude Include="FinalStage1.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Laser.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
+    <ClInclude Include="ThirdCamera.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Toodee.h" />
     <ClInclude Include="Topdee.h" />
@@ -275,6 +277,7 @@
     <ClCompile Include="CrackCube.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
+    <ClCompile Include="FinalStage1.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Laser.cpp" />
@@ -318,6 +321,7 @@
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
+    <ClCompile Include="ThirdCamera.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Toodee.cpp" />
     <ClCompile Include="Topdee.cpp" />

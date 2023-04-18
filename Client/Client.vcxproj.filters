@@ -504,6 +504,12 @@
     <ClInclude Include="PortalCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClInclude>
+    <ClInclude Include="FinalStage1.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -806,6 +812,12 @@
     </ClCompile>
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalStage1.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

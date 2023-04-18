@@ -10,6 +10,7 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Stage4.h"
+#include "FinalStage1.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -49,7 +50,8 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE4:
 		iFlag = pLoading->Loading_ForStage4();
 		break;
-	case LOADING_BOSS:
+	case LOADING_FINAL1:
+		iFlag = pLoading->Loading_ForFinal1();
 		break;
 	}
 	
@@ -333,6 +335,19 @@ _uint CLoading::Loading_ForStage4(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading4 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForFinal1(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CFinalStage1::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
+	Set_String(L"Loading Final Complete!!!!!!!!");
 	return 0;
 }
 
