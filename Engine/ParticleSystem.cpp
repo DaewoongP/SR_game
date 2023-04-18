@@ -33,7 +33,7 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_matWorld(rhs.m_matWorld),
 	m_pParticle(rhs.m_pParticle),
 	m_bIsAnim(rhs.m_bIsAnim),
-	m_InitSize(rhs.m_InitSize)
+	m_InitSize(rhs.m_Size)
 {
 	m_VB->AddRef();
 }

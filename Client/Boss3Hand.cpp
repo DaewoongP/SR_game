@@ -11,7 +11,7 @@ CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fIdleCycle(0.f), m_fIdleAngle(0.f),
 	m_iIndex(0),
-	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false)
+	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false), m_bSpin(true)
 {
 }
 

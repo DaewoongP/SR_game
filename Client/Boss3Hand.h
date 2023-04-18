@@ -51,6 +51,7 @@ private:
 	_bool	m_bIdleMove;
 	_bool	m_bIdleStop;
 	_vec3	m_vPrePos;
+	_bool	m_bSpin;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;
