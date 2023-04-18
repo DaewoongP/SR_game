@@ -64,12 +64,15 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 		if (1.f < m_fStaticOFF)
 		{
 			m_bStaticON = false;
-			m_pTransform->m_vScale = {4.f, 2.f, 1.f};
-			m_pCollider->Set_BoundingBox({ 3.f, 2.f, 1.f });
+			m_pTransform->m_vScale = {5.f, 2.5f, 1.f};
+			m_pCollider->Set_BoundingBox({ 4.f, 3.f, 1.f });
+			m_pCollider->Set_BoundOffset(_vec3{-1.f, -2.f, 0.f});
+			m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 		}			
 	}
 
-	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].x += m_vDir.x * m_fSpeed * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].y += m_vDir.y * m_fSpeed * fTimeDelta;
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 

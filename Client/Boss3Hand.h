@@ -52,7 +52,6 @@ private:
 	_bool	m_bIdleStop;
 	_vec3	m_vPrePos;
 
-
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;
 
@@ -64,6 +63,3 @@ public:
 protected:
 	virtual void Free(void) override;
 };
-
-#define BOSS3_CHASE 1.5f
-#define BOSS3_SPIN 0.5f
