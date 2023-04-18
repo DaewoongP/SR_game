@@ -19,6 +19,7 @@ public:
 	HRESULT SaveCube(_int iStageNumber);
 	HRESULT LoadCube(_int iStageNumber, CScene* pScene = nullptr);
 
+	HRESULT	Undo(_int iStageNumber);
 private:
 	// 그리드 메뉴
 	HRESULT GridMenu();
@@ -41,6 +42,7 @@ private:
 	CGameObject* m_pDefaultGrid;			// 디폴트 그리드 관련
 	vector<CGameObject*> m_vecGroundGrid;	// 그라운드 그리드 모음
 	vector<OBJINFO> m_vecInstallGrid;		// 설치된 그리드 모음(저장 용도)
+	vector<CGameObject*> m_vecGameObject;	// 지우기용 오브젝트 벡터
 
 	bool m_bGridCreate;						// 최초 그라운드 그리드 생성
 	bool m_bDefaultGridCreate;				// 디폴트 그리드 생성
@@ -56,5 +58,8 @@ private:
 	
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);
-};
 
+private:
+	void MakeGameObject(CLayer* pLayer, const _tchar * pObjTag);
+	void MakeGameObject(CLayer* pLayer, const _tchar * pObjTag, _int iNum);
+};

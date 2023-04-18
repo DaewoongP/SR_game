@@ -34,6 +34,9 @@ _int CImguiStage::Update_Imgui_Stage()
 	GridMenu();
 	CubeMenu();
 
+	if (ImGui::Button("Undo"))
+		if (Undo(m_iStageNumber) != S_OK)
+			MSG_BOX("Undo Failed");
 	return S_OK;
 }
 
@@ -44,6 +47,7 @@ void CImguiStage::Release()
 
 	m_vecCubeInfo.clear();
 	m_vecCubeInfo.shrink_to_fit();
+	m_vecGameObject.clear();
 }
 
 HRESULT CImguiStage::GridMenu()
@@ -95,6 +99,7 @@ HRESULT CImguiStage::GridMenu()
 		ImGui::TreePop();
 	}
 
+
 	return S_OK;
 }
 
@@ -138,9 +143,7 @@ void CImguiStage::GridInstall()
 	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
 		OBJINFO tGrid = {};
-
-		FAILED_CHECK_RETURN(FACTORY<CInstallGrid>::Create(L"InstallGrid", pStageLayer,
-			m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS]), );
+		MakeGameObject(pStageLayer, L"InstallGrid");
 
 		tGrid.vObjPos = m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS];
 		tGrid.iObjTypeNumber = 0;
@@ -249,6 +252,7 @@ HRESULT CImguiStage::CubeMenu()
 		if (ImGui::Button("Cube Load"))
 			FAILED_CHECK_RETURN(LoadCube(m_iStageNumber), E_FAIL);
 
+
 		ImGui::TreePop();
 	}
 
@@ -277,8 +281,7 @@ void CImguiStage::CubeInstall()
 	{
 		OBJINFO tCube = {};
 
-		FAILED_CHECK_RETURN(FACTORY<CInstallCube>::Create(L"InstallCube", pStageLayer,
-			m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS], m_iCubeTextureNumber), );
+		MakeGameObject(pStageLayer, L"InstallCube", m_iCubeTextureNumber);
 
 		tCube.vObjPos = m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS];
 		tCube.iObjTypeNumber = m_iCubeTextureNumber;
@@ -337,11 +340,21 @@ HRESULT CImguiStage::LoadCube(_int iStageNumber, CScene* pScene)
 
 	for (auto& iter : m_vecCubeInfo)
 	{
-
 		FAILED_CHECK_RETURN(FACTORY<CInstallCube>::Create(L"InstallCube", pStageLayer,
 			iter.vObjPos, iter.iObjTypeNumber), E_FAIL);
 	}
 
+	return S_OK;
+}
+
+HRESULT CImguiStage::Undo(_int iStageNumber)
+{
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+	if (m_vecGameObject.empty())
+		return E_FAIL;
+	pStageLayer->Delete_LastObject(m_vecGameObject.back());
+	m_vecGameObject.pop_back();
 	return S_OK;
 }
 
@@ -353,4 +366,27 @@ CImguiStage * CImguiStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 		return nullptr;
 
 	return pInstance;
+}
+
+void CImguiStage::MakeGameObject(CLayer * pLayer, const _tchar * pObjTag)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = CInstallGrid::Create(m_pGraphicDev,
+		m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS]);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
+
+void CImguiStage::MakeGameObject(CLayer * pLayer, const _tchar * pObjTag, _int iNum)
+{
+	 CGameObject* pGameObject = CInstallCube::Create(m_pGraphicDev,
+		m_pDefaultCube->m_pTransform->m_vInfo[INFO_POS], iNum);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
 }
