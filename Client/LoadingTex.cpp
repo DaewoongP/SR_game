@@ -18,7 +18,7 @@ HRESULT CLoadingTex::Ready_GameObject(void)
 	m_pLoadingTex->Switch_Anim(L"Idle");
 	m_pTransform->m_vScale.x = 250;
 	m_pTransform->m_vScale.y = 125;
-	m_pTransform->m_vInfo[INFO_POS] = {0.f, -100.f , 1.f};
+	m_pTransform->m_vInfo[INFO_POS] = {0.f, -200.f , 1.f};
 	m_iLoadingPercent = 0;
 	return S_OK;
 }

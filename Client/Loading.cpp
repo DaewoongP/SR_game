@@ -281,10 +281,10 @@ _uint CLoading::Loading_ForLogo(void)
 _uint CLoading::Loading_ForStage1(void)
 {
 	Set_String(L"Stage Loading..........");
-
 	m_pScene = CStage1::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading1 Complete!!!!!!!!");
 	return 0;
 }
@@ -297,6 +297,7 @@ _uint CLoading::Loading_ForStage2(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading2 Complete!!!!!!!!");
 	return 0;
 }
@@ -309,6 +310,7 @@ _uint CLoading::Loading_ForStage3(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading3 Complete!!!!!!!!");
 	return 0;
 }
@@ -321,6 +323,7 @@ _uint CLoading::Loading_ForStage4(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading4 Complete!!!!!!!!");
 	return 0;
 }
