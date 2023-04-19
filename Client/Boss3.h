@@ -33,6 +33,11 @@ public:
 
 	_int Get_ATKCount() { return m_iATKCount; }
 
+	// 테스트용도
+public:
+	void	Set_DeadBoss3Part();
+	void	Set_Damage() { --m_iBossHp; }
+
 private:
 	HRESULT Add_Component(void);
 	void	LookAtPlayer();								// 플레이어 방향으로 몸을 돌림
@@ -64,7 +69,7 @@ private:
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
 	_bool m_bATKEnd=false;
-	_int m_iBossHp = 1; //추후에 스테이지로 옮겨야함
+	_int m_iBossHp = 3; //추후에 스테이지로 옮겨야함
 	_bool m_bATKCnt; //전기공격을할지안할지판단
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;

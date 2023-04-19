@@ -11,6 +11,9 @@ private:
 	virtual ~CLine();
 
 public:
+	void		Set_Width(_float fWidth) { m_fWidth = fWidth; }
+
+public:
 	HRESULT		Ready_Line(_float width);
 	// 시작점 좌표, 끝점 좌표, 컬러
 	void		Set_Line(const _vec3& first, const _vec3& second, D3DXCOLOR color);

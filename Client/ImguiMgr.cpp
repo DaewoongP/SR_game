@@ -84,7 +84,8 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		}
 
 		// 스테이지 선택 콤보 박스
-		const char* items[] = { "1", "2", "3", "4", "5", "6", "7" };
+		const char* items[] = { "1", "2", "3", "4", "5", "6", "7", "8", 
+								"Final1", "Final2", "99" };
 		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
 		m_pImguiStage->Set_StageNumber(m_iStageNumber);
 		m_pImguiUnit->Set_StageNumber(m_iStageNumber);
@@ -125,6 +126,12 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			{
 				CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 				pLayer->Delete_In_Layer();
+				m_pImguiUnit->Get_LaserVector()->clear();
+				m_pImguiUnit->Get_MonsterVector()->clear();
+				m_pImguiUnit->Get_MapVector()->clear();
+				m_pImguiUnit->Get_PortalVector()->clear();
+				m_pImguiStage->Get_CubeVector()->clear();
+				m_pImguiStage->Get_GridVector()->clear();
 				m_bDeleteAll = false;
 			}
 

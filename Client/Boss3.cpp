@@ -108,8 +108,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 20.f, vPos.y, vPos.z }, 0), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 20.f, vPos.y, vPos.z }, 1), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 15.f, vPos.y, vPos.z }, 0), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Right", pStageLayer, _vec3{ vPos.x + 15.f, vPos.y, vPos.z }, 1), E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3LeftEye", pStageLayer, _vec3{ -4.2f, 1.f, +2.5f }, 0), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss3Eye>::Create(L"Boss3RightEye", pStageLayer, _vec3{ -4.2f, 1.f, -2.5f }, 0), E_FAIL);
@@ -178,6 +178,9 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return 0;
+
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
 	if (m_iATKCount == 3)
@@ -260,6 +263,12 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3::Update_Top(const _float& fTimeDelta)
 {
+	if (0 >= m_iBossHp)
+		Set_DeadBoss3Part();
+
+	if (m_bDead)
+		return 0;
+
 	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
 	if (-100.f < m_fXAngle)
 		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fXAngle-- * fTimeDelta));
@@ -335,6 +344,43 @@ void CBoss3::MakeChain()
 	m_pBossRightPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2");
 	m_pBossLeftPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3");
 	m_pBossRightPart1 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3");
+}
+
+void CBoss3::Set_DeadBoss3Part()
+{
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Mouth")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPartShadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPartShadow")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1Shadow")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2Shadow")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right")->m_bDead = true;
 }
 
 HRESULT CBoss3::Add_Component(void)
@@ -512,7 +558,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 void CBoss3::ShootBullet(const _float & fTimeDelta)
 {
 	m_fShootCoolDown += fTimeDelta;
-	if (1.f < m_fShootCoolDown&&m_bShoot == true)
+	if (1.f < m_fShootCoolDown&&m_bShoot == true && !m_bDead)
 	{
 		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_ShootBullet();
 		dynamic_cast<CBoss3Mouth*>(m_pMouth)->Set_Animation();
