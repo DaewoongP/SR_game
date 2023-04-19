@@ -526,6 +526,9 @@
     <ClInclude Include="Thirddee.h">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
+    <ClInclude Include="BackGroundBase.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -844,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="Thirddee.cpp">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundBase.cpp">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
