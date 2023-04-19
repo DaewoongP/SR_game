@@ -248,6 +248,8 @@
     <ClInclude Include="TopdeeJoint.h" />
     <ClInclude Include="TopdeeParts.h" />
     <ClInclude Include="UICamera.h" />
+    <ClInclude Include="Water.h" />
+    <ClInclude Include="WaterPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
@@ -343,6 +345,8 @@
     <ClCompile Include="TopdeeJoint.cpp" />
     <ClCompile Include="TopdeeParts.cpp" />
     <ClCompile Include="UICamera.cpp" />
+    <ClCompile Include="Water.cpp" />
+    <ClCompile Include="WaterPipe.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

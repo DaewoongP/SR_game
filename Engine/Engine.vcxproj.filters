@@ -187,6 +187,9 @@
     <ClInclude Include="BulletPool.h">
       <Filter>Componnent\BulletPool</Filter>
     </ClInclude>
+    <ClInclude Include="WaterParticle.h">
+      <Filter>Componnent\ParticleSystem\Water</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -336,6 +339,9 @@
     <ClCompile Include="BulletPool.cpp">
       <Filter>Componnent\BulletPool</Filter>
     </ClCompile>
+    <ClCompile Include="WaterParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Water</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -468,6 +474,9 @@
     </Filter>
     <Filter Include="Componnent\BulletPool">
       <UniqueIdentifier>{3d3228c4-5b7a-4449-9413-a86d9f56649e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Water">
+      <UniqueIdentifier>{560bd8ab-e608-44e4-810f-b2827b1be5b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

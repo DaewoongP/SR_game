@@ -79,6 +79,7 @@
     <ClInclude Include="TriCol.h" />
     <ClInclude Include="Typedef.h" />
     <ClInclude Include="VIBuffer.h" />
+    <ClInclude Include="WaterParticle.h" />
     <ClInclude Include="WindParticle.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +131,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriCol.cpp" />
     <ClCompile Include="VIBuffer.cpp" />
+    <ClCompile Include="WaterParticle.cpp" />
     <ClCompile Include="WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>

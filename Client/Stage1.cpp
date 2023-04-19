@@ -11,6 +11,7 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 #include "Tookee.h"
+#include"WaterPipe.h"
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
