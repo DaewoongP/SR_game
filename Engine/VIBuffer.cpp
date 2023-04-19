@@ -35,7 +35,7 @@ CVIBuffer::~CVIBuffer()
 
 HRESULT CVIBuffer::Ready_Buffer(void)
 {
-	
+	 
 	if (FAILED(m_pGraphicDev->CreateVertexBuffer(m_dwVtxCnt * m_dwVtxSize,  // 정점 버퍼의 크기
 													0,						// 버퍼를 만드는 방식(0인 경우 정적 버퍼,  D3DUSAGE_DYNAMIC 동적 버퍼)
 													m_dwFVF,				// 정점의 옵션			

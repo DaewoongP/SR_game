@@ -89,7 +89,6 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}
 	}
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)10.f,(_float)10.f,11.f }), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

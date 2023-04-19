@@ -12,7 +12,6 @@ public:
 	virtual HRESULT Ready_GameObject(void) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
-	virtual void Render_GameObject(void) override;
 
 private:
 	void		Rotation_View(const _float& fTimeDelta);
