@@ -563,14 +563,6 @@ void CThirddee::Render_GameObject(void)
 	CGameObject::Render_GameObject();
 }
 
-void CThirddee::Render_Too(void)
-{
-}
-
-void CThirddee::Render_Top(void)
-{
-}
-
 void CThirddee::SwapTrigger()
 {
 	if (g_Is2D)

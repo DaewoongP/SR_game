@@ -431,24 +431,19 @@ void CTookee::LateUpdate_GameObject(void)
 void CTookee::Render_GameObject(void)
 {
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	if (g_Is2D)
+	{
+		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+		m_pTextureCom->Set_Texture(0);
+		m_pShadow->Render_Shadow(m_pBufferCom);
+		m_pBufferCom->Render_Buffer();
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		Render_Particle();
+	}
 	__super::Render_GameObject();
-}
-
-void CTookee::Render_Too(void)
-{
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
-	m_pShadow->Render_Shadow(m_pBufferCom);
-	m_pBufferCom->Render_Buffer();
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	Render_Particle();
-}
-
-void CTookee::Render_Top(void)
-{
 }
 
 void CTookee::SwapTrigger()

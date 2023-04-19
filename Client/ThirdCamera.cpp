@@ -40,12 +40,12 @@ void CThirdCamera::Swap_Camera()
 	CGameObject* pObj = nullptr;
 	if (g_Is2D)
 	{
-		pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee");
 		Set_ToodeeCam(pObj->m_pTransform->m_vInfo[INFO_POS]);
 	}
 	else
 	{
-		pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee");
 		Set_TopdeeCam(pObj->m_pTransform->m_vInfo[INFO_POS]);
 	}
 }
