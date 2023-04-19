@@ -11,6 +11,7 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 #include "Tookee.h"
+#include"WaterPipe.h"
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -76,6 +77,7 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTookee>::Create(L"Tookee", pLayer, _vec3(14.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CWaterPipe>::Create(L"Sink", pLayer, _vec3(14.f, 10.f, 10.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
