@@ -323,9 +323,9 @@ _matrix* CLightningCloud::MakeLightningMatrix(size_t LightningNum)
 	vPos.y -= 1.f;
 	if (!g_Is2D)
 	{
-		m_vLightningSize1.y = 6.f;
-		m_vLightningSize2.y = 6.f;
-		m_vLightningSize3.y = 6.f;
+		m_vLightningSize1.y = 5.f;
+		m_vLightningSize2.y = 5.f;
+		m_vLightningSize3.y = 5.f;
 		m_vLightningSize1.z = 7.f;
 		m_vLightningSize2.z = 7.f;
 		m_vLightningSize3.z = 7.f;
