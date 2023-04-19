@@ -34,7 +34,7 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_Options({ 2.f, 2.f, BATTOOZ*2.0f }, COL_OBJ, true);
+	m_pCollider->Set_Options({ 2.f, 2.f, 4.f }, COL_OBJ, true);
 
 	m_pTransform->m_vInfo[INFO_POS].z = BATTOOZ;
 
@@ -180,6 +180,14 @@ void CBat::LateUpdate_GameObject(void)
 void CBat::Render_GameObject(void)
 {
 	__super::Render_GameObject();
+}
+
+void CBat::SwapTrigger()
+{
+	if (g_Is2D)
+		m_pCollider->Set_BoundingBox({ 2.f, 2.f, 4.f }, { 0.f, 0.f, 0.f });
+	else
+		m_pCollider->Set_BoundingBox({ 2.f, 2.f, 4.f }, { 0.f, 0.f, 4.f });
 }
 
 void CBat::Render_Too()

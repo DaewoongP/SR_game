@@ -510,6 +510,9 @@
     <ClInclude Include="ThirdCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="MoveCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -817,6 +820,9 @@
       <Filter>01. Scene\Stages</Filter>
     </ClCompile>
     <ClCompile Include="ThirdCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>

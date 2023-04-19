@@ -11,6 +11,7 @@
 #include "ThirdCamera.h"
 #include "Toodee.h"
 #include "Topdee.h"
+#include "MoveCamera.h"
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -52,7 +53,8 @@ HRESULT CFinalStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirdCamera>::Create(L"Camera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CThirdCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMoveCamera>::Create(L"Camera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

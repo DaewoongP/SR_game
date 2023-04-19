@@ -195,6 +195,7 @@
     <ClInclude Include="LogoCamera.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="PreStage.h" />
     <ClInclude Include="Select.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="LogoCamera.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="PreStage.cpp" />
     <ClCompile Include="Select.cpp" />
