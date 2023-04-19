@@ -1994,8 +1994,6 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	m_pTransform->SwapYZ();
-
 	return 0;
 }
 
@@ -2011,6 +2009,7 @@ _int CBoss2::Update_Top(const _float & fTimeDelta)
 
 void CBoss2::LateUpdate_GameObject(void)
 {
+	m_pTransform->SwapYZ();
 	__super::LateUpdate_GameObject();
 }
 

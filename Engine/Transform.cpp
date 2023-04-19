@@ -297,6 +297,7 @@ void CTransform::SwapYZ()
 		m_YZValue = Lerp(m_YZValue, 0.8f, 0.1f);
 	else
 		m_YZValue = Lerp(m_YZValue, 1.f, 0.1f);
+	cout << m_YZValue << endl;
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
