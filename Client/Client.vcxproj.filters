@@ -544,6 +544,7 @@
     <ClInclude Include="MapDeco.h">
       <Filter>00. GameObject\03. BackGroudObj\01.Stage1\Map Deco</Filter>
     </ClInclude>
+    <ClInclude Include="BackGroundToolScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
