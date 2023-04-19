@@ -57,6 +57,8 @@ public:
 	}
 	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
 	void Set_World(_matrix mat) { m_matWorld = mat; }
+
+	list<Particle>	Get_Particles() { return m_Particles; }
 protected:
 	virtual void RemoveDeadParticles();
 	virtual void Free(void) override;

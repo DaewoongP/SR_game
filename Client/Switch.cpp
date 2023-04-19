@@ -20,12 +20,13 @@ CSwitch::~CSwitch()
 HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].y += 1.f;
 	m_pTransform->m_vInfo[INFO_POS].z = 8.999f;
-	m_pTransform->m_vScale = { 0.9f, 0.9f, 1.f };
 	m_pTransform->m_bIsStatic = false;
 
-	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f }, {0.f, 0.5f, 0.f});
+	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f }, {0.f, -0.5f, 0.f});
 
 	return S_OK;
 }
@@ -34,7 +35,7 @@ _int CSwitch::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
+	m_pTransform->m_vScale = _vec3(2, 2, 0);
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -83,8 +84,7 @@ void CSwitch::OnCollisionExit(const Collision * collision)
 	CSwitch::m_iCnt--;
 	m_iTextureIndex = 0;
 	if (m_iCnt == 0)
-		m_bSwtichON = false;
-		
+		m_bSwtichON = false;		
 }
 
 HRESULT CSwitch::Add_Component(void)

@@ -92,6 +92,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 			dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 			dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
 
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"81.wav", SOUND_EFFECT_ENEMY, 1.f);
 			m_fShockDown = 0.f;
 			m_bATKCnt = false;
 		}
@@ -230,6 +232,8 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 				dynamic_cast<CBoss3Hand*>(m_pBossLeft)->Set_Shock(true);
 				dynamic_cast<CBoss3Hand*>(m_pBossRight)->Set_Shock(true);
+				StopSound(SOUND_EFFECT_ENEMY);
+				PlaySound_Effect(L"81.wav", SOUND_EFFECT_ENEMY, 1.f);
 			}
 		}
 	}
