@@ -32,6 +32,8 @@ protected:
 	Engine::CRigidbody*		m_pRigid;
 	_float					m_fSpeed;
 
+	_bool	m_bCol;
+
 protected:
 	virtual void Free(void);
 };

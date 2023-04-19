@@ -2,6 +2,7 @@
 #include "Bat.h"
 #include "Cube.h"
 #include "Export_Function.h"
+#include "StageCamera.h"
 
 CBat::CBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev), m_bMoveLeft(false), m_bBackSprite(false)
@@ -33,9 +34,17 @@ HRESULT CBat::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_Options({ 2.f, 2.f, BATTOPZ }, COL_OBJ, true);
+	m_pCollider->Set_Options({ 2.f, 2.f, BATTOOZ*2.0f }, COL_OBJ, true);
 
-	m_pTransform->m_vInfo[INFO_POS].z = BATTOPZ;
+	m_pTransform->m_vInfo[INFO_POS].z = BATTOOZ;
+
+	m_vecCol.push_back(L"MapCube");
+	m_vecCol.push_back(L"InstallCube");
+	m_vecCol.push_back(L"CrackCube");
+	m_vecCol.push_back(L"SwitchCube");
+	m_vecCol.push_back(L"MoveCube");
+	m_vecCol.push_back(L"GravityCube");
+	m_vecCol.push_back(L"KeyCube");
 	return S_OK;
 }
 
@@ -76,6 +85,23 @@ _int CBat::Update_Too(const _float & fTimeDelta)
 
 	m_pTransform->Move_Pos(&MoveDir, fTimeDelta, m_fSpeed);
 
+	if (m_pTransform->m_vInfo[INFO_POS].z != BATTOOZ)
+	{
+		m_fTimer += fTimeDelta * 4.0f;
+
+		if (1.0f <= m_fTimer)
+		{
+			m_fTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].z = Lerp(BATTOPZ, BATTOOZ, m_fTimer);
+
+		if (1.0f == m_fTimer)
+		{
+			m_fTimer = 0.0f;
+		}
+	}
+
 
 	return 0;
 }
@@ -105,7 +131,45 @@ _int CBat::Update_Top(const _float & fTimeDelta)
 
 	m_pRigid->AddForce(vDir, m_fSpeed * 10.f, FORCE, fTimeDelta);
 	m_pTextureCom_Back->Update_Anim(fTimeDelta);
+	m_bStart2D = true;
+
+	if (m_pTransform->m_vInfo[INFO_POS].z != BATTOPZ)
+	{
+		m_fTimer += fTimeDelta * 4.0f;
+
+		if (1.0f <= m_fTimer)
+		{
+			m_fTimer = 1.0f;
+		}
+
+		m_pTransform->m_vInfo[INFO_POS].z = Lerp(BATTOOZ, BATTOPZ, m_fTimer);
+
+		if (1.0f == m_fTimer)
+		{
+			m_fTimer = 0.0f;
+		}
+	}
+
 	return 0;
+}
+
+void CBat::LateUpdate_Too()
+{
+
+	if (m_bCol)
+	{
+		if (m_bMoveLeft)
+		{
+			m_bMoveLeft = false;
+			m_pTransform->m_vScale.x = -BATSCALE;
+		}
+		else if (!m_bMoveLeft)
+		{
+			m_bMoveLeft = true;
+			m_pTransform->m_vScale.x = BATSCALE;
+		}
+		m_bCol = false;
+	}
 }
 
 void CBat::LateUpdate_GameObject(void)
@@ -148,16 +212,7 @@ void CBat::OnCollisionEnter(const Collision * collision)
 {
 	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Bat")))
 	{
-		if (m_bMoveLeft)
-		{
-			m_bMoveLeft = false;
-			m_pTransform->m_vScale.x = -BATSCALE;
-		}
-		else if (!m_bMoveLeft)
-		{
-			m_bMoveLeft = true;
-			m_pTransform->m_vScale.x = BATSCALE;
-		}
+		m_bCol = true;
 	}
 
 		__super::OnCollisionEnter(collision);
@@ -165,18 +220,18 @@ void CBat::OnCollisionEnter(const Collision * collision)
 
 void CBat::OnCollisionStay(const Collision * collision)
 {
-	if (2.0f > m_pTransform->m_vInfo[INFO_POS].x && !m_bMoveLeft)
-	{m_bMoveLeft = true;
-		m_pTransform->m_vScale.x = BATSCALE;
-		
-		m_pTransform->m_vInfo[INFO_POS].x = 2.0f;
-	}
-	if (2.0f * (CUBEX - 1) < m_pTransform->m_vInfo[INFO_POS].x && m_bMoveLeft)
-	{m_bMoveLeft = false;
-		m_pTransform->m_vScale.x = -BATSCALE;
-		
-		m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
-	}
+	//if (2.0f > m_pTransform->m_vInfo[INFO_POS].x && !m_bMoveLeft)
+	//{m_bMoveLeft = true;
+	//	m_pTransform->m_vScale.x = BATSCALE;
+	//	
+	//	m_pTransform->m_vInfo[INFO_POS].x = 2.0f;
+	//}
+	//if (2.0f * (CUBEX - 1) < m_pTransform->m_vInfo[INFO_POS].x && m_bMoveLeft)
+	//{m_bMoveLeft = false;
+	//	m_pTransform->m_vScale.x = -BATSCALE;
+	//	
+	//	m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
+	//}
 	
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bat"))
 	{
@@ -194,12 +249,78 @@ void CBat::OnCollisionStay(const Collision * collision)
 
 		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
 	}
+	_float fCameraAngle = dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->m_pTransform->m_vAngle.x;
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		if (g_Is2D)
+		{
+			if (m_bStart2D)
+			{
+				_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ 1,-1,0 },{ -1,0,0 },{ -1,-1,0 },{ 0,-1,0 } };
+
+				_vec3 vPosStaticZ = m_pTransform->m_vInfo[INFO_POS];
+
+				vPosStaticZ.z = 10.0f;
+
+				vector<RayCollision> ColCube[8];
+
+				_int SmallIndex = 999;
+				_int SmallSize = 999;
+
+				for (size_t i = 0; i < 8; i++)
+				{
+					ColCube[i] = Engine::Check_Collision_Ray(RAYCAST(vPosStaticZ, dir[i], 4.f),m_pCollider, m_vecCol);
+
+					if (SmallSize > ColCube[i].size())
+					{
+						SmallSize = ColCube[i].size();
+						SmallIndex = i;
+					}
+				}
+
+				if (SmallIndex%2)
+				{
+					m_pTransform->Move_Pos(&dir[SmallIndex], 1.0f, 2.0f*ColCube[SmallIndex].size());
+				}
+				else
+					m_pTransform->Move_Pos(&dir[SmallIndex], 1.0f, 2.0f*ColCube[SmallIndex].size()*1.41f);
+
+
+				m_bStart2D = false;
+				
+			}
+			else
+			{
+				_vec3 vDir = m_pTransform->m_vInfo[INFO_POS] - collision->otherObj->m_pTransform->m_vInfo[INFO_POS];
+				D3DXVec3Normalize(&vDir, &vDir);
+				vDir.z = 0.0f;
+				m_pTransform->Move_Pos(&vDir, 1.0f, 0.25f);
+
+				if (fCameraAngle && !lstrcmp(L"MapCube", collision->otherObj->m_pTag))
+				{
+					_vec3 vDir = _vec3(31.f, 17.f, 0.0f) - collision->otherObj->m_pTransform->m_vInfo[INFO_POS];
+					D3DXVec3Normalize(&vDir, &vDir);
+					vDir.z = 0.0f;
+					m_pTransform->Move_Pos(&vDir, 1.0f, 0.25f);
+				}
+			}
+		}
+		else if (!g_Is2D)
+		{
+			m_pShadowCom->m_fShadowHeight = 8.0f;
+		}
+		
+	}
 
 	__super::OnCollisionStay(collision);
 }
 
 void CBat::OnCollisionExit(const Collision * collision)
 {
+	if (dynamic_cast<CCube*>(collision->otherObj))
+	{
+		m_pShadowCom->m_fShadowHeight = 11.0f;
+	}
 	__super::OnCollisionExit(collision);
 }
 
