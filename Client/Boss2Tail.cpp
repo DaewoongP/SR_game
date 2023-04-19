@@ -116,7 +116,7 @@ __super::Update_GameObject(fTimeDelta);
 	{
 		if (0.8f < m_fZRatio)
 		{
-			m_fTimer += fTimeDelta;
+			m_fTimer += fTimeDelta*4.0f;
 			if (1.0f < m_fTimer)
 			{
 				m_fTimer = 1.0f;
@@ -128,7 +128,7 @@ __super::Update_GameObject(fTimeDelta);
 	{
 		if (1.0f > m_fZRatio)
 		{
-			m_fTimer += fTimeDelta;
+			m_fTimer += fTimeDelta*4.0f;
 			if (1.0f < m_fTimer)
 			{
 				m_fTimer = 1.0f;
@@ -151,7 +151,14 @@ _int CBoss2Tail::Update_Top(const _float & fTimeDelta)
 
 void CBoss2Tail::LateUpdate_GameObject(void)
 {
-	m_pTransform->m_matWorld._42;
+	if (m_pPreTail)
+	{
+		m_pTransform->m_matWorld._42 *= m_fZRatio;
+		if (dynamic_cast<CBoss2*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss2"))->Get_Flip_Y())
+		{
+			m_pTransform->m_matWorld._43 = m_pPreTail->m_matWorld._43 - 0.01f;
+		}
+	}
 	__super::LateUpdate_GameObject();
 }
 
