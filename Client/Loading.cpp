@@ -94,6 +94,7 @@ _uint CLoading::Loading_ForLogo(void)
 	m_iLoadingTexImgNum = 3;
 	// 검정색 타일(빈 공간 묘사 용)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileBlack.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileNone.png")), E_FAIL);
 	//2D돼지
 	//앞
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Pig_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/pigSpr/correct-pigSpr-%d.png", 9)), E_FAIL);
@@ -203,8 +204,9 @@ _uint CLoading::Loading_ForLogo(void)
 
 	m_iLoadingTexImgNum = 10;
 	Set_String(L"CubeTex Loading..........");
-
+	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CubeTex", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"NoneCube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/Terrain/NoneCube.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/burger%d.dds", 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Move_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/NormalBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Texture_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Texture.dds")), E_FAIL);

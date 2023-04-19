@@ -69,7 +69,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 32.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 11.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
@@ -89,6 +89,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}
 	}
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)10.f,(_float)10.f,11.f }), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
