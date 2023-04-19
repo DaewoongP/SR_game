@@ -3,7 +3,7 @@
 #include "Export_Function.h"
 #include "Toodee.h"
 #include "Topdee.h"
-
+#include "Tookee.h"
 CPortalCube::CPortalCube(LPDIRECT3DDEVICE9 pGraphicDev) :CMoveCube(pGraphicDev)
 {
 }
@@ -194,6 +194,10 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 
 				if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
 					dynamic_cast<CTopdee*>(collision->otherObj)->SetMovePos_zero();
+
+				if (!lstrcmp(collision->otherObj->m_pTag, L"Tookee"))
+					dynamic_cast<CTookee*>(collision->otherObj)->SetMovePos_zero();
+
 				else if (dynamic_cast<CMoveCube*>(collision->otherObj))
 					dynamic_cast<CMoveCube*>(collision->otherObj)->SetMovePos(destdir);
 				Start_PortalParticle();

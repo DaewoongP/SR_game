@@ -4,17 +4,20 @@
 #include "GameObject.h"
 #include "TopdeeParts.h"
 #include "TopdeeJoint.h"
-BEGIN(Engine)
 
+class CTookee;
+
+BEGIN(Engine)
 class CRcTex;
 class CCollider;
 class CSlerpParticle;
 class CShadow;
 class CAnimation;
 END
-class CTopdee : public Engine::CGameObject
+class CTopdee :
+	public CGameObject
 {
-private:
+protected:
 	explicit CTopdee(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CTopdee();
 
@@ -28,7 +31,7 @@ public:
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void SwapTrigger();
-private:
+protected:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
 	void		RayDiskey();
@@ -42,14 +45,12 @@ private:
 
 	void		Set_SlerpParticle();
 public:
-	void		SetRenderONOFF(_bool value) { m_bRender = value; }
+	void		SetRenderONOFF(_bool value) { m_bRender = value; for (int i = 0; i < m_partVec.size(); i++)m_partVec[i]->SetRenderState(value);	}
 	void		SetMovePos(COL_DIR dir);
 	void		SetMovePos_zero();
-	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
+	void		SetTookee(CTookee* third) { m_Tookee=third; }
 
-private:
-	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
+protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
 	Engine::CShadow*		m_pShadow;
@@ -72,13 +73,14 @@ private:
 	vector<CTopdeeParts*>   m_partVec;
 	_bool					m_bInit;
 	_bool					m_bWalkingAnim;
+	CTookee*				m_Tookee;
 
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:
 	static CTopdee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
-private:
+protected:
 	virtual void Free(void) override;
 
 };

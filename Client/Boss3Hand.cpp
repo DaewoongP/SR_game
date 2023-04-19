@@ -151,7 +151,6 @@ void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
 	{
 		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-		dynamic_cast<CTopdee*>(pGameObject)->Set_AnimDead();
 	}
 	__super::OnCollisionEnter(collision);
 }

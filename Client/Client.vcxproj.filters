@@ -194,6 +194,12 @@
     <Filter Include="00. GameObject\02. MapObject\LaserTurret\Laser">
       <UniqueIdentifier>{bf1d8b1f-88ea-4870-92e1-b2061b0f15d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\00. Player\Tookee">
+      <UniqueIdentifier>{e928b5d9-6c17-48c4-9df5-f692da3f13ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\Thirddee">
+      <UniqueIdentifier>{21ccde7f-0dae-4873-99c3-609a6bcab3e6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. GameObject\02. MapObject\Bullet">
       <UniqueIdentifier>{81583915-9155-41c5-901a-d438466df3bd}</UniqueIdentifier>
     </Filter>
@@ -497,6 +503,11 @@
     </ClInclude>
     <ClInclude Include="TopdeeJoint.h">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClInclude>
+    <ClInclude Include="Tookee.h">
+      <Filter>00. GameObject\00. Player\Tookee</Filter>
+    </ClInclude>
+    <ClInclude Include="Thirddee.h" />
     </ClInclude>
     <ClInclude Include="LoadingTex.h">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
@@ -812,6 +823,11 @@
     </ClCompile>
     <ClCompile Include="TopdeeJoint.cpp">
       <Filter>00. GameObject\00. Player\Topdee</Filter>
+    </ClCompile>
+    <ClCompile Include="Tookee.cpp">
+      <Filter>00. GameObject\00. Player\Tookee</Filter>
+    </ClCompile>
+    <ClCompile Include="Thirddee.cpp" />
     </ClCompile>
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\Loading</Filter>

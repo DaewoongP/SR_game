@@ -139,6 +139,13 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Body", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeBody/topdeeSpr31_%d.png", 5)), E_FAIL);
 	//팔다리용
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Arm", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeArm/topdeePalmSpr_%d.png", 2)), E_FAIL);
+
+	//투키
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeSpinningHeadSpr/tookeeSpinningHeadSpr_%d.png", 12)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Leg", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeLegsSpr/tookeeLegsSpr_%d.png", 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Arm", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeHandsSpr/tookeeHandsSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Body", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeTopSpr/tookeeTopSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Too", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeSpr/tookeeSpr_%d.png", 53)), E_FAIL);
 	m_iLoadingTexImgNum = 8;
 
 	//Boss2 머리털

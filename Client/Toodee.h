@@ -3,8 +3,10 @@
 #include "Include.h"
 #include "GameObject.h"
 
-BEGIN(Engine)
 
+class CTookee;
+
+BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
@@ -16,9 +18,9 @@ class CSlerpParticle;
 class CShadow;
 
 END
-class CToodee : public Engine::CGameObject
+class CToodee : public CGameObject
 {
-private:
+protected:
 	explicit CToodee(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CToodee();
 
@@ -36,8 +38,9 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
 	void		SetRenderONOFF(_bool value) { m_bRender = value; }
+	void		SetTookee(CTookee* third) { m_Tookee = third; }
 
-private:
+protected:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
 	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
@@ -50,18 +53,21 @@ private:
 	void LandingParticle_logic(const _tchar* pTag);
 	void Set_SlerpParticle();
 
-private:
+protected:
+	Engine::CCollider*		m_pCollider;
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
-	Engine::CCollider*		m_pCollider;
 	Engine::CRigidbody*		m_pRigid;
 	Engine::CJumpParticle*	m_pJumpParticle;
 	Engine::CLandingParticle*	m_pLandingParticle;
 	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CSlerpParticle*		m_pSlerpParticle;
 	Engine::CShadow*		m_pShadow;
-
+	CTookee*				m_Tookee;
 	_bool					m_bRender;
+	_bool					m_bInit;
+
+	_float					m_prePos;
 
 	_float					m_fSpeed = 10.f;
 	bool					m_bJumpable;
@@ -72,7 +78,7 @@ private:
 public:
 	static CToodee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
-private:
+protected:
 	virtual void Free(void) override;
 
 };

@@ -1,87 +1,106 @@
-#pragma once
 #include "stdafx.h"
-#include "Topdee.h"
-#include "MoveCube.h"
-#include "Export_Function.h"
-#include "PortalCube.h"
-#include "AbstractFactory.h"
 #include "Tookee.h"
+#include "AbstractFactory.h"
+#include "MoveCube.h"
+#include "PortalCube.h"
+#include "Export_Function.h"
 
-CTopdee::CTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+CTookee::CTookee(LPDIRECT3DDEVICE9 pGraphicDev)
+	:CGameObject(pGraphicDev)
+	, m_bJumpable(false)
+	, m_eKeyState(DIR_END)
 {
 	m_bInit = true;
 }
 
-CTopdee::~CTopdee()
+CTookee::~CTookee()
 {
 }
 
-HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
+HRESULT CTookee::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	__super::Ready_GameObject(vPos);
+
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_LookVec = _vec3(0, 0, 0);
 
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
-	m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
-	m_pCollider->m_bIsTrigger = true;
+	m_pTransform->m_bIsStatic = false;
+	m_pCollider->m_bIsTrigger = false;
+	// æ÷¥œ∏ﬁ¿Ãº«
+	m_bInit2 = true;
+	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
+	m_pTextureCom->Switch_Anim(L"Idle");
+	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_bRender = true;
-	m_LookVec = _vec3(0, 0, 0);
-
-	__super::Update_GameObject(Engine::Get_Timer(L"Timer_FPS60"));
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pLandingParticle->Set_BoundingBox(box);
+	m_pSparkParticle->Set_LifeTime();
 	return S_OK;
 }
-_int CTopdee::Update_GameObject(const _float& fTimeDelta)
+
+_int CTookee::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_bInit)
+	if (m_bInit2)
 	{
-		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
+
+		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC);
 		if (otherTrans != nullptr)
-			SetTookee(dynamic_cast<CTookee*>(otherTrans->m_pGameObject));
-		//Ïã§ÌñâÌï¥Ï£ºÎäî ÏΩîÎìú
+			dynamic_cast<CToodee*>(otherTrans->m_pGameObject)->SetTookee(this);
+
+		otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC);
+		if (otherTrans != nullptr)
+			dynamic_cast<CTopdee*>(otherTrans->m_pGameObject)->SetTookee(this);
+
+		//Ω««‡«ÿ¡÷¥¬ ƒ⁄µÂ
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		//Î®∏Î¶¨
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeHead", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Topdee_Head", 0, false), E_FAIL);
-		//Î™∏ÌÜµ
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Topdee_Body", 0, false), E_FAIL);
-		
-		//Ï°∞Ïù∏Ìä∏Îäî Î™∏ÌÜµÍ∫º
+		//∏”∏Æ
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Tookee_Head", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Tookee_Head", 0, false), E_FAIL);
+		//∏ˆ≈Î
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Tookee_Body", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Tookee_Body", 0, false), E_FAIL);
+
+		//¡∂¿Œ∆Æ¥¬ ∏ˆ≈Î≤®
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Ï°∞Ïù∏Ìä∏
+		//¡∂¿Œ∆Æ
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Ï°∞Ïù∏Ìä∏
+		//¡∂¿Œ∆Æ
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Ï°∞Ïù∏Ìä∏
+		//¡∂¿Œ∆Æ
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
 
-		//ÌåîÏùÄ Ï°∞Ïù∏Ìä∏ Í∫º
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(0), L"Topdee_Arm", 0, false), E_FAIL);
-		//Ìåî
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(1), L"Topdee_Arm", 0, false), E_FAIL);
-		//Îã§Î¶¨
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(2), L"Topdee_Arm", 0, false), E_FAIL);
-		//Îã§Î¶¨
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(3), L"Topdee_Arm", 0, false), E_FAIL);
+		//∆»¿∫ ¡∂¿Œ∆Æ ≤®
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(0), L"Tookee_Arm", 0, false), E_FAIL);
+		//∆»
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(1), L"Tookee_Arm", 0, false), E_FAIL);
+		//¥Ÿ∏Æ
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(2), L"Tookee_Leg", 0, false), E_FAIL);
+		//¥Ÿ∏Æ
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(3), L"Tookee_Leg", 0, false), E_FAIL);
 
 		m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(0)->m_pGameObject));
 		m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->m_pGameObject));
 		for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
 			if (dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->GetChild(i)->GetChild(0)->m_pGameObject))
-				 m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->GetChild(i)->GetChild(0)->m_pGameObject));
+				m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->GetChild(i)->GetChild(0)->m_pGameObject));
 
-		//Î®∏Î¶¨
-		m_partVec[0]->m_pTransform->m_vScale = _vec3(2.0f, 2.f, 2.f);
-		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0,0,-1);
+		//∏”∏Æ
+		m_partVec[0]->m_pTransform->m_vScale = _vec3(2.5f, 2.5f, 2.5f);
+		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, -1);
 
-		//Î™∏ÌÜµ
-		m_partVec[1]->m_pTransform->m_vScale = _vec3(1,1.5f,1);
-		m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0,-0.6f,-0.8f);
+		//∏ˆ≈Î
+		m_partVec[1]->m_pTransform->m_vScale = _vec3(1.6f, 1.7f, 1.2f);
+		m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0.0f, -1.f, -0.9f);
 
-		//Ï°∞Ïù¥Îäê
-		m_partVec[2]->m_pTransform->GetParent()->m_vScale = _vec3(1,1,1);
+		//¡∂¿Ã¥¿
+		m_partVec[2]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
 		m_partVec[2]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.8f, -0.1f, -0.4f);
 		m_partVec[3]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
 		m_partVec[3]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.8f, -0.1f, -0.4f);
@@ -90,9 +109,9 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		m_partVec[5]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
 		m_partVec[5]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.5f, 0.1f, 0.2f);
 
-		//ÌåîÎã§Î¶¨
-		m_partVec[2]->m_pTransform->m_vScale = _vec3(0.3f,0.8f,1);
-		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0,0,0.3f);
+		//∆»¥Ÿ∏Æ
+		m_partVec[2]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
+		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.3f);
 		m_partVec[2]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
 		m_partVec[3]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
 		m_partVec[3]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.3f);
@@ -192,7 +211,7 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian (60),0,0),//rotation
+					_vec3(D3DXToRadian(60),0,0),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -348,29 +367,45 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		}
 		m_pAnimation_Arm->AddClip(L"Hang", clip);
 		m_pAnimation_Arm->SetAnimation(L"Idle");
-	}
 
+		SetRenderONOFF(false);
+		m_bInit2 = false;
+	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
-_int CTopdee::Update_Too(const _float & fTimeDelta)
+
+_int CTookee::Update_Too(const _float & fTimeDelta)
 {
-	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC);
-	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, -1.f),
-		dynamic_cast<CTransform*>(otherTrans)->m_vInfo[INFO_POS]);
+	if (m_bDead)
+		return OBJ_DEAD;
+	if(m_moveTrue)
+		Key_Input(fTimeDelta);
+	DoStrech();
+	CGameObject::Update_GameObject(fTimeDelta);
+
+	m_pTextureCom->Update_Anim(fTimeDelta);
+
+	//≈ÿΩ∫√ƒƒƒ¿« æ÷¥œ∞° die∞Ì øœ∑·µ∆¥Ÿ∏È?
+	if (m_pTextureCom->IsAnimationEnd(L"Die"))
+		m_bDead = true;
+
+	DoFlip();
 	return 0;
 }
-_int CTopdee::Update_Top(const _float & fTimeDelta)
-{
 
+_int CTookee::Update_Top(const _float & fTimedDelte)
+{
 	_vec3 moveto;
 	D3DXVec3Normalize(&moveto, &m_LookVec);
-	_float dir = D3DXVec3Dot(&_vec3(0,-1,0), &moveto);
-	dir = acosf(dir);
-	if ( 0> moveto.x)
-		dir = 2 * D3DX_PI - dir;
 	
-	m_partVec[1]->m_pTransform->m_vAngle.z = lerp_angle(m_partVec[1]->m_pTransform->m_vAngle.z, dir,0.1f);
+	Key_Input2(fTimedDelte);
+	_float dir = D3DXVec3Dot(&_vec3(0, -1, 0), &moveto);
+	dir = acosf(dir);
+	if (0> moveto.x)
+		dir = 2 * D3DX_PI - dir;
+
+	m_partVec[1]->m_pTransform->m_vAngle.z = lerp_angle(m_partVec[1]->m_pTransform->m_vAngle.z, dir, 0.1f);
 
 	m_partVec[2]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
 	m_partVec[3]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
@@ -378,74 +413,189 @@ _int CTopdee::Update_Top(const _float & fTimeDelta)
 	m_partVec[5]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
 
 	_int texvalue = (_int)(D3DXToDegree(m_partVec[1]->m_pTransform->m_vAngle.z) / 10) % 36;
-	m_partVec[0]->SetTextureIdx((texvalue<0)?36- abs(texvalue): texvalue);
+	m_partVec[0]->SetTextureIdx((texvalue<0) ? 11 - abs(texvalue/3) : texvalue/3);
 
-	Key_Input(fTimeDelta);
 	RayDiskey();
 	if (m_bIsMoving)
-		Move(fTimeDelta);
-	PlayerState(fTimeDelta);
+		Move(fTimedDelte);
+	PlayerState(fTimedDelte);
 
-	__super::Update_GameObject(fTimeDelta);
+	__super::Update_GameObject(fTimedDelte);
 	return 0;
 }
-void CTopdee::LateUpdate_GameObject(void)
+
+void CTookee::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CTopdee::Render_GameObject(void)
+void CTookee::Render_GameObject(void)
 {
-	if (m_bRender)
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+}
+
+void CTookee::Render_Too(void)
+{
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	m_pTextureCom->Set_Texture(0);
+	m_pShadow->Render_Shadow(m_pBufferCom);
+	m_pBufferCom->Render_Buffer();
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	Render_Particle();
+}
+
+void CTookee::Render_Top(void)
+{
+	__super::Render_GameObject();
+}
+
+void CTookee::SwapTrigger()
+{
+	if (g_Is2D)
 	{
-		m_pSlerpParticle->Update_Particle();
-		__super::Render_GameObject();
+		m_pRigid->m_bUseGrivaty = true;
+		SetRenderONOFF(false);
+		m_pTransform->m_vInfo[INFO_POS].z=10;
+		m_pCollider->m_bIsTrigger = false;
+		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
 	}
-}
-
-void CTopdee::OnCollisionEnter(const Collision * collision)
-{
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Boss3Left") && collision->_dir==DIR_FRONT || 
-		!lstrcmp(collision->otherObj->m_pTag, L"Boss3Right") && collision->_dir == DIR_FRONT||
-		!lstrcmp(collision->otherObj->m_pTag, L"Boss3") && collision->_dir == DIR_FRONT)
+	else
 	{
-		//m_pTextureCom->Switch_Anim(L"Die");
-		int i = 0;
+		m_pTransform->m_vInfo[INFO_POS].z=11;
+		m_pRigid->m_bUseGrivaty = false;
+		m_pTransform->m_vInfo[INFO_POS].x =
+			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
+		m_pTransform->m_vInfo[INFO_POS].y =
+			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
+		SetRenderONOFF(true);
+		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+		m_pCollider->m_bIsTrigger = true;
 	}
-
-
-	__super::OnCollisionEnter(collision);
-}
-
-void CTopdee::OnCollisionStay(const Collision * collision)
-{
-	__super::OnCollisionStay(collision);
-}
-
-void CTopdee::SwapTrigger()
-{
 	m_bIsMoving = false;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;
+	m_pRigid->m_Velocity = _vec3(0, 0, 0);
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
+	m_pTransform->m_vScale = _vec3(1, 1, 1);
+}
+
+void CTookee::OnCollisionEnter(const Collision * collision)
+{
 	if (g_Is2D)
 	{
-		Set_SlerpParticle();
+		//Ω∫∆ƒ¿Ã≈©∂˚ √ÊµπΩ√ ∫ª¿Œ µ•µÂ ∆Æ∑Á
+		if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
+			collision->_dir == DIR_DOWN)
+		{
+		}
+		if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die") && m_bDead == false)
+		{
+			StopSound(SOUND_EFFECT);
+			PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
+		}
+
+		if (collision->_dir == DIR_DOWN)
+		{
+			LandingParticle_logic(collision->otherObj->m_pTag);
+		}
+			
+
+		__super::OnCollisionEnter(collision);
+	}
+	else
+	{
+		if (!lstrcmp(collision->otherObj->m_pTag, L"Boss3Left") && collision->_dir == DIR_FRONT ||
+			!lstrcmp(collision->otherObj->m_pTag, L"Boss3Right") && collision->_dir == DIR_FRONT ||
+			!lstrcmp(collision->otherObj->m_pTag, L"Boss3") && collision->_dir == DIR_FRONT)
+		{
+			int i = 0;
+		}
+		__super::OnCollisionEnter(collision);
+	}
+	
+}
+
+void CTookee::OnCollisionStay(const Collision * collision)
+{
+	if (g_Is2D)
+	{
+		if (lstrcmp(m_pTextureCom->Get_AnimState(), L"Die"))
+		{
+			if (collision->_dir == DIR_DOWN)
+				m_bJumpable = true;
+
+			if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpable)
+			{
+				m_bJumpable = false;
+				m_pTextureCom->Switch_Anim(L"Jump");
+			}
+			else if (m_bJumpable)
+				if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
+				{
+					m_pTextureCom->Switch_Anim(L"Walk");
+					Set_WalkParticle();
+				}
+
+				else
+					m_pTextureCom->Switch_Anim(L"Idle");
+		}
+
+		CGameObject::OnCollisionStay(collision);
+	}
+	else 
+	{
+		__super::OnCollisionStay(collision);
+	}
+	
+}
+
+void CTookee::OnCollisionExit(const Collision * collision)
+{
+	if (g_Is2D)
+	{
+		m_bJumpable = false;
+		CGameObject::OnCollisionExit(collision);
+	}
+	else 
+	{
+		__super::OnCollisionExit(collision);
 	}
 }
 
-HRESULT CTopdee::Add_Component(void)
+HRESULT CTookee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	m_pTransform->m_bIsStatic = false;
+	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
+	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
+
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Tookee_Too", this));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
+	
+	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
+	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Rigidbody", pComponent });
+
+	pComponent = m_pJumpParticle = dynamic_cast<CJumpParticle*>(Engine::Clone_Proto(L"JumpParticle", this));
+	NULL_CHECK_RETURN(m_pJumpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"JumpParticle", pComponent });
+
+	pComponent = m_pLandingParticle = dynamic_cast<CLandingParticle*>(Engine::Clone_Proto(L"LandingParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"LandingParticle", pComponent });
+
+	pComponent = m_pSparkParticle = dynamic_cast<CSparkParticle*>(Engine::Clone_Proto(L"WalkParticle", this));
+	NULL_CHECK_RETURN(m_pSparkParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"WalkParticle", pComponent });
 
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
-
-	pComponent = m_pSlerpParticle = dynamic_cast<CSlerpParticle*>(Engine::Clone_Proto(L"SlerpParticle", this));
-	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"SlerpParticle", pComponent });
 
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
@@ -458,12 +608,13 @@ HRESULT CTopdee::Add_Component(void)
 	pComponent = m_pAnimation_Leg = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
 	NULL_CHECK_RETURN(m_pAnimation_Leg, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+
 	return S_OK;
 }
 
-CTopdee* CTopdee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CTookee * CTookee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
-	CTopdee*		pInstance = new CTopdee(pGraphicDev);
+	CTookee*		pInstance = new CTookee(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -474,12 +625,59 @@ CTopdee* CTopdee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CTopdee::Free(void)
+void CTookee::Free(void)
 {
 	__super::Free();
 }
 
-void CTopdee::Key_Input(const _float & fTimeDelta)
+void CTookee::Key_Input(const _float & fTimeDelta)
+{
+	m_fWalkTime += fTimeDelta;
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
+		m_eKeyState = DIR_LEFT;
+
+
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
+		m_eKeyState = DIR_RIGHT;
+
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
+	{
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+
+	}
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
+	{
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+	}
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
+	{
+		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+	}
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
+	{
+		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+
+	}
+	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
+	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::PlaySound_Effect(L"54.wav", SOUND_EFFECT, 1.f);
+		//¬¯¡ˆº“∏Æ 59π¯,±∏∏ß¬¯¡ˆ 58π¯
+
+		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pJumpParticle->Set_BoundingBox(box);
+		m_pJumpParticle->Set_Size(1.f);
+		m_pJumpParticle->Start_Particle();
+	}
+}
+
+void CTookee::Key_Input2(const _float & fTimeDelta)
 {
 	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
@@ -533,10 +731,10 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 		m_byLookDir = m_byPlayerInputDir;
 }
 
-void CTopdee::RayDiskey()
+void CTookee::RayDiskey()
 {
 	_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
-	//ÌîåÎ†àÏù¥Ïñ¥Í∞Ä Ïù¥ÎèôÌïòÎ†§Îäî Î∞©Ìñ•ÏúºÎ°úÎßå Í≤ÄÏ∂úÌï©ÎãàÎã§
+	//«√∑π¿ÃæÓ∞° ¿Ãµø«œ∑¡¥¬ πÊ«‚¿∏∑Œ∏∏ ∞À√‚«’¥œ¥Ÿ
 	for (int i = 0; i < MD_END; i++)
 	{
 		if (m_byPlayerInputDir == fdir[i])
@@ -544,10 +742,10 @@ void CTopdee::RayDiskey()
 	}
 }
 
-void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
+void CTookee::RayDisKey_part(COL_MOVEDIR dir)
 {
-	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{1,1,0},{-1,1,0},{1,-1,0},{-1,-1,0} };
-	_int fdir[MD_END] = {13,14,7,11,9,5,10,6};
+	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{ 1,1,0 },{ -1,1,0 },{ 1,-1,0 },{ -1,-1,0 } };
+	_int fdir[MD_END] = { 13,14,7,11,9,5,10,6 };
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], vdir[dir], 2.125f), m_pCollider);
 	for (int i = 0; i < _detectedCOL.size(); i++)
 	{
@@ -585,15 +783,15 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 				destdir = (COL_DIR)(destdir - 1);
 			_bool isBlocked = dynamic_cast<CMoveCube*>(_detectedCOL[i].col->m_pGameObject)->m_bIsCol[dir];
 
-			//ÎßåÏïΩ ÌîåÎ†àÏù¥Ïñ¥Í∞Ä Ïù¥ÎèôÌïòÎ†§Îäî Î∞©Ìñ•Ïù¥ ÏûÖÍµ¨Í∞Ä ÏïÑÎãàÍ≥†
-			//Í∑∏Ï™ΩÎ∞©Ìñ•ÏúºÎ°ú ÎßâÌòÄÏûàÎã§Î©¥?
+			//∏∏æ‡ «√∑π¿ÃæÓ∞° ¿Ãµø«œ∑¡¥¬ πÊ«‚¿Ã ¿‘±∏∞° æ∆¥œ∞Ì
+			//±◊¬ πÊ«‚¿∏∑Œ ∏∑«Ù¿÷¥Ÿ∏È?
 			if (destdir == dir&& !isBlocked)
 			{
 
 			}
 			else
 			{
-				//Ïù¥Îèô ÎßâÏïÑÏ£ºÎäî Î°úÏßÅ
+				//¿Ãµø ∏∑æ∆¡÷¥¬ ∑Œ¡˜
 				COL_DIR destdir;
 				if (dir % 2 == 0)
 					destdir = (COL_DIR)(dir + 1);
@@ -608,7 +806,7 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 	}
 }
 
-void CTopdee::PlayerState(const _float& fTimeDelta)
+void CTookee::PlayerState(const _float & fTimeDelta)
 {
 	int x = 0; int y = 0;
 	switch (m_eState)
@@ -616,10 +814,13 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 	case Engine::TD_MOVE:
 		if (!m_bIsMoving)
 		{
-			DirApply(m_byPlayerInputDir, x, y);
-			m_MovetoPos = _vec3((int)m_pTransform->m_vInfo[INFO_POS].x + x, (int)m_pTransform->m_vInfo[INFO_POS].y + y, (int)m_pTransform->m_vInfo[INFO_POS].z);
-			if(x!=0||y!=0)
-			m_LookVec = _vec3(x,y,0);
+			if (m_moveTrue)
+			{
+				DirApply(m_byPlayerInputDir, x, y);
+				m_MovetoPos = _vec3((int)m_pTransform->m_vInfo[INFO_POS].x + x, (int)m_pTransform->m_vInfo[INFO_POS].y + y, (int)m_pTransform->m_vInfo[INFO_POS].z);
+			}
+			if (x != 0 || y != 0)
+				m_LookVec = _vec3(x, y, 0);
 			if (x == 0 && y == 0)
 			{
 				m_pAnimation_Leg->SetAnimation(L"Idle");
@@ -631,7 +832,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 		break;
 	case Engine::TD_FINDING:
 	{
-		DirApply(m_byLookDir,x,y);
+		DirApply(m_byLookDir, x, y);
 
 		_vec3 maindir;
 		D3DXVec3Normalize(&maindir, &_vec3(x, y, 0));
@@ -640,7 +841,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			CCollider* col = nullptr;
 			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
 
-			//Î≥¥Îäî Î∞©Ìñ• 1ÏàúÏúÑ
+			//∫∏¥¬ πÊ«‚ 1º¯¿ß
 			if (CheckCubeExist(_vec3((_float)x, (_float)y, 0.f), &col))
 			{
 				if (dynamic_cast<CMoveCube*>(col->m_pGameObject)->GetHandleState())
@@ -652,7 +853,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 				}
 			}
 
-			//ÎÇòÎ®∏ÏßÄ
+			//≥™∏”¡ˆ
 			for (int i = 0; i < 8; i++)
 			{
 				if (maindir == dir[i])
@@ -675,7 +876,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 			CCollider* col = nullptr;
 			_vec3 dir[8] = { { 1,1,0 },{ 0,1,0 },{ -1,1,0 },{ 1,0,0 },{ -1,0,0 },{ 1,-1,0 },{ 0,-1,0 },{ -1,-1,0 } };
 
-			//Î≥¥Îäî Î∞©Ìñ• 1ÏàúÏúÑ
+			//∫∏¥¬ πÊ«‚ 1º¯¿ß
 			if (!CheckAnythingExist(_vec3((_float)x, (_float)y, 0), &col))
 			{
 				if (dynamic_cast<CMoveCube*>(m_pGrabObj)->GetHandleState())
@@ -687,7 +888,7 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 				}
 			}
 
-			//ÎÇòÎ®∏ÏßÄ
+			//≥™∏”¡ˆ
 			for (int i = 0; i < 8; i++)
 			{
 				if (maindir == dir[i])
@@ -709,36 +910,32 @@ void CTopdee::PlayerState(const _float& fTimeDelta)
 	}
 }
 
-//Ïã§Ï†ú ÏõÄÏßÅÏù¥Îäî ÏΩîÎìú
-void CTopdee::Move(const _float& fTimeDelta)
+void CTookee::Move(const _float & fTimeDelta)
 {
 	_vec3 dir;
 	D3DXVec3Normalize(&dir, &_vec3(m_MovetoPos - m_pTransform->m_vInfo[INFO_POS]));
 	m_pTransform->m_vInfo[INFO_POS] += dir*m_fSpeed*fTimeDelta;
-	if (m_Tookee != nullptr)
-		m_Tookee->m_moveTrue = true;
-	
+
 	m_pAnimation_Leg->SetAnimation(L"Walk");
-	if(m_pGrabObj==nullptr)
+	if (m_pGrabObj == nullptr)
 		m_pAnimation_Arm->SetAnimation(L"Walk");
-	//ÎßåÏïΩ ÎèÑÎã¨ÌñàÎã§Î©¥?
+	//∏∏æ‡ µµ¥ﬁ«ﬂ¥Ÿ∏È?
 	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.3f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
-		m_Tookee->m_moveTrue = false;
 		return;
 	}
 }
 
-_bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
+_bool CTookee::CheckCubeExist(_vec3 dir, CCollider ** col)
 {
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
 		{
 			*col = _detectedCOL[0].col;
@@ -748,14 +945,104 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 	return false;
 }
 
-void CTopdee::SetMovePos_zero()
+_bool CTookee::CheckAnythingExist(_vec3 dir, CCollider ** col)
 {
-	m_bIsMoving = true;
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
+
+	if (_detectedCOL.size() >= 1)
+	{
+		if (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))
+			return false;
+		return true;
+	}
+	return false;
 }
 
+void CTookee::DirApply(_int dir, _int & x, _int & y)
+{
+	if (dir & 1)
+		y -= 2;
+	if (dir & 2)
+		y += 2;
+	if (dir & 4)
+		x += 2;
+	if (dir & 8)
+		x -= 2;
+}
 
-void CTopdee::SetMovePos(COL_DIR dir)
+void CTookee::DoFlip()
+{
+	if (m_eKeyState == DIR_LEFT)
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(180), 0.1f);
+	else if (m_eKeyState == DIR_RIGHT)
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, 0, 0.1f);
+}
+
+void CTookee::DoStrech()
+{
+	if (-1.f > m_pRigid->m_Velocity.y)
+	{
+		if (m_pTransform->m_vScale.y > 2.0f)
+			return;
+		m_pTransform->m_vScale.y *= 1.02f;
+	}
+	else
+		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
+}
+
+void CTookee::Render_Particle()
+{
+	m_pJumpParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
+	m_pSparkParticle->Update_Particle();
+}
+
+void CTookee::Check_IsParticleDead()
+{
+	if (m_pJumpParticle->IsDead())
+		m_pJumpParticle->End_Particle();
+	if (m_pLandingParticle->IsDead())
+		m_pLandingParticle->End_Particle();
+	if (m_pSparkParticle->IsDead())
+		m_pSparkParticle->End_Particle();
+}
+
+void CTookee::Set_WalkParticle()
+{
+	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
+
+	if (Engine::IsPermit_Call(L"1Sec", fTimeDelta))
+	{
+		BoundingBox box;
+		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+		box._offsetMin = { -0.1f, -1.f, 0.f };
+		box._offsetMax = { 0.f, -0.8f, 0.f };
+		box.Offset(vPos);
+		m_pSparkParticle->Set_BoundingBox(box);
+		m_pSparkParticle->Reset();
+		m_pSparkParticle->Set_Size(0.8f);
+		m_pSparkParticle->Start_Particle();
+	}
+}
+
+void CTookee::LandingParticle_logic(const _tchar * pTag)
+{
+	if (m_bJumpable)
+		return;
+	if (!lstrcmp(pTag, L"MapCube") ||
+		!lstrcmp(pTag, L"CrackCube") ||
+		!lstrcmp(pTag, L"KeyCube") ||
+		!lstrcmp(pTag, L"MoveCube") ||
+		!lstrcmp(pTag, L"GravityCube") ||
+		!lstrcmp(pTag, L"PinkCloud"))
+	{
+		m_pLandingParticle->Reset();
+		m_pLandingParticle->Set_Size(1.f);
+		m_pLandingParticle->Start_Particle();
+	}
+}
+void CTookee::SetMovePos(COL_DIR dir)
 {
 	_vec3 m_MoveVec;
 	switch (dir)
@@ -777,37 +1064,8 @@ void CTopdee::SetMovePos(COL_DIR dir)
 	m_MovetoPos = _vec3(m_pTransform->m_vInfo[INFO_POS].x + m_MoveVec.x, m_pTransform->m_vInfo[INFO_POS].y + m_MoveVec.y, m_pTransform->m_vInfo[INFO_POS].z);
 }
 
-_bool CTopdee::CheckAnythingExist(_vec3 dir, CCollider ** col)
+void CTookee::SetMovePos_zero()
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
-
-	if (_detectedCOL.size() >= 1 )
-	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"InstallGrid"))
-			return false;
-		return true;
-	}
-	return false;
+	m_bIsMoving = true;
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 }
-
-void CTopdee::DirApply(_int dir, _int & x, _int & y)
-{
-	if (dir & 1)
-		y -= 2;
-	if (dir & 2)
-		y += 2;
-	if (dir & 4)
-		x += 2;
-	if (dir & 8)
-		x -= 2;
-}
-
-void CTopdee::Set_SlerpParticle()
-{
-	m_pSlerpParticle->Reset();
-	m_pSlerpParticle->Set_Size(1.5f);
-	m_pSlerpParticle->Start_Particle();
-}
-
-
