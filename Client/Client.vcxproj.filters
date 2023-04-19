@@ -523,6 +523,9 @@
     <ClInclude Include="MoveCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Thirddee.h">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -838,6 +841,9 @@
     </ClCompile>
     <ClCompile Include="MoveCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Thirddee.cpp">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
