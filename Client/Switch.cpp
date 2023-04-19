@@ -84,7 +84,7 @@ void CSwitch::OnCollisionExit(const Collision * collision)
 	CSwitch::m_iCnt--;
 	m_iTextureIndex = 0;
 	if (m_iCnt == 0)
-		m_bSwtichON = false;		
+		m_bSwtichON = false;				
 }
 
 HRESULT CSwitch::Add_Component(void)

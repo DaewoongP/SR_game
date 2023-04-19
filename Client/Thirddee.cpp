@@ -17,25 +17,18 @@ CThirddee::~CThirddee()
 HRESULT CThirddee::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	__super::Ready_GameObject(vPos);
-
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_LookVec = _vec3(0, 0, 0);
 
-	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pTransform->m_vScale = { 0.6f, 0.6f, 0.6f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	m_pCollider->m_bIsTrigger = false;
-	// ¾Ö´Ï¸ÞÀÌ¼Ç
+	// ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
 	m_bInit2 = true;
-	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
-	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
-	m_pTextureCom->Switch_Anim(L"Idle");
-	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_bRender = true;
 	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	m_pCollider->Set_BoundOffset(_vec3(0,0,0));
 	BoundingBox box;
 	m_moveTrue = true;
 	box.Offset(vPos);
@@ -48,32 +41,34 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bInit2)
 	{
-		//½ÇÇàÇØÁÖ´Â ÄÚµå
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Úµï¿½
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
-		//¸Ó¸®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Tookee_Head", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Tookee_Head", 0, false), E_FAIL);
-		//¸öÅë
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Tookee_Body", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Tookee_Body", 0, false), E_FAIL);
+		//ï¿½Ó¸ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Head", pStageLayer, _vec3(0,0,0), m_pTransform, L"Third_Head", 0, false), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_BackHead", pStageLayer, _vec3(0,0, 0), m_pTransform->GetChild(0), L"Third_Head", 1, false), E_FAIL);
+		dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(0)->GetChild(0)->m_pGameObject)->SetTextureIdx(1);
+		//ï¿½ï¿½ï¿½ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Body", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Third_Body", 0, false), E_FAIL);
 
-		//Á¶ÀÎÆ®´Â ¸öÅë²¨
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Á¶ÀÎÆ®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Á¶ÀÎÆ®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
-		//Á¶ÀÎÆ®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"TopdeeBody", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+		//ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ë²¨
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Third_Joint", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+		//ï¿½ï¿½ï¿½ï¿½Æ®
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Third_Joint", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+		//ï¿½ï¿½ï¿½ï¿½Æ®
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Third_Joint", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
+		//ï¿½ï¿½ï¿½ï¿½Æ®
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Third_Joint", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)), E_FAIL);
 
-		//ÆÈÀº Á¶ÀÎÆ® ²¨
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(0), L"Tookee_Arm", 0, false), E_FAIL);
-		//ÆÈ
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeArm", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(1), L"Tookee_Arm", 0, false), E_FAIL);
-		//´Ù¸®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(2), L"Tookee_Leg", 0, false), E_FAIL);
-		//´Ù¸®
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"TopdeeLeg", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(3), L"Tookee_Leg", 0, false), E_FAIL);
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Hand", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(0), L"Third_Hand", 0, false), E_FAIL);
+		//ï¿½ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Hand", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(1), L"Third_Hand", 0, false), E_FAIL);
+		//ï¿½Ù¸ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Foot", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(2), L"Third_Foot", 0, false), E_FAIL);
+		//ï¿½Ù¸ï¿½
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Foot", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform->GetChild(1)->GetChild(3), L"Third_Foot", 0, false), E_FAIL);
 
 		m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(0)->m_pGameObject));
 		m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->m_pGameObject));
@@ -81,37 +76,41 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 			if (dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->GetChild(i)->GetChild(0)->m_pGameObject))
 				m_partVec.push_back(dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(1)->GetChild(i)->GetChild(0)->m_pGameObject));
 
-		//¸Ó¸®
-		m_partVec[0]->m_pTransform->m_vScale = _vec3(2.5f, 2.5f, 2.5f);
-		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, -1);
+		//ï¿½Ó¸ï¿½
+		m_partVec[0]->m_pTransform->m_vScale = _vec3(1.8f, 1.8f, 1.8f);
+		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1, -0.01f);
 
-		//¸öÅë
-		m_partVec[1]->m_pTransform->m_vScale = _vec3(1.6f, 1.7f, 1.2f);
-		m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0.0f, -1.f, -0.9f);
+		//ï¿½ï¿½ï¿½
+		m_partVec[0]->m_pTransform->GetChild(0)->m_vInfo[INFO_POS] = _vec3(0,0,+0.02f);
 
-		//Á¶ÀÌ´À
+
+		//ï¿½ï¿½ï¿½ï¿½
+		m_partVec[1]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
+		m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0.0f, -0.0f, 0.f);
+
+		//ï¿½ï¿½ï¿½Ì´ï¿½
 		m_partVec[2]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[2]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.8f, -0.1f, -0.4f);
-		m_partVec[3]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[3]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.8f, -0.1f, -0.4f);
+		m_partVec[2]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.8f, 0, -0.f);
+		m_partVec[3]->m_pTransform->GetParent()->m_vScale = _vec3(-1, 1, 1);
+		m_partVec[3]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.8f, 0, -0.f);
 		m_partVec[4]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[4]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.5f, 0.1f, 0.2f);
+		m_partVec[4]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.5f, -0.8f, 0.f);
 		m_partVec[5]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[5]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.5f, 0.1f, 0.2f);
+		m_partVec[5]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.5f, -0.8f, 0.f);
 
-		//ÆÈ´Ù¸®
-		m_partVec[2]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
-		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.3f);
-		m_partVec[2]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
-		m_partVec[3]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
-		m_partVec[3]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.3f);
-		m_partVec[3]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
-		m_partVec[4]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
-		m_partVec[4]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.6f);
-		m_partVec[4]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
-		m_partVec[5]->m_pTransform->m_vScale = _vec3(0.3f, 0.8f, 1);
-		m_partVec[5]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.6f);
-		m_partVec[5]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+		//ï¿½È´Ù¸ï¿½
+		m_partVec[2]->m_pTransform->m_vScale = _vec3(2.2f,2.2f,2.2f);
+		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[2]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
+		m_partVec[3]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
+		m_partVec[3]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[3]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
+		m_partVec[4]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
+		m_partVec[4]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[4]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
+		m_partVec[5]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
+		m_partVec[5]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[5]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
 		m_bInit = false;
 
 		AnimClip* clip = nullptr;
@@ -126,7 +125,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,0),//rotation
 					_vec3(0,0,0),//scale
 					0.2f,//tilltime
 					0.f//actionTime
@@ -135,7 +134,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,0),//rotation
 					_vec3(0,0,0),
 					0.2f,//tilltime
 					0.5f//actionTime
@@ -145,7 +144,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,0),//rotation
 					_vec3(0,0,0),
 					0.2f,//tilltime
 					0.f//actionTime
@@ -153,7 +152,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,0),//rotation
 					_vec3(0,0,0),
 					0.2f,//tilltime
 					0.5f//actionTime
@@ -211,7 +210,57 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Leg->AddClip(L"Walk", clip);
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[4]->m_pTransform->GetParent());
+			clip->parts.push_back(m_partVec[5]->m_pTransform->GetParent());
+			clip->source.resize(2);
+
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(90),0,0),//rotation
+					_vec3(0,0,0),//scale
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(90),0,0),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-30),0,0),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-30),0,0),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			clip->TotalTime = 0.6f;
+			clip->Useloop = false;
+		}
+		m_pAnimation_Leg->AddClip(L"Jump", clip);
 		m_pAnimation_Leg->SetAnimation(L"Idle");
+
+
 		clip = new AnimClip();
 		{
 			//Face
@@ -223,7 +272,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(30)),//rotation
 					_vec3(0,0,0),//scale
 					0.3f,//tilltime
 					0.f//actionTime
@@ -232,7 +281,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(30)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -242,7 +291,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(-30)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.f//actionTime
@@ -250,7 +299,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(-30)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -271,7 +320,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(60),0,0),//rotation
+					_vec3(0,D3DXToRadian(60),0),//rotation
 					_vec3(0,0,0),//scale
 					0.3f,//tilltime
 					0.f//actionTime
@@ -280,7 +329,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-60),0,0),//rotation
+					_vec3(0,D3DXToRadian(-60),0),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -290,7 +339,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-60),0,0),//rotation
+					_vec3(0,D3DXToRadian(-60),0),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.f//actionTime
@@ -298,7 +347,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(60),0,0),//rotation
+					_vec3(0,D3DXToRadian(60),0),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -319,7 +368,104 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(210),0,0),//rotation
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(-90)),//rotation
+					_vec3(0,0,0),//scale
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(-90)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(90)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(0.01f),0,D3DXToRadian(90)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			clip->TotalTime = 0.6f;
+			clip->Useloop = false;
+		}
+		m_pAnimation_Arm->AddClip(L"Jump", clip);
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[2]->m_pTransform->GetParent());
+			clip->parts.push_back(m_partVec[3]->m_pTransform->GetParent());
+			clip->source.resize(2);
+
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(0)),//rotation
+					_vec3(0,0,0),//scale
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(180)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			{
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(0)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.f//actionTime
+				});
+				clip->source[1].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(180)),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			clip->TotalTime = 0.6f;
+			clip->Useloop = false;
+		}
+		m_pAnimation_Arm->AddClip(L"Hang", clip);
+		m_pAnimation_Arm->SetAnimation(L"Idle");
+		
+
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[0]->m_pTransform);
+			clip->source.resize(1);
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0.01f,1,-0.01f),
+					_vec3(D3DXToRadian(0.0f),0,0),//rotation
 					_vec3(0,0,0),//scale
 					0.2f,//tilltime
 					0.f//actionTime
@@ -327,54 +473,84 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(0,0,0),
-					_vec3(D3DXToRadian(210),0,0),//rotation
-					_vec3(0,0,0),
-					0.2f,//tilltime
-					0.2f//actionTime
-				});
-			}
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0,0,0),
-					_vec3(D3DXToRadian(210),0,0),//rotation
+					_vec3(0.01f,1,-0.01f),
+					_vec3(D3DXToRadian(0.0f),0,0),//rotation
 					_vec3(0,0,0),
 					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0,0,0),
-					_vec3(D3DXToRadian(210),0,0),//rotation
-					_vec3(0,0,0),
-					0.2f,//tilltime
-					0.2f//actionTime
+					0.5f//actionTime
 				});
 			}
 			clip->TotalTime = 0.4f;
-			clip->Useloop = false;
+			clip->Useloop = true;
 		}
-		m_pAnimation_Arm->AddClip(L"Hang", clip);
-		m_pAnimation_Arm->SetAnimation(L"Idle");
+		m_pAnimation_Head->AddClip(L"Idle", clip);
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[0]->m_pTransform);
+			clip->source.resize(1);
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0.5f,1,-0.01f),
+					_vec3(0,0,0),//rotation
+					_vec3(0,0,0),//scale
+					0.3f,//tilltime
+					0.f//actionTime
+				});
 
-		SetRenderONOFF(false);
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(-0.5f,1,-0.01f),
+					_vec3(0,0,0),//rotation
+					_vec3(0,0,0),
+					0.3f,//tilltime
+					0.3f//actionTime
+				});
+			}
+			clip->TotalTime = 0.6f;
+			clip->Useloop = true;
+		}
+		m_pAnimation_Head->AddClip(L"Walk", clip);
+		m_pAnimation_Head->SetAnimation(L"Idle");
+
+		SetRenderONOFF(true);
 		m_bInit2 = false;
 	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-	return _int();
+	CGameObject::Update_GameObject(fTimeDelta);
+	return 0;
 }
 
 _int CThirddee::Update_Too(const _float & fTimeDelta)
 {
-	__super::Update_Too(fTimeDelta);
-	return _int();
+	if (m_bDead)
+		return OBJ_DEAD;
+	Key_Input(fTimeDelta);
+		
+	DoFlip();
+	return 0;
 }
 
 _int CThirddee::Update_Top(const _float & fTimedDelte)
 {
-	__super::Update_Top(fTimedDelte);
-	return _int();
+	
+	_vec3 moveto;
+	D3DXVec3Normalize(&moveto, &m_LookVec);
+
+	Key_Input2(fTimedDelte);
+	_float dir = D3DXVec3Dot(&_vec3(0, -1, 0), &moveto);
+
+	if(!lstrcmp(m_pAnimation_Leg->GetAnimationName(),L"Idle"))
+		m_pAnimation_Head->SetAnimation(L"Idle");
+	else
+		m_pAnimation_Head->SetAnimation(L"Walk");
+
+	RayDiskey();
+	if (m_bIsMoving)
+		Move(fTimedDelte);
+	PlayerState(fTimedDelte);
+	return 0;
 }
 
 void CThirddee::LateUpdate_GameObject(void)
@@ -384,25 +560,155 @@ void CThirddee::LateUpdate_GameObject(void)
 
 void CThirddee::Render_GameObject(void)
 {
-	__super::Render_GameObject();
+	CGameObject::Render_GameObject();
+}
+
+void CThirddee::Render_Too(void)
+{
+}
+
+void CThirddee::Render_Top(void)
+{
 }
 
 void CThirddee::SwapTrigger()
 {
-	__super::SwapTrigger();
+	if (g_Is2D)
+	{
+		m_pRigid->m_bUseGrivaty = true;
+		
+		m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_pCollider->m_bIsTrigger = false;
+		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	}
+	else
+	{
+		m_pTransform->m_vInfo[INFO_POS].z = 11;
+		m_pRigid->m_bUseGrivaty = false;
+		m_pTransform->m_vInfo[INFO_POS].x =
+			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
+		m_pTransform->m_vInfo[INFO_POS].y =
+			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
+		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+		m_pCollider->m_bIsTrigger = true;
+	}
+	m_bIsMoving = false;
+	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_byPlayerInputDir = 0;
+	m_pRigid->m_Velocity = _vec3(0, 0, 0);
+	m_pTransform->m_vAngle = _vec3(0, 0, 0);
+	m_pTransform->m_vScale = _vec3(1, 1, 1);
+	SetRenderONOFF(true);
+}
+
+void CThirddee::OnCollisionEnter(const Collision * collision)
+{
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
+		collision->_dir == DIR_DOWN)
+	if (!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud") &&
+		collision->_dir == DIR_DOWN)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"58.wav", SOUND_EFFECT, 1.f);
+	}
+	if (collision->_dir == DIR_DOWN&&m_bJumpable == false)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"59.wav", SOUND_EFFECT, 1.f);
+	}
+
+	if (collision->_dir == DIR_DOWN)
+		LandingParticle_logic(collision->otherObj->m_pTag);
+}
+
+void CThirddee::OnCollisionStay(const Collision * collision)
+{
+	if (g_Is2D)
+	{
+		if (collision->_dir == DIR_DOWN)
+			m_bJumpable = true;
+
+		if (fabsf(m_pRigid->m_Velocity.y) > 2.f && m_bJumpable)
+		{
+			m_pAnimation_Leg->SetAnimation(L"Jump");
+			m_pAnimation_Arm->SetAnimation(L"Jump");
+			m_pAnimation_Head->SetAnimation(L"Idle");
+			m_bJumpable = false;
+		}
+		else if (m_bJumpable)
+			if ((fabsf(m_pRigid->m_Velocity.x) > 1.f))
+			{
+				Set_WalkParticle();
+				m_pAnimation_Head->SetAnimation(L"Walk");
+				m_pAnimation_Leg->SetAnimation(L"Walk");
+				m_pAnimation_Arm->SetAnimation(L"Walk");
+			}
+			else {
+				m_pAnimation_Head->SetAnimation(L"Idle");
+				m_pAnimation_Leg->SetAnimation(L"Idle");
+				m_pAnimation_Arm->SetAnimation(L"Idle");
+			}
+	}
+	
+}
+
+void CThirddee::OnCollisionExit(const Collision * collision)
+{
+	m_bJumpable = false;
+}
+
+void CThirddee::Key_Input(const _float & fTimeDelta)
+{
+	m_fWalkTime += fTimeDelta;
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
+		m_eKeyState = DIR_LEFT;
+
+
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
+		m_eKeyState = DIR_RIGHT;
+
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
+	{
+		m_pRigid->m_Velocity.x = -m_fSpeed;
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+
+	}
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
+	{
+		m_pRigid->m_Velocity.x = m_fSpeed;
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+	}
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
+	{
+		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+	}
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
+	{
+		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
+		StopSound(SOUND_EFFECT);
+	}
+	if (Engine::Get_DIKeyState(DIK_SPACE) == Engine::KEYDOWN && m_bJumpable)
+	{
+		Engine::StopSound(SOUND_EFFECT);
+		Engine::PlaySound_Effect(L"54.wav", SOUND_EFFECT, 1.f);
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ò¸ï¿½ 59ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 58ï¿½ï¿½
+
+		m_pRigid->AddForce(_vec3(0, 1, 0), 90.f, IMPULSE, fTimeDelta);
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pJumpParticle->Set_BoundingBox(box);
+		m_pJumpParticle->Set_Size(1.f);
+		m_pJumpParticle->Start_Particle();
+	}
 }
 
 HRESULT CThirddee::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-
-	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
-
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Tookee_Too", this));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
 
 	pComponent = m_pRigid = dynamic_cast<CRigidbody*>(Engine::Clone_Proto(L"Rigidbody", this));
 	NULL_CHECK_RETURN(m_pRigid, E_FAIL);
@@ -434,6 +740,10 @@ HRESULT CThirddee::Add_Component(void)
 
 	pComponent = m_pAnimation_Leg = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
 	NULL_CHECK_RETURN(m_pAnimation_Leg, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+
+	pComponent = m_pAnimation_Head = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
+	NULL_CHECK_RETURN(m_pAnimation_Head, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
 
 	return S_OK;
