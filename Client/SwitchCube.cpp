@@ -37,14 +37,11 @@ _int CSwitchCube::Update_GameObject(const _float & fTimeDelta)
 		m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
 	}
 		
-		if (!CSwitch::m_bSwtichON)
-		{
-			m_pTransform->m_bIsStatic = true;
-			m_pCollider->Set_BoundingBox(_vec3(2, 2, 2));
-		}
-	
-
-
+	if (!CSwitch::m_bSwtichON)
+	{
+		m_pTransform->m_bIsStatic = true;
+		m_pCollider->Set_BoundingBox(_vec3(2, 2, 2));
+	}
 	__super::Update_GameObject(fTimeDelta);
 
 	return S_OK;

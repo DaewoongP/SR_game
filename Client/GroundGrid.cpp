@@ -16,7 +16,6 @@ CGroundGrid::~CGroundGrid()
 HRESULT CGroundGrid::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 
 	return S_OK;

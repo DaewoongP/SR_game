@@ -58,10 +58,9 @@ void CTransform::MakeMyMatrix(const _float& fTimeDelta)
 	m_matRT = m_matBillY * m_matBillX * matRotation * matTrans;
 	if (m_Parent != NULL)
 		m_matRT = m_matRT * matRevolutionRotation * m_Parent->m_matRT;
-	this;
+	
 	//매트릭스 생성
 	m_matWorld = matScale * m_matBillY * m_matBillX * matRotation * matTrans;
-	_tchar*	 name = m_pGameObject->m_pTag;
 
 	if (m_Parent == NULL)
 		return;
@@ -297,6 +296,7 @@ void CTransform::SwapYZ()
 		m_YZValue = Lerp(m_YZValue, 0.8f, 0.1f);
 	else
 		m_YZValue = Lerp(m_YZValue, 1.f, 0.1f);
+	cout << m_YZValue << endl;
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)

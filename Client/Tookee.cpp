@@ -379,8 +379,7 @@ _int CTookee::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	if(m_moveTrue)
-		Key_Input(fTimeDelta);
+	Key_Input(fTimeDelta);
 	DoStrech();
 	CGameObject::Update_GameObject(fTimeDelta);
 
@@ -432,24 +431,18 @@ void CTookee::LateUpdate_GameObject(void)
 void CTookee::Render_GameObject(void)
 {
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-	__super::Render_GameObject();
-}
-
-void CTookee::Render_Too(void)
-{
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
-	m_pShadow->Render_Shadow(m_pBufferCom);
-	m_pBufferCom->Render_Buffer();
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	Render_Particle();
-}
-
-void CTookee::Render_Top(void)
-{
+	if (g_Is2D)
+	{
+		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+		m_pTextureCom->Set_Texture(0);
+		m_pShadow->Render_Shadow(m_pBufferCom);
+		m_pBufferCom->Render_Buffer();
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		Render_Particle();
+	}
 	__super::Render_GameObject();
 }
 
@@ -499,10 +492,7 @@ void CTookee::OnCollisionEnter(const Collision * collision)
 		}
 
 		if (collision->_dir == DIR_DOWN)
-		{
 			LandingParticle_logic(collision->otherObj->m_pTag);
-		}
-			
 
 		__super::OnCollisionEnter(collision);
 	}
@@ -654,12 +644,10 @@ void CTookee::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
 	{
-		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
 		StopSound(SOUND_EFFECT);
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
 	{
-		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
 		StopSound(SOUND_EFFECT);
 
 	}
@@ -757,7 +745,8 @@ void CTookee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"SwitchCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")||
+			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))

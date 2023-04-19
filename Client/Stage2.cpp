@@ -6,6 +6,7 @@
 #include "Cube.h"
 #include "Toodee.h"
 #include "Topdee.h"
+#include "Thirddee.h"
 #include "ImguiMgr.h"
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
@@ -73,22 +74,21 @@ HRESULT CStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(60.f, 32.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(34.f, 32.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(34.f, 32.f, 11.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//¸Ç À­ÁÙ
+			//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//»çÀÌ Ã¹ÁÙ
+			//ï¿½ï¿½ï¿½ï¿½ Ã¹ï¿½ï¿½
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//»çÀÌ ¸¶Áö¸·ÁÙ
+			//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//¸Ç ¾Æ·§ÁÙ
+			//ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}

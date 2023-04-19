@@ -72,21 +72,43 @@ void CDefaultGrid::Key_Input()
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_int x = 1366 / CUBEX * 2;
-	_int y = 768 / CUBEY * 2;
+	D3DVIEWPORT9		ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	// 뷰포트 가져오는 함수
+	m_pGraphicDev->GetViewport(&ViewPort);
 
-	_int nx = 1366 / x;
-	_int ny = 768 / y;
+	_vec3	vMouse;
+	vMouse.x = pt.x / (ViewPort.Width * 0.5f) - 1.f;
+	vMouse.y = pt.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vMouse.z = 0.f;
 
-	_float Gridx = pt.x / nx / (1.3f) - 1.f;
-	_float Gridy = (768 / ny - pt.y / ny) / (2.35f) - 1.f;
+	_matrix		matProj;
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixInverse(&matProj, 0, &matProj);
+	D3DXVec3TransformCoord(&vMouse, &vMouse, &matProj);
 
-	_int installx = _int(Gridx / 2);
-	_int instally = _int(Gridy / 2);
+	_matrix		matView;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, 0, &matView);
 
-	m_pTransform->m_vInfo[INFO_POS].x = installx * 2.f;
-	m_pTransform->m_vInfo[INFO_POS].y = instally * 2.f;
-	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
+	_vec3	vRayPos, vRayDir;
+	vRayPos = { 0.f,0.f,0.f };
+	vRayDir = vMouse - vRayPos;
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+
+	vRayDir /= vRayDir.z;
+
+	_vec3 vPos = vRayPos + vRayDir * (10 - matView._43);
+
+	if ((_int)ceil(vPos.x) % 2 == 0)
+		vPos.x += 1;
+
+	if ((_int)ceil(vPos.y) % 2 == 0)
+		vPos.y += 1;
+	m_pTransform->m_vInfo[INFO_POS].x = (_int)vPos.x;
+	m_pTransform->m_vInfo[INFO_POS].y = (_int)vPos.y;
+	m_pTransform->m_vInfo[INFO_POS].z = vPos.z;
 }
 
 CDefaultGrid * CDefaultGrid::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

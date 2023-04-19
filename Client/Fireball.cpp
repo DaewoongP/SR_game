@@ -26,7 +26,8 @@ HRESULT CFireball::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
 	m_pCollider->Set_Options({ 2.f, 2.f, 2.f }, COL_ENV, false);
-
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"1.wav", SOUND_EFFECT_ENEMY, 1.f);
 	return S_OK;
 }
 

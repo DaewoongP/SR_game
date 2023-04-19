@@ -327,10 +327,10 @@ void CImguiUnit::MapObjectInstall()
 			MakeGameObject<CPinkCloud>(pStageLayer, L"PinkCloud");
 
 		else if (7 == m_iMapObjectType) // 스위치
-			MakeGameObject<CSwitch>(pStageLayer, L"Swtich");
+			MakeGameObject<CSwitch>(pStageLayer, L"Switch");
 
 		else if (8 == m_iMapObjectType) // 스위치 큐브
-			MakeGameObject<CSwitchCube>(pStageLayer, L"SwtichCube");
+			MakeGameObject<CSwitchCube>(pStageLayer, L"SwitchCube");
 
 		else if (9 == m_iMapObjectType) // 중력 큐브
 			MakeGameObject<CGravityCube>(pStageLayer, L"GravityCube");

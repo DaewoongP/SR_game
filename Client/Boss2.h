@@ -38,8 +38,6 @@ private:
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
-	virtual _int Update_Too(const _float& fTimeDelta) override;
-	virtual _int Update_Top(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject() override;
 	virtual void SwapTrigger();
@@ -87,7 +85,6 @@ private:
 	void		SetPartten();
 	void		ReadyPartten();
 	void		CheckIsLastActionIdx();
-
 	//������
 	void		Do_Standing(const _float& fTimeDelta);
 	//����
@@ -98,6 +95,9 @@ private:
 	void		Do_Throw(const _float& fTimeDelta);
 	//�ٽ� ����ġ
 	void		Do_ThrowEnd(const _float& fTimeDelta);
+  void		Check_CircleParticle();
+public:
+	_bool		Get_Flip_Y() { return m_bFlip_Y; }
 private:	
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;

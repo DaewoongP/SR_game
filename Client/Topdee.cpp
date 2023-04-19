@@ -558,7 +558,8 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"SwitchCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")||
+			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))
@@ -726,7 +727,8 @@ void CTopdee::Move(const _float& fTimeDelta)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
-		m_Tookee->m_moveTrue = false;
+		if(m_Tookee!=nullptr)
+			m_Tookee->m_moveTrue = false;
 		return;
 	}
 }
