@@ -15,7 +15,7 @@ CSpike::~CSpike()
 HRESULT CSpike::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = { vPos.x, vPos.y-0.2f,vPos.z-0.5f};
+	m_pTransform->m_vInfo[INFO_POS] = { vPos.x, vPos.y - 0.2f,vPos.z - 0.5f};
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
 	
@@ -42,20 +42,26 @@ _int CSpike::Update_GameObject(const _float& fTimeDelta)
 _int CSpike::Update_Too(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"Goto2D");
-	if (!(m_pTransform->m_vInfo[INFO_POS].z == 9.5))
+	if (m_pTransform->m_vInfo[INFO_POS].z != 9.5)
+	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
 			_float(m_pTransform->m_vInfo[INFO_POS].y + 0.2),
 			_float(m_pTransform->m_vInfo[INFO_POS].z + 0.125f));
+	}
+		
 	return S_OK;
 }
 
 _int CSpike::Update_Top(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"GotoTop");
-	if (!(m_pTransform->m_vInfo[INFO_POS].z == 8.5))
+	if (m_pTransform->m_vInfo[INFO_POS].z != 8.5)
+	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
 			_float(m_pTransform->m_vInfo[INFO_POS].y - 0.2),
 			_float(m_pTransform->m_vInfo[INFO_POS].z - 0.125f));
+	}
+		
 	return S_OK;
 }
 
@@ -77,8 +83,6 @@ void CSpike::Render_GameObject(void)
 
 void CSpike::OnCollisionEnter(const Collision* collision)
 {
-	/*if (collision->otherObj != nullptr)
-		collision->otherObj->m_bDead = true;*/
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Pig"))
 	{
 		StopSound(SOUND_EFFECT_GIMMICK);

@@ -23,7 +23,7 @@ void CRenderer::Add_RenderGroup(RENDERID eID, CGameObject * pGameObject)
 
 void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
-	Render_Priority(pGraphicDev);
+	Render_AlphaBlend(pGraphicDev);
 	Render_Alpha(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_UI(pGraphicDev);
@@ -40,9 +40,18 @@ void CRenderer::Clear_RenderGroup(void)
 	}
 }
 
-void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
+void CRenderer::Render_AlphaBlend(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
-	for (auto& iter : m_RenderGroup[RENDER_PRIORITY])
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_RenderGroup[RENDER_ALPHABLEND].sort([](CGameObject* pSrc, CGameObject* pDest)->_bool
+	{
+		if (!lstrcmp(pSrc->m_pTag, pDest->m_pTag))
+			return false;
+		return !lstrcmp(pSrc->m_pTag, L"InstallGrid");
+	});
+	for (auto& iter : m_RenderGroup[RENDER_ALPHABLEND])
 	{
 		iter->Render_GameObject();
 		pGraphicDev->SetTexture(0, nullptr);
@@ -51,6 +60,7 @@ void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 		else
 			iter->Render_Top();
 	}
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }
 
 void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)

@@ -28,7 +28,6 @@ HRESULT CStage1Camera::Ready_GameObject(void)
 
 _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 {
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
 	Rotation_View(fTimeDelta);
 
 	Move_Camera(fTimeDelta);
@@ -36,6 +35,9 @@ _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 	Key_Input(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
+	_matrix matProj;
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 100.f);
+	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
 	return 0;
 }
@@ -43,13 +45,6 @@ _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 void CStage1Camera::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-}
-
-void CStage1Camera::Render_GameObject(void)
-{
-	_matrix matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 100.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 void CStage1Camera::Rotation_View(const _float& fTimeDelta)

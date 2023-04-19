@@ -42,7 +42,7 @@ void CCube::LateUpdate_GameObject(void)
 void CCube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iCubeTexNum);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
@@ -82,7 +82,7 @@ HRESULT CCube::Add_Component(void)
 	return S_OK;
 }
 
-CCube * CCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CCube * CCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex)
 {
 	CCube*		pInstance = new CCube(pGraphicDev);
 
@@ -91,7 +91,7 @@ CCube * CCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 		Safe_Release(pInstance);
 		return nullptr;
 	}
-
+	pInstance->Set_CubeTexNum(iIndex);
 	return pInstance;
 }
 

@@ -94,6 +94,7 @@ _uint CLoading::Loading_ForLogo(void)
 	m_iLoadingTexImgNum = 3;
 	// 검정색 타일(빈 공간 묘사 용)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileBlack.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileNone.png")), E_FAIL);
 	//2D돼지
 	//앞
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Pig_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/pigSpr/correct-pigSpr-%d.png", 9)), E_FAIL);
@@ -139,7 +140,15 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Body", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeBody/topdeeSpr31_%d.png", 5)), E_FAIL);
 	//팔다리용
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Arm", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeArm/topdeePalmSpr_%d.png", 2)), E_FAIL);
+	//물 관련
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Sink_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sinkSpr/sinkSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WaterSplash_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/waterSplashSpr/waterSplashSpr_%d.png",9)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WaterFall_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/waterFallSpr/waterFallSpr_%d.png", 5)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Water_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/waterSpr/waterSpr_0.png")), E_FAIL);
 
+
+
+	
 	//투키
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeSpinningHeadSpr/tookeeSpinningHeadSpr_%d.png", 12)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Leg", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeLegsSpr/tookeeLegsSpr_%d.png", 4)), E_FAIL);
@@ -195,8 +204,9 @@ _uint CLoading::Loading_ForLogo(void)
 
 	m_iLoadingTexImgNum = 10;
 	Set_String(L"CubeTex Loading..........");
-
+	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CubeTex", CCubeTex::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"NoneCube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/Terrain/NoneCube.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyBox_Texture", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/burger%d.dds", 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Move_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/NormalBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Texture_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Texture.dds")), E_FAIL);
@@ -287,6 +297,11 @@ _uint CLoading::Loading_ForLogo(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RainParticle", CRainParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/RainSpr/RainSpr_0.png", 1,
+		0.7f, 15, true)), E_FAIL);
+
+	//배수관 물
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WaterParticle", CWaterParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/waterDropSpr/waterDropSpr_0.png", 1,
 		0.7f, 15, true)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Line", CLine::Create(m_pGraphicDev)), E_FAIL);

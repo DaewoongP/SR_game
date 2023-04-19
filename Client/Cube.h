@@ -26,6 +26,7 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
+	void Set_CubeTexNum(_int iNum) { m_iCubeTexNum = iNum; }
 protected:
 	HRESULT Add_Component(void);
 
@@ -35,8 +36,9 @@ protected:
 	Engine::CTexture*	m_pTextureCom2;
 	Engine::CCollider * m_pCollider;
 
+	_int				m_iCubeTexNum;
 public:
-	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex = 0);
 
 protected:
 	virtual void Free(void) override;

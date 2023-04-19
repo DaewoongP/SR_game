@@ -38,7 +38,7 @@ _int CStage1BG::Update_GameObject(const _float& fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+	Engine::Add_RenderGroup(RENDER_ALPHABLEND, this);
 
 	return 0;
 }

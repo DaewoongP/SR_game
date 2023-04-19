@@ -25,7 +25,7 @@ _int CBackgroundSpr::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return 0;
 }
