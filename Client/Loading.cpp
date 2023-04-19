@@ -131,7 +131,7 @@ _uint CLoading::Loading_ForLogo(void)
 	//번개
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Lightning_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/lightningSpr/lightningSpr_%d.png", 9)), E_FAIL);
 	// 스위치 큐브
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSprNew/buttonSpr_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Switch_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/buttonSpr/buttonSpr_%d.png", 2)), E_FAIL);
 	m_iLoadingTexImgNum = 7;
 	//탑디 머리통
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Topdee_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/topdeeSpinningHead/topdeeSpinningHead_%d.png", 36)), E_FAIL);

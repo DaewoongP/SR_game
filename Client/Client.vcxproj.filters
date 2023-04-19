@@ -507,6 +507,7 @@
     <ClInclude Include="Tookee.h">
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClInclude>
+    <ClInclude Include="Thirddee.h" />
     <ClInclude Include="LoadingTex.h">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClInclude>
@@ -828,6 +829,7 @@
     <ClCompile Include="Tookee.cpp">
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClCompile>
+    <ClCompile Include="Thirddee.cpp" />
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClCompile>

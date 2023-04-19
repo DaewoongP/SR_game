@@ -53,7 +53,8 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (m_Tookee != nullptr)
 	{
-		m_Tookee->m_pTransform->m_vInfo[INFO_POS].x += (m_pTransform->m_vInfo[INFO_POS].x - m_prePos);
+		_float move_x = (m_pTransform->m_vInfo[INFO_POS].x - m_prePos);
+		m_Tookee->m_pRigid->m_Velocity.x = move_x*60;
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 	}
 	
@@ -71,12 +72,6 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
-
-	if (m_pRigid->m_Velocity.x != 0&& m_Tookee!=nullptr)
-	{
-		m_Tookee->m_moveTrue = true;
-	}else if(m_Tookee != nullptr)
-		m_Tookee->m_moveTrue = false;
 
 	//텍스쳐컴의 애니가 die고 완료됐다면?
 	if (m_pTextureCom->IsAnimationEnd(L"Die"))

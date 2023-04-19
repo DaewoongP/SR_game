@@ -387,16 +387,6 @@ void CThirddee::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CThirddee::Render_Too(void)
-{
-	__super::Render_Too();
-}
-
-void CThirddee::Render_Top(void)
-{
-	__super::Render_Top();
-}
-
 void CThirddee::SwapTrigger()
 {
 	__super::SwapTrigger();

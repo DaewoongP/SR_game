@@ -1993,32 +1993,19 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
-
-	return 0;
-}
-
-_int CBoss2::Update_Too(const _float & fTimeDelta)
-{
-	return 0;
-}
-
-_int CBoss2::Update_Top(const _float & fTimeDelta)
-{
+  Check_CircleParticle();
 	return 0;
 }
 
 void CBoss2::LateUpdate_GameObject(void)
 {
 	m_pTransform->SwapYZ();
-
 	__super::LateUpdate_GameObject();
 }
 
 void CBoss2::Render_GameObject()
 {
 	m_pCircleParticle->Update_Particle();
-	
 	m_pJumpParticle->Update_Particle();
 	m_pScreamParticle->Update_Particle();
 	__super::Render_GameObject();
@@ -2027,15 +2014,9 @@ void CBoss2::Render_GameObject()
 void CBoss2::SwapTrigger()
 {
 	if (g_Is2D)
-	{
-		m_pCircleParticle->End_Particle();
 		m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
-	}
 	else
-	{
-		m_pCircleParticle->End_Particle();
 		m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
-	}
 }
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
@@ -2606,6 +2587,29 @@ void CBoss2::Do_Throw(const _float& fTimeDelta)
 void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 {
 	m_pAnimation_Body->SetAnimation(L"ThrowEnd");
+}
+
+void CBoss2::Check_CircleParticle()
+{
+	if (!m_pCircleParticle->IsDead())
+	{
+		CGameObject* pGameObject = nullptr;
+		if (g_Is2D)
+			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+		else
+			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+
+		if (pGameObject == nullptr)
+			return;
+		for (auto& iter : m_pCircleParticle->Get_Particles())
+		{
+			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
+			{
+				// 피격처리
+				int a = 1;
+			}
+		}
+	}
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
