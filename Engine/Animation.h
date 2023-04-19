@@ -46,6 +46,7 @@ public:
 	//애니메이션을 변경하는 친구입니다.
 	HRESULT SetAnimation(_tchar* Name);
 	HRESULT AddClip(_tchar* Name, ANIMCLIP* clip);
+	_tchar*	GetAnimationName() { return m_AnimState; }
 
 private:
 	//애니메이션의 실제 동작부 입니다.
