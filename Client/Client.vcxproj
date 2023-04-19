@@ -154,6 +154,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackCloud.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BackGroundBase.h" />
     <ClInclude Include="BackgroundSpr.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LoadingTex.h" />
     <ClInclude Include="LogoCamera.h" />
+    <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
     <ClInclude Include="MoveCamera.h" />
@@ -251,6 +253,7 @@
     <ClInclude Include="UICamera.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackCloud.cpp" />
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BackGroundBase.cpp" />
     <ClCompile Include="BackgroundSpr.cpp" />
@@ -290,6 +293,7 @@
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LoadingTex.cpp" />
     <ClCompile Include="LogoCamera.cpp" />
+    <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
