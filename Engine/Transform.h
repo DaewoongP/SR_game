@@ -61,7 +61,7 @@ public:
 	}
 
 	void			MakeMyMatrix(const _float& fTimeDelta);
-	void			Set_ParentTransform(CGameObject * pParentObject, _float fX, _float fY, _float fZ);
+	void			Set_ParentTransform(CGameObject * pParentObject);
 	void			Chase_Target(const _vec3* pTargetPos, const _float& fSpeed, const _float& fTimeDelta);
 	const _matrix*	Compute_Lookattarget(const _vec3* pTargetPos);
 public:

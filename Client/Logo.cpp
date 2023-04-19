@@ -42,14 +42,23 @@ HRESULT CLogo::Ready_Scene(void)
 _int CLogo::Update_Scene(const _float & fTimeDelta)
 {
 	int iExit = __super::Update_Scene(fTimeDelta);
-	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
+	{	
+		StopSound(SOUND_CAM);
+		PlaySound_Effect(L"61.wav", SOUND_CAM, 1.f); 
 		m_bStart = true;
-	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
+	}
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYDOWN)
+	{
+			StopSound(SOUND_CAM);
+			PlaySound_Effect(L"62.wav", SOUND_CAM, 1.f);
 		m_bStart = false;
-
+	}
 	if (Engine::Get_DIKeyState(DIK_RETURN) == Engine::KEYDOWN && m_bStart == true)
 	{
-		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE2);
+		StopSound(SOUND_CAM);
+		PlaySound_Effect(L"51.wav", SOUND_CAM, 1.f);
+		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_STAGE1);
 		NULL_CHECK_RETURN(pScene, -1);
 
 		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
@@ -78,10 +87,6 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	pGameObject = CLogoCamera::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LogoCamera", pGameObject), E_FAIL);
-
 	pGameObject = CBackgroundSpr::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
@@ -91,11 +96,11 @@ HRESULT CLogo::Ready_Layer_Environment(const _tchar* pLayerTag)
 		_float fRandX = GetRandomFloat(-WINCX*0.5f, WINCX*0.5f);
 		_float fRandY = GetRandomFloat(-WINCY*0.5f, WINCY*0.5f);
 
-		FAILED_CHECK_RETURN(FACTORY<CShiningStar>::Create(L"ShiningStar", pLayer, _vec3(fRandX, fRandY, 0.0f)), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CShiningStar>::Create(L"ShiningStar", pLayer, _vec3(fRandX, fRandY, 3.f)), E_FAIL);
 	}
 
-	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(300.0f, -300.0f, 0.0f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(-300.0f, 200.0f, 0.0f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(300.0f, -300.0f, 2.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMenuCubeSpr>::Create(L"MenuCube", pLayer, _vec3(-300.0f, 200.0f, 2.f)), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

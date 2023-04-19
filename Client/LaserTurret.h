@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CShadow;
+class CBulletPool;
 
 END
 
@@ -32,6 +33,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CShadow*		m_pShadow;
+	Engine::CBulletPool*	m_pBulletPool;
 	
 	_int		m_iIndex;
 	_float		m_fCoolDown;

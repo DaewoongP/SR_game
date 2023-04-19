@@ -2017,6 +2017,7 @@ void CBoss2::LateUpdate_GameObject(void)
 void CBoss2::Render_GameObject()
 {
 	m_pCircleParticle->Update_Particle();
+	
 	m_pJumpParticle->Update_Particle();
 	m_pScreamParticle->Update_Particle();
 	__super::Render_GameObject();
@@ -2048,14 +2049,18 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
 		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
 		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
-		// 원형파티클 옵션
-		BoundingBox box;
-		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
-		box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
-		box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
-		m_pCircleParticle->Set_BoundingBox(box);
-		m_pCircleParticle->Set_Size(3.f);
-		m_pCircleParticle->Start_Particle();
+		if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
+			!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
+		{
+			// 원형파티클 옵션
+			BoundingBox box;
+			box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+			box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+			box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+			m_pCircleParticle->Set_BoundingBox(box);
+			m_pCircleParticle->Set_Size(3.f);
+			m_pCircleParticle->Start_Particle();
+		}
 		StopSound(SOUND_EFFECT_ENEMY);
 		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
 	}

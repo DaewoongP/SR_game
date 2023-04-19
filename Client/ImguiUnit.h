@@ -20,6 +20,7 @@ public:
 	HRESULT SaveMapObject(_int iStageNumber);
 	HRESULT LoadMapObject(_int iStageNumber, CScene* pScene = nullptr);
 
+	HRESULT	Undo(_int iStageNumber);
 private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
 
@@ -28,6 +29,7 @@ private:
 	vector<OBJINFO> m_vecMonsterInfo;		// 몬스터 저장을 위한 공간
 	bool m_bMonsterON;						// 몬스터 on / off
 	int m_iMonsterType;						// 몬스터 종류
+	vector<CGameObject*> m_vecGameObject;	// 지우기용 벡터
 
 	// 맵 오브젝트 관련
 	CGameObject*	m_pDefaultMapObject;	// 디폴트 맵 오브젝트 관련
@@ -61,4 +63,12 @@ private:
 
 public:
 	static	CImguiUnit* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+
+private:
+	template<typename T>
+	void MakeMonster(CLayer* pLayer, const _tchar * pObjTag);
+	template<typename T>
+	void MakeGameObject(CLayer* pLayer, const _tchar * pObjTag);
+	template<typename T>
+	void MakeGameObjectTypeNum(CLayer* pLayer, const _tchar * pObjTag, _int iNum);
 };

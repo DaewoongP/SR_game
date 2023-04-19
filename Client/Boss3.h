@@ -49,8 +49,6 @@ private:
 	CGameObject* m_pBossLeftPart1;
 	CGameObject* m_pBossRightPart1;
 
-
-
 	CGameObject* m_pBossLeftEye;	// 왼눈 주소	
 	CGameObject* m_pBossRightEye;	// 오른눈 주소
 	CGameObject* m_pBossLeftPupil;	// 왼눈동자 주소	
@@ -65,6 +63,7 @@ private:
 	_float  m_fCoolDown;		// 추격 쿨다운
 	_float  m_fShootCoolDown;	// 사격 쿨다운
 	_float	m_fShootterm;
+	_float  m_fShockDown;
 
 	_float	m_fPreToo;			// 정규화된 이전 투디 값을 저장해둠
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
@@ -77,6 +76,9 @@ private:
 	_bool m_bATKCnt; //전기공격을할지안할지판단
 	_int m_iATKCount;// 카운트 3이되면 전기공격
 	_bool m_bShoot = true;
+	_bool	m_bSpin = true;
+	_float m_fSoundCool;
+	_bool m_bSound	;
 
 
 	_vec3 m_vPrePos;

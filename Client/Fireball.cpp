@@ -17,7 +17,8 @@ CFireball::~CFireball()
 HRESULT CFireball::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y - 3.f, 10.f  };
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
 	m_pTransform->m_bIsStatic = true;
 
 	m_pTextureCom->Add_Anim(L"Idle", 0, 8, 0.5f, true);
@@ -63,8 +64,10 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 		if (1.f < m_fStaticOFF)
 		{
 			m_bStaticON = false;
-			m_pTransform->m_vScale = {4.f, 2.f, 1.f};
-			m_pCollider->Set_BoundingBox({ 3.f, 2.f, 1.0f });
+			m_pTransform->m_vScale = {5.f, 2.5f, 1.f};
+			m_pCollider->Set_BoundingBox({ 4.f, 3.f, 1.f });
+			m_pCollider->Set_BoundOffset(_vec3{-1.f, -2.f, 0.f});
+			m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 		}			
 	}
 
@@ -72,6 +75,7 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS].y += m_vDir.y * m_fSpeed * fTimeDelta;
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);

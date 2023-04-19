@@ -30,6 +30,7 @@ private:
 	CGameObject*			m_pBoss3;
 
 	_int					m_iIndex;	// 표정 텍스처 구분
+	_vec3					m_vDir;
 
 public:
 	static CBoss3EyePupil*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
