@@ -34,6 +34,9 @@ HRESULT CThirddee::Ready_GameObject(_vec3 & vPos)
 	box.Offset(vPos);
 	m_pLandingParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_LifeTime();
+	m_fTopOffset = 0;
+	//옾셋만큼 팔다리 몸통을 내리면 될듯요.
+
 	return S_OK;
 }
 
@@ -78,7 +81,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 		//�Ӹ�
 		m_partVec[0]->m_pTransform->m_vScale = _vec3(1.8f, 1.8f, 1.8f);
-		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1, -0.01f);
+		m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1+ m_fTopOffset, -0.01f);
 
 		//���
 		m_partVec[0]->m_pTransform->GetChild(0)->m_vInfo[INFO_POS] = _vec3(0,0,+0.02f);
@@ -90,26 +93,26 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 		//���̴�
 		m_partVec[2]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[2]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.8f, 0, -0.f);
+		m_partVec[2]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.6f, 0, -0.f);
 		m_partVec[3]->m_pTransform->GetParent()->m_vScale = _vec3(-1, 1, 1);
-		m_partVec[3]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.8f, 0, -0.f);
+		m_partVec[3]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.6f, 0, -0.f);
 		m_partVec[4]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[4]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.5f, -0.8f, 0.f);
+		m_partVec[4]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(-0.5f, -0.6f, 0.f);
 		m_partVec[5]->m_pTransform->GetParent()->m_vScale = _vec3(1, 1, 1);
-		m_partVec[5]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.5f, -0.8f, 0.f);
+		m_partVec[5]->m_pTransform->GetParent()->m_vInfo[INFO_POS] = _vec3(0.5f, -0.6f, 0.f);
 
 		//�ȴٸ�
-		m_partVec[2]->m_pTransform->m_vScale = _vec3(2.2f,2.2f,2.2f);
-		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[2]->m_pTransform->m_vScale = _vec3(2.2f,2.8f,2.2f);
+		m_partVec[2]->m_pTransform->m_vInfo[INFO_POS] = _vec3(-0.2f, -0.2f, 0.f);
 		m_partVec[2]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
-		m_partVec[3]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
-		m_partVec[3]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[3]->m_pTransform->m_vScale = _vec3(2.2f, 2.8f, 2.2f);
+		m_partVec[3]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0.2f, -0.2f, 0.f);
 		m_partVec[3]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
 		m_partVec[4]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
-		m_partVec[4]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[4]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, -0.2f, 0.f);
 		m_partVec[4]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
 		m_partVec[5]->m_pTransform->m_vScale = _vec3(2.2f, 2.2f, 2.2f);
-		m_partVec[5]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0, 0.f);
+		m_partVec[5]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, -0.2f, 0.f);
 		m_partVec[5]->m_pTransform->m_vAngle = _vec3(D3DXToRadian(00), D3DXToRadian(00), 0);
 		m_bInit = false;
 
@@ -416,16 +419,15 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(0)),//rotation
+					_vec3(D3DXToRadian(180),D3DXToRadian(0),D3DXToRadian(0)),//rotation
 					_vec3(0,0,0),//scale
 					0.3f,//tilltime
 					0.f//actionTime
 				});
-
 				clip->source[0].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(180)),//rotation
+					_vec3(D3DXToRadian(180),D3DXToRadian(0),D3DXToRadian(0)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -435,7 +437,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(0)),//rotation
+					_vec3(D3DXToRadian(-180),D3DXToRadian(0),D3DXToRadian(0)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.f//actionTime
@@ -443,7 +445,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 				clip->source[1].push_back(
 					ANIMINFO{
 					_vec3(0,0,0),
-					_vec3(D3DXToRadian(-90),D3DXToRadian(0),D3DXToRadian(180)),//rotation
+					_vec3(D3DXToRadian(-180),D3DXToRadian(0),D3DXToRadian(0)),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
 					0.3f//actionTime
@@ -464,23 +466,23 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(0.01f,1,-0.01f),
+					_vec3(0.01f,1+ m_fTopOffset,-0.01f),
 					_vec3(D3DXToRadian(0.0f),0,0),//rotation
 					_vec3(0,0,0),//scale
-					0.2f,//tilltime
+					0.1f,//tilltime
 					0.f//actionTime
 				});
 
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(0.01f,1,-0.01f),
+					_vec3(0.01f,1+ m_fTopOffset,-0.01f),
 					_vec3(D3DXToRadian(0.0f),0,0),//rotation
 					_vec3(0,0,0),
-					0.2f,//tilltime
-					0.5f//actionTime
+					0.1f,//tilltime
+					0.1f//actionTime
 				});
 			}
-			clip->TotalTime = 0.4f;
+			clip->TotalTime = 0.2f;
 			clip->Useloop = true;
 		}
 		m_pAnimation_Head->AddClip(L"Idle", clip);
@@ -492,7 +494,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(0.5f,1,-0.01f),
+					_vec3(0.5f,1+ m_fTopOffset,-0.01f),
 					_vec3(0,0,0),//rotation
 					_vec3(0,0,0),//scale
 					0.3f,//tilltime
@@ -501,7 +503,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 				clip->source[0].push_back(
 					ANIMINFO{
-					_vec3(-0.5f,1,-0.01f),
+					_vec3(-0.5f,1+ m_fTopOffset,-0.01f),
 					_vec3(0,0,0),//rotation
 					_vec3(0,0,0),
 					0.3f,//tilltime
@@ -514,6 +516,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		m_pAnimation_Head->AddClip(L"Walk", clip);
 		m_pAnimation_Head->SetAnimation(L"Idle");
 
+		m_pTransform->m_vScale = _vec3(1, 1, 1);
 		SetRenderONOFF(true);
 		m_bInit2 = false;
 	}
@@ -532,9 +535,16 @@ _int CThirddee::Update_Too(const _float & fTimeDelta)
 	return 0;
 }
 
+void CThirddee::DoFlip()
+{
+	if (m_eKeyState == DIR_LEFT)
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(90), 0.1f);
+	else if (m_eKeyState == DIR_RIGHT)
+		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(270), 0.1f);
+}
+
 _int CThirddee::Update_Top(const _float & fTimedDelte)
 {
-	
 	_vec3 moveto;
 	D3DXVec3Normalize(&moveto, &m_LookVec);
 
@@ -568,14 +578,14 @@ void CThirddee::SwapTrigger()
 	if (g_Is2D)
 	{
 		m_pRigid->m_bUseGrivaty = true;
-		
-		m_pTransform->m_vInfo[INFO_POS].z = 10;
 		m_pCollider->m_bIsTrigger = false;
 		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(0), D3DXToRadian(0), 0);
+		m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_fTopOffset = 0;
 	}
 	else
-	{
-		m_pTransform->m_vInfo[INFO_POS].z = 11;
+	{ 
 		m_pRigid->m_bUseGrivaty = false;
 		m_pTransform->m_vInfo[INFO_POS].x =
 			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
@@ -583,14 +593,79 @@ void CThirddee::SwapTrigger()
 			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
 		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 		m_pCollider->m_bIsTrigger = true;
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+		m_pTransform->m_vInfo[INFO_POS].z = 11;
+		m_fTopOffset = 1;
 	}
-	m_bIsMoving = false;
+	m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0+ m_fTopOffset, +0.02f);
+
+	m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1 + m_fTopOffset, -0.01f);
+	m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1 + m_fTopOffset, -0.01f);
+
+	m_pAnimation_Head->DynamicChangeAnimation(L"Idle", 0, 0, VECTYPE_TRANS, _vec3(0, 1 + m_fTopOffset, -0.01f));
+	m_pAnimation_Head->DynamicChangeAnimation(L"Idle", 0, 1, VECTYPE_TRANS, _vec3(0, 1 + m_fTopOffset, -0.01f));
+	m_pAnimation_Head->DynamicChangeAnimation(L"Walk", 0, 0, VECTYPE_TRANS, _vec3(0.5f, 1 + m_fTopOffset, -0.01f));
+	m_pAnimation_Head->DynamicChangeAnimation(L"Walk", 0, 1, VECTYPE_TRANS, _vec3(-0.5f, 1 + m_fTopOffset, -0.01f));
+	
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
-	m_pTransform->m_vAngle = _vec3(0, 0, 0);
 	m_pTransform->m_vScale = _vec3(1, 1, 1);
 	SetRenderONOFF(true);
+}
+
+void CThirddee::Key_Input2(const _float & fTimeDelta)
+{
+	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
+		Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS) &&
+		m_eState == TD_MOVE)
+	{
+		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
+		m_bIsMoving = true;
+	}
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 2;
+
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 1;
+
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 4;
+
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYDOWN)
+		m_byPlayerInputDir |= 8;
+
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
+		m_byPlayerInputDir &= 13;
+	}
+	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
+		m_byPlayerInputDir &= 14;
+	}
+	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
+		m_byPlayerInputDir &= 11;
+	}
+	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYUP)
+	{
+		StopSound(SOUND_EFFECT);
+		m_byPlayerInputDir &= 7;
+	}
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYDOWN&&!m_bIsMoving)
+		m_eState = TD_FINDING;
+
+	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYUP&&m_eState != TD_SOMETHING)
+		m_eState = TD_MOVE;
+
+	if (m_byPlayerInputDir != 0)
+		m_byLookDir = m_byPlayerInputDir;
 }
 
 void CThirddee::OnCollisionEnter(const Collision * collision)

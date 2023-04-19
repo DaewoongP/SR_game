@@ -22,9 +22,14 @@ public:
 
 private:
 	virtual void		Key_Input(const _float& fTimeDelta) override;
+	void				DoFlip() override;
+	
+	//삼디는 키 입력이 다름.
+	virtual void		Key_Input2(const _float& fTimeDelta);
 	HRESULT		Add_Component(void);
 
 private:
+	_float	m_fTopOffset;
 	Engine::CAnimation*     m_pAnimation_Head;
 
 public:

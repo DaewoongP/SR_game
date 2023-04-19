@@ -3,6 +3,13 @@
 #include "Export_Utility.h"
 BEGIN(Engine)
 
+enum VECTYPE
+{
+	VECTYPE_TRANS,
+	VECTYPE_ROTATION,
+	VECTYPE_SCALE
+};
+
 //clip에 저장될 하나의 이동 정보 입니다.
 typedef struct AnimInfo 
 {
@@ -47,6 +54,9 @@ public:
 	HRESULT SetAnimation(_tchar* Name);
 	HRESULT AddClip(_tchar* Name, ANIMCLIP* clip);
 	_tchar*	GetAnimationName() { return m_AnimState; }
+
+	//머리통만을 위해 만든거임.
+	void	DynamicChangeAnimation(_tchar* name, _int partIdx, _int sourceIdx, VECTYPE type, _vec3 value);
 
 private:
 	//애니메이션의 실제 동작부 입니다.

@@ -70,7 +70,8 @@ void CMoveCube::OnCollisionEnter(const Collision * collision)
 {
 	if (!g_Is2D&&
 		(!lstrcmp(collision->otherObj->m_pTag, L"Topdee")||
-		 !lstrcmp(collision->otherObj->m_pTag, L"Tookee")
+		 !lstrcmp(collision->otherObj->m_pTag, L"Tookee")||
+		!lstrcmp(collision->otherObj->m_pTag, L"Thirddee")
 			)&&m_handleState==CH_NONE&&!m_bIsCol[collision->_dir])
 		DoRayToDir(collision->_dir);		
 

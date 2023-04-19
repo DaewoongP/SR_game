@@ -56,6 +56,26 @@ HRESULT CAnimation::AddClip(_tchar * Name, ANIMCLIP* clip)
 	return S_OK;
 }
 
+void CAnimation::DynamicChangeAnimation(_tchar * name, _int partIdx, _int sourceIdx, VECTYPE type, _vec3 value)
+{
+	auto clip = m_clipMap.find(name);
+	if (clip != m_clipMap.end())
+	{
+		switch (type)
+		{
+		case Engine::VECTYPE_TRANS:
+			clip->second->source[partIdx][sourceIdx].trans = value;
+			break;
+		case Engine::VECTYPE_ROTATION:
+			clip->second->source[partIdx][sourceIdx].rotation = value;
+			break;
+		case Engine::VECTYPE_SCALE:
+			clip->second->source[partIdx][sourceIdx].scale = value;
+			break;
+		}
+	}
+}
+
 void CAnimation::DoUpdateClip(const _float& fTimeDelta)
 {
 	//애니메이션이 하나도 없다면 업데이트를 하지 않습니다.
