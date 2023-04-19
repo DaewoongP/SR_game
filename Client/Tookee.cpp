@@ -432,6 +432,7 @@ void CTookee::LateUpdate_GameObject(void)
 void CTookee::Render_GameObject(void)
 {
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	__super::Render_GameObject();
 }
 
 void CTookee::Render_Too(void)
@@ -1002,7 +1003,7 @@ void CTookee::Check_IsParticleDead()
 {
 	if (m_pJumpParticle->IsDead())
 		m_pJumpParticle->End_Particle();
-	if (m_pLandingParticle->IsDead())
+	if (m_pLandingParticle->OverOneParticleIsDead())
 		m_pLandingParticle->End_Particle();
 	if (m_pSparkParticle->IsDead())
 		m_pSparkParticle->End_Particle();

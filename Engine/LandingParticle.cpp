@@ -68,8 +68,6 @@ _int CLandingParticle::Update_Particle()
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
 		}
-		else
-			ResetParticle(&(*it));
 	}
 	__super::Render_Particle();
 	return -1;

@@ -507,8 +507,6 @@
     <ClInclude Include="Tookee.h">
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClInclude>
-    <ClInclude Include="Thirddee.h" />
-    </ClInclude>
     <ClInclude Include="LoadingTex.h">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClInclude>
@@ -523,6 +521,9 @@
     </ClInclude>
     <ClInclude Include="MoveCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Thirddee.h">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -827,8 +828,6 @@
     <ClCompile Include="Tookee.cpp">
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClCompile>
-    <ClCompile Include="Thirddee.cpp" />
-    </ClCompile>
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClCompile>
@@ -840,6 +839,9 @@
     </ClCompile>
     <ClCompile Include="MoveCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Thirddee.cpp">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
