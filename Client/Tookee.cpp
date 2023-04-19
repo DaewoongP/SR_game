@@ -34,7 +34,6 @@ HRESULT CTookee::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
-	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_bRender = true;
@@ -491,7 +490,6 @@ void CTookee::OnCollisionEnter(const Collision * collision)
 		if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
 			collision->_dir == DIR_DOWN)
 		{
-			m_pTextureCom->Switch_Anim(L"Die");
 		}
 		if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die") && m_bDead == false)
 		{

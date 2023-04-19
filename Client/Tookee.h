@@ -7,7 +7,7 @@ class CTookee : public  CGameObject
 {
 	friend CTopdee;
 	friend CToodee;
-private:
+protected:
 	explicit CTookee(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CTookee();
 
@@ -28,18 +28,18 @@ public:
 
 #pragma region TooDee
 public:
-	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
-	void		SetRenderONOFF_too(_bool value) { m_bRender_too = value; }
+	virtual void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
+	virtual void		SetRenderONOFF_too(_bool value) { m_bRender_too = value; }
 
 protected:
-	void		Key_Input(const _float& fTimeDelta);
-	void		DoFlip();
-	void		DoStrech();
+	virtual void		Key_Input(const _float& fTimeDelta);
+	virtual void		DoFlip();
+	virtual void		DoStrech();
 
-	void Render_Particle();
-	void Check_IsParticleDead();
-	void Set_WalkParticle();
-	void LandingParticle_logic(const _tchar* pTag);
+	virtual void Render_Particle();
+	virtual void Check_IsParticleDead();
+	virtual void Set_WalkParticle();
+	virtual void LandingParticle_logic(const _tchar* pTag);
 
 protected:
 	Engine::CRcTex*			m_pBufferCom;
@@ -60,20 +60,19 @@ protected:
 
 #pragma region Topdee
 protected:
-	void		Key_Input2(const _float& fTimeDelta);
-	void		RayDiskey();
-	void		RayDisKey_part(COL_MOVEDIR dir);
-	void		PlayerState(const _float& fTimeDelta);
-	void		Move(const _float& fTimeDelta);
-	_bool		CheckCubeExist(_vec3 dir, CCollider** col);
-
-	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
-	void		DirApply(_int dir, _int& x, _int& y);
+	virtual void		Key_Input2(const _float& fTimeDelta);
+	virtual void		RayDiskey();
+	virtual void		RayDisKey_part(COL_MOVEDIR dir);
+	virtual void		PlayerState(const _float& fTimeDelta);
+	virtual void		Move(const _float& fTimeDelta);
+	virtual _bool		CheckCubeExist(_vec3 dir, CCollider** col);
+	virtual _bool		CheckAnythingExist(_vec3 dir, CCollider** col);
+	virtual void		DirApply(_int dir, _int& x, _int& y);
 
 public:
-	void		SetRenderONOFF(_bool value) { m_bRender = value; for (int i = 0; i < m_partVec.size(); i++)m_partVec[i]->SetRenderState(value); }
-	void		SetMovePos(COL_DIR dir);
-	void		SetMovePos_zero();
+	virtual void		SetRenderONOFF(_bool value) { m_bRender = value; for (int i = 0; i < m_partVec.size(); i++)m_partVec[i]->SetRenderState(value); }
+	virtual void		SetMovePos(COL_DIR dir);
+	virtual void		SetMovePos_zero();
 
 protected:
 	Engine::CCollider*		m_pCollider;
@@ -98,7 +97,7 @@ protected:
 	_bool					m_bWalkingAnim;
 
 public:
-	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
+	virtual void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 
 #pragma endregion
 
@@ -108,7 +107,7 @@ private:
 public:
 	static CTookee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
-private:
+protected:
 	virtual void Free(void) override;
 };
 

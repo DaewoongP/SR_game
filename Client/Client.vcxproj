@@ -228,6 +228,7 @@
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
+    <ClInclude Include="Thirddee.h" />
     <ClInclude Include="Tookee.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Toodee.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
+    <ClCompile Include="Thirddee.cpp" />
     <ClCompile Include="Tookee.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Toodee.cpp" />
