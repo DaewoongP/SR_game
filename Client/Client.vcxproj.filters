@@ -508,7 +508,6 @@
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClInclude>
     <ClInclude Include="Thirddee.h" />
-    </ClInclude>
     <ClInclude Include="LoadingTex.h">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClInclude>
@@ -828,7 +827,6 @@
       <Filter>00. GameObject\00. Player\Tookee</Filter>
     </ClCompile>
     <ClCompile Include="Thirddee.cpp" />
-    </ClCompile>
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\Loading</Filter>
     </ClCompile>
