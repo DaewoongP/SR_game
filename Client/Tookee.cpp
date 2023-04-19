@@ -379,8 +379,7 @@ _int CTookee::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	if(m_moveTrue)
-		Key_Input(fTimeDelta);
+	Key_Input(fTimeDelta);
 	DoStrech();
 	CGameObject::Update_GameObject(fTimeDelta);
 
@@ -450,7 +449,6 @@ void CTookee::Render_Too(void)
 
 void CTookee::Render_Top(void)
 {
-	__super::Render_GameObject();
 }
 
 void CTookee::SwapTrigger()
@@ -499,10 +497,7 @@ void CTookee::OnCollisionEnter(const Collision * collision)
 		}
 
 		if (collision->_dir == DIR_DOWN)
-		{
 			LandingParticle_logic(collision->otherObj->m_pTag);
-		}
-			
 
 		__super::OnCollisionEnter(collision);
 	}
@@ -654,12 +649,10 @@ void CTookee::Key_Input(const _float & fTimeDelta)
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP)
 	{
-		m_pRigid->m_Velocity.x = -m_fSpeed * 0.2f;
 		StopSound(SOUND_EFFECT);
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
 	{
-		m_pRigid->m_Velocity.x = m_fSpeed * 0.2f;
 		StopSound(SOUND_EFFECT);
 
 	}
@@ -757,7 +750,8 @@ void CTookee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"SwitchCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")||
+			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))
