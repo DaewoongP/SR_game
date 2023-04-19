@@ -537,6 +537,9 @@
     <ClInclude Include="Thirddee.h">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
+    <ClInclude Include="Thirddee.h">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -857,6 +860,9 @@
     </ClCompile>
     <ClCompile Include="Water.cpp">
       <Filter>00. GameObject\02. MapObject\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Thirddee.cpp">
+      <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClCompile>
     <ClCompile Include="Thirddee.cpp">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
