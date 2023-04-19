@@ -726,6 +726,8 @@ void CTopdee::Move(const _float& fTimeDelta)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
+		if (m_Tookee == nullptr)
+			return;
 		m_Tookee->m_moveTrue = false;
 		return;
 	}
