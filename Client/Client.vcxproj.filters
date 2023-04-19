@@ -529,6 +529,7 @@
     <ClInclude Include="BackGroundBase.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClInclude>
+    <ClInclude Include="BackGroundToolScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -851,5 +852,6 @@
     <ClCompile Include="BackGroundBase.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
+    <ClCompile Include="BackGroundToolScene.cpp" />
   </ItemGroup>
 </Project>

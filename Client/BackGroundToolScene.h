@@ -1,10 +1,12 @@
 #pragma once
+#include "Scene.h"
 
-class CStage1 : public Engine::CScene
+class CBackGroundToolScene :
+	public CScene
 {
 private:
-	explicit CStage1(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStage1();
+	explicit CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CBackGroundToolScene();
 
 public:
 	// CScene을(를) 통해 상속됨
@@ -15,12 +17,11 @@ public:
 
 private:
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
-	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
-	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 public:
-	static CStage1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CBackGroundToolScene*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free(void);
+
 };
 

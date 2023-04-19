@@ -11,6 +11,7 @@
 #include "Stage3.h"
 #include "Stage4.h"
 #include "FinalStage1.h"
+#include "BackGroundToolScene.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -52,6 +53,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_FINAL1:
 		iFlag = pLoading->Loading_ForFinal1();
+		break;
+	case LOADING_BGTOOL:
+		iFlag = pLoading->Loading_ForBGTool();
 		break;
 	}
 	
@@ -355,6 +359,19 @@ _uint CLoading::Loading_ForFinal1(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading Final Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForBGTool(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CBackGroundToolScene::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
+	Set_String(L"Loading BGTool Complete!!!!!!!!");
 	return 0;
 }
 
