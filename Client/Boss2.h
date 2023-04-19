@@ -85,7 +85,6 @@ private:
 	void		SetPartten();
 	void		ReadyPartten();
 	void		CheckIsLastActionIdx();
-
 	//������
 	void		Do_Standing(const _float& fTimeDelta);
 	//����
@@ -96,8 +95,9 @@ private:
 	void		Do_Throw(const _float& fTimeDelta);
 	//�ٽ� ����ġ
 	void		Do_ThrowEnd(const _float& fTimeDelta);
-
-	void		Check_CircleParticle();
+  void		Check_CircleParticle();
+public:
+	_bool		Get_Flip_Y() { return m_bFlip_Y; }
 private:	
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;
