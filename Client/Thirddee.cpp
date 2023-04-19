@@ -593,7 +593,7 @@ void CThirddee::SwapTrigger()
 			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
 		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 		m_pCollider->m_bIsTrigger = true;
-		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(-90), D3DXToRadian(0));
 		m_pTransform->m_vInfo[INFO_POS].z = 11;
 		m_fTopOffset = 1;
 	}
