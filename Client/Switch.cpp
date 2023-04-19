@@ -67,7 +67,8 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 	if (!lstrcmp(L"Toodee", collision->otherObj->m_pTag) || 
 		!lstrcmp(L"Pig", collision->otherObj->m_pTag) ||
 		!lstrcmp(L"Boss2", collision->otherObj->m_pTag) ||
-		!lstrcmp(L"Boss2Hand", collision->otherObj->m_pTag))
+		!lstrcmp(L"Boss2Hand", collision->otherObj->m_pTag)||
+		!lstrcmp(L"Tookee", collision->otherObj->m_pTag))
 	{
 		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir || DIR_LEFT == tToodeeDir || DIR_RIGHT == tToodeeDir)
 		{
@@ -83,10 +84,7 @@ void CSwitch::OnCollisionExit(const Collision * collision)
 	CSwitch::m_iCnt--;
 	m_iTextureIndex = 0;
 	if (m_iCnt == 0)
-	{
-		m_bSwtichON = false;
-	}
-		
+		m_bSwtichON = false;		
 }
 
 HRESULT CSwitch::Add_Component(void)

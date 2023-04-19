@@ -1993,15 +1993,13 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-
-	m_pTransform->SwapYZ();
-
-	Check_CircleParticle();
+  Check_CircleParticle();
 	return 0;
 }
 
 void CBoss2::LateUpdate_GameObject(void)
 {
+	m_pTransform->SwapYZ();
 	__super::LateUpdate_GameObject();
 }
 
