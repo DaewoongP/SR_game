@@ -2,8 +2,8 @@
 #include "Monster.h"
 
 #define BATSCALE 4.0f
-#define BATTOOZ 11.0f
-#define BATTOPZ 8.0f
+#define BATTOOZ 8.0f
+#define BATTOPZ 5.0f
 
 BEGIN(Engine)
 
@@ -24,12 +24,15 @@ public:
 	virtual _int Update_GameObject(const _float & fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
+	virtual void SwapTrigger();
 
 private:
 	HRESULT Add_Component(void);
 
 	virtual _int Update_Too(const _float & fTimeDelta);
 	virtual _int Update_Top(const _float & fTimeDelta);
+	virtual void LateUpdate_Too();
+
 	virtual void Render_Too();
 	virtual void Render_Top();
 
@@ -50,5 +53,12 @@ private:
 
 	_bool m_bBackSprite;
 
+	_vec3 m_vEscapeDir;
+
+	vector<_tchar*> m_vecCol;
+
+	_bool m_bStart2D;
+
+	_float m_fTimer;
 };
 

@@ -23,6 +23,8 @@ HRESULT CLaserTurret::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
 
+	m_pBulletPool->Ready_BulletPool();
+
 	m_iIndex = iIndex;
 
 	return S_OK;
@@ -33,17 +35,19 @@ _int CLaserTurret::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	Shoot_Laser(fTimeDelta);
-
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	__super::Update_GameObject(fTimeDelta);
+
+	Shoot_Laser(fTimeDelta);
 
 	return 0;
 }
 
 void CLaserTurret::LateUpdate_GameObject(void)
 {
+	m_pBulletPool->UnUse_Bullet();
+
 	__super::LateUpdate_GameObject();
 }
 
@@ -75,6 +79,10 @@ HRESULT CLaserTurret::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
+	pComponent = m_pBulletPool = dynamic_cast<CBulletPool*>(Engine::Clone_Proto(L"BulletPool", this));
+	NULL_CHECK_RETURN(m_pBulletPool, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"BulletPool", pComponent });
+
 	return S_OK;
 }
 
@@ -85,20 +93,13 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	if (0.2f < m_fCoolDown)
 	{
 		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+		CGameObject* pGameObject;
 
-		CLayer* pStageLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		NULL_CHECK_RETURN(pStageLayer, );
+		if(0 == m_iIndex)
+			pGameObject = m_pBulletPool->Use_Bullet(_vec3{vPos.x + 1.f, vPos.y, vPos.z}, !m_iIndex);
 
-		// 레이저 오른쪽으로 발사
-		if (0 == m_iIndex)
-		{
-			FAILED_CHECK_RETURN(FACTORY<CLaser>::Create(L"Laser", pStageLayer, _vec3{ vPos.x + 1.f, vPos.y, vPos.z + 0.1f }, 1), );
-		}
-		
-		else
-		{
-			FAILED_CHECK_RETURN(FACTORY<CLaser>::Create(L"Laser", pStageLayer, _vec3{ vPos.x - 1.f, vPos.y, vPos.z + 0.1f }, 0), );
-		}			
+		else if (1 == m_iIndex)
+			pGameObject = m_pBulletPool->Use_Bullet(_vec3{ vPos.x - 1.f, vPos.y, vPos.z }, !m_iIndex);
 
 		m_fCoolDown = 0.f;
 	}

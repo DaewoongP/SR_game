@@ -32,7 +32,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem & rhs) :
 	m_fAnimSpeed(rhs.m_fAnimSpeed),
 	m_matWorld(rhs.m_matWorld),
 	m_pParticle(rhs.m_pParticle),
-	m_bIsAnim(rhs.m_bIsAnim)
+	m_bIsAnim(rhs.m_bIsAnim),
+	m_InitSize(rhs.m_Size)
 {
 	m_VB->AddRef();
 }
@@ -183,6 +184,7 @@ void CParticleSystem::RemoveDeadParticles()
 
 void CParticleSystem::Reset()
 {
+	m_Size = m_InitSize;
 	for (auto& iter : m_Particles)
 		ResetParticle(&iter);
 }

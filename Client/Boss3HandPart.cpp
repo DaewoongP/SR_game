@@ -2,7 +2,9 @@
 #include "Boss3HandPart.h"
 #include"..\Engine\Export_Function.h"
 
-CBoss3HandPart::CBoss3HandPart(LPDIRECT3DDEVICE9 pGraphicDev) : CGameObject(pGraphicDev)
+CBoss3HandPart::CBoss3HandPart(LPDIRECT3DDEVICE9 pGraphicDev)
+	: CGameObject(pGraphicDev),
+	m_bSparkON(false)
 {
 	m_pBoss3 = nullptr;
 	m_pBoss3LPart = nullptr;
@@ -25,7 +27,10 @@ HRESULT CBoss3HandPart::Ready_GameObject(_vec3& vPos,_int iIndex)
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 	NULL_CHECK_RETURN(m_pBoss3, E_FAIL);
 
-	
+	m_pSparkAnimation->Add_Anim(L"Spark", 0, 5, 0.1f, true);
+	m_pSparkAnimation->Switch_Anim(L"Spark");
+	m_pSparkAnimation->m_bUseFrameAnimation = true;
+
 	return S_OK;
 }
 
@@ -40,23 +45,18 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 	m_pBoss3RPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right");
 	NULL_CHECK_RETURN(m_pBoss3RPart, E_FAIL);
 
-
 	_vec3 Lerp;
-
 
 	__super::Update_GameObject(fTimeDelta);
 
 		if (!lstrcmp(m_pTag, L"Boss3LPart")||!lstrcmp(m_pTag, L"Boss3LPartShadow"))
 		{
-		
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.3f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
 			if(!lstrcmp(m_pTag, L"Boss3LPartShadow"))
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
-
-		
-
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3RPart")||!lstrcmp(m_pTag, L"Boss3RPartShadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.3f);
@@ -64,12 +64,9 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			if(!lstrcmp(m_pTag, L"Boss3RPartShadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
-
-
-			
-
 		}
-		else if(!lstrcmp(m_pTag, L"Boss3LPart1") || !lstrcmp(m_pTag, L"Boss3LPart1Shadow"))
+
+		else if (!lstrcmp(m_pTag, L"Boss3LPart1") || !lstrcmp(m_pTag, L"Boss3LPart1Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
 			m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,Lerp.z };
@@ -78,6 +75,7 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3RPart1") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.45f);
@@ -85,9 +83,8 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			m_pTransform->m_vScale = { 1.4f,0.7f,0.7f };
 			if (!lstrcmp(m_pTag, L"Boss3RPart1Shadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
-
-
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3LPart2") || !lstrcmp(m_pTag, L"Boss3LPart2Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
@@ -95,6 +92,7 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			if (!lstrcmp(m_pTag, L"Boss3LPart2Shadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3RPart2") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.6f);
@@ -102,6 +100,7 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			if (!lstrcmp(m_pTag, L"Boss3RPart2Shadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3LPart3") || !lstrcmp(m_pTag, L"Boss3LPart3Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3LPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
@@ -110,6 +109,7 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			if (!lstrcmp(m_pTag, L"Boss3LPart3Shadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
+
 		else if (!lstrcmp(m_pTag, L"Boss3RPart3") || !lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
 		{
 			D3DXVec3Lerp(&Lerp, &m_pBoss3->m_pTransform->m_vInfo[INFO_POS], &m_pBoss3RPart->m_pTransform->m_vInfo[INFO_POS], 0.8f);
@@ -118,9 +118,10 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 			if (!lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
 				m_pTransform->m_vInfo[INFO_POS] = { Lerp.x,Lerp.y,10.f };
 		}
-	
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+
+	m_pSparkAnimation->Update_Anim(fTimeDelta);
 
 	return 0;
 }
@@ -134,19 +135,24 @@ _int CBoss3HandPart::Update_Too(const _float& fTimeDelta)
 _int CBoss3HandPart::Update_Top(const _float& fTimeDelta)
 {
 	__super::Update_Top(fTimeDelta);
-
 	return 0;
 }
+
 void CBoss3HandPart::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
-
 }
 
 void CBoss3HandPart::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_iIndex);
+
+	if (m_bSparkON)
+		m_pSparkAnimation->Set_Texture(0);	
+
+	else
+		m_pTextureCom->Set_Texture(m_iIndex);
+
 	if (!lstrcmp(m_pTag, L"Boss3LPartShadow") || !lstrcmp(m_pTag, L"Boss3RPartShadow")||
 		!lstrcmp(m_pTag, L"Boss3LPart1Shadow") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow")||
 		!lstrcmp(m_pTag, L"Boss3LPart2Shadow") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow")||
@@ -157,7 +163,6 @@ void CBoss3HandPart::Render_GameObject(void)
 
 	__super::Render_GameObject();
 }
-
 
 HRESULT CBoss3HandPart::Add_Component(void)
 {
@@ -171,6 +176,10 @@ HRESULT CBoss3HandPart::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_HandPart", pComponent });
 
+	pComponent = m_pSparkAnimation = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_Spark_Animation", this));
+	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Spark_Animation", pComponent });
+
 	pComponent = m_pTextureCom2 = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Boss3_HandPart_Shadow", this));
 	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_HandPart_Shadow", pComponent });
@@ -178,7 +187,6 @@ HRESULT CBoss3HandPart::Add_Component(void)
 	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
-
 
 	return S_OK;
 }

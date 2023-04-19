@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev), m_bCol(false)
 {
 }
 

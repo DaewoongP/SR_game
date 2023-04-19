@@ -198,7 +198,11 @@ void CPig::OnCollisionEnter(const Collision * collision)
 			m_bMoveLeft = true;
 			m_pTransform->m_vScale.x = PIGSCALE;
 		}
+
 	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike")&&( collision->_dir == DIR_DOWN || collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT))
+		m_bDead = true;
+	
 	__super::OnCollisionEnter(collision);
 }
 
@@ -219,6 +223,10 @@ void CPig::OnCollisionStay(const Collision * collision)
 		D3DXVec3Normalize(&vDir, &vDir);
 
 		m_pTransform->Move_Pos(&vDir, 1.0f, fLength);
+	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike"))
+	{
+		m_bDead = true;
 	}
 
 	__super::OnCollisionStay(collision);

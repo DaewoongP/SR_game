@@ -22,6 +22,7 @@
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="BulletPool.h" />
     <ClInclude Include="TexParticle.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleParticle.h" />
@@ -82,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="TexParticle.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleParticle.cpp" />

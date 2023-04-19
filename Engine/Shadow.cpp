@@ -32,7 +32,7 @@ void CShadow::Render_Shadow(CVIBuffer* VIBuffer)
 
 	FAILED(m_pGraphicDev->GetTransform(D3DTS_WORLD, &matWorld));
 
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
@@ -69,7 +69,7 @@ void CShadow::Render_Shadow(CVIBuffer* VIBuffer)
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 }

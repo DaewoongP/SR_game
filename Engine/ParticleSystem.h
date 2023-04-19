@@ -50,7 +50,11 @@ public:
 		m_bTrigger = true;
 	}
 	void End_Particle() { m_bTrigger = false; }
-	void Set_Size(_float fSize) { m_Size = fSize; }
+	void Set_Size(_float fSize)
+	{
+		m_InitSize = fSize;
+		m_Size = fSize;
+	}
 	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
 	void Set_World(_matrix mat) { m_matWorld = mat; }
 protected:
@@ -63,11 +67,12 @@ protected:
 protected:
 	_vec3					m_vOrigin;
 	BoundingBox				m_BoundingBox;
-	float					m_EmitRate;
-	float					m_Size;
+	_float					m_EmitRate;
+	_float					m_Size;
+	_float					m_InitSize;
 	LPDIRECT3DVERTEXBUFFER9 m_VB;
 	list<Particle>			m_Particles;
-	int						m_MaxParticles;
+	_int						m_MaxParticles;
 	DWORD					m_dwFVF;
 	DWORD					m_VBSize;
 	DWORD					m_VBOffset;

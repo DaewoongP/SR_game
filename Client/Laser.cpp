@@ -4,8 +4,8 @@
 
 CLaser::CLaser(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
-	m_bUse(false),
 	m_fSpeed(15.f),
+	m_bUse(true),
 	m_eLaserDir(LASER_DIR_END)
 {
 }
@@ -30,7 +30,9 @@ HRESULT CLaser::Ready_GameObject(_vec3 & vPos, _int eDir)
 
 _int CLaser::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_pColParticle->OverOneParticleIsDead())
+	//if (m_pColParticle->OverOneParticleIsDead())
+	//	return OBJ_DEAD;
+	if (m_bDead)
 		return OBJ_DEAD;
 
 	if(LASER_RIGHT == m_eLaserDir)
@@ -52,8 +54,8 @@ void CLaser::LateUpdate_GameObject(void)
 
 void CLaser::Render_GameObject(void)
 {
-	if (-1 == m_pColParticle->Update_Particle())
-		return;
+	/*if (-1 == m_pColParticle->Update_Particle())
+		return;*/
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture();
@@ -66,12 +68,16 @@ void CLaser::Render_GameObject(void)
 
 void CLaser::OnCollisionEnter(const Collision * collision)
 {
-	BoundingBox box;
-	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
-	m_pColParticle->Set_BoundingBox(box);
-	m_pColParticle->Set_Options({ 0.f, 0.f, 1.f }, 1.f);
-	m_pColParticle->Start_Particle();
-	m_bDead = true;
+	if (lstrcmp(collision->otherObj->m_pTag, m_pTag))
+	{
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pColParticle->Set_BoundingBox(box);
+		m_pColParticle->Set_Options({ 0.f, 0.f, 1.f }, 1.f);
+		m_pColParticle->Start_Particle();
+
+		m_bUse = false;
+	}
 }
 
 HRESULT CLaser::Add_Component(void)

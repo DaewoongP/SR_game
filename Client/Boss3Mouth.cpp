@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Boss3Mouth.h"
 #include "Export_Function.h"
+#include "AbstractFactory.h"
+
+#include "Fireball.h"
 
 CBoss3Mouth::CBoss3Mouth(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_bShootAnimation(false)
+	:CGameObject(pGraphicDev), m_bShootAnimation(false), m_bShootBullet(false)
 {
 	m_pBoss3 = nullptr;
 }
@@ -17,7 +20,7 @@ HRESULT CBoss3Mouth::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	
 	m_pTransform->m_bIsStatic = true;
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{ vPos.x, vPos.y, vPos.z };
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(45.f));
 	m_pTextureCom->Add_Anim(L"Idle", 0, 0, 1.f, false);
 	m_pTextureCom->Add_Anim(L"Attack", 0, 5, 0.2f, false);
@@ -42,15 +45,15 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 		m_pTextureCom->Switch_Anim(L"Attack");
 	}
 		
-
 	if (m_pTextureCom->IsAnimationEnd(L"Attack"))
 	{
 		m_bShootAnimation = false;
 		m_pTextureCom->Switch_Anim(L"Idle");
 	}
 
-	//  1로 넣는 값이 z 변화, 2로 넣는 값이 y 변화, 3로 넣는 값이 x 변화,
-	m_pTransform->Set_ParentTransform(m_pBoss3, -5.f, -1.f, 0.f);
+	m_pTransform->Set_ParentTransform(m_pBoss3);
+
+	ShootBullet(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -103,6 +106,24 @@ HRESULT CBoss3Mouth::Add_Component(void)
 	m_vecComponent[ID_STATIC].push_back({ L"FireParticle", pComponent });
 
 	return S_OK;
+}
+
+void CBoss3Mouth::ShootBullet(const _float & fTimeDelta)
+{
+	if (m_bShootBullet)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, );
+
+		_float fX, fY, fZ;
+		fX = m_pTransform->Get_WorldMatrixPointer()->m[3][0];
+		fY = m_pTransform->Get_WorldMatrixPointer()->m[3][1] - 1.5f;
+		fZ = m_pTransform->Get_WorldMatrixPointer()->m[3][2];
+
+		FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, _vec3{ fX, fY, fZ}), );
+
+		m_bShootBullet = false;
+	}
 }
 
 CBoss3Mouth * CBoss3Mouth::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

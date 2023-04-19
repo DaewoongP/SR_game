@@ -1,6 +1,9 @@
 #pragma once
 #include "MoveCube.h"
+BEGIN(Engine)
 
+class CJumpParticle;
+END
 class CPortalCube :
 	public CMoveCube
 {
@@ -29,6 +32,7 @@ public:
 	void ShootRay_Portal();
 	_vec3 GetDirVec() { return m_DirVec; }
 
+	void Start_PortalParticle();
 private:
 	HRESULT		Add_Component(void);
 
@@ -45,5 +49,6 @@ private:
 	class CGameObject*		m_pOtherCube;
 	_bool					m_bInit;
 	_vec3					m_DirVec;
+	Engine::CJumpParticle*	m_pPortalParticle;
 };
 

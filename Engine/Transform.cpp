@@ -101,7 +101,7 @@ const _matrix* Engine::CTransform::Compute_Lookattarget(const _vec3* pTargetPos)
 			D3DXVec3Normalize(&vUp, &m_vInfo[INFO_UP]))));
 }
 
-void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _float fY, _float fZ)
+void CTransform::Set_ParentTransform(CGameObject * pParentObject)
 {
 	// 초기화
 	D3DXMatrixIdentity(&m_matWorld);
@@ -122,7 +122,7 @@ void CTransform::Set_ParentTransform(CGameObject * pParentObject, _float fX, _fl
 
 	//이동
 	_matrix matTrans;
-	D3DXMatrixTranslation(&matTrans, fX, fY, fZ);
+	D3DXMatrixTranslation(&matTrans, m_vInfo[INFO_POS].x, m_vInfo[INFO_POS].y, m_vInfo[INFO_POS].z);
 
 	// 부모값 넣음
 	if (nullptr != pParentObject)

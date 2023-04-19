@@ -25,8 +25,9 @@ public:
 public:
 	void				Delete_In_Layer();
 
+	HRESULT				Delete_LastObject(CGameObject* pGameObject);
 private:
-	multimap<const _tchar*, CGameObject*>	m_uMapObject;
+	list<pair<const _tchar*, CGameObject*>>	m_uMapObject;
 
 	_bool		bPreState;
 
