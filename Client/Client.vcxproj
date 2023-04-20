@@ -185,6 +185,7 @@
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultUnit.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="FinalStage1.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="CrackCube.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FinalStage1.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />

@@ -212,6 +212,9 @@
     <Filter Include="00. GameObject\02. MapObject\Water\WaterPipe">
       <UniqueIdentifier>{3d1fccab-a871-41ec-9d36-e92b90fdca51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\Fade">
+      <UniqueIdentifier>{d82387aa-7a56-444b-bdde-d2b826d01d51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -540,6 +543,9 @@
     <ClInclude Include="Thirddee.h">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>00. GameObject\99. Etc\Fade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -866,6 +872,9 @@
     </ClCompile>
     <ClCompile Include="Thirddee.cpp">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
+    </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>00. GameObject\99. Etc\Fade</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

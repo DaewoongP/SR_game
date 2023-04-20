@@ -17,6 +17,8 @@
 #define			OBJ_NOEVENT		0
 #define			OBJ_DEAD		1
 #define			STAGE_END		2
+#define			STAGE_FAILED	3
+#define			STAGE_FADE		4
 
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(NULL, TEXT(_message), L"System Message", MB_OK)
