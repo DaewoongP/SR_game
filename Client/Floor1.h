@@ -9,12 +9,12 @@ class CTexture;
 class CTransform;
 END
 
-class CMapDeco:
+class CFloor1 :
 	public CBackGroundBase
 {
 private:
-	explicit CMapDeco(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMapDeco();
+	explicit CFloor1(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFloor1();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -29,11 +29,11 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 public:
-	static CMapDeco* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos,_int eDir);
+	static CFloor1* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int eDir);
 
 private:
 	virtual void Free(void);
-	CUBE_DIR				m_eDir;	
+	CUBE_DIR				m_eDir;
 	_vec3					m_DirVec;
 
 
