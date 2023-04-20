@@ -23,12 +23,11 @@ public:
 
 	void Set_LoadingID(LOADINGID eID) { m_eLoadingID = eID; };
 	LOADINGID	Get_LoadingID() { return m_eLoadingID; }
+
 protected:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;
 	unordered_map<const _tchar*, CLayer*>		m_uMapLayer;
 	LOADINGID					m_eLoadingID;
-
-	CGameObject*				m_pFade;
 protected:
 	virtual void	Free(void);
 };

@@ -3,7 +3,7 @@
 #include "PreStage.h"
 
 CFade::CFade(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_bReStart(false)
+	:CGameObject(pGraphicDev)
 {
 }
 
@@ -11,26 +11,32 @@ CFade::~CFade()
 {
 }
 
-HRESULT CFade::Ready_GameObject(void)
+HRESULT CFade::Ready(_bool isFadeIn)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_fFadeSpeed = 70.f;
-	m_pTransform->m_vScale *= 80.f;
+	if (isFadeIn)
+	{
+		m_fFadeSpeed = -70.f;
+		m_pTransform->m_vScale *= 80.f;
+	}
+	else
+	{
+		m_fFadeSpeed = 70.f;
+		m_pTransform->m_vScale *= 1.6f;
+	}
+	
 	return S_OK;
 }
 
 _int CFade::Update_GameObject(const _float & fTimeDelta)
 {
-	if (1.5f >= m_pTransform->m_vScale.x && 0 < m_fFadeSpeed)
-	{
-		m_fFadeSpeed *= -1;
-		m_bReStart = true;
-	}
-		
-	m_pTransform->m_vScale -= _vec3(1.f, 1.f, 1.f) * fTimeDelta * m_fFadeSpeed;
+	if (1.5f >= m_pTransform->m_vScale.x)
+		return STAGE_FADEIN;
+	if (81.f <= m_pTransform->m_vScale.x)
+		return STAGE_FADEOUT;
 
-	if (m_pTransform->m_vScale.x > 80.f)
-		return STAGE_FADE;
+	m_pTransform->m_vScale += _vec3(1.f, 1.f, 1.f) * fTimeDelta * m_fFadeSpeed;
+
 	Engine::Add_RenderGroup(RENDER_UI, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -73,11 +79,11 @@ HRESULT CFade::Add_Component(void)
 	return S_OK;
 }
 
-CFade * CFade::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CFade * CFade::Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool isFadeIn)
 {
 	CFade*		pInstance = new CFade(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready(isFadeIn)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

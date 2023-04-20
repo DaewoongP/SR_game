@@ -3,6 +3,8 @@
 #include "Export_Function.h"
 #include "..\Client\PreStage.h"
 #include "..\Client\Key.h"
+#include "..\Client\Fade.h"
+#include "AbstractFactory.h"
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev), m_eLoadingID(LOADING_END)
 {
@@ -48,7 +50,7 @@ CGameObject * CScene::Get_GameObject(const _tchar * pLayerTag, const _tchar * pO
 _int CScene::Update_Scene(const _float & fTimeDelta)
 {
 	_int iResult = 0;
-
+	
 	for (auto& iter : m_uMapLayer)
 	{
 		iResult = iter.second->Update_Layer(fTimeDelta);
@@ -64,11 +66,19 @@ _int CScene::Update_Scene(const _float & fTimeDelta)
 			pScene->Update_Scene(fTimeDelta);
 			return 0;
 		}
+		else if (STAGE_FAILED == iResult)
+		{
+			// 스테이지 실패
+			m_eLoadingID = LOADINGID((_int)m_eLoadingID);
+			CScene*	pScene = CPreStage::Create(m_pGraphicDev, m_eLoadingID);
+			NULL_CHECK_RETURN(pScene, -1);
+			Engine::Set_Scene(pScene);
+			return 0;
+		}
 
 		if (iResult & 0x80000000)
 			return iResult;
 	}
-
 	return iResult;
 }
 

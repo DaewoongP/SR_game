@@ -67,11 +67,23 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 			return STAGE_END;
 		}
 
-		if (OBJ_DEAD == iResult)
+		else if (OBJ_DEAD == iResult)
 		{
+			if (!lstrcmp(iter->second->m_pTag, L"Toodee") ||
+				!lstrcmp(iter->second->m_pTag, L"Topdee") ||
+				!lstrcmp(iter->second->m_pTag, L"Thirddee"))
+			{
+				Engine::Clear_Collision();
+				return STAGE_FAILED;
+			}
 			Engine::Delete_Collider(iter->second);
 			Safe_Release(iter->second);
 			iter = m_uMapObject.erase(iter);
+		}
+		else if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN)
+		{
+			Engine::Clear_Collision();
+			return STAGE_FAILED;
 		}
 		else
 			++iter;

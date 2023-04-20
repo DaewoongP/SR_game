@@ -14,11 +14,9 @@ private:
 	virtual ~CFade();
 
 public:
-	virtual HRESULT Ready_GameObject(void) override;
+	HRESULT Ready(_bool isFadeIn);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void Render_GameObject(void) override;
-
-	_bool	Get_Restart() { return m_bReStart; }
 private:
 	HRESULT		Add_Component(void);
 
@@ -27,10 +25,8 @@ private:
 	Engine::CTexture*	m_pFadeTex;
 
 	_float				m_fFadeSpeed;
-
-	_bool				m_bReStart;
 public:
-	static CFade*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CFade*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool isFadeIn);
 
 private:
 	virtual void Free(void) override;

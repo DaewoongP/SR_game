@@ -37,12 +37,13 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 {
 	// 스테이지 이동전 돌 수 있는 업데이트 ~ 렌더 씬
 	int iExit = __super::Update_Scene(fTimeDelta);
-	if (true == m_pLoading->Get_Finish())
+	if (m_pLoading == nullptr)
+		return 0;
+	if (true == m_pLoading->Get_Finish() && Engine::IsPermit_Call(L"1Sec",fTimeDelta))
 	{
 		g_Is2D = true;
 		CScene* pScene = m_pScene;
 		Engine::Set_Scene(pScene);
-
 		pScene->Update_Scene(fTimeDelta);
 		return 0;
 	}
