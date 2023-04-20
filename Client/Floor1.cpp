@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "MapDeco.h"
+#include "Floor1.h"
 
-CMapDeco::CMapDeco(LPDIRECT3DDEVICE9 pGraphicDev) :CBackGroundBase(pGraphicDev)
+CFloor1::CFloor1(LPDIRECT3DDEVICE9 pGraphicDev) :CBackGroundBase(pGraphicDev)
 {
 }
 
-CMapDeco::~CMapDeco()
+CFloor1::~CFloor1()
 {
 }
 
-HRESULT CMapDeco::Ready_GameObject(_vec3& vPos)
+HRESULT CFloor1::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -17,7 +17,7 @@ HRESULT CMapDeco::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	
+
 	switch (m_eDir)
 	{
 	case Engine::CD_UP:
@@ -35,7 +35,7 @@ HRESULT CMapDeco::Ready_GameObject(_vec3& vPos)
 	return S_OK;
 }
 
-_int CMapDeco::Update_GameObject(const _float& fTimeDelta)
+_int CFloor1::Update_GameObject(const _float& fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
@@ -43,7 +43,7 @@ _int CMapDeco::Update_GameObject(const _float& fTimeDelta)
 	return 0;
 }
 
-void CMapDeco::Render_GameObject(void)
+void CFloor1::Render_GameObject(void)
 {
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
@@ -56,7 +56,7 @@ void CMapDeco::Render_GameObject(void)
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
-HRESULT CMapDeco::Add_Component(void)
+HRESULT CFloor1::Add_Component(void)
 {
 	CComponent* pComponent = nullptr;
 
@@ -70,15 +70,15 @@ HRESULT CMapDeco::Add_Component(void)
 
 	return S_OK;
 }
-void CMapDeco::Set_CubeDir(CUBE_DIR dir)
+void CFloor1::Set_CubeDir(CUBE_DIR dir)
 {
 	m_eDir = dir;
 	_vec3 dirvec[CD_END] = { {0,1,0},{0,-1,0},{-1,0,0},{1,0,0} };
 	m_DirVec = dirvec[dir];
 }
-CMapDeco* CMapDeco::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos,int eDir)
+CFloor1* CFloor1::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, int eDir)
 {
-	CMapDeco* pInstance = new CMapDeco(pGraphicDev);
+	CFloor1* pInstance = new CFloor1(pGraphicDev);
 	pInstance->Set_CubeDir((CUBE_DIR)eDir);
 
 
@@ -91,7 +91,7 @@ CMapDeco* CMapDeco::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos,int eDir)
 	return pInstance;
 }
 
-void CMapDeco::Free(void)
+void CFloor1::Free(void)
 {
 	__super::Free();
 }

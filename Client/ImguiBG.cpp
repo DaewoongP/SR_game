@@ -45,16 +45,37 @@ HRESULT CImguiBG::BGMenu()
 		const char* items[] = { "BackCloud", "MapDeco" };
 		ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 	
-		if (m_BG_On && nullptr == m_pDefaultBG)
+		if (1 == m_iBG_Type)
 		{
-			CreateDefaultBG();
+			if (ImGui::Button("LEFT"))
+				m_tDecoDir = CD_LEFT;
 
+			ImGui::SameLine();
+			if (ImGui::Button("RIGHT"))
+				m_tDecoDir = CD_RIGHT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("UP"))
+				m_tDecoDir = CD_UP;
+
+			ImGui::SameLine();
+			if (ImGui::Button("DOWN"))
+				m_tDecoDir = CD_DOWN;
 		}
 
-		if (m_BG_On && nullptr != m_pDefaultBG)
-			InstallBG();
 
+		if (m_BG_On && nullptr == m_pDefaultBG)
 		
+			CreateDefaultBG();
+			
+		
+
+		if (m_BG_On && nullptr != m_pDefaultBG)
+		{
+			InstallBG();
+			//Preview();
+			
+		}
 		if (!m_BG_On && nullptr != m_pDefaultBG)
 		{
 			m_pDefaultBG->m_bDead = true;
@@ -69,8 +90,8 @@ HRESULT CImguiBG::BGMenu()
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
 			FAILED_CHECK_RETURN(LoadBG(m_iStageNumber), E_FAIL);
-
-
+		
+	
 
 
 		ImGui::TreePop();
@@ -79,6 +100,40 @@ HRESULT CImguiBG::BGMenu()
 
 
 	return S_OK;
+}
+void CImguiBG::Preview()
+{
+	//ImGuiIO& io = ImGui::GetIO();
+	//ImTextureID my_tex_id = io.Fonts->TexID;
+	////ImTextureID MyTex = 
+	//float my_tex_w = (float)io.Fonts->TexWidth;
+	//float my_tex_h = (float)io.Fonts->TexHeight;
+
+	//ImVec2 uv_min = ImVec2(0.0f, 0.0f);
+	//ImVec2 uv_max = ImVec2(1.0f, 1.0f);
+	//ImVec4 tint_col = ImGui::GetStyleColorVec4(ImGuiCol_Text);// : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
+	//ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
+	//ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), uv_min, uv_max, tint_col, border_col);
+
+}
+bool LoadTextureFromFile(const char* filename, LPDIRECT3DTEXTURE9* Out_Texture, int* out_width, int* out_height)
+{
+	// Load texture from disk
+	//PDIRECT3DTEXTURE9 texture;
+	D3DSURFACE_DESC my_image_desc;
+
+	//texture->GetLevelDesc(0, &my_image_desc);
+
+	// Retrieve description of the texture surface so we can access its size
+	//*Out_Texture = texture;
+	//*out_width = (int)my_image_desc.Width;
+	//*out_height = (int)my_image_desc.Height;
+
+	
+
+	return true;
+ 
+ 
 }
 void CImguiBG::CreateDefaultBG()
 {
@@ -106,7 +161,7 @@ void CImguiBG::InstallBG()
 			MakeBG<CBackCloud>(pStageLayer, L"BackCloud");
 
 		else if (1 == m_iBG_Type)
-			MakeBG<CMapDeco>(pStageLayer, L"MapDeco");
+			MakeBGNum<CMapDeco>(pStageLayer, L"MapDeco",(_int)m_tDecoDir);
 
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
@@ -219,3 +274,15 @@ void CImguiBG::MakeBG(CLayer* pLayer, const _tchar* pObjTag)
 	m_vecGameObject.push_back(pGameObject);
 }
 
+template<typename T>
+void CImguiBG::MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], iNum);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
