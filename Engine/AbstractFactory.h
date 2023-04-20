@@ -88,7 +88,7 @@ public:
 		return S_OK;
 	}
 	//백그라운드 오브젝트 생성용
-	static HRESULT	CreateParent(const _tchar * pObjTag, _vec3& vPos, _float fScale)
+	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos, _float fScale)
 	{
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, fScale);
