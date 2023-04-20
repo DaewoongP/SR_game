@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MapDeco.h"
 
-CMapDeco::CMapDeco(LPDIRECT3DDEVICE9 pGraphicDev) :CGameObject(pGraphicDev)
+CMapDeco::CMapDeco(LPDIRECT3DDEVICE9 pGraphicDev) :CBackGroundBase(pGraphicDev)
 {
 }
 
@@ -37,7 +37,6 @@ HRESULT CMapDeco::Ready_GameObject(_vec3& vPos)
 
 _int CMapDeco::Update_GameObject(const _float& fTimeDelta)
 {
-	m_pTransform->Rotation(ROT_Z, D3DXToRadian(0.3f));
 	__super::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);

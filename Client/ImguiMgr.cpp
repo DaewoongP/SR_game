@@ -7,11 +7,12 @@
 
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
+#include"ImguiBG.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
-	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pToodee(nullptr),
+	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pImguiBG(nullptr), m_pToodee(nullptr),
 	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true), m_bDeleteAll(false),
 	m_iStageNumber(0)
 {
@@ -26,6 +27,7 @@ HRESULT CImguiMgr::Ready_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 {
 	m_pImguiStage = CImguiStage::Create(m_pGraphicDev);
 	m_pImguiUnit = CImguiUnit::Create(m_pGraphicDev);
+	m_pImguiBG =   CImguiBG::Create(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -82,6 +84,23 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				ImGui::End();
 			}
 		}
+
+		{
+			ImGui::Checkbox("BackGround", &m_bBGTool);
+
+			if (m_bBGTool)
+			{
+				ImGui::Begin("BackGround");
+
+				m_pImguiBG->Update_Imgui_Unit();
+
+				ImGui::End();
+
+			}
+
+		}
+
+
 
 		// 스테이지 선택 콤보 박스
 		const char* items[] = { "1", "2", "3", "4", "5", "6", "7" };
@@ -149,7 +168,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 	m_pGraphicDev->EndScene();
-	//m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	return S_OK;
@@ -159,9 +178,11 @@ void CImguiMgr::Release()
 {
 	m_pImguiStage->Release();
 	m_pImguiUnit->Release();
+	m_pImguiBG->Release();
 
 	Safe_Delete(m_pImguiStage);
 	Safe_Delete(m_pImguiUnit);
+	Safe_Delete(m_pImguiBG);
 
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();

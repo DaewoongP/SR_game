@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BackCloud.h"
 
-CBackCloud::CBackCloud(LPDIRECT3DDEVICE9 pGraphicDev) :CGameObject(pGraphicDev)
+CBackCloud::CBackCloud(LPDIRECT3DDEVICE9 pGraphicDev) :CBackGroundBase(pGraphicDev)
 {
 }
 
@@ -15,6 +15,8 @@ HRESULT CBackCloud::Ready_GameObject(_vec3& vPos)
 
 
 	m_pTransform->m_vScale = { 15.f, 15.f, 1.f };
+
+
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 

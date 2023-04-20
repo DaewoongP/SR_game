@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Include.h"
-#include "GameObject.h"
+#include "BackGroundBase.h"
 
 BEGIN(Engine)
 class CRcTex;
@@ -10,7 +10,7 @@ class CTransform;
 END
 
 class CMapDeco:
-	public CGameObject
+	public CBackGroundBase
 {
 private:
 	explicit CMapDeco(LPDIRECT3DDEVICE9 pGraphicDev);

@@ -123,6 +123,9 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_Monster_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss1Spr/boss1Spr_0.png")), E_FAIL);
 	// imgui 디폴트 맵 오브젝트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_MapObject_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/planetsSpr/planetsSpr_0.png")), E_FAIL);
+	// imgui default bg
+		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_BG_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/planetsSpr/planetsSpr_0.png")), E_FAIL);
+
 	// 포탈
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Portal_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/portalSpr/NewportalSpr/portalSpr_%d.png", 11)), E_FAIL);
 	// 포탈 진입 애니메이션

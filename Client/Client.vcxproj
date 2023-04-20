@@ -182,9 +182,11 @@
     <ClInclude Include="Boss3Mouth.h" />
     <ClInclude Include="Boss3HandPart.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CrackCube.h" />
+    <ClInclude Include="DefaultBG.h" />
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultUnit.h" />
@@ -282,9 +284,11 @@
     <ClCompile Include="Boss3Mouth.cpp" />
     <ClCompile Include="Boss3HandPart.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="CrackCube.cpp" />
+    <ClCompile Include="DefaultBG.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="FinalStage1.cpp" />

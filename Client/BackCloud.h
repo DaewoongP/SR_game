@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Include.h"
-#include "GameObject.h"
+#include "BackGroundBase.h"
 
 BEGIN(Engine)
 class CRcTex;
@@ -10,7 +10,7 @@ class CTransform;
 END
 
 class CBackCloud :
-	public CGameObject
+	public CBackGroundBase
 {
 private:
 	explicit CBackCloud(LPDIRECT3DDEVICE9 pGraphicDev);
