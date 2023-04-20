@@ -73,7 +73,7 @@ void CThirdCamera::Set_TopdeeCam(const _float& fTimeDelta)
 
 void CThirdCamera::Update_Matrix()
 {
-	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DXToRadian(45.f), (_float)WINCX / WINCY, 1.f, 100.f);
+	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DXToRadian(45.f), (_float)WINCX / WINCY, 1.f, 500.f);
 	D3DXMatrixLookAtLH(&m_matView, &m_vViewInfo[EYE], &m_vViewInfo[AT], &m_vViewInfo[UP]);
 }
 

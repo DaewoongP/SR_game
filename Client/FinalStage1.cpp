@@ -13,6 +13,7 @@
 #include "Topdee.h"
 #include "MoveCamera.h"
 #include "Thirddee.h"
+#include "SkyBox.h"
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -70,6 +71,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

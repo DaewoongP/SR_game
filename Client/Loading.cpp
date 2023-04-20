@@ -336,7 +336,7 @@ _uint CLoading::Loading_ForStage2(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading2 Complete!!!!!!!!");
 	return 0;
 }
@@ -349,7 +349,7 @@ _uint CLoading::Loading_ForStage3(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading3 Complete!!!!!!!!");
 	return 0;
 }
@@ -362,7 +362,7 @@ _uint CLoading::Loading_ForStage4(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading4 Complete!!!!!!!!");
 	return 0;
 }
@@ -375,7 +375,7 @@ _uint CLoading::Loading_ForFinal1(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading Final Complete!!!!!!!!");
 	return 0;
 }
