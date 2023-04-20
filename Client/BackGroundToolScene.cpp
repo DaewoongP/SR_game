@@ -13,6 +13,8 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 
+#include "Theme1_Cloud.h"
+
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CScene(pGraphicDev)
@@ -52,6 +54,9 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f,17.f,10.f),10.f), E_FAIL);
+
 
 	for (int i = 0; i < CUBEY; i++)
 	{

@@ -215,11 +215,25 @@
     <Filter Include="00. GameObject\03. BackGroudObj\01.Stage1\Map Deco">
       <UniqueIdentifier>{f9f683c7-d2b4-4a69-b75b-c0a3e8408a24}</UniqueIdentifier>
     </Filter>
+<<<<<<< Updated upstream
     <Filter Include="Imgui\Imgui_Menu\Imgui_BG">
       <UniqueIdentifier>{c61e7019-9f4a-449f-aaa8-fe93481af678}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imgui\Imgui_Object\BackGround">
       <UniqueIdentifier>{03fa6ccb-6c07-41f3-87b0-4135fd3085af}</UniqueIdentifier>
+=======
+    <Filter Include="Imgui\Imgui_Menu\imgui_BackGroudTool">
+      <UniqueIdentifier>{b4480c7e-754e-4e33-bcad-6f77974ae818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj\Base">
+      <UniqueIdentifier>{a7af5869-f533-47ff-8537-f60fdada41c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj\Base\Theme1">
+      <UniqueIdentifier>{cae4b64d-1f91-427e-87ed-61afe9504b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\BackGroundTool">
+      <UniqueIdentifier>{34d7af29-e46c-4b32-8a5b-a8d51d1c3064}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -541,21 +555,32 @@
     <ClInclude Include="Thirddee.h">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
-    <ClInclude Include="BackGroundBase.h">
-      <Filter>00. GameObject\03. BackGroudObj</Filter>
-    </ClInclude>
     <ClInclude Include="BackCloud.h">
       <Filter>00. GameObject\03. BackGroudObj\01.Stage1\BackCloud</Filter>
     </ClInclude>
     <ClInclude Include="MapDeco.h">
       <Filter>00. GameObject\03. BackGroudObj\01.Stage1\Map Deco</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="BackGroundToolScene.h" />
     <ClInclude Include="ImguiBG.h">
       <Filter>Imgui\Imgui_Menu\Imgui_BG</Filter>
     </ClInclude>
     <ClInclude Include="DefaultBG.h">
       <Filter>Imgui\Imgui_Object\BackGround</Filter>
+=======
+    <ClInclude Include="ImguiBackGround.h">
+      <Filter>Imgui\Imgui_Menu\imgui_BackGroudTool</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundBase.h">
+      <Filter>00. GameObject\03. BackGroudObj\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme1_Cloud.h">
+      <Filter>00. GameObject\03. BackGroudObj\Base\Theme1</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundToolScene.h">
+      <Filter>01. Scene\BackGroundTool</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -876,21 +901,32 @@
     <ClCompile Include="Thirddee.cpp">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClCompile>
-    <ClCompile Include="BackGroundBase.cpp">
-      <Filter>00. GameObject\03. BackGroudObj</Filter>
-    </ClCompile>
     <ClCompile Include="BackCloud.cpp">
       <Filter>00. GameObject\03. BackGroudObj\01.Stage1\BackCloud</Filter>
     </ClCompile>
     <ClCompile Include="MapDeco.cpp">
       <Filter>00. GameObject\03. BackGroudObj\01.Stage1\Map Deco</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="BackGroundToolScene.cpp" />
     <ClCompile Include="ImguiBG.cpp">
       <Filter>Imgui\Imgui_Menu\Imgui_BG</Filter>
     </ClCompile>
     <ClCompile Include="DefaultBG.cpp">
       <Filter>Imgui\Imgui_Object\BackGround</Filter>
+=======
+    <ClCompile Include="ImguiBackGround.cpp">
+      <Filter>Imgui\Imgui_Menu\imgui_BackGroudTool</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundBase.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme1_Cloud.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Base\Theme1</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundToolScene.cpp">
+      <Filter>01. Scene\BackGroundTool</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
 </Project>
