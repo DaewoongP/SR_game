@@ -30,7 +30,11 @@ _int CTheme1_Tree::Update_Too(const _float & fTimeDelta)
 	D3DXVec2Normalize(&vdir, &vdir);
 
 	m_pTransform->m_vAngle.z = acosf(D3DXVec2Dot(&vdir, &_vec2(1.0f, 0.0f)));
+	
+	if (sunPos.y < ThisPos.y)
+		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
 
+	m_pTransform->Move_Floating(fTimeDelta, 0.01f, 60.f);
 
 	return 0;
 }
@@ -65,6 +69,10 @@ HRESULT CTheme1_Tree::Ready_GameObject(_vec3 & vPos, _float fScale)
 	m_pTransform->m_vScale = { fScale, fScale, 1.f };
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	_float fAngleInt = rand() % 6;
+
+	m_pTransform->m_fFloating = fAngleInt * 60.f;
 
 	return S_OK;
 }
