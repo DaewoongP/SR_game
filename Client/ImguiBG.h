@@ -16,7 +16,7 @@ public:
 	void InstallBG();
 	void Release();
 	HRESULT BGMenu();
-
+	void Preview();
 
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
@@ -31,7 +31,7 @@ private:
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;
 
-
+	CUBE_DIR	m_tDecoDir;
 
 
 
@@ -47,6 +47,11 @@ public:
 
 	template<typename T>
 	void MakeBG(CLayer* pLayer, const _tchar* pObjTag);
+
+	template<typename T>
+	void MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
+
+	
 
 };
 
