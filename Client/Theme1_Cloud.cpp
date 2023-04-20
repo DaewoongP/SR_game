@@ -13,20 +13,21 @@ CTheme1_Cloud::~CTheme1_Cloud()
 
 _int CTheme1_Cloud::Update_GameObject(const _float & fTimeDelta)
 {
-
-	return _int();
+m_pTransform->m_vAngle.z += D3DXToRadian(fTimeDelta);
+__super::Update_GameObject(fTimeDelta);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	return 0;
 }
 
 _int CTheme1_Cloud::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_vAngle.z += D3DXToRadian(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-	return _int();
+	
+	return 0;
 }
 
 _int CTheme1_Cloud::Update_Top(const _float & fTimeDelta)
 {
-	return _int();
+	return 0;
 }
 
 void CTheme1_Cloud::Render_Too()
