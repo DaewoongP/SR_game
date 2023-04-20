@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Typedef.h"
-#include <filesystem>
 
 template <typename T>			// 클래스 포인터들을 해제
 DWORD Safe_Release(T& pointer)

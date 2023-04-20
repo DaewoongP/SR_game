@@ -1,32 +1,31 @@
-
 #include "stdafx.h"
-#include "Theme1_Cloud.h"
+#include "Theme1_Cube.h"
 
-CTheme1_Cloud::CTheme1_Cloud(LPDIRECT3DDEVICE9 pGraphicDev)
+
+CTheme1_Cube::CTheme1_Cube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CBackGroundBase(pGraphicDev)
 {
 }
 
-CTheme1_Cloud::~CTheme1_Cloud()
+CTheme1_Cube::~CTheme1_Cube()
 {
 }
 
-_int CTheme1_Cloud::Update_GameObject(const _float & fTimeDelta)
+_int CTheme1_Cube::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
 
-_int CTheme1_Cloud::Update_Too(const _float & fTimeDelta)
+_int CTheme1_Cube::Update_Too(const _float & fTimeDelta)
 {
-	m_pTransform->m_vAngle.z += D3DXToRadian(fTimeDelta);
 
 	return 0;
 }
 
-void CTheme1_Cloud::Render_GameObject(void)
+void CTheme1_Cube::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -35,9 +34,9 @@ void CTheme1_Cloud::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 }
 
-CTheme1_Cloud * CTheme1_Cloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
+CTheme1_Cube * CTheme1_Cube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
 {
-	CTheme1_Cloud*		pInstance = new CTheme1_Cloud(pGraphicDev);
+	CTheme1_Cube*		pInstance = new CTheme1_Cube(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos, fScale)))
 	{
@@ -48,7 +47,7 @@ CTheme1_Cloud * CTheme1_Cloud::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPo
 	return pInstance;
 }
 
-HRESULT CTheme1_Cloud::Ready_GameObject(_vec3 & vPos, _float fScale)
+HRESULT CTheme1_Cube::Ready_GameObject(_vec3 & vPos, _float fScale)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -59,7 +58,7 @@ HRESULT CTheme1_Cloud::Ready_GameObject(_vec3 & vPos, _float fScale)
 	return S_OK;
 }
 
-HRESULT CTheme1_Cloud::Add_Component(void)
+HRESULT CTheme1_Cube::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -67,14 +66,14 @@ HRESULT CTheme1_Cloud::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"T1Cloud", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"T1Cube", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"T1Cloud", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"T1Cube", pComponent });
 
 	return S_OK;
 }
 
-void CTheme1_Cloud::Free(void)
+void CTheme1_Cube::Free(void)
 {
 	__super::Free();
 }

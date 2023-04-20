@@ -192,7 +192,13 @@ _uint CLoading::Loading_ForLogo(void)
 
 	//테마 1 구름
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cloud.png")), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1House", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/House.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Sun", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Sun.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Tree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Tree.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Wall", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Wall.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cube", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cube.png")), E_FAIL);
+	
+	
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);

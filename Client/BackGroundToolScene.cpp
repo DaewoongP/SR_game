@@ -14,6 +14,12 @@
 #include "ImguiUnit.h"
 
 #include "Theme1_Cloud.h"
+#include "Theme1_House.h"
+#include "Theme1_Sun.h"
+#include "Theme1_Tree.h"
+#include "Theme1_Wall.h"
+#include "Theme1_Cube.h"
+
 
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
@@ -55,8 +61,12 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f,17.f,10.f),10.f), E_FAIL);
-
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pLayer, _vec3(40.f, 30.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

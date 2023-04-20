@@ -194,7 +194,6 @@
     <ClInclude Include="FinalStage1.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
-    <ClInclude Include="ImguiBackGround.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="LightningCloud.h" />
@@ -241,6 +240,11 @@
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Theme1_Cloud.h" />
+    <ClInclude Include="Theme1_Cube.h" />
+    <ClInclude Include="Theme1_House.h" />
+    <ClInclude Include="Theme1_Sun.h" />
+    <ClInclude Include="Theme1_Tree.h" />
+    <ClInclude Include="Theme1_Wall.h" />
     <ClInclude Include="Thirddee.h" />
     <ClInclude Include="Tookee.h" />
     <ClInclude Include="ThirdCamera.h" />
@@ -298,7 +302,6 @@
     <ClCompile Include="FinalStage1.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
-    <ClCompile Include="ImguiBackGround.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
@@ -343,6 +346,11 @@
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Theme1_Cloud.cpp" />
+    <ClCompile Include="Theme1_Cube.cpp" />
+    <ClCompile Include="Theme1_House.cpp" />
+    <ClCompile Include="Theme1_Sun.cpp" />
+    <ClCompile Include="Theme1_Tree.cpp" />
+    <ClCompile Include="Theme1_Wall.cpp" />
     <ClCompile Include="Thirddee.cpp" />
     <ClCompile Include="Tookee.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />

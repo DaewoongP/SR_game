@@ -14,7 +14,7 @@ IMPLEMENT_SINGLETON(CImguiMgr)
 CImguiMgr::CImguiMgr()
 	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pImguiBG(nullptr), m_pToodee(nullptr),
 	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true), m_bDeleteAll(false),
-	m_iStageNumber(0), m_bBackGroundTool(false)
+	m_iStageNumber(0)
 {
 }
 
@@ -80,18 +80,6 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				ImGui::Begin("UnitTool");
 
 				m_pImguiUnit->Update_Imgui_Unit();
-
-				ImGui::End();
-			}
-		}
-		//백그라운드
-		{
-			ImGui::Checkbox("BackGroundTool", &m_bBackGroundTool);
-			if (m_bBackGroundTool)
-			{
-				ImGui::Begin("BackGroundTool");
-
-				m_pImguiBackGround;
 
 				ImGui::End();
 			}
