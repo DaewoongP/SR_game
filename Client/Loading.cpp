@@ -10,6 +10,7 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Stage4.h"
+#include "Stage8.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -48,6 +49,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_STAGE4:
 		iFlag = pLoading->Loading_ForStage4();
+		break;
+	case LOADING_STAGE8:
+		iFlag = pLoading->Loading_ForStage8();
 		break;
 	case LOADING_BOSS:
 		break;
@@ -333,6 +337,19 @@ _uint CLoading::Loading_ForStage4(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 13;
 	Set_String(L"Loading4 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage8(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage8::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 13;
+	Set_String(L"Loading8 Complete!!!!!!!!");
 	return 0;
 }
 

@@ -120,6 +120,9 @@ void CFireball::Render_GameObject(void)
 
 void CFireball::OnCollisionEnter(const Collision* collision)
 {
+	if (!lstrcmp(collision->otherObj->m_pTag, L"LaserTurret"))
+		m_bDead = true;
+
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee")&& (g_Is2D == true))
 		m_bDead = true;
 }

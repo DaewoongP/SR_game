@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene.h"
 
-class CStage4 : public Engine::CScene
+class CStage8 : public Engine::CScene
 {
 private:
-	explicit CStage4(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStage4();
+	explicit CStage8(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStage8();
 
 public:
 	// CScene을(를) 통해 상속됨
@@ -18,11 +18,15 @@ private:
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
+	void				PatternSet(const _float & fTimeDelta);
+
+private:
+	_float				m_fCoolDown;
+	_int				m_iPreBossHp;
 
 public:
-	static CStage4*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CStage8*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free(void);
 };
-

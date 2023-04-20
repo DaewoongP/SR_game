@@ -27,6 +27,7 @@ public:
 	_uint				Loading_ForStage2(void);
 	_uint				Loading_ForStage3(void);
 	_uint				Loading_ForStage4(void);
+	_uint				Loading_ForStage8(void);
 
 	_int				Get_LoadingPercent() { return m_iLoadingTexImgNum; }
 private:

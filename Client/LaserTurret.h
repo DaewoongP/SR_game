@@ -51,6 +51,11 @@ private:
 	_float		m_fCoolDown;
 	_float		m_fColdist;
 
+	_vec3		m_vPos;
+	_vec3		m_vEnd;
+
+	CGameObject*	m_pBoss3;
+
 public:
 	static CLaserTurret* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 

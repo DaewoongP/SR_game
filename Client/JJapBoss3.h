@@ -7,13 +7,15 @@ BEGIN(Engine)
 class CRcTex;
 class CCircularParticle;
 class CTexParticle;
+class CShadow;
+
 END
 
-class CBoss3 : public CCube
+class JJapBoss3 : public CCube
 {
 private:
-	explicit CBoss3(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBoss3();
+	explicit JJapBoss3(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~JJapBoss3();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -32,51 +34,49 @@ public:
 
 	_int Get_ATKCount() { return m_iATKCount; }
 
-	// í…ŒìŠ¤íŠ¸ìš©ë„
+	// Å×½ºÆ®¿ëµµ
 public:
 	_int	Get_Boss3Hp() { return m_iBossHp; }
 	void	Set_Damage() { --m_iBossHp; }
 
 private:
 	HRESULT Add_Component(void);
-	void	LookAtPlayer();								// í”Œë ˆì´ì–´ ë°©í–¥ìœ¼ë¡œ ëª¸ì„ ëŒë¦¼
-	void	FollowPlayer(const _float & fTimeDelta);	// ì¶”ê²© í›„ ë‚´ë ¤ì°ê¸°ë¥¼ ì‹œì‘í•  í•¨ìˆ˜
-	void	BossAttack(const _float & fTimeDelta);		// ë‚´ë ¤ì°ëŠ” ê³µê²©
-	void	ShootBullet(const _float & fTimeDelta);		// ì´ì•Œ ì˜ëŠ” ê³µê²©
+	void	LookAtPlayer();								// ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î ¸öÀ» µ¹¸²
+	void	FollowPlayer(const _float & fTimeDelta);	// Ãß°İ ÈÄ ³»·ÁÂï±â¸¦ ½ÃÀÛÇÒ ÇÔ¼ö
+	void	BossAttack(const _float & fTimeDelta);		// ³»·ÁÂï´Â °ø°İ
+	void	ShootBullet(const _float & fTimeDelta);		// ÃÑ¾Ë ½î´Â °ø°İ
 	void	Do_Scream(const _float& fTimeDelta);
 	void	End_Scream(const _float& fTimeDelta);
 
 private:
-	_bool   m_bCreateHand;			// í•œë²ˆë§Œ ì–‘ì† ìƒì„± + í‘œì • ìƒì„±
-	CGameObject* m_pBossLeft;		// ì™¼ì† ì£¼ì†Œ
-	CGameObject* m_pBossRight;		// ì˜¤ë¥¸ì† ì£¼ì†Œ
+	_bool   m_bCreateHand;			// ÇÑ¹ø¸¸ ¾ç¼Õ »ı¼º + Ç¥Á¤ »ı¼º
+	CGameObject* m_pBossLeft;		// ¿Ş¼Õ ÁÖ¼Ò
+	CGameObject* m_pBossRight;		// ¿À¸¥¼Õ ÁÖ¼Ò
 	CGameObject* m_pBossLeftPart;
 	CGameObject* m_pBossRightPart;
 	CGameObject* m_pBossLeftPart1;
 	CGameObject* m_pBossRightPart1;
-	CGameObject* m_pMouth;			// ë³´ìŠ¤3 ì…
+	CGameObject* m_pMouth;			// º¸½º3 ÀÔ
 
-	_float  m_fXAngle;			// í”Œë ˆì´ì–´ ì „í™˜ ì‹œ xì¶• íšŒì „ ê°’
-	_float	m_fSpeed;			// ì´ë™ ì†ë„
-	_float  m_fAttackCoolDown;	// ê³µê²© ì¿¨ë‹¤ìš´
-	_float  m_fCoolDown;		// ì¶”ê²© ì¿¨ë‹¤ìš´
-	_float  m_fShootCoolDown;	// ì‚¬ê²© ì¿¨ë‹¤ìš´
+	_float  m_fXAngle;			// ÇÃ·¹ÀÌ¾î ÀüÈ¯ ½Ã xÃà È¸Àü °ª
+	_float	m_fSpeed;			// ÀÌµ¿ ¼Óµµ
+	_float  m_fAttackCoolDown;	// °ø°İ Äğ´Ù¿î
+	_float  m_fCoolDown;		// Ãß°İ Äğ´Ù¿î
+	_float  m_fShootCoolDown;	// »ç°İ Äğ´Ù¿î
 	_float	m_fShootterm;
 	_float  m_fShockDown;
 
-	_float	m_fPreToo;			// ì •ê·œí™”ëœ ì´ì „ íˆ¬ë”” ê°’ì„ ì €ì¥í•´ë‘ 
-	_float  m_fPreTop;			// ì´ì „ íƒ‘ë”” ê°’ì„ ì €ì¥í•´ë‘ 
+	_float	m_fPreToo;			// Á¤±ÔÈ­µÈ ÀÌÀü Åõµğ °ªÀ» ÀúÀåÇØµÒ
+	_float  m_fPreTop;			// ÀÌÀü Å¾µğ °ªÀ» ÀúÀåÇØµÒ
 
-	_bool m_bATKEnd=false;
-	_int m_iBossHp; //ì¶”í›„ì— ìŠ¤í…Œì´ì§€ë¡œ ì˜®ê²¨ì•¼í•¨
-	_bool m_bATKCnt; //ì „ê¸°ê³µê²©ì„í• ì§€ì•ˆí• ì§€íŒë‹¨
-	_int m_iATKCount;// ì¹´ìš´íŠ¸ 3ì´ë˜ë©´ ì „ê¸°ê³µê²©
+	_bool m_bATKEnd = false;
+	_int m_iBossHp; //ÃßÈÄ¿¡ ½ºÅ×ÀÌÁö·Î ¿Å°Ü¾ßÇÔ
+	_bool m_bATKCnt; //Àü±â°ø°İÀ»ÇÒÁö¾ÈÇÒÁöÆÇ´Ü
+	_int m_iATKCount;// Ä«¿îÆ® 3ÀÌµÇ¸é Àü±â°ø°İ
 	_bool m_bShoot = true;
 	_bool	m_bSpin = true;
 	_float m_fSoundCool;
-	_bool m_bSound	;
-
-	_vec3 m_vPrePos;
+	_bool m_bSound;
 
 	_float	m_fTimer;
 
@@ -85,7 +85,7 @@ private:
 	Engine::CTexParticle*		m_pScreamParticle;
 
 public:
-	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static JJapBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;
