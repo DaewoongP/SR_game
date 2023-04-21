@@ -23,7 +23,6 @@ public:
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
-	virtual void SwapTrigger() override;
 
 private:
 	HRESULT Add_Component(void);
@@ -34,7 +33,7 @@ private:
 
 private:
 	_int	m_iIndex;
-	_float  m_fAngle;
+	_float  m_fTimer;	// 플레이어 전환 시 x축 회전에 관여
 	_float	m_fSpeed;
 
 	_float  m_fCoolDown;

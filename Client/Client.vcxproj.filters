@@ -501,9 +501,6 @@
     <ClInclude Include="Stage8.h">
       <Filter>01. Scene\Stages</Filter>
     </ClInclude>
-    <ClInclude Include="JJapBoss3.h">
-      <Filter>00. GameObject\04. Boss\Boss3</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -806,9 +803,6 @@
     </ClCompile>
     <ClCompile Include="Stage8.cpp">
       <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
-    <ClCompile Include="JJapBoss3.cpp">
-      <Filter>00. GameObject\04. Boss\Boss3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

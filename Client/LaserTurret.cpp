@@ -4,7 +4,6 @@
 #include "AbstractFactory.h"
 
 #include "Boss3.h"
-#include "JJapBoss3.h"
 
 CLaserTurret::CLaserTurret(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
@@ -35,13 +34,18 @@ HRESULT CLaserTurret::Ready_GameObject(_vec3 & vPos, _int iIndex)
 _int CLaserTurret::Update_GameObject(const _float & fTimeDelta)
 {
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
+	m_fCoolDown += fTimeDelta;
 
 	if (m_bDead)
 		return OBJ_DEAD;
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
-	Shoot_Laser(fTimeDelta);
+	if (0.1f < m_fCoolDown)
+	{
+		Shoot_Laser(fTimeDelta);
+		m_fCoolDown = 0.f;
+	}		
 
 	m_vPos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, 0.1f);
 
@@ -147,27 +151,27 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 			!lstrcmp(_detectedCOL[0].tag, L"KeyCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"PortalCube")
 			)
-
+		{
 			m_fColdist = _detectedCOL[0].dist;
+		}			
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") ||
 			!lstrcmp(_detectedCOL[0].tag, L"Topdee")
 			)
 		{
-			//Engine::Get_GameObject(L"Layer_GameLogic", _detectedCOL[0].tag)->m_bDead = true;
+			Engine::Get_GameObject(L"Layer_GameLogic", _detectedCOL[0].tag)->m_bDead = true;
 		}
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Boss3"))
 		{
-			m_fColdist = _detectedCOL[0].dist + 10.f;
-			//dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
-			dynamic_cast<JJapBoss3*>(m_pBoss3)->Set_Damage();
+			m_fColdist = _detectedCOL[0].dist +10.f;
+			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
 		}
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Boss3Left") ||
 			!lstrcmp(_detectedCOL[0].tag, L"Boss3Right"))
 		{
-			m_fColdist = _detectedCOL[0].dist + 2.f;
+   			m_fColdist = _detectedCOL[0].dist +2.f;
 			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
 		}
 	}

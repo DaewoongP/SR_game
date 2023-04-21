@@ -10,17 +10,18 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 
-#include "JJapBoss3.h"
 #include "Boss3.h"
 #include "Key.h"
 #include "KeyCube.h"
 #include "Spike.h"
 #include "InstallCube.h"
+#include "LaserTurret.h"
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev),
-	m_iPreBossHp(2), 
-	m_fCoolDown(0.f)
+	m_iPreBossHp(3),
+	m_fDist(0.f),
+	m_bLerp(false), m_bLerpInit(true)
 {
 }
 
@@ -48,6 +49,9 @@ _int CStage8::Update_Scene(const _float & fTimeDelta)
 {
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		PatternSet(fTimeDelta);
+
+	if (m_bLerp)
+		Player_Reset();
 
 	return __super::Update_Scene(fTimeDelta);
 }
@@ -86,8 +90,7 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 16.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(18.f, 28.f, 11.f)), E_FAIL);
 
-	//FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 20.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<JJapBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 20.f, 10.f)), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
@@ -106,20 +109,23 @@ HRESULT CStage8::Ready_Layer_UI(const _tchar * pLayerTag)
 
 void CStage8::PatternSet(const _float & fTimeDelta)
 {
-	if(1 >= m_iPreBossHp)
-		m_fCoolDown += fTimeDelta;
-
 	CLayer*		pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	NULL_CHECK_RETURN(pLayer, );
 
 	_int iBossHp = 0;
 
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
-		iBossHp = dynamic_cast<JJapBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Boss3Hp();
+		iBossHp = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Boss3Hp();
 
 	// 보스 체력이 2가 되면
-	if (2 == iBossHp && 2 == m_iPreBossHp)
+	if (2 == iBossHp && 3 == m_iPreBossHp)
 	{
+		Engine::Get_GameObject(L"Layer_GameLogic", L"LaserTurret")->m_bDead = true;
+
+		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
+		m_bLerp = true;
+		m_bLerpInit = true;
+
 		for (int i = 0; i < 30; ++i)
 		{
 			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pLayer, _vec3((2.f * i + 2.f), 2.f, 10.f)), );
@@ -134,13 +140,20 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(4.f, 6.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(6.f, 6.f, 10.f)), );
 
-		--m_iPreBossHp;
+		FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(60.f, 20.f, 10.f), 1), );
+
+		m_iPreBossHp = 2;
 	}
 
 	// 보스 체력이 1이 되면
-	if (1 == iBossHp && 1 == m_iPreBossHp && m_fCoolDown >= 10.f &&
-		nullptr == Engine::Get_GameObject(L"Layer_GameLogic", L"Key"))
+	if (1 == iBossHp && 2 == m_iPreBossHp)
 	{
+		Engine::Get_GameObject(L"Layer_GameLogic", L"LaserTurret")->m_bDead = true;
+
+		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
+		m_bLerp = true;
+		m_bLerpInit = true;
+
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(32.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );
@@ -149,6 +162,34 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(2.f, 6.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(4.f, 6.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(6.f, 6.f, 10.f)), );
+
+		FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(60.f, 20.f, 10.f), 1), );
+
+		m_iPreBossHp = 1;
+	}
+}
+
+void CStage8::Player_Reset()
+{
+	_vec3 vLerp, vGoal;
+	vGoal = _vec3{ 6.f, 16.f, 10.f };
+
+	if (m_bLerpInit)
+	{
+		m_vPos = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS];
+		m_bLerpInit = false;
+	}		
+
+	D3DXVec3Lerp(&vLerp, &m_vPos, &vGoal, m_fDist);
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
+
+	m_fDist += 0.01;
+
+	if (1.f <= m_fDist)
+	{
+		m_bLerp = false;
+		m_fDist = 0.f;
 	}
 }
 

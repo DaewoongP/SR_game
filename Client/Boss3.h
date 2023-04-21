@@ -30,10 +30,10 @@ public:
 
 	void MakeChain();
 
-	_int Get_ATKCount() { return m_iATKCount; }
+	_int	Get_ATKCount() { return m_iATKCount; }
 
-	// 테스트용도
-public:
+	void	Set_Lerp() { m_bLerpMove = true; }
+
 	_int	Get_Boss3Hp() { return m_iBossHp; }
 	void	Set_Damage() { --m_iBossHp; }
 
@@ -45,6 +45,7 @@ private:
 	void	ShootBullet(const _float & fTimeDelta);		// 총알 쏘는 공격
 	void	Do_Scream(const _float& fTimeDelta);
 	void	End_Scream(const _float& fTimeDelta);
+	void	Lerp_Moving(const _float& fTimeDelta);
 
 private:
 	_bool   m_bCreateHand;			// 한번만 양손 생성 + 표정 생성
@@ -76,9 +77,9 @@ private:
 	_float m_fSoundCool;
 	_bool m_bSound	;
 
-	_vec3 m_vPrePos;
-
 	_float	m_fTimer;
+	_bool	m_bLerpMove;
+	_float  m_fLerpDist;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;

@@ -19,10 +19,14 @@ private:
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 	void				PatternSet(const _float & fTimeDelta);
+	void				Player_Reset();
 
 private:
-	_float				m_fCoolDown;
 	_int				m_iPreBossHp;
+	_bool				m_bLerp;
+	_bool				m_bLerpInit;
+	_float				m_fDist;
+	_vec3				m_vPos;
 
 public:
 	static CStage8*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
