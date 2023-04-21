@@ -42,6 +42,8 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 	if (m_bInit)
 	{
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
@@ -64,9 +66,6 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 }
 _int CToodee::Update_Too(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-
 	Key_Input(fTimeDelta);
 	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
@@ -219,7 +218,7 @@ HRESULT CToodee::Add_Component(void)
 
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });	
 
 	return S_OK;
 }

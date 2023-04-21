@@ -12,6 +12,7 @@
 #include "ImguiUnit.h"
 #include "Tookee.h"
 #include"WaterPipe.h"
+#include "Fade.h"
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -25,6 +26,7 @@ CStage1::~CStage1()
 HRESULT CStage1::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE1;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);

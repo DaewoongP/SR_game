@@ -27,7 +27,6 @@ public:
 	void			Render_Management(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	CScene*			m_pScene = nullptr;
-
 private:
 	virtual void	Free(void);
 };

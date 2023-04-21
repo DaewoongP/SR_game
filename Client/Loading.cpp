@@ -88,6 +88,7 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Texture Loading....");
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme3BgSpr/theme3BgSpr_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"None_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/None/Alpha0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Fade_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/None/Fade.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 73)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Terrain_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/Grass_%d.tga", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileFloor.png")), E_FAIL);
@@ -329,7 +330,7 @@ _uint CLoading::Loading_ForStage1(void)
 	m_pScene = CStage1::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading1 Complete!!!!!!!!");
 	return 0;
 }
@@ -342,7 +343,7 @@ _uint CLoading::Loading_ForStage2(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading2 Complete!!!!!!!!");
 	return 0;
 }
@@ -355,7 +356,7 @@ _uint CLoading::Loading_ForStage3(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading3 Complete!!!!!!!!");
 	return 0;
 }
@@ -368,7 +369,7 @@ _uint CLoading::Loading_ForStage4(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading4 Complete!!!!!!!!");
 	return 0;
 }
@@ -381,7 +382,7 @@ _uint CLoading::Loading_ForFinal1(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading Final Complete!!!!!!!!");
 	return 0;
 }

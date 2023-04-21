@@ -22,11 +22,11 @@ HRESULT CSwitch::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_vInfo[INFO_POS].y += 1.f;
+	m_pTransform->m_vInfo[INFO_POS].y += 0.77f;
 	m_pTransform->m_vInfo[INFO_POS].z = 8.999f;
 	m_pTransform->m_bIsStatic = false;
 
-	m_pCollider->Set_BoundingBox({ 1.f, 1.5f, 1.1f }, {0.f, -0.5f, 0.f});
+	m_pCollider->Set_BoundingBox({ 1.f, 1.f, 2.f }, {0.f, 0.f, 0.f});
 
 	return S_OK;
 }

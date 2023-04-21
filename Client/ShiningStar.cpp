@@ -40,15 +40,11 @@ _int CShiningStar::Update_GameObject(const _float & fTimeDelta)
 
 void CShiningStar::Render_GameObject(void)
 {
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
-
-	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
 HRESULT CShiningStar::Add_Component(void)

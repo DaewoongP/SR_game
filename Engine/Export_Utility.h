@@ -53,7 +53,6 @@ inline _int			Update_Management(const _float& fTimeDelta);
 inline void			LateUpdate_Management();
 inline void			Render_Management(LPDIRECT3DDEVICE9 pGraphicDev);
 
-
 inline HRESULT		Ready_Proto(const _tchar* pProtoTag, CComponent* pComponent);
 inline CComponent*	Clone_Proto(const _tchar* pProtoTag, CGameObject* pGameObject);
 

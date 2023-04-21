@@ -189,6 +189,7 @@
     <ClInclude Include="DefaultCube.h" />
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultUnit.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="FinalStage1.h" />
     <ClInclude Include="GiantHand.h" />
     <ClInclude Include="GravityCube.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Select.h" />
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stage4.h" />
@@ -292,6 +294,7 @@
     <ClCompile Include="CrackCube.cpp" />
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FinalStage1.cpp" />
     <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="GravityCube.cpp" />
@@ -310,6 +313,7 @@
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
+    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stage4.cpp" />

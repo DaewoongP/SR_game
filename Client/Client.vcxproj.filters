@@ -215,6 +215,12 @@
     <Filter Include="00. GameObject\04. Boss\Boss1">
       <UniqueIdentifier>{7396d07d-f864-41e0-b03d-949441c38780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\Fade">
+      <UniqueIdentifier>{d82387aa-7a56-444b-bdde-d2b826d01d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc\SkyBox">
+      <UniqueIdentifier>{719430a3-f719-4288-9bfa-30104a75a733}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -559,6 +565,12 @@
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
     <ClInclude Include="GiantHand.h" />
+    <ClInclude Include="Fade.h">
+      <Filter>00. GameObject\99. Etc\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -902,5 +914,11 @@
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
     <ClCompile Include="GiantHand.cpp" />
+    <ClCompile Include="Fade.cpp">
+      <Filter>00. GameObject\99. Etc\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

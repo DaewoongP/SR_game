@@ -42,7 +42,7 @@ _int CSpike::Update_GameObject(const _float& fTimeDelta)
 _int CSpike::Update_Too(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"Goto2D");
-	if (m_pTransform->m_vInfo[INFO_POS].z != 9.5)
+	if (m_pTransform->m_vInfo[INFO_POS].z <= 9.5)
 	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
 			_float(m_pTransform->m_vInfo[INFO_POS].y + 0.2),
@@ -55,10 +55,10 @@ _int CSpike::Update_Too(const _float& fTimeDelta)
 _int CSpike::Update_Top(const _float& fTimeDelta)
 {
 	m_pTextureCom->Switch_Anim(L"GotoTop");
-	if (m_pTransform->m_vInfo[INFO_POS].z != 8.5)
+	if (m_pTransform->m_vInfo[INFO_POS].z >= 8.5)
 	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
-			_float(m_pTransform->m_vInfo[INFO_POS].y - 0.2),
+			_float(m_pTransform->m_vInfo[INFO_POS].y - 0.16),
 			_float(m_pTransform->m_vInfo[INFO_POS].z - 0.125f));
 	}
 		

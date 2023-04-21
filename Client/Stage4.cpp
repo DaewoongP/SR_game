@@ -6,10 +6,12 @@
 #include "Cube.h"
 #include "Toodee.h"
 #include "Topdee.h"
-#include "Boss2.h"
 #include "ImguiMgr.h"
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
+#include "Boss3.h"
+#include "Boss2.h"
+#include "Fade.h"
 CStage4::CStage4(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -23,6 +25,7 @@ CStage4::~CStage4()
 HRESULT CStage4::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE4;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -83,16 +86,16 @@ HRESULT CStage4::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
 			//사이 첫줄
 			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
 			//사이 마지막줄
 			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
 		}
 	}
 
