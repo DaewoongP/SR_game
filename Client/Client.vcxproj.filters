@@ -564,12 +564,14 @@
     <ClInclude Include="PatternParts.h">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
-    <ClInclude Include="GiantHand.h" />
     <ClInclude Include="Fade.h">
       <Filter>00. GameObject\99. Etc\Fade</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="GiantHand.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -913,12 +915,14 @@
     <ClCompile Include="PatternParts.cpp">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
-    <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="Fade.cpp">
       <Filter>00. GameObject\99. Etc\Fade</Filter>
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="GiantHand.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

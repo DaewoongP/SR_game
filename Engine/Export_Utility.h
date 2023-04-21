@@ -23,7 +23,6 @@
 #include "Animation.h"
 #include "Shadow.h"
 #include "BulletPool.h"
-#include "BossPatternTex.h"
 #include "RcGradation.h"
 #include "RcAlpha.h"
 
