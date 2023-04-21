@@ -17,6 +17,8 @@ public:
 public:
 	_int Update_Imgui_Unit();
 	void CreateDefaultBG();
+	void CreateBackData();
+
 	void InstallBG();
 	void Release();
 	HRESULT BGMenu();

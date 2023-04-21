@@ -60,13 +60,15 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	//stage1
+	/*FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pLayer, _vec3(40.f, 30.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);*/
+	
+
 
 	for (int i = 0; i < CUBEY; i++)
 	{

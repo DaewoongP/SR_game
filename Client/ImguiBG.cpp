@@ -15,7 +15,7 @@
 #include"Theme1_Wall.h"
 #include"MapDeco.h"
 
-static _vec3 *m_vPos=nullptr;
+static _vec3 m_vPos;
 static _vec3 vPos;
 static _float fX=0;
 
@@ -30,16 +30,13 @@ CImguiBG::~CImguiBG()
 _int CImguiBG::Update_Imgui_Unit()
 {
 	BGMenu(); 
-	if (!m_vecBGInfo.empty())
-	{
-		m_vPos = &m_vecBGInfo.back().vObjPos;
-		m_vecBGInfo.back().vObjPos = *m_vPos + vPos;
-	//	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrixPointer());
-	}
+	
 	if (ImGui::Button("Undo"))
 		if (Undo(m_iStageNumber) != S_OK)
 			MSG_BOX("Undo Failed");
+	
 
+	m_vecGameObject;
 	return S_OK;
 }
 
@@ -100,54 +97,54 @@ HRESULT CImguiBG::BGMenu()
 			Scale();
 			ImGui::TreePop();
 		}
-		if (ImGui::TreeNode("Stage2"))
-		{
-			ImGui::Text("Create:F6");
-			ImGui::Checkbox("BackGround Install", &m_BG_On);
+		//if (ImGui::TreeNode("Stage2"))
+		//{
+		//	ImGui::Text("Create:F6");
+		//	ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall" };
-			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
+		//	const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall" };
+		//	ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
-			if (1 == m_iBG_Type)
-			{
-				if (ImGui::Button("LEFT"))
-					m_tDecoDir = CD_LEFT;
+		//	if (1 == m_iBG_Type)
+		//	{
+		//		if (ImGui::Button("LEFT"))
+		//			m_tDecoDir = CD_LEFT;
 
-				ImGui::SameLine();
-				if (ImGui::Button("RIGHT"))
-					m_tDecoDir = CD_RIGHT;
+		//		ImGui::SameLine();
+		//		if (ImGui::Button("RIGHT"))
+		//			m_tDecoDir = CD_RIGHT;
 
-				ImGui::SameLine();
-				if (ImGui::Button("UP"))
-					m_tDecoDir = CD_UP;
+		//		ImGui::SameLine();
+		//		if (ImGui::Button("UP"))
+		//			m_tDecoDir = CD_UP;
 
-				ImGui::SameLine();
-				if (ImGui::Button("DOWN"))
-					m_tDecoDir = CD_DOWN;
-			}
-
-
-			if (m_BG_On && nullptr == m_pDefaultBG)
-
-				CreateDefaultBG();
+		//		ImGui::SameLine();
+		//		if (ImGui::Button("DOWN"))
+		//			m_tDecoDir = CD_DOWN;
+		//	}
 
 
+		//	if (m_BG_On && nullptr == m_pDefaultBG)
 
-			if (m_BG_On && nullptr != m_pDefaultBG)
-			{
-				InstallBG();
-				//Preview();
+		//		CreateDefaultBG();
 
-			}
-			if (!m_BG_On && nullptr != m_pDefaultBG)
-			{
-				m_pDefaultBG->m_bDead = true;
-				m_pDefaultBG = nullptr;
-			}
 
-			Scale();
-			ImGui::TreePop();
-		}
+
+		//	if (m_BG_On && nullptr != m_pDefaultBG)
+		//	{
+		//		//InstallBG();
+		//		//Preview();
+
+		//	}
+		//	if (!m_BG_On && nullptr != m_pDefaultBG)
+		//	{
+		//		m_pDefaultBG->m_bDead = true;
+		//		m_pDefaultBG = nullptr;
+		//	}
+
+		//	Scale();
+		//	ImGui::TreePop();
+		//}
 		// 저장 기능
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
@@ -192,11 +189,12 @@ void CImguiBG::Scale()
 		fX = 0;
 	ImGui::PushItemWidth(100);
 	
-	ImGui::DragFloat("X", &vPos.x); 
+	ImGui::DragFloat("X", &vPos.x);
 	ImGui::SameLine();
 	ImGui::DragFloat("Y", &vPos.y);
 	ImGui::SameLine();
 	ImGui::DragFloat("Z", &vPos.z);
+	
 
 	//m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(m_fPos[0], m_fPos[1], m_fPos[2])
 }
@@ -233,6 +231,13 @@ void CImguiBG::CreateDefaultBG()
 
 }
 
+void CImguiBG::CreateBackData()
+{
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
+	NULL_CHECK_RETURN(pStageLayer, );
+
+}
+
 void CImguiBG::InstallBG()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
@@ -243,13 +248,21 @@ void CImguiBG::InstallBG()
 		OBJINFO tBGInfo = {};
 		Stage1Object(pStageLayer);
 		
-		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
+		//tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
-
+		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		m_vecBGInfo.push_back(tBGInfo);
 	}
+	if (!m_vecBGInfo.empty())
+	{
+		CGameObject* DynamicPos = m_vecGameObject.back();
+		//m_vPos = m_vecBGInfo.back().vObjPos;
+		if (DynamicPos != nullptr)
+			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = vPos + m_vPos;
 
 
+		int i = 0;
+	}
 }
 void CImguiBG::Stage1Object(CLayer* pStageLayer)
 {
@@ -324,7 +337,6 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			break;
 		m_vecBGInfo.push_back(vMapObjectInfo);
 	}
-
 	CloseHandle(hFile);
 	for (auto& iter : m_vecBGInfo)
 	{
@@ -338,40 +350,31 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			FAILED_CHECK_RETURN(FACTORY<CMapDeco>::Create(L"MapDeco", pStageLayer, iter.vObjPos,m_tDecoDir), E_FAIL);
 		}
 
-		//else if (2 == iter.iObjTypeNumber) 
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::(L"T1Cube", pStageLayer, iter.vObjPos,fX), E_FAIL);
-		//}
+		else if (2 == iter.iObjTypeNumber) 
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
 
-		//else if (3 == iter.iObjTypeNumber) // 포탈
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
+		else if (3 == iter.iObjTypeNumber) 
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
 
-		//else if (4 == iter.iObjTypeNumber) // 밟으면 없어지는 큐브
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
+		else if (4 == iter.iObjTypeNumber) 
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
 
-		//else if (5 == iter.iObjTypeNumber) // 스파이크
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
+		else if (5 == iter.iObjTypeNumber) 
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
 
-		//else if (6 == iter.iObjTypeNumber) // 분홍구름
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
+		else if (6 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
 
-		//else if (7 == iter.iObjTypeNumber) // 스위치
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Switch", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
-
-		//else if (8 == iter.iObjTypeNumber) // 스위치 큐브
-		//{
-		//	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pStageLayer, iter.vObjPos), E_FAIL);
-		//}
 	}
 
 	return S_OK;
