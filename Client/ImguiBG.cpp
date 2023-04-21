@@ -7,9 +7,16 @@
 #include "AbstractFactory.h"
 
 #include"DefaultBG.h"
-#include"BackCloud.h"
+#include"Theme1_Cloud.h"
+#include"Theme1_Cube.h"
+#include"Theme1_House.h"
+#include"Theme1_Sun.h"
+#include"Theme1_Tree.h"
+#include"Theme1_Wall.h"
 #include"MapDeco.h"
 
+static _float  m_fScale[3];
+static _float fX;
 
 CImguiBG::CImguiBG(LPDIRECT3DDEVICE9 pGraphicDev):m_pGraphicDev(pGraphicDev)
 {
@@ -42,7 +49,7 @@ HRESULT CImguiBG::BGMenu()
 		ImGui::Text("Create:F6");
 		ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-		const char* items[] = { "BackCloud", "MapDeco" };
+		const char* items[] = { "T1Cloud", "MapDeco" };
 		ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 	
 		if (1 == m_iBG_Type)
@@ -82,6 +89,8 @@ HRESULT CImguiBG::BGMenu()
 			m_pDefaultBG = nullptr;
 		}
 
+		Scale();
+
 		// 저장 기능
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
@@ -114,6 +123,19 @@ void CImguiBG::Preview()
 	//ImVec4 tint_col = ImGui::GetStyleColorVec4(ImGuiCol_Text);// : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 	//ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
 	//ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), uv_min, uv_max, tint_col, border_col);
+
+}
+void CImguiBG::Scale()
+{
+	//static _float fX = 0.f;
+	static _float fY = 0.f;
+	static _float fZ = 0.f;
+	
+	ImGui::PushItemWidth(300);
+	
+	ImGui::DragFloat("X", &fX); 
+	ImGui::DragFloat("Y", &fY);
+	ImGui::DragFloat3("Scale", &m_fScale[3]);
 
 }
 bool LoadTextureFromFile(const char* filename, LPDIRECT3DTEXTURE9* Out_Texture, int* out_width, int* out_height)
@@ -157,12 +179,27 @@ void CImguiBG::InstallBG()
 	{
 		OBJINFO tBGInfo = {};
 
-		if (0 == m_iBG_Type) 
-			MakeBG<CBackCloud>(pStageLayer, L"BackCloud");
+		if (0 == m_iBG_Type)
+			MakeBG_PS<CTheme1_Cloud>(pStageLayer, L"T1Cloud");
 
 		else if (1 == m_iBG_Type)
-			MakeBGNum<CMapDeco>(pStageLayer, L"MapDeco",(_int)m_tDecoDir);
+			MakeBGNum<CMapDeco>(pStageLayer, L"MapDeco", (_int)m_tDecoDir);
 
+		/*else if (2 == m_iBG_Type)
+			MakeBG<CTheme1_Cube>(pStageLayer, L"T1Cube");
+		
+		else if (3==m_iBG_Type)
+			MakeBG<CTheme1_House>(pStageLayer, L"T1House");
+
+		else if (4 == m_iBG_Type)
+			MakeBG<CTheme1_Sun>(pStageLayer, L"T1Sun");
+
+		else if (5 == m_iBG_Type)
+			MakeBG<CTheme1_Tree>(pStageLayer, L"T1Tree");
+
+		else if (6 == m_iBG_Type)
+			MakeBG<CTheme1_Wall>(pStageLayer, L"T1Wall");*/
+		
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
 
@@ -273,7 +310,18 @@ void CImguiBG::MakeBG(CLayer* pLayer, const _tchar* pObjTag)
 	pLayer->Add_GameObject(pObjTag, pGameObject);
 	m_vecGameObject.push_back(pGameObject);
 }
-
+template<typename T>
+void CImguiBG::MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS],fX);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
 template<typename T>
 void CImguiBG::MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
 {

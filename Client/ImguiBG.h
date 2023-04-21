@@ -17,6 +17,8 @@ public:
 	void Release();
 	HRESULT BGMenu();
 	void Preview();
+	void Scale();
+
 
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
@@ -40,13 +42,15 @@ private:
 private:
 	_int m_iStageNumber;
 
-
 public:
 	static	CImguiBG* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 
 	template<typename T>
 	void MakeBG(CLayer* pLayer, const _tchar* pObjTag);
+
+	template<typename T>
+	void MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag);
 
 	template<typename T>
 	void MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
