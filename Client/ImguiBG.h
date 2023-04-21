@@ -18,7 +18,7 @@ public:
 	HRESULT BGMenu();
 	void Preview();
 	void Scale();
-
+	void Stage1Object(CLayer* pStageLayer);
 
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
