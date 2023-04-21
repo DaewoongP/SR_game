@@ -25,6 +25,7 @@ HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 	//테스트용으로 찍기를 만듬.
 	//if()
 	
+
 	
 	return S_OK;
 }

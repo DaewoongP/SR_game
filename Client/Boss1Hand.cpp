@@ -33,10 +33,22 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Boss1Parts", pStageLayer, _vec3(0, 0, i*0.4f), m_pTransform, L"Boss1_Pattern02", i, false), E_FAIL);
 		m_bInit = false;
 	}
-	//손가락 끝에서 발사돼 플레이어를 향해 날라감.
-	_vec3 out, cur= m_pTransform->m_vInfo[INFO_POS];
-	_float len = 10;
-	GetVectorSlerp(&out, &cur,&m_vToWard,&_vec3(1,0,0), len,0.1f);
+	
+	_vec3 out; //목표점
+	_vec3 cur= m_pTransform->m_vInfo[INFO_POS]; //현재 위치
+	_float len = D3DXVec3Length(&(cur - m_vToWard)) / 2; //반지름
+	GetVectorSlerp(&out, &cur,&m_vToWard,&_vec3(0, 1, 0), len,fTimeDelta);
+	
+	_vec3 dir, upvec;
+	D3DXVec3Normalize(&dir,&(out - cur));
+	D3DXVec3Normalize(&upvec, &m_pTransform->m_vInfo[INFO_LOOK]);
+	float dot = D3DXVec3Dot(&upvec, &dir);
+	float radian = acosf(dot);
+
+	if (out.z > cur.z)
+		radian = 2 * D3DX_PI - radian;
+
+	m_pTransform->m_vAngle.z = radian;
 	m_pTransform->m_vInfo[INFO_POS] = out;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
