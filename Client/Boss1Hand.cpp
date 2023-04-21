@@ -12,12 +12,13 @@ CBoss1Hand::~CBoss1Hand()
 {
 }
 
-HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos)
+HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5,5,5);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	m_vToWard = vToWard;
 	return S_OK;
 }
 
@@ -32,6 +33,11 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Boss1Parts", pStageLayer, _vec3(0, 0, i*0.4f), m_pTransform, L"Boss1_Pattern02", i, false), E_FAIL);
 		m_bInit = false;
 	}
+	//손가락 끝에서 발사돼 플레이어를 향해 날라감.
+	_vec3 out, cur= m_pTransform->m_vInfo[INFO_POS];
+	_float len = 10;
+	GetVectorSlerp(&out, &cur,&m_vToWard,&_vec3(1,0,0), len,0.1f);
+	m_pTransform->m_vInfo[INFO_POS] = out;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -57,11 +63,11 @@ HRESULT CBoss1Hand::Add_Component(void)
 	return S_OK;
 }
 
-CBoss1Hand * CBoss1Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
+CBoss1Hand * CBoss1Hand::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _vec3 & vtoward)
 {
 	CBoss1Hand*		pInstance = new CBoss1Hand(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, vtoward)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

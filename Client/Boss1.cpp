@@ -14,6 +14,10 @@ CBoss1::~CBoss1()
 {
 }
 
+//FAILED_CHECK_RETURN(FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pLayer, _vec3(60.f, 15.f, 11.f)), E_FAIL);
+//FAILED_CHECK_RETURN(FACTORY<CBoss1Head>::Create(L"Boss1Head", pLayer, _vec3(60.f, 8.f, 11.f)), E_FAIL);
+//FAILED_CHECK_RETURN(FACTORY<CGiantHand>::Create(L"GiantHand", pLayer, _vec3(60.f, 23.f, 11.f)), E_FAIL);
+
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);

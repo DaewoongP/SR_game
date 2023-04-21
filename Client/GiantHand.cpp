@@ -14,10 +14,18 @@ CGiantHand::~CGiantHand()
 
 HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 {
+	//왕손은 보스가 만드는게 아니라 보스랑 개별 패턴임. 쉽게 말해서 맵 기믹 z가 -7.f이 되면 지면과 닿은거임.
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pCollider->Set_BoundingBox({2,35,35});
+	m_pCollider->Set_BoundOffset(_vec3(0,-8,+0.5f));
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pTransform->m_vScale = _vec3(25, 25, 25);
+	m_pTransform->m_vScale = _vec3(30, 30, 30);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	
+	//테스트용으로 찍기를 만듬.
+	//if()
+	
+	
 	return S_OK;
 }
 
@@ -33,6 +41,11 @@ _int CGiantHand::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = false;
 	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+
+	//z가 지면의 위치거나
+	//move가능한 큐브와 충돌했을 경우 멈춥니다.
+	//if(m_pTransform->m_vInfo[INFO_POS].z == 11)
+
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
