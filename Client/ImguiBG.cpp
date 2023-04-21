@@ -15,7 +15,8 @@
 #include"Theme1_Wall.h"
 #include"MapDeco.h"
 
-static _float  m_fPos[3];
+static _vec3 *m_vPos=nullptr;
+static _vec3 vPos;
 static _float fX=0;
 
 CImguiBG::CImguiBG(LPDIRECT3DDEVICE9 pGraphicDev):m_pGraphicDev(pGraphicDev)
@@ -28,8 +29,13 @@ CImguiBG::~CImguiBG()
 
 _int CImguiBG::Update_Imgui_Unit()
 {
-	BGMenu();
-
+	BGMenu(); 
+	if (!m_vecBGInfo.empty())
+	{
+		m_vPos = &m_vecBGInfo.back().vObjPos;
+		m_vecBGInfo.back().vObjPos = *m_vPos + vPos;
+	//	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrixPointer());
+	}
 	if (ImGui::Button("Undo"))
 		if (Undo(m_iStageNumber) != S_OK)
 			MSG_BOX("Undo Failed");
@@ -46,51 +52,102 @@ HRESULT CImguiBG::BGMenu()
 {
 	if (ImGui::TreeNode("BackGround"))
 	{	
-		ImGui::Text("Create:F6");
-		ImGui::Checkbox("BackGround Install", &m_BG_On);
-
-		const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall"};
-		ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
-	
-		if (1 == m_iBG_Type)
+		if (ImGui::TreeNode("Stage1"))
 		{
-			if (ImGui::Button("LEFT"))
-				m_tDecoDir = CD_LEFT;
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			ImGui::SameLine();
-			if (ImGui::Button("RIGHT"))
-				m_tDecoDir = CD_RIGHT;
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
-			ImGui::SameLine();
-			if (ImGui::Button("UP"))
-				m_tDecoDir = CD_UP;
+			if (1 == m_iBG_Type)
+			{
+				if (ImGui::Button("LEFT"))
+					m_tDecoDir = CD_LEFT;
 
-			ImGui::SameLine();
-			if (ImGui::Button("DOWN"))
-				m_tDecoDir = CD_DOWN;
+				ImGui::SameLine();
+				if (ImGui::Button("RIGHT"))
+					m_tDecoDir = CD_RIGHT;
+
+				ImGui::SameLine();
+				if (ImGui::Button("UP"))
+					m_tDecoDir = CD_UP;
+
+				ImGui::SameLine();
+				if (ImGui::Button("DOWN"))
+					m_tDecoDir = CD_DOWN;
+			}
+
+
+			if (m_BG_On && nullptr == m_pDefaultBG)
+
+				CreateDefaultBG();
+
+
+
+			if (m_BG_On && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+				//Preview();
+
+			}
+			if (!m_BG_On && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
 		}
-
-
-		if (m_BG_On && nullptr == m_pDefaultBG)
-		
-			CreateDefaultBG();
-			
-		
-
-		if (m_BG_On && nullptr != m_pDefaultBG)
+		if (ImGui::TreeNode("Stage2"))
 		{
-			InstallBG();
-			//Preview();
-			
-		}
-		if (!m_BG_On && nullptr != m_pDefaultBG)
-		{
-			m_pDefaultBG->m_bDead = true;
-			m_pDefaultBG = nullptr;
-		}
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-		Scale();
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
+			if (1 == m_iBG_Type)
+			{
+				if (ImGui::Button("LEFT"))
+					m_tDecoDir = CD_LEFT;
+
+				ImGui::SameLine();
+				if (ImGui::Button("RIGHT"))
+					m_tDecoDir = CD_RIGHT;
+
+				ImGui::SameLine();
+				if (ImGui::Button("UP"))
+					m_tDecoDir = CD_UP;
+
+				ImGui::SameLine();
+				if (ImGui::Button("DOWN"))
+					m_tDecoDir = CD_DOWN;
+			}
+
+
+			if (m_BG_On && nullptr == m_pDefaultBG)
+
+				CreateDefaultBG();
+
+
+
+			if (m_BG_On && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+				//Preview();
+
+			}
+			if (!m_BG_On && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
+		}
 		// 저장 기능
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
@@ -129,11 +186,19 @@ void CImguiBG::Scale()
 {
 	ImGui::PushItemWidth(300);
 	
-	ImGui::DragFloat("X", &fX); 
+
+	ImGui::DragFloat("Scale", &fX); 
 	if (fX < 0)
 		fX = 0;
-//	ImGui::DragFloat3("Scale", &m_fScale[3]);
+	ImGui::PushItemWidth(100);
+	
+	ImGui::DragFloat("X", &vPos.x); 
+	ImGui::SameLine();
+	ImGui::DragFloat("Y", &vPos.y);
+	ImGui::SameLine();
+	ImGui::DragFloat("Z", &vPos.z);
 
+	//m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(m_fPos[0], m_fPos[1], m_fPos[2])
 }
 
 bool LoadTextureFromFile(const char* filename, LPDIRECT3DTEXTURE9* Out_Texture, int* out_width, int* out_height)
@@ -210,6 +275,11 @@ void CImguiBG::Stage1Object(CLayer* pStageLayer)
 	else if (6 == m_iBG_Type)
 		MakeBG_PS<CTheme1_Wall>(pStageLayer, L"T1Wall");
 }
+void CImguiBG::Stage2Object(CLayer* pStageLayer)
+{
+
+
+}
 HRESULT CImguiBG::SaveBG(_int iStageNumber)
 {
 	TCHAR dataFile[128] = { 0 };
@@ -256,7 +326,53 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 	}
 
 	CloseHandle(hFile);
-	
+	for (auto& iter : m_vecBGInfo)
+	{
+		if (0 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		}
+
+		else if (1 == iter.iObjTypeNumber) 
+		{
+			FAILED_CHECK_RETURN(FACTORY<CMapDeco>::Create(L"MapDeco", pStageLayer, iter.vObjPos,m_tDecoDir), E_FAIL);
+		}
+
+		//else if (2 == iter.iObjTypeNumber) 
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::(L"T1Cube", pStageLayer, iter.vObjPos,fX), E_FAIL);
+		//}
+
+		//else if (3 == iter.iObjTypeNumber) // 포탈
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+
+		//else if (4 == iter.iObjTypeNumber) // 밟으면 없어지는 큐브
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+
+		//else if (5 == iter.iObjTypeNumber) // 스파이크
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+
+		//else if (6 == iter.iObjTypeNumber) // 분홍구름
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+
+		//else if (7 == iter.iObjTypeNumber) // 스위치
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Switch", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+
+		//else if (8 == iter.iObjTypeNumber) // 스위치 큐브
+		//{
+		//	FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pStageLayer, iter.vObjPos), E_FAIL);
+		//}
+	}
 
 	return S_OK;
 }
@@ -269,20 +385,13 @@ HRESULT CImguiBG::Undo(_int iStageNumber)
 		return E_FAIL;
 	CGameObject* pGameObject = m_vecGameObject.back();
 
-	/*if (dynamic_cast<Cback*>(pGameObject))
+	if (dynamic_cast<CBackGroundBase*>(pGameObject))
 	{
-		if (m_vecMonsterInfo.empty())
+		if (m_vecBGInfo.empty())
 			return E_FAIL;
-		m_vecMonsterInfo.pop_back();
+		m_vecBGInfo.pop_back();
 	}
-	else
-	{
-		if (dynamic_cast<CPortalCube*>(pGameObject))
-			--m_iPortalCubeCount;
-		if (m_vecMapObjectInfo.empty())
-			return E_FAIL;
-		m_vecMapObjectInfo.pop_back();
-	}*/
+	
 	pStageLayer->Delete_LastObject(m_vecGameObject.back());
 	m_vecGameObject.pop_back();
 	return S_OK;
@@ -316,7 +425,7 @@ void CImguiBG::MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS],fX);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fX);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

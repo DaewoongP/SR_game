@@ -1,6 +1,10 @@
 #pragma once
 
 #include"Include.h"
+BEGIN(Engine)
+class CRcTex;
+class CTransform;
+END
 class CImguiBG
 {
 public:
@@ -19,6 +23,7 @@ public:
 	void Preview();
 	void Scale();
 	void Stage1Object(CLayer* pStageLayer);
+	void Stage2Object(CLayer* pStageLayer);
 
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
@@ -35,7 +40,7 @@ private:
 
 	CUBE_DIR	m_tDecoDir;
 
-
+	Engine::CTransform* m_pTransformCom;
 
 
 
