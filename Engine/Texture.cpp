@@ -175,5 +175,4 @@ void CTexture::Free(void)
 	m_vecTexture.shrink_to_fit();
 
 	__super::Free();
-
 }

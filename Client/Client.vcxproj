@@ -157,6 +157,10 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BackgroundSpr.h" />
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Boss1.h" />
+    <ClInclude Include="Boss1Hand.h" />
+    <ClInclude Include="Boss1Head.h" />
+    <ClInclude Include="Boss1Parts.h" />
     <ClInclude Include="Boss2.h" />
     <ClInclude Include="Boss2Body.h" />
     <ClInclude Include="Boss2Chain.h" />
@@ -187,6 +191,7 @@
     <ClInclude Include="DefaultUnit.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="FinalStage1.h" />
+    <ClInclude Include="GiantHand.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Laser.h" />
@@ -197,6 +202,7 @@
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
     <ClInclude Include="MoveCamera.h" />
+    <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="PreStage.h" />
     <ClInclude Include="Select.h" />
@@ -257,6 +263,10 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="BackgroundSpr.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Boss1.cpp" />
+    <ClCompile Include="Boss1Hand.cpp" />
+    <ClCompile Include="Boss1Head.cpp" />
+    <ClCompile Include="Boss1Parts.cpp" />
     <ClCompile Include="Boss2.cpp" />
     <ClCompile Include="Boss2Body.cpp" />
     <ClCompile Include="Boss2Chain.cpp" />
@@ -286,6 +296,7 @@
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FinalStage1.cpp" />
+    <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Laser.cpp" />
@@ -296,6 +307,7 @@
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
+    <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="PreStage.cpp" />
     <ClCompile Include="Select.cpp" />
