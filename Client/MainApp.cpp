@@ -61,7 +61,7 @@ void CMainApp::LateUpdate_MainApp(void)
 
 void CMainApp::Render_MainApp(void)
 {
-	Engine::Render_Begin(D3DXCOLOR(0.3f, 0.6f, 0.3f, 1.f));
+	Engine::Render_Begin(D3DXCOLOR(0.f, 0.f, 0.f, 1.f));
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
 	m_pCImguiMgr->GetInstance()->Update_Imgui(m_pGraphicDev);

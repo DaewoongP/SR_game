@@ -12,6 +12,7 @@
 #include "LogoCamera.h"
 #include "..\Engine\AbstractFactory.h"
 #include "LoadingTex.h"
+#include "Fade.h"
 
 CPreStage::CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
 	:CScene(pGraphicDev), m_pLoading(nullptr), m_eLoadingID(eID)
@@ -25,10 +26,11 @@ CPreStage::~CPreStage()
 
 HRESULT CPreStage::Ready_Scene(void)
 {
-	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	m_pLoading = CLoading::Create(m_pGraphicDev, m_eLoadingID);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
-
+	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	if (nullptr != Engine::Get_Scene()) { Engine::Get_Scene()->Release_Fade(); }
+	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
@@ -43,6 +45,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 	{
 		g_Is2D = true;
 		CScene* pScene = m_pScene;
+		
 		Engine::Set_Scene(pScene);
 		pScene->Update_Scene(fTimeDelta);
 		return 0;

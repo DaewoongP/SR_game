@@ -14,6 +14,7 @@
 #include "MoveCamera.h"
 #include "Thirddee.h"
 #include "SkyBox.h"
+#include "Fade.h"
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -27,6 +28,7 @@ CFinalStage1::~CFinalStage1()
 HRESULT CFinalStage1::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_FINAL1;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);

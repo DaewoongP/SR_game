@@ -10,6 +10,7 @@
 #include "ImguiMgr.h"
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
+#include "Fade.h"
 CStage3::CStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -23,6 +24,7 @@ CStage3::~CStage3()
 HRESULT CStage3::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE3;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);

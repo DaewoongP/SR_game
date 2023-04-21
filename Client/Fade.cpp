@@ -22,7 +22,7 @@ HRESULT CFade::Ready(_bool isFadeIn)
 	else
 	{
 		m_fFadeSpeed = 70.f;
-		m_pTransform->m_vScale *= 1.6f;
+		m_pTransform->m_vScale *= 5.1f;
 	}
 	
 	return S_OK;
@@ -30,7 +30,7 @@ HRESULT CFade::Ready(_bool isFadeIn)
 
 _int CFade::Update_GameObject(const _float & fTimeDelta)
 {
-	if (1.5f >= m_pTransform->m_vScale.x)
+	if (5.f >= m_pTransform->m_vScale.x)
 		return STAGE_FADEIN;
 	if (81.f <= m_pTransform->m_vScale.x)
 		return STAGE_FADEOUT;

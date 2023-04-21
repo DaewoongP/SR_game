@@ -50,9 +50,11 @@ HRESULT CLayer::Ready_Layer(void)
 
 _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
+	_int iStageEvent = 0;
 	for (auto iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
 	{
 		_int iResult = OBJ_NOEVENT;
+
 		if (g_Is2D)
 			iter->second->Update_Too(fTimeDelta);
 		else
@@ -73,22 +75,20 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 				!lstrcmp(iter->second->m_pTag, L"Topdee") ||
 				!lstrcmp(iter->second->m_pTag, L"Thirddee"))
 			{
-				Engine::Clear_Collision();
-				return STAGE_FAILED;
+				iStageEvent = STAGE_FAILED;
 			}
 			Engine::Delete_Collider(iter->second);
 			Safe_Release(iter->second);
 			iter = m_uMapObject.erase(iter);
 		}
-		else if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN)
-		{
-			Engine::Clear_Collision();
-			return STAGE_FAILED;
-		}
 		else
 			++iter;
 	}
-
+	if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN || STAGE_FAILED == iStageEvent)
+	{
+		Engine::Clear_Collision();
+		return STAGE_FAILED;
+	}
 	return 0;
 }
 
