@@ -25,29 +25,6 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX,
 	const _ulong& dwCntZ, 
 	const _ulong& dwVtxItv)
 {
-
-	/*LPDIRECT3DTEXTURE9	pTexture = nullptr;
-
-	D3DXCreateTexture(m_pGraphicDev, 129, 129, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &pTexture);
-
-	D3DLOCKED_RECT		LockRect;
-
-	pTexture->LockRect(0, &LockRect, NULL, 0);
-
-	for (_int i = 0; i < 129; ++i)
-	{
-		for (_int j = 0; j < 129; ++j)
-		{
-			_int		iIndex = i * 129 + j;
-
-			*(((_ulong*)LockRect.pBits) + iIndex) = D3DCOLOR_ARGB(255, 255, 0, 0);
-		}
-	}
-	
-	pTexture->UnlockRect(0);
-	
-	D3DXSaveTextureToFile(L"../Bin/Resource/Texture/Terrain/MyHeight.bmp", D3DXIFF_BMP, pTexture, nullptr);*/
-	
 	m_dwFVF = FVF_TEX;
 	m_dwVtxSize = sizeof(VTXTEX);
 	m_dwVtxCnt = dwCntX * dwCntZ;

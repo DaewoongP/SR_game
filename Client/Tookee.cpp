@@ -735,7 +735,7 @@ void CTookee::RayDisKey_part(COL_MOVEDIR dir)
 {
 	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{ 1,1,0 },{ -1,1,0 },{ 1,-1,0 },{ -1,-1,0 } };
 	_int fdir[MD_END] = { 13,14,7,11,9,5,10,6 };
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS]-_vec3(0,0,1), vdir[dir], 2.125f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS]-_vec3(0,0,0.2f), vdir[dir], 2.125f), m_pCollider);
 	for (int i = 0; i < _detectedCOL.size(); i++)
 	{
 		if (!lstrcmp(_detectedCOL[i].tag, L"MapCube") ||
@@ -920,7 +920,7 @@ void CTookee::Move(const _float & fTimeDelta)
 
 _bool CTookee::CheckCubeExist(_vec3 dir, CCollider ** col)
 {
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(0, 0, 1), dir, 1.5f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(0, 0, 0.2f), dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)
 	{
@@ -937,7 +937,7 @@ _bool CTookee::CheckCubeExist(_vec3 dir, CCollider ** col)
 
 _bool CTookee::CheckAnythingExist(_vec3 dir, CCollider ** col)
 {
-	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS] - _vec3(0, 0, 1);
+	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS] - _vec3(0, 0, 0.2f);
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, dir, 1.5f), m_pCollider);
 
 	if (_detectedCOL.size() >= 1)

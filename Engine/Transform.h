@@ -23,6 +23,13 @@ public:
 		return m_vScale;
 	}
 
+	void Set_SRT(_vec3 scale, _vec3 rot, _vec3 trans )
+	{
+		m_vInfo[INFO_POS] = trans;
+		m_vAngle = rot;
+		m_vScale = scale;
+	}
+
 	void Set_Pos(const _float& x, const _float& y, const _float& z)
 	{
 		m_vInfo[INFO_POS] = { x,y,z };

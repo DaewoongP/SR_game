@@ -3,8 +3,8 @@
 #define		WINCX		1366
 #define		WINCY		768
 
-#define		VTXCNTX		129
-#define		VTXCNTZ		129
+#define		VTXCNTX		120
+#define		VTXCNTZ		120
 #define		VTXITV		1
 
 #define		CUBEX		32

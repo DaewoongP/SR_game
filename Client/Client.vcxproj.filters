@@ -212,6 +212,9 @@
     <Filter Include="00. GameObject\02. MapObject\Water\WaterPipe">
       <UniqueIdentifier>{3d1fccab-a871-41ec-9d36-e92b90fdca51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\04. Boss\Boss1">
+      <UniqueIdentifier>{7396d07d-f864-41e0-b03d-949441c38780}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -540,6 +543,22 @@
     <ClInclude Include="Thirddee.h">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClInclude>
+    <ClInclude Include="Boss1.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1Parts.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1Head.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1Hand.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternParts.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="GiantHand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -867,5 +886,21 @@
     <ClCompile Include="Thirddee.cpp">
       <Filter>00. GameObject\00. Player\Thirddee</Filter>
     </ClCompile>
+    <ClCompile Include="Boss1.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1Head.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1Parts.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1Hand.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternParts.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="GiantHand.cpp" />
   </ItemGroup>
 </Project>
