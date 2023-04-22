@@ -30,7 +30,7 @@ unsigned int CLoading::Thread_Main(void * pArg)
 {
 	CLoading*	pLoading = reinterpret_cast<CLoading*>(pArg);
 
-	_uint iFlag = 0;
+	_uint iFlag = 0; 
 
 	EnterCriticalSection(&(pLoading->Get_Crt()));
 
@@ -197,7 +197,6 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Tree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Tree.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Wall", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Wall.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cube", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cube.png")), E_FAIL);
-	
 	
 	Set_String(L"Buffer Loading.......");
 
