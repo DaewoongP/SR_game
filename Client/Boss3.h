@@ -9,6 +9,12 @@ class CCircularParticle;
 class CTexParticle;
 END
 
+class CToodee;
+class CTopdee;
+class CBoss3Mouth;
+class CBoss3Hand;
+class CBoss3HandPart;
+
 class CBoss3 : public CCube
 {
 private:
@@ -28,17 +34,15 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 	virtual void SwapTrigger() override;
 
-	void MakeChain();
-
 	_int	Get_ATKCount() { return m_iATKCount; }
-
-	void	Set_Lerp() { m_bLerpMove = true; }
-
 	_int	Get_Boss3Hp() { return m_iBossHp; }
+
+	void	Set_Lerp() { m_bLerpMove = true; }	
 	void	Set_Damage() { --m_iBossHp; }
 
 private:
 	HRESULT Add_Component(void);
+	HRESULT	CreateParts();
 	void	LookAtPlayer();								// 플레이어 방향으로 몸을 돌림
 	void	FollowPlayer(const _float & fTimeDelta);	// 추격 후 내려찍기를 시작할 함수
 	void	BossAttack(const _float & fTimeDelta);		// 내려찍는 공격
@@ -46,40 +50,44 @@ private:
 	void	Do_Scream(const _float& fTimeDelta);
 	void	End_Scream(const _float& fTimeDelta);
 	void	Lerp_Moving(const _float& fTimeDelta);
+	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
 
 private:
-	_bool   m_bCreateHand;			// 한번만 양손 생성 + 표정 생성
-	CGameObject* m_pBossLeft;		// 왼손 주소
-	CGameObject* m_pBossRight;		// 오른손 주소
-	CGameObject* m_pBossLeftPart;
-	CGameObject* m_pBossRightPart;
-	CGameObject* m_pBossLeftPart1;
-	CGameObject* m_pBossRightPart1;
-	CGameObject* m_pMouth;			// 보스3 입
+	CToodee*		m_pToodee;
+	CTopdee*		m_pTopdee;
 
-	_float  m_fXAngle;			// 플레이어 전환 시 x축 회전 값
+	CBoss3Mouth*	m_pBoss3Mouth;
+	CBoss3Hand*		m_pBossLeftHand;
+	CBoss3Hand*		m_pBossRightHand;
+
+	CBoss3HandPart* m_pBoss3LPart;
+	CBoss3HandPart* m_pBoss3RPart;
+	CBoss3HandPart* m_pBoss3LPart1;
+	CBoss3HandPart* m_pBoss3RPart1;
+	CBoss3HandPart* m_pBoss3LPart2;
+	CBoss3HandPart* m_pBoss3RPart2;
+	CBoss3HandPart* m_pBoss3LPart3;
+	CBoss3HandPart* m_pBoss3RPart3;
+
+	_bool   m_bInit;			// 한번만 양손 생성 + 표정 생성
+	_bool	m_bLerpMove;		// 체력 차감 시 제자리로 돌아오는 여부를 판단함
+
+	_float	m_fTooTime;		// 투디일 때 시간 누적 수치
+	_float	m_fTopTime;		// 탑디일 때 시간 누적 수치
+
 	_float	m_fSpeed;			// 이동 속도
-	_float  m_fAttackCoolDown;	// 공격 쿨다운
-	_float  m_fCoolDown;		// 추격 쿨다운
-	_float  m_fShootCoolDown;	// 사격 쿨다운
-	_float	m_fShootterm;
-	_float  m_fShockDown;
-
-	_float	m_fPreToo;			// 정규화된 이전 투디 값을 저장해둠
+	_float	m_fShootterm;		// 투디일 때 전기 공격 시간
+	_float  m_fShockDown;		// 탑디일 때 전기 공격 시간
+	_float	m_fTimer;			// 플레이어 변환 시 보스 x축 회전 시간값
+	_float  m_fLerpDist;		// 체력 차감 시 제자리로 돌아올 때 비율 값
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
-	_bool m_bATKEnd=false;
-	_int m_iBossHp; //추후에 스테이지로 옮겨야함
-	_bool m_bATKCnt; //전기공격을할지안할지판단
-	_int m_iATKCount;// 카운트 3이되면 전기공격
-	_bool m_bShoot = true;
+	_int	m_iBossHp; //추후에 스테이지로 옮겨야함
+	_int	m_iATKCount;// 카운트 3이되면 전기공격
+	_bool	m_bShoot = true;
 	_bool	m_bSpin = true;
-	_float m_fSoundCool;
-	_bool m_bSound	;
-
-	_float	m_fTimer;
-	_bool	m_bLerpMove;
-	_float  m_fLerpDist;
+	_float	m_fSoundCool;
+	_bool	m_bSound;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;
@@ -91,6 +99,3 @@ public:
 protected:
 	virtual void Free(void) override;
 };
-
-#define BOSS3_CHASE 1.5f
-#define BOSS3_SPIN 0.5f

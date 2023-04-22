@@ -5,7 +5,7 @@
 CFireball::CFireball(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev),
 	m_bSetTarget(true), m_bStaticON(true),
-	m_fSpeed(10.f), m_fStaticOFF(0.f)
+	m_fSpeed(8.f), m_fStaticOFF(0.f)
 {
 
 }
@@ -65,8 +65,8 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bStaticON = false;
 			m_pTransform->m_vScale = {5.f, 2.5f, 1.f};
-			m_pCollider->Set_BoundingBox({ 4.f, 3.f, 1.f });
-			m_pCollider->Set_BoundOffset(_vec3{-1.f, -2.f, 0.f});
+			m_pCollider->Set_BoundingBox({ 5.f, 2.5f, 1.f });
+			//m_pCollider->Set_BoundOffset(_vec3{-1.f, -2.f, 0.f});
 			m_pTransform->m_vInfo[INFO_POS].z = 10.f;
 		}			
 	}

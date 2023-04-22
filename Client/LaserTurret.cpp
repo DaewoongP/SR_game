@@ -164,14 +164,14 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Boss3"))
 		{
-			m_fColdist = _detectedCOL[0].dist +10.f;
+			m_fColdist = _detectedCOL[0].dist + 10.f;
 			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
 		}
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Boss3Left") ||
 			!lstrcmp(_detectedCOL[0].tag, L"Boss3Right"))
 		{
-   			m_fColdist = _detectedCOL[0].dist +2.f;
+   			m_fColdist = _detectedCOL[0].dist + 2.f;
 			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
 		}
 	}

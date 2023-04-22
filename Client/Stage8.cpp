@@ -11,6 +11,7 @@
 #include "ImguiUnit.h"
 
 #include "Boss3.h"
+#include "Boss3Hand.h"
 #include "Key.h"
 #include "KeyCube.h"
 #include "Spike.h"
@@ -90,7 +91,7 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 16.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(18.f, 28.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 18.f, 10.f)), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
@@ -123,6 +124,8 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		Engine::Get_GameObject(L"Layer_GameLogic", L"LaserTurret")->m_bDead = true;
 
 		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Lerp();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
 
@@ -131,9 +134,10 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pLayer, _vec3((2.f * i + 2.f), 2.f, 10.f)), );
 		}
 
-		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
+		/*FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(32.f, 30.f, 10.f)), );
-		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );
+		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );*/
+		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(4.f, 10.f, 10.f)), );
 
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(58.f, 20.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(2.f, 6.f, 10.f)), );
@@ -151,12 +155,15 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		Engine::Get_GameObject(L"Layer_GameLogic", L"LaserTurret")->m_bDead = true;
 
 		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Lerp();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
 
-		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
+		/*FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(32.f, 30.f, 10.f)), );
-		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );
+		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );*/
+		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(4.f, 10.f, 10.f)), );
 
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(58.f, 20.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(2.f, 6.f, 10.f)), );
@@ -172,7 +179,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 void CStage8::Player_Reset()
 {
 	_vec3 vLerp, vGoal;
-	vGoal = _vec3{ 6.f, 16.f, 10.f };
+	vGoal = _vec3{ 6.f, 10.f, 10.f };
 
 	if (m_bLerpInit)
 	{
@@ -184,7 +191,7 @@ void CStage8::Player_Reset()
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
 
-	m_fDist += 0.01;
+	m_fDist += 0.01f;
 
 	if (1.f <= m_fDist)
 	{

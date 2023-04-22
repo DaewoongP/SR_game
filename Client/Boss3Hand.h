@@ -12,7 +12,9 @@ private:
 
 public:
 	void	Set_Attack(_bool TrueorFalse) { m_bAttack = TrueorFalse; }
-	void Set_Shock(_bool TF) { m_bShock = TF; }
+	void	Set_Shock(_bool TF) { m_bShock = TF; }
+	void	Set_Lerp() { m_bLerpMove = true; }
+
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
@@ -27,6 +29,7 @@ public:
 private:
 	HRESULT Add_Component(void);
 
+	void	Lerp_Moving(const _float& fTimeDelta);
 	void	FollowPlayer(const _float & fTimeDelta);
 	void	BossAttack(const _float & fTimeDelta);
 	void	IdleMove(const _float & fTimeDelta);
@@ -40,17 +43,17 @@ private:
 	_float  m_fAttackCoolDown;
 	_float m_fShockCollDown;
 
+	_bool	m_bLerpMove;		// 체력 차감 시 제자리로 돌아오는 여부를 판단함
 	_bool	m_bShock = false;
 	_bool   m_bSpin = true;
 
-	_int m_iBossHp=2;
 	_float  m_fIdleCycle;
 	_float  m_fIdleAngle;
+	_float  m_fLerpDist;		// 체력 차감 시 제자리로 돌아올 때 비율 값
 	_bool	m_bAttack;
 
 	_bool	m_bIdleMove;
 	_bool	m_bIdleStop;
-	_vec3	m_vPrePos;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;
