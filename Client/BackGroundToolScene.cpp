@@ -112,9 +112,9 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Plate>::Create(L"T3Plate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_SemicolonPlate>::Create(L"T3SemicolonPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme4_Chimney>::Create(L"T4Chimney", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear16>::Create(L"T4Gear16", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear8>::Create(L"T4Gear8", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Chimney>::Create(L"T4Chimney", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear16>::Create(L"T4Gear16", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear8>::Create(L"T4Gear8", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
 
 	for (int i = 0; i < CUBEY; i++)
