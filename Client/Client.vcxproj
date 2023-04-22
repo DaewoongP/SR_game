@@ -192,6 +192,8 @@
     <ClInclude Include="DefaultGrid.h" />
     <ClInclude Include="DefaultUnit.h" />
     <ClInclude Include="Fade.h" />
+    <ClInclude Include="FinalPortal.h" />
+    <ClInclude Include="FinalPortalFloor.h" />
     <ClInclude Include="FinalStage1.h" />
     <ClInclude Include="GiantHand.h" />
     <ClInclude Include="GravityCube.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="PreStage.h" />
     <ClInclude Include="Select.h" />
+    <ClInclude Include="Semicolon.h" />
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="SkyBox.h" />
@@ -299,6 +302,8 @@
     <ClCompile Include="DefaultCube.cpp" />
     <ClCompile Include="DefaultGrid.cpp" />
     <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="FinalPortal.cpp" />
+    <ClCompile Include="FinalPortalFloor.cpp" />
     <ClCompile Include="FinalStage1.cpp" />
     <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="GravityCube.cpp" />
@@ -315,6 +320,7 @@
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="PreStage.cpp" />
     <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Semicolon.cpp" />
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="SkyBox.cpp" />
