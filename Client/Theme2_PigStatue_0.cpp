@@ -28,11 +28,11 @@ void CTheme2_PigStatue_0::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 }
 
-CTheme2_PigStatue_0 * CTheme2_PigStatue_0::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
+CTheme2_PigStatue_0 * CTheme2_PigStatue_0::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale, _float fAngle)
 {
 	CTheme2_PigStatue_0*		pInstance = new CTheme2_PigStatue_0(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos, fScale)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, fScale, fAngle)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -41,13 +41,14 @@ CTheme2_PigStatue_0 * CTheme2_PigStatue_0::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	return pInstance;
 }
 
-HRESULT CTheme2_PigStatue_0::Ready_GameObject(_vec3 & vPos, _float fScale)
+HRESULT CTheme2_PigStatue_0::Ready_GameObject(_vec3 & vPos, _float fScale, _float fAngle)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_vScale = { fScale, fScale, 1.f };
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
 
 	return S_OK;
 }

@@ -369,7 +369,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 	{
 		if (0 == iter.iObjTypeNumber)
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pStageLayer, iter.vObjPos,fX,0.0f), E_FAIL);
 		}
 
 		else if (1 == iter.iObjTypeNumber) 
@@ -379,27 +379,27 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 
 		else if (2 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
 		}
 
 		else if (3 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
 		}
 
 		else if (4 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
 		}
 
 		else if (5 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
 		}
 
 		else if (6 == iter.iObjTypeNumber)
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos,fX), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
 		}
 
 	}
@@ -506,7 +506,7 @@ void CImguiBG::MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fX);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fX,0.0f);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

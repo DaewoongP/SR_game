@@ -40,11 +40,12 @@ void CTheme2_Bush_3::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 }
 
-CTheme2_Bush_3 * CTheme2_Bush_3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
+CTheme2_Bush_3 * CTheme2_Bush_3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale, _float fAngle)
 {
 	CTheme2_Bush_3*		pInstance = new CTheme2_Bush_3(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos, fScale)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, fScale, fAngle)))
+
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -53,7 +54,7 @@ CTheme2_Bush_3 * CTheme2_Bush_3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & v
 	return pInstance;
 }
 
-HRESULT CTheme2_Bush_3::Ready_GameObject(_vec3 & vPos, _float fScale)
+HRESULT CTheme2_Bush_3::Ready_GameObject(_vec3 & vPos, _float fScale, _float fAngle)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -67,6 +68,7 @@ HRESULT CTheme2_Bush_3::Ready_GameObject(_vec3 & vPos, _float fScale)
 	_float fAngleInt = rand() % 6;
 
 	m_pTransform->m_fFloating = fAngleInt * 60.f;
+	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
 
 	return S_OK;
 }

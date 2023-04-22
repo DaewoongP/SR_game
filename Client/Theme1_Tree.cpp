@@ -55,11 +55,12 @@ void CTheme1_Tree::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-CTheme1_Tree * CTheme1_Tree::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
+CTheme1_Tree * CTheme1_Tree::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale, _float fAngle)
 {
 	CTheme1_Tree*		pInstance = new CTheme1_Tree(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos, fScale)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, fScale, fAngle)))
+
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -68,7 +69,7 @@ CTheme1_Tree * CTheme1_Tree::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos,
 	return pInstance;
 }
 
-HRESULT CTheme1_Tree::Ready_GameObject(_vec3 & vPos, _float fScale)
+HRESULT CTheme1_Tree::Ready_GameObject(_vec3 & vPos, _float fScale, _float fAngle)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -79,6 +80,7 @@ HRESULT CTheme1_Tree::Ready_GameObject(_vec3 & vPos, _float fScale)
 	_float fAngleInt = rand() % 6;
 
 	m_pTransform->m_fFloating = fAngleInt * 60.f;
+	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
 
 	return S_OK;
 }

@@ -28,6 +28,7 @@
 #include "Theme2_PigStatue_1.h"
 #include "Theme2_BatStatue.h"
 #include "Theme2_LongTree.h"
+#include "Theme2_BigLeaf.h"
 
 
 
@@ -78,32 +79,33 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 07.f, 10.f), 10.f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(10.f, 10.f, 10.f), 10.f), E_FAIL);
 
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	////FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush_2", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f,0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
 
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//∏« ¿≠¡Ÿ
+			//Îß® ÏúóÏ§Ñ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//ªÁ¿Ã √π¡Ÿ
+			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
+			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//∏« æ∆∑ß¡Ÿ
+			//Îß® ÏïÑÎû´Ï§Ñ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}
