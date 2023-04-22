@@ -26,7 +26,7 @@ public:
 	void Scale();
 	void Stage1Object(CLayer* pStageLayer);
 	void Stage2Object(CLayer* pStageLayer);
-
+	
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
 
@@ -39,7 +39,7 @@ private:
 	_bool m_BG_On = false;
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;
-
+	
 	CUBE_DIR	m_tDecoDir;
 
 	Engine::CTransform* m_pTransformCom;

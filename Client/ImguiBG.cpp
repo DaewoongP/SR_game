@@ -166,17 +166,9 @@ HRESULT CImguiBG::BGMenu()
 }
 void CImguiBG::Preview()
 {
-	//ImGuiIO& io = ImGui::GetIO();
-	//ImTextureID my_tex_id = io.Fonts->TexID;
-	////ImTextureID MyTex = 
-	//float my_tex_w = (float)io.Fonts->TexWidth;
-	//float my_tex_h = (float)io.Fonts->TexHeight;
 
-	//ImVec2 uv_min = ImVec2(0.0f, 0.0f);
-	//ImVec2 uv_max = ImVec2(1.0f, 1.0f);
-	//ImVec4 tint_col = ImGui::GetStyleColorVec4(ImGuiCol_Text);// : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
-	//ImVec4 border_col = ImGui::GetStyleColorVec4(ImGuiCol_Border);
-	//ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), uv_min, uv_max, tint_col, border_col);
+
+
 
 }
 void CImguiBG::Scale()
@@ -196,7 +188,6 @@ void CImguiBG::Scale()
 	ImGui::DragFloat("Z", &vPos.z);
 	
 
-	//m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(m_fPos[0], m_fPos[1], m_fPos[2])
 }
 
 bool LoadTextureFromFile(const char* filename, LPDIRECT3DTEXTURE9* Out_Texture, int* out_width, int* out_height)
@@ -242,13 +233,15 @@ void CImguiBG::InstallBG()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
 	NULL_CHECK_RETURN(pStageLayer, );
+	m_pDefaultBG;
+
 
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
 		OBJINFO tBGInfo = {};
 		Stage1Object(pStageLayer);
 		
-		//tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
+		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
 		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		m_vecBGInfo.push_back(tBGInfo);
@@ -256,12 +249,14 @@ void CImguiBG::InstallBG()
 	if (!m_vecBGInfo.empty())
 	{
 		CGameObject* DynamicPos = m_vecGameObject.back();
-		//m_vPos = m_vecBGInfo.back().vObjPos;
+		m_vPos = m_vecBGInfo.back().vObjPos;
 		if (DynamicPos != nullptr)
-			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = vPos + m_vPos;
+		{
+			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
+			DynamicPos->m_pTransform->m_vScale = { fX,fX,1.f };
+		}
 
 
-		int i = 0;
 	}
 }
 void CImguiBG::Stage1Object(CLayer* pStageLayer)
