@@ -134,9 +134,6 @@
     <Filter Include="00. GameObject\03. BackGroudObj">
       <UniqueIdentifier>{5ef426b5-219e-46de-bc40-f3e4b4edf3f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
-      <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\04. Boss">
       <UniqueIdentifier>{75774083-3cd0-48df-a419-5ecbb16f12ac}</UniqueIdentifier>
     </Filter>
@@ -208,6 +205,24 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\Final Portal">
       <UniqueIdentifier>{b28c647c-74d7-4320-bdde-ee1addae118e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages">
+      <UniqueIdentifier>{a1511dec-d16c-461e-b075-db2670d0db72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\Logo">
+      <UniqueIdentifier>{0aca5e09-5389-40d6-aca5-17da24f0a93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\PreStage">
+      <UniqueIdentifier>{c7e15952-d8fe-4519-af75-2ccd2b209680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\Logo\Title">
+      <UniqueIdentifier>{6bef78d5-9a3f-4901-a348-b6c1445bfd36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\Stages\Logo\Title\Select">
+      <UniqueIdentifier>{5f3240da-21ae-4c22-ba39-79783bad2ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imgui\Imgui_Stage">
+      <UniqueIdentifier>{c01ca208-89fb-4754-a6ff-2f1789d0b9a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +299,6 @@
     <ClInclude Include="ImguiUnit.h">
       <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiStage.h">
-      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
-    </ClInclude>
     <ClInclude Include="Key.h">
       <Filter>00. GameObject\02. MapObject\Key</Filter>
     </ClInclude>
@@ -333,9 +345,6 @@
     <ClInclude Include="KeyCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\KeyCube</Filter>
     </ClInclude>
-    <ClInclude Include="Stage1.h">
-      <Filter>01. Scene\Stages</Filter>
-    </ClInclude>
     <ClInclude Include="Cloud.h">
       <Filter>00. GameObject\02. MapObject\Cloud</Filter>
     </ClInclude>
@@ -363,12 +372,6 @@
     <ClInclude Include="SwitchCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\SwitchCube</Filter>
     </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>01. Scene\Stages\Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
-    </ClInclude>
     <ClInclude Include="BackgroundSpr.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClInclude>
@@ -380,9 +383,6 @@
     </ClInclude>
     <ClInclude Include="MenuSmoke.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Select.h">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
     <ClInclude Include="Boss3.h">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
@@ -404,12 +404,6 @@
     </ClInclude>
     <ClInclude Include="LogoCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage2.h">
-      <Filter>01. Scene\Stages</Filter>
-    </ClInclude>
-    <ClInclude Include="PreStage.h">
-      <Filter>01. Scene\Stages\PreStage</Filter>
     </ClInclude>
     <ClInclude Include="Boss2Stone.h">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
@@ -489,12 +483,6 @@
     <ClInclude Include="LaserTurret.h">
       <Filter>00. GameObject\02. MapObject\LaserTurret</Filter>
     </ClInclude>
-    <ClInclude Include="Stage3.h">
-      <Filter>01. Scene\Stages</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage4.h">
-      <Filter>01. Scene\Stages</Filter>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>00. GameObject\02. MapObject\Bullet</Filter>
     </ClInclude>
@@ -512,9 +500,6 @@
     </ClInclude>
     <ClInclude Include="PortalCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
-    </ClInclude>
-    <ClInclude Include="FinalStage1.h">
-      <Filter>01. Scene\Stages</Filter>
     </ClInclude>
     <ClInclude Include="ThirdCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
@@ -573,8 +558,38 @@
     <ClInclude Include="Semicolon.h">
       <Filter>00. GameObject\02. MapObject\Final Portal</Filter>
     </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>01. Scene\Stages\Logo\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="PreStage.h">
+      <Filter>01. Scene\Stages\PreStage</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalStage1.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage3.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage4.h">
+      <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
     <ClInclude Include="Stage8.h">
       <Filter>01. Scene\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiStage.h">
+      <Filter>Imgui\Imgui_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -632,9 +647,6 @@
     <ClCompile Include="InstallCube.cpp">
       <Filter>Imgui\Imgui_Object\Cube\InstallCube</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiStage.cpp">
-      <Filter>Imgui\Imgui_Menu\imgui_stage</Filter>
-    </ClCompile>
     <ClCompile Include="ImguiUnit.cpp">
       <Filter>Imgui\Imgui_Menu\Imgui_Unit</Filter>
     </ClCompile>
@@ -681,9 +693,6 @@
     <ClCompile Include="KeyCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\KeyCube</Filter>
     </ClCompile>
-    <ClCompile Include="Stage1.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
     <ClCompile Include="Cloud.cpp">
       <Filter>00. GameObject\02. MapObject\Cloud</Filter>
     </ClCompile>
@@ -717,12 +726,6 @@
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>01. Scene\Stages\Logo</Filter>
-    </ClCompile>
     <ClCompile Include="BackgroundSpr.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
@@ -734,9 +737,6 @@
     </ClCompile>
     <ClCompile Include="MenuSmoke.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
     <ClCompile Include="Boss3.cpp">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
@@ -764,12 +764,6 @@
     </ClCompile>
     <ClCompile Include="StageCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage2.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
-    <ClCompile Include="PreStage.cpp">
-      <Filter>01. Scene\Stages\PreStage</Filter>
     </ClCompile>
     <ClCompile Include="Boss2Tail.cpp">
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
@@ -858,12 +852,6 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="Stage3.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage4.cpp">
-      <Filter>01. Scene\Stages</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>00. GameObject\02. MapObject\Bullet</Filter>
     </ClCompile>
@@ -878,9 +866,6 @@
     </ClCompile>
     <ClCompile Include="LoadingTex.cpp">
       <Filter>00. GameObject\99. Etc\LoadingTex</Filter>
-    </ClCompile>
-    <ClCompile Include="FinalStage1.cpp">
-      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
     <ClCompile Include="ThirdCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
@@ -939,8 +924,38 @@
     <ClCompile Include="Semicolon.cpp">
       <Filter>00. GameObject\02. MapObject\Final Portal</Filter>
     </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>01. Scene\Stages\Logo\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>01. Scene\Stages\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="PreStage.cpp">
+      <Filter>01. Scene\Stages\PreStage</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalStage1.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage2.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage3.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage4.cpp">
+      <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
     <ClCompile Include="Stage8.cpp">
       <Filter>01. Scene\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiStage.cpp">
+      <Filter>Imgui\Imgui_Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
