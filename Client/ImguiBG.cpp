@@ -95,7 +95,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On2);
 
-			const char* items[] = { "T2BatStatue", "T2PigStatue0","T2PigStatue1","T2Bush0","T2Bush1","T2Bush2","T2Bush3","T2Bush4","T2LongTree"};
+			const char* items[] = { "T2BatStatue", "T2PigStatue0","T2PigStatue1","T2Bush0","T2Bush1","T2Bush2","T2Bush3","T2Bush4","T2LongTree","T2BigLeaf"};
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -350,6 +350,9 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 	
 	else if (8 == m_iBG_Type)
 		MakeBG_PS<CTheme2_LongTree>(pStageLayer, L"T2LongTree");
+
+	else if (9 == m_iBG_Type)
+		MakeBG_PS<CTheme2_BigLeaf>(pStageLayer, L"T2BigLeaf");
 }
 void CImguiBG::Stage3Object(CLayer* pStageLayer)
 {
@@ -539,6 +542,10 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			else if (8 == iter.iObjTypeNumber)
 			{
 				FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+			}
+			else if (9 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 			}
 		}
 	}

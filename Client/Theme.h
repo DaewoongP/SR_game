@@ -16,6 +16,7 @@
 #include"Theme2_Bush_3.h"
 #include"Theme2_Bush_4.h"
 #include"Theme2_LongTree.h"
+#include"Theme2_BigLeaf.h"
 
 #include"Theme3_AlphaPlate.h"
 #include"Theme3_BrokenPlate.h"
