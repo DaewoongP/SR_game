@@ -14,9 +14,6 @@
 #include "MoveCamera.h"
 #include "Thirddee.h"
 #include "Boss1.h"
-#include "Boss1Hand.h"
-#include "GiantHand.h"
-#include "Boss1Head.h"
 #include "SkyBox.h"
 #include "Fade.h"
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -78,9 +75,6 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(90.f, 15.f, 25.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pLayer, _vec3(60.f, 15.f, 11.f), _vec3(34.f, 15.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1Head>::Create(L"Boss1Head", pLayer, _vec3(60.f, 8.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CGiantHand>::Create(L"GiantHand", pLayer, _vec3(60.f, 23.f, -7.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)

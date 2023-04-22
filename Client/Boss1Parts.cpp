@@ -22,6 +22,8 @@ HRESULT CBoss1Parts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int i
 
 _int CBoss1Parts::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return -1;
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;

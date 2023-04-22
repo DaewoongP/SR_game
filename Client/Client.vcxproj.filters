@@ -573,6 +573,7 @@
     <ClInclude Include="GiantHand.h">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
+    <ClInclude Include="Boss1HeadSub.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -924,5 +925,6 @@
     <ClCompile Include="GiantHand.cpp">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
+    <ClCompile Include="Boss1HeadSub.cpp" />
   </ItemGroup>
 </Project>

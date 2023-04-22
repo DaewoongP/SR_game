@@ -14,6 +14,7 @@ private:
 	explicit CBoss1Parts(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CBoss1Parts();
 
+public:
 	virtual HRESULT Ready_GameObject(
 		_vec3& vPos, //생성 위치
 		_tchar* texturename, //텍스쳐 이름
@@ -24,6 +25,7 @@ private:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
+public:
 	void	SetTextureIdx(_int idx) { m_TextureIdx = idx; }
 	_int	GetTextureIdx() { return m_TextureIdx; }
 
