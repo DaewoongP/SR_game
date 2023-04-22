@@ -198,7 +198,6 @@
     <ClInclude Include="GiantHand.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
-    <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LoadingTex.h" />
@@ -217,6 +216,7 @@
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stage4.h" />
+    <ClInclude Include="Stage8.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -308,7 +308,6 @@
     <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
-    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LoadingTex.cpp" />
@@ -327,6 +326,7 @@
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stage4.cpp" />
+    <ClCompile Include="Stage8.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

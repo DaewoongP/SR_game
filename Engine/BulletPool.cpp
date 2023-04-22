@@ -2,7 +2,7 @@
 #include "BulletPool.h"
 
 #include "Export_Function.h"
-#include "../Client/Laser.h"
+//#include "../Client/Laser.h"
 
 CBulletPool::CBulletPool(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CComponent(pGraphicDev),
@@ -34,12 +34,12 @@ CGameObject* CBulletPool::Use_Bullet(_vec3& vPos, _int eDir)
 
 		for (int i = 0; i < 20; ++i)
 		{
-			CGameObject* pGameObject = CLaser::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f }, eDir);
-			NULL_CHECK_RETURN(pGameObject, );
-			pGameObject->Sort_Component();
-			FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Laser", pGameObject), );
+			//CGameObject* pGameObject = CLaser::Create(m_pGraphicDev, _vec3{ 0.f, 0.f, 0.f }, eDir);
+			//NULL_CHECK_RETURN(pGameObject, );
+			//pGameObject->Sort_Component();
+			//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Laser", pGameObject), );
 
-			m_vecBulletPool.push_back(pair<CGameObject*, _bool>(pGameObject, false));
+			//m_vecBulletPool.push_back(pair<CGameObject*, _bool>(pGameObject, false));
 		}
 
 		m_bCreate = false;
@@ -55,8 +55,8 @@ CGameObject* CBulletPool::Use_Bullet(_vec3& vPos, _int eDir)
 		return nullptr;
 
 	// 있으면 해당 총알의 second를 true로 바꿈 (사용중이라는 의미)
-	iter->second = true;
-	dynamic_cast<CLaser*>(iter->first)->Set_Use(true);
+	/*iter->second = true;
+	dynamic_cast<CLaser*>(iter->first)->Set_Use(true);*/
 
 	// 위치 설정
 	iter->first->m_pTransform->m_vInfo[INFO_POS] = vPos;
@@ -70,8 +70,8 @@ void CBulletPool::UnUse_Bullet()
 	// 재사용이 가능하게 second를 false(비활성화)로 바꿈
 	for (auto& iter : m_vecBulletPool)
 	{
-		if (!dynamic_cast<CLaser*>(iter.first)->Get_Use())
-			iter.second = false;
+		/*if (!dynamic_cast<CLaser*>(iter.first)->Get_Use())
+			iter.second = false;*/
 	}
 }
 

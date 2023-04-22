@@ -28,10 +28,10 @@ HRESULT CStage3::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(2, this);
-	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(2, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(2, this);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadCube(2, this);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(2, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(2, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
 	Engine::StopSound(SOUND_BGM);
@@ -42,7 +42,6 @@ HRESULT CStage3::Ready_Scene(void)
 
 _int CStage3::Update_Scene(const _float & fTimeDelta)
 {
-
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -109,7 +108,6 @@ HRESULT CStage3::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;

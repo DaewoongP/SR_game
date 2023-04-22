@@ -29,9 +29,6 @@
     <Filter Include="Imgui\Imgui_Menu">
       <UniqueIdentifier>{62560a8c-506d-4348-8b19-bf031d4812d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui\Imgui_Menu\imgui_stage">
-      <UniqueIdentifier>{eebd6916-35be-4735-8aef-b36ddc0237fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imgui\Imgui_Menu\Imgui_Unit">
       <UniqueIdentifier>{77031cc4-067e-4439-949b-b039268f3bd7}</UniqueIdentifier>
     </Filter>
@@ -86,9 +83,6 @@
     <Filter Include="01. Scene\Loading">
       <UniqueIdentifier>{c7ff4b7f-8ab1-4bd4-a022-1106b40152ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Stages">
-      <UniqueIdentifier>{627e2365-507d-4ba9-b8d1-addb89192073}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\00. Player\Toodee">
       <UniqueIdentifier>{25d5f629-5940-4195-acd2-56d1cc03cfe6}</UniqueIdentifier>
     </Filter>
@@ -128,12 +122,6 @@
     <Filter Include="00. GameObject\02. MapObject\Cube\PortalCube">
       <UniqueIdentifier>{bfd2989d-479f-4069-b52c-824de8b3f354}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Stages\Logo">
-      <UniqueIdentifier>{6ae78c6a-8cbd-4fa3-af94-b6e8dc8ce95c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Scene\Stages\Logo\00.Title">
-      <UniqueIdentifier>{df773c6d-ec21-4c91-a92c-4372b755ee36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\99. Etc">
       <UniqueIdentifier>{9163a1fd-8629-4881-bd24-809e01b849c3}</UniqueIdentifier>
     </Filter>
@@ -149,9 +137,6 @@
     <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
       <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\Stages\Logo\00.Title\Select">
-      <UniqueIdentifier>{59f881fb-4ef7-4c35-9db8-4006b91c675c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\04. Boss">
       <UniqueIdentifier>{75774083-3cd0-48df-a419-5ecbb16f12ac}</UniqueIdentifier>
     </Filter>
@@ -163,9 +148,6 @@
     </Filter>
     <Filter Include="00. GameObject\04. Boss\Boss2\Boss2Part">
       <UniqueIdentifier>{ba9c19ee-f427-4324-baa4-47a53b143b50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Scene\Stages\PreStage">
-      <UniqueIdentifier>{778a1c61-0e07-472e-b7b7-bfab93683edb}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\04. Boss\Boss3\Boss3expression">
       <UniqueIdentifier>{f586ecf2-ffaf-4330-83fc-60930f5064aa}</UniqueIdentifier>
@@ -507,9 +489,6 @@
     <ClInclude Include="LaserTurret.h">
       <Filter>00. GameObject\02. MapObject\LaserTurret</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h">
-      <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
-    </ClInclude>
     <ClInclude Include="Stage3.h">
       <Filter>01. Scene\Stages</Filter>
     </ClInclude>
@@ -593,6 +572,9 @@
     </ClInclude>
     <ClInclude Include="Semicolon.h">
       <Filter>00. GameObject\02. MapObject\Final Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage8.h">
+      <Filter>01. Scene\Stages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -870,9 +852,6 @@
     <ClCompile Include="LaserTurret.cpp">
       <Filter>00. GameObject\02. MapObject\LaserTurret</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp">
-      <Filter>00. GameObject\02. MapObject\LaserTurret\Laser</Filter>
-    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
@@ -959,6 +938,9 @@
     </ClCompile>
     <ClCompile Include="Semicolon.cpp">
       <Filter>00. GameObject\02. MapObject\Final Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage8.cpp">
+      <Filter>01. Scene\Stages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
