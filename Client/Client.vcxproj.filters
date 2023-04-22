@@ -629,6 +629,30 @@
     <ClInclude Include="Theme2_BigLeaf.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
     </ClInclude>
+    <ClInclude Include="Theme3_AlphaPlate.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_BrokenPlate.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Cloud.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Moss.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Pattern_0.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Pattern_1.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Plate.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_SemicolonPlate.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1016,6 +1040,30 @@
     </ClCompile>
     <ClCompile Include="Theme2_BigLeaf.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_AlphaPlate.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_BrokenPlate.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Cloud.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Moss.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Pattern_0.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Pattern_1.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Plate.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_SemicolonPlate.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

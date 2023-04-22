@@ -19,6 +19,7 @@
 #include "Theme1_Tree.h"
 #include "Theme1_Wall.h"
 #include "Theme1_Cube.h"
+
 #include "Theme2_Bush_0.h"
 #include "Theme2_Bush_1.h"
 #include "Theme2_Bush_2.h"
@@ -30,7 +31,14 @@
 #include "Theme2_LongTree.h"
 #include "Theme2_BigLeaf.h"
 
-
+#include "Theme3_AlphaPlate.h"
+#include "Theme3_BrokenPlate.h"
+#include "Theme3_Cloud.h"
+#include "Theme3_Moss.h"
+#include "Theme3_Pattern_0.h"
+#include "Theme3_Pattern_1.h"
+#include "Theme3_Plate.h"
+#include "Theme3_SemicolonPlate.h"
 
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
@@ -79,17 +87,26 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 07.f, 10.f), 10.f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(10.f, 10.f, 10.f), 10.f), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f,0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush_2", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f,0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush_2", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_AlphaPlate>::Create(L"T3AlphaPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_BrokenPlate>::Create(L"T3BrokenPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme3_Cloud>::Create(L"T3Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Moss>::Create(L"T3Moss", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_0>::Create(L"T3Pattern_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_1>::Create(L"T3Pattern_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Plate>::Create(L"T3Plate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_SemicolonPlate>::Create(L"T3SemicolonPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
 
 	for (int i = 0; i < CUBEY; i++)
