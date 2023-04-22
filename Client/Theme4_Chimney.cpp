@@ -14,6 +14,7 @@ CTheme4_Chimney::~CTheme4_Chimney()
 
 _int CTheme4_Chimney::Update_GameObject(const _float& fTimeDelta)
 {
+	m_pTransform->Move_Floating(fTimeDelta, 0.001f*m_pTransform->m_vScale.x, 180.0f, FLOATING_Y);
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;

@@ -40,6 +40,10 @@
 #include "Theme3_Plate.h"
 #include "Theme3_SemicolonPlate.h"
 
+#include "Theme4_Gear8.h"
+#include "Theme4_Gear16.h"
+#include "Theme4_Chimney.h"
+
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CScene(pGraphicDev)
@@ -101,12 +105,16 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_AlphaPlate>::Create(L"T3AlphaPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_BrokenPlate>::Create(L"T3BrokenPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme3_Cloud>::Create(L"T3Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Cloud>::Create(L"T3Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Moss>::Create(L"T3Moss", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_0>::Create(L"T3Pattern_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_1>::Create(L"T3Pattern_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Plate>::Create(L"T3Plate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CTheme3_SemicolonPlate>::Create(L"T3SemicolonPlate", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Chimney>::Create(L"T4Chimney", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear16>::Create(L"T4Gear16", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear8>::Create(L"T4Gear8", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 
 
 	for (int i = 0; i < CUBEY; i++)
