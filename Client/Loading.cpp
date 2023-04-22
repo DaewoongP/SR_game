@@ -215,9 +215,23 @@ _uint CLoading::Loading_ForLogo(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2BigLeaf", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/BigLeaf.png")), E_FAIL);
 	
-	
-	
-	
+	//테마 3 석판 문양 뒷구름
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3AlphaPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/AlphaPlate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3BrokenPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/BrokenPlate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Cloud.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Moss", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Moss.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Pattern_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Pattern_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Pattern_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Pattern_1.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Plate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Plate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3SemicolonPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/SemicolonPlate.png")), E_FAIL);
+
+	//테마 4 굴뚝 톱니바퀴 연기
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Chimney", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Chimney.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Gear8", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Gear8.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Gear16", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Gear16.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_1.png")), E_FAIL);
+
 	
 	Set_String(L"Buffer Loading.......");
 
