@@ -246,6 +246,7 @@
     <ClInclude Include="Theme1_Tree.h" />
     <ClInclude Include="Theme1_Wall.h" />
     <ClInclude Include="Theme2_BatStatue.h" />
+    <ClInclude Include="Theme2_BigLeaf.h" />
     <ClInclude Include="Theme2_Bush_0.h" />
     <ClInclude Include="Theme2_Bush_1.h" />
     <ClInclude Include="Theme2_Bush_2.h" />
@@ -361,6 +362,7 @@
     <ClCompile Include="Theme1_Tree.cpp" />
     <ClCompile Include="Theme1_Wall.cpp" />
     <ClCompile Include="Theme2_BatStatue.cpp" />
+    <ClCompile Include="Theme2_BigLeaf.cpp" />
     <ClCompile Include="Theme2_Bush_0.cpp" />
     <ClCompile Include="Theme2_Bush_1.cpp" />
     <ClCompile Include="Theme2_Bush_2.cpp" />

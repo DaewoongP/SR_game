@@ -54,11 +54,12 @@ void CTheme1_House::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 }
 
-CTheme1_House * CTheme1_House::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
+CTheme1_House * CTheme1_House::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale, _float fAngle)
 {
 	CTheme1_House*		pInstance = new CTheme1_House(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos, fScale)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, fScale, fAngle)))
+
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -67,7 +68,7 @@ CTheme1_House * CTheme1_House::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPo
 	return pInstance;
 }
 
-HRESULT CTheme1_House::Ready_GameObject(_vec3 & vPos, _float fScale)
+HRESULT CTheme1_House::Ready_GameObject(_vec3 & vPos, _float fScale, _float fAngle)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -78,6 +79,7 @@ HRESULT CTheme1_House::Ready_GameObject(_vec3 & vPos, _float fScale)
 	_float fAngleInt = rand() % 6;
 
 	m_pTransform->m_fFloating = fAngleInt * 60.f;
+	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
 
 	return S_OK;
 }

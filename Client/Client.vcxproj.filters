@@ -231,14 +231,11 @@
       <UniqueIdentifier>{800c11b2-a5c2-4c23-9f0c-2913e5d76aa6}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_2">
-     
       <UniqueIdentifier>{3020cbd9-702c-449f-b969-700068fceefc}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\03. BackGroudObj\Logo">
       <UniqueIdentifier>{d821616b-0430-4360-8132-1cb2ca52d0db}</UniqueIdentifier>
-      
       <UniqueIdentifier>{6ea08435-cdb1-4a13-b15e-b04fb689ba83}</UniqueIdentifier>
-     
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -626,6 +623,7 @@
     <ClInclude Include="Theme2_PigStatue_1.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
     </ClInclude>
+    <ClInclude Include="Theme2_BigLeaf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1011,5 +1009,6 @@
     <ClCompile Include="Theme2_PigStatue_1.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
     </ClCompile>
+    <ClCompile Include="Theme2_BigLeaf.cpp" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,8 @@ CBackGroundBase::CBackGroundBase(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CGameObject(pGraphicDev),
 	m_fTimer(0.0f),
-	m_fSpeed(0.0f)
+	m_fSpeed(0.0f),
+	m_fStaticAngle(0.0f)
 {
 }
 
@@ -49,6 +50,19 @@ void CBackGroundBase::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
+CBackGroundBase * CBackGroundBase::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale, _float fAngle)
+{
+	CBackGroundBase*		pInstance = new CBackGroundBase(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject(vPos, fScale,fAngle)))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
 CBackGroundBase * CBackGroundBase::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _float fScale)
 {
 	CBackGroundBase*		pInstance = new CBackGroundBase(pGraphicDev);
@@ -60,6 +74,19 @@ CBackGroundBase * CBackGroundBase::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 &
 	}
 
 	return pInstance;
+}
+
+HRESULT CBackGroundBase::Ready_GameObject(_vec3 & vPos, _float fScale, _float fAngle)
+{
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	m_pTransform->m_vScale = { fScale,fScale,1.0f };
+
+	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
+
+	return S_OK;
 }
 
 HRESULT CBackGroundBase::Ready_GameObject(_vec3 & vPos, _float fScale)
