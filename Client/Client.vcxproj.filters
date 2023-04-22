@@ -223,6 +223,7 @@
     </Filter>
     <Filter Include="Imgui\Imgui_Stage">
       <UniqueIdentifier>{c01ca208-89fb-4754-a6ff-2f1789d0b9a2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. GameObject\03. BackGroudObj\01.Stage1">
       <UniqueIdentifier>{9b607334-391b-4ec5-a2cd-d99b761d0161}</UniqueIdentifier>
     </Filter>
@@ -419,14 +420,9 @@
     </ClInclude>
     <ClInclude Include="MenuSmoke.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>01. Scene\Stages\Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Select.h">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
     <ClInclude Include="Boss3.h">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
@@ -634,6 +630,7 @@
     </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
     <ClInclude Include="BackGroundBase.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClInclude>
@@ -756,6 +753,12 @@
     </ClInclude>
     <ClInclude Include="Theme.h">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>01. Scene\Stages\Logo\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -903,14 +906,9 @@
     </ClCompile>
     <ClCompile Include="MenuSmoke.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
-    <ClCompile Include="Title.cpp">
-      <Filter>01. Scene\Stages\Logo\00.Title</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>01. Scene\Stages\Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClCompile>
     <ClCompile Include="Boss3.cpp">
       <Filter>00. GameObject\04. Boss\Boss3</Filter>
@@ -1130,6 +1128,7 @@
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
     <ClCompile Include="BackGroundBase.cpp">
       <Filter>00. GameObject\03. BackGroudObj</Filter>
     </ClCompile>
@@ -1249,6 +1248,12 @@
     </ClCompile>
     <ClCompile Include="Theme4_Smoke_1.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>01. Scene\Stages\Logo\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

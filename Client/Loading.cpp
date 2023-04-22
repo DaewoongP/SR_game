@@ -469,7 +469,7 @@ _uint CLoading::Loading_ForBGTool(void)
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
-	m_iLoadingTexImgNum = 13;
+	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading BGTool Complete!!!!!!!!");
 	return 0;
 }
