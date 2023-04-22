@@ -14,6 +14,7 @@ CTheme4_Gear16::~CTheme4_Gear16()
 
 _int CTheme4_Gear16::Update_GameObject(const _float& fTimeDelta)
 {
+	m_pTransform->m_vAngle.z -= fTimeDelta;
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
