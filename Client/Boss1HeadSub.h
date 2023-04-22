@@ -2,17 +2,14 @@
 #include "GameObject.h"
 #include "Include.h"
 
-BEGIN(Engine)
-class CCollider;
-END
-class CBoss1Hand :
+class CBoss1HeadSub :
 	public CGameObject
 {
 private:
-	explicit CBoss1Hand(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBoss1Hand();
+	explicit CBoss1HeadSub(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CBoss1HeadSub();
 
-	virtual HRESULT Ready_GameObject(_vec3& vPos,_vec3 vToWard);
+	virtual HRESULT Ready_GameObject(_vec3& vPos, _vec3 & vtoward);
 
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
@@ -23,14 +20,16 @@ protected:
 	vector<CTransform*>		m_PartsVec;
 	_bool					m_bInit;
 
-	_vec3					m_vToWard;
+	_vec3					m_vMoveDir;
+	_float					m_fSpeed;
 
 protected:
 	HRESULT		Add_Component(void);
 
 public:
-	static CBoss1Hand*		Create(LPDIRECT3DDEVICE9 pGraphicDev,_vec3& vPos, _vec3 & vtoward);
+	static CBoss1HeadSub*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3 & vtoward);
 protected:
 	virtual void Free(void) override;
 
 };
+

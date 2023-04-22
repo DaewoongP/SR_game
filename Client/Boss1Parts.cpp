@@ -15,6 +15,7 @@ HRESULT CBoss1Parts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int i
 {
 	m_TextureName = texturename;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_pTextureCom->m_bUseFrameAnimation = setAnim;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_TextureIdx = idx;
 	return S_OK;
@@ -22,8 +23,11 @@ HRESULT CBoss1Parts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int i
 
 _int CBoss1Parts::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return -1;
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	return 0;
 }
 

@@ -583,6 +583,7 @@
     <ClInclude Include="GiantHand.h">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
+    <ClInclude Include="Boss1HeadSub.h" />
     <ClInclude Include="ChapterTex.h">
       <Filter>00. GameObject\99. Etc\LoadingTex\ChapterTex</Filter>
     </ClInclude>
@@ -1081,6 +1082,7 @@
     <ClCompile Include="GiantHand.cpp">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
+    <ClCompile Include="Boss1HeadSub.cpp" />
     <ClCompile Include="ChapterTex.cpp">
       <Filter>00. GameObject\99. Etc\LoadingTex\ChapterTex</Filter>
     </ClCompile>
