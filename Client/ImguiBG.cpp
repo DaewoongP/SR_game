@@ -25,11 +25,16 @@
 #include"Theme2_Bush_4.h"
 #include"Theme2_LongTree.h"
 
+#include"Theme4_Chimney.h"
+#include"Theme4_Gear8.h"
+#include"Theme4_Gear16.h"
+#include"Theme4_Smoke_0.h"
+#include"Theme4_Smoke_1.h"
 
 static _vec3 m_vPos;
 static _vec3 vPos;
-static _float fX=0;
-
+static _float fScale=0;
+static _int iAngle=0;
 CImguiBG::CImguiBG(LPDIRECT3DDEVICE9 pGraphicDev):m_pGraphicDev(pGraphicDev)
 {
 }
@@ -153,6 +158,56 @@ HRESULT CImguiBG::BGMenu()
 			Scale();
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("Stage3"))
+		{
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On4);
+
+			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
+
+
+			if (m_BG_On3 && nullptr == m_pDefaultBG)
+				CreateDefaultBG();
+
+			if (m_BG_On3 && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+			}
+			if (!m_BG_On3 && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Stage4"))
+		{
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On4);
+
+			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
+
+
+			if (m_BG_On4 && nullptr == m_pDefaultBG)
+				CreateDefaultBG();
+
+			if (m_BG_On4 && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+			}
+			if (!m_BG_On4 && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
+		}
 		// 저장 기능
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
@@ -184,9 +239,10 @@ void CImguiBG::Scale()
 	ImGui::PushItemWidth(300);
 	
 
-	ImGui::DragFloat("Scale", &fX); 
-	if (fX < 0)
-		fX = 0;
+	ImGui::DragFloat("Scale", &fScale); 
+	ImGui::DragInt("Angle", &iAngle);
+	if (fScale < 0)
+		fScale = 0;
 	ImGui::PushItemWidth(100);
 	
 	ImGui::DragFloat("X", &vPos.x);
@@ -195,7 +251,7 @@ void CImguiBG::Scale()
 	ImGui::SameLine();
 	ImGui::DragFloat("Z", &vPos.z);
 	
-
+	
 }
 
 bool LoadTextureFromFile(const char* filename, LPDIRECT3DTEXTURE9* Out_Texture, int* out_width, int* out_height)
@@ -243,9 +299,10 @@ void CImguiBG::InstallBG()
 		
 		if(m_BG_On)
 		Stage1Object(pStageLayer);
-		
 		if(m_BG_On2)
 		Stage2Object(pStageLayer);
+		if (m_BG_On4)
+			Stage4Object(pStageLayer);
 
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
@@ -260,7 +317,8 @@ void CImguiBG::InstallBG()
 		if (DynamicPos != nullptr)
 		{
 			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
-			DynamicPos->m_pTransform->m_vScale = { fX,fX,1.f };
+			DynamicPos->m_pTransform->m_vScale = { fScale,fScale,1.f };
+			DynamicPos->m_pTransform->m_vAngle.z = iAngle;
 		}
 
 
@@ -296,7 +354,7 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 		MakeBG_PS<CTheme2_BatStatue>(pStageLayer, L"T2BatStatue");
 
 	else if (1 == m_iBG_Type)
-		MakeBGNum<CTheme2_PigStatue_0>(pStageLayer, L"T2PigStatue0", (_int)m_tDecoDir);
+		MakeBG_PS<CTheme2_PigStatue_0>(pStageLayer, L"T2PigStatue0");
 
 	else if (2 == m_iBG_Type)
 		MakeBG_PS<CTheme2_PigStatue_1>(pStageLayer, L"T2PigStatue1");
@@ -306,18 +364,39 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 
 	else if (4 == m_iBG_Type)
 		MakeBG_PS<CTheme2_Bush_1>(pStageLayer, L"T2Bush1");
-
+	
 	else if (5 == m_iBG_Type)
-		MakeBG_PS<CTheme2_Bush_2>(pStageLayer, L"T2Bush3");
+		MakeBG_PS<CTheme2_Bush_2>(pStageLayer, L"T2Bush2");
 
 	else if (6 == m_iBG_Type)
-		MakeBG_PS<CTheme2_Bush_3>(pStageLayer, L"T2Bush4");
-	
+		MakeBG_PS<CTheme2_Bush_3>(pStageLayer, L"T2Bush3");
+
 	else if (7 == m_iBG_Type)
+		MakeBG_PS<CTheme2_Bush_4>(pStageLayer, L"T2Bush4");
+	
+	else if (8 == m_iBG_Type)
 		MakeBG_PS<CTheme2_LongTree>(pStageLayer, L"T2LongTree");
+}
+void CImguiBG::Stage3Object(CLayer* pStageLayer)
+{
 
+}
+void CImguiBG::Stage4Object(CLayer* pStageLayer)
+{
+	if (0 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Chimney>(pStageLayer, L"T4Chimney");
 
+	else if (1 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Gear8>(pStageLayer, L"T4Gear8");
 
+	else if (2 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Gear16>(pStageLayer, L"T4Gear16");
+
+	else if (3 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Smoke_0>(pStageLayer, L"T4Smoke_0");
+
+	else if (4 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Smoke_1>(pStageLayer, L"T4Smoke_1");
 }
 HRESULT CImguiBG::SaveBG(_int iStageNumber)
 {
@@ -369,7 +448,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 	{
 		if (0 == iter.iObjTypeNumber)
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pStageLayer, iter.vObjPos,fX,0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 		else if (1 == iter.iObjTypeNumber) 
@@ -379,27 +458,27 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 
 		else if (2 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 		else if (3 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 		else if (4 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 		else if (5 == iter.iObjTypeNumber) 
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 		else if (6 == iter.iObjTypeNumber)
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos,fX, 0.0f), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos,fScale, iAngle), E_FAIL);
 		}
 
 	}
@@ -410,47 +489,47 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 
 			if (0 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (1 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue0", pStageLayer, iter.vObjPos, m_tDecoDir), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue0", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (2 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue1", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue1", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (3 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush0", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush0", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (4 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush1", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush1", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (5 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush2", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush2", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (6 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush3", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush3", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (7 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush4", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush4", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 
 			else if (8 == iter.iObjTypeNumber)
 			{
-				FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pStageLayer, iter.vObjPos, fX), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
 			}
 		}
 	}
@@ -506,7 +585,7 @@ void CImguiBG::MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fX,0.0f);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fScale,0.0f);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

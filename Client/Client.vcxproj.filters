@@ -240,6 +240,9 @@
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_3">
       <UniqueIdentifier>{4ef3c90c-94a7-4b28-b5de-5f523ba7ad8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj\Theme_4">
+      <UniqueIdentifier>{17d2b0f1-4813-49d8-9b7a-c1bd264b27bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -629,6 +632,21 @@
     <ClInclude Include="Theme2_BigLeaf.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
     </ClInclude>
+    <ClInclude Include="Theme4_Chimney.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme4_Gear16.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme4_Gear8.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme4_Smoke_1.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme4_Smoke_0.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1016,6 +1034,21 @@
     </ClCompile>
     <ClCompile Include="Theme2_BigLeaf.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_2</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Chimney.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Gear8.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Gear16.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Smoke_0.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Smoke_1.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

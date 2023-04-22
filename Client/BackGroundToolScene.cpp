@@ -80,7 +80,7 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(10.f, 10.f, 10.f), 10.f), E_FAIL);
 
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f,0.0f), E_FAIL);
+	/*FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f,0.0f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
@@ -89,7 +89,7 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pLayer, _vec3(31.f, 17.f, 10.f), 10.f, 0.0f), E_FAIL);*/
 
 
 	for (int i = 0; i < CUBEY; i++)
