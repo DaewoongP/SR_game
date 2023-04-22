@@ -39,7 +39,9 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 	if (m_bSetTarget)
 	{
 		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		NULL_CHECK_RETURN(pGameObject, );
+		if (nullptr == pGameObject)
+			return 0;
+
 		_vec3 vToodee = pGameObject->m_pTransform->m_vInfo[INFO_POS];
 
 		D3DXVec3Normalize(&m_vDir, &(vToodee - m_pTransform->m_vInfo[INFO_POS]));
@@ -49,7 +51,7 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 		_float fAngle = acosf(D3DXVec3Dot(&m_vDir, &vRight));
 
 		if (vToodee.y > m_pTransform->m_vInfo[INFO_POS].y)
-			fAngle = 2 * 3.14 - fAngle;
+			fAngle = 2 * 3.14f - fAngle;
 
 		m_pTransform->Rotation(ROT_Z, fAngle);
 

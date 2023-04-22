@@ -9,6 +9,9 @@ class CTexture;
 
 END
 
+class CTopdee;
+class CToodee;
+
 class CBoss3EyePupil : public CGameObject
 {
 private:
@@ -28,6 +31,8 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 
 	CGameObject*			m_pBoss3;
+	CToodee*				m_pToodee;
+	CTopdee*				m_pTopdee;
 
 	_int					m_iIndex;	// 표정 텍스처 구분
 	_vec3					m_vDir;
