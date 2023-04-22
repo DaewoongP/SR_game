@@ -13,6 +13,7 @@
 #include "Stage8.h"
 #include "FinalStage1.h"
 #include "BackGroundToolScene.h"
+#include "..\Engine\SmokeParticle.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -290,6 +291,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SmokeParticle", CSmokeParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/theme4SmokeSpr/theme4SmokeSpr_0.png", 1,
+		1.f, 100, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
