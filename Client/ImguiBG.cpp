@@ -25,6 +25,11 @@
 #include"Theme2_Bush_4.h"
 #include"Theme2_LongTree.h"
 
+#include"Theme4_Chimney.h"
+#include"Theme4_Gear8.h"
+#include"Theme4_Gear16.h"
+#include"Theme4_Smoke_0.h"
+#include"Theme4_Smoke_1.h"
 
 static _vec3 m_vPos;
 static _vec3 vPos;
@@ -153,6 +158,56 @@ HRESULT CImguiBG::BGMenu()
 			Scale();
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("Stage3"))
+		{
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On4);
+
+			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
+
+
+			if (m_BG_On3 && nullptr == m_pDefaultBG)
+				CreateDefaultBG();
+
+			if (m_BG_On3 && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+			}
+			if (!m_BG_On3 && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Stage4"))
+		{
+			ImGui::Text("Create:F6");
+			ImGui::Checkbox("BackGround Install", &m_BG_On4);
+
+			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
+
+
+			if (m_BG_On4 && nullptr == m_pDefaultBG)
+				CreateDefaultBG();
+
+			if (m_BG_On4 && nullptr != m_pDefaultBG)
+			{
+				InstallBG();
+			}
+			if (!m_BG_On4 && nullptr != m_pDefaultBG)
+			{
+				m_pDefaultBG->m_bDead = true;
+				m_pDefaultBG = nullptr;
+			}
+
+			Scale();
+			ImGui::TreePop();
+		}
 		// 저장 기능
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
@@ -244,9 +299,10 @@ void CImguiBG::InstallBG()
 		
 		if(m_BG_On)
 		Stage1Object(pStageLayer);
-		
 		if(m_BG_On2)
 		Stage2Object(pStageLayer);
+		if (m_BG_On4)
+			Stage4Object(pStageLayer);
 
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
@@ -320,9 +376,27 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 	
 	else if (8 == m_iBG_Type)
 		MakeBG_PS<CTheme2_LongTree>(pStageLayer, L"T2LongTree");
+}
+void CImguiBG::Stage3Object(CLayer* pStageLayer)
+{
 
+}
+void CImguiBG::Stage4Object(CLayer* pStageLayer)
+{
+	if (0 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Chimney>(pStageLayer, L"T4Chimney");
 
+	else if (1 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Gear8>(pStageLayer, L"T4Gear8");
 
+	else if (2 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Gear16>(pStageLayer, L"T4Gear16");
+
+	else if (3 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Smoke_0>(pStageLayer, L"T4Smoke_0");
+
+	else if (4 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Smoke_1>(pStageLayer, L"T4Smoke_1");
 }
 HRESULT CImguiBG::SaveBG(_int iStageNumber)
 {

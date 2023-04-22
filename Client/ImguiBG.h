@@ -32,7 +32,6 @@ public:
 
 
 
-
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
 
