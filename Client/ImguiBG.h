@@ -26,7 +26,13 @@ public:
 	void Scale();
 	void Stage1Object(CLayer* pStageLayer);
 	void Stage2Object(CLayer* pStageLayer);
-	
+	void Stage3Object(CLayer* pStageLayer);
+	void Stage4Object(CLayer* pStageLayer);
+
+
+
+
+
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
 
@@ -38,6 +44,9 @@ private:
 	vector<OBJINFO> m_vecBGInfo;
 	_bool m_BG_On = false;
 	_bool m_BG_On2 = false;
+	_bool m_BG_On3 = false;
+	_bool m_BG_On4 = false;
+
 
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;

@@ -255,6 +255,11 @@
     <ClInclude Include="Theme2_LongTree.h" />
     <ClInclude Include="Theme2_PigStatue_0.h" />
     <ClInclude Include="Theme2_PigStatue_1.h" />
+    <ClInclude Include="Theme4_Chimney.h" />
+    <ClInclude Include="Theme4_Gear16.h" />
+    <ClInclude Include="Theme4_Gear8.h" />
+    <ClInclude Include="Theme4_Smoke_0.h" />
+    <ClInclude Include="Theme4_Smoke_1.h" />
     <ClInclude Include="Thirddee.h" />
     <ClInclude Include="Tookee.h" />
     <ClInclude Include="ThirdCamera.h" />
@@ -371,6 +376,11 @@
     <ClCompile Include="Theme2_LongTree.cpp" />
     <ClCompile Include="Theme2_PigStatue_0.cpp" />
     <ClCompile Include="Theme2_PigStatue_1.cpp" />
+    <ClCompile Include="Theme4_Chimney.cpp" />
+    <ClCompile Include="Theme4_Gear16.cpp" />
+    <ClCompile Include="Theme4_Gear8.cpp" />
+    <ClCompile Include="Theme4_Smoke_0.cpp" />
+    <ClCompile Include="Theme4_Smoke_1.cpp" />
     <ClCompile Include="Thirddee.cpp" />
     <ClCompile Include="Tookee.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />
