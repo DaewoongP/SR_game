@@ -37,6 +37,8 @@ private:
 	CGameObject* m_pDefaultBG=nullptr;
 	vector<OBJINFO> m_vecBGInfo;
 	_bool m_BG_On = false;
+	_bool m_BG_On2 = false;
+
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;
 	
