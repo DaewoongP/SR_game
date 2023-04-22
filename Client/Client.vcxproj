@@ -284,6 +284,7 @@
     <ClInclude Include="TopdeeJoint.h" />
     <ClInclude Include="TopdeeParts.h" />
     <ClInclude Include="UICamera.h" />
+    <ClInclude Include="Theme.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackCloud.cpp" />

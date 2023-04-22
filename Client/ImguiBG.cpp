@@ -7,29 +7,7 @@
 #include "AbstractFactory.h"
 
 #include"DefaultBG.h"
-#include"Theme1_Cloud.h"
-#include"Theme1_Cube.h"
-#include"Theme1_House.h"
-#include"Theme1_Sun.h"
-#include"Theme1_Tree.h"
-#include"Theme1_Wall.h"
-#include"MapDeco.h"
-
-#include"Theme2_BatStatue.h"
-#include"Theme2_PigStatue_0.h"
-#include"Theme2_PigStatue_1.h"
-#include"Theme2_Bush_0.h"
-#include"Theme2_Bush_1.h"
-#include"Theme2_Bush_2.h"
-#include"Theme2_Bush_3.h"
-#include"Theme2_Bush_4.h"
-#include"Theme2_LongTree.h"
-
-#include"Theme4_Chimney.h"
-#include"Theme4_Gear8.h"
-#include"Theme4_Gear16.h"
-#include"Theme4_Smoke_0.h"
-#include"Theme4_Smoke_1.h"
+#include"Theme.h"
 
 static _vec3 m_vPos;
 static _vec3 vPos;
@@ -161,9 +139,9 @@ HRESULT CImguiBG::BGMenu()
 		if (ImGui::TreeNode("Stage3"))
 		{
 			ImGui::Text("Create:F6");
-			ImGui::Checkbox("BackGround Install", &m_BG_On4);
+			ImGui::Checkbox("BackGround Install", &m_BG_On3);
 
-			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			const char* items[] = { "T3AlphaPlate", "T3BrokenPlate","T3Cloud","T3Moss","T3Pattern_0","T3Pattern_1","T3Plate","T3SemicolonPlate"};
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 
@@ -290,17 +268,17 @@ void CImguiBG::InstallBG()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
 	NULL_CHECK_RETURN(pStageLayer, );
-	m_pDefaultBG;
-
 
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
 		OBJINFO tBGInfo = {};
 		
 		if(m_BG_On)
-		Stage1Object(pStageLayer);
+			Stage1Object(pStageLayer);
 		if(m_BG_On2)
-		Stage2Object(pStageLayer);
+			Stage2Object(pStageLayer);
+		if (m_BG_On3)
+			Stage3Object(pStageLayer);
 		if (m_BG_On4)
 			Stage4Object(pStageLayer);
 
@@ -379,6 +357,29 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 }
 void CImguiBG::Stage3Object(CLayer* pStageLayer)
 {
+	if (0 == m_iBG_Type)
+		MakeBG_PS<CTheme3_AlphaPlate>(pStageLayer, L"T3AlphaPlate");
+
+	else if (1 == m_iBG_Type)
+		MakeBG_PS<CTheme3_BrokenPlate>(pStageLayer, L"T3BrokenPlate");
+
+	else if (2 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Cloud>(pStageLayer, L"T3Cloud");
+
+	else if (3 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Moss>(pStageLayer, L"T3Moss");
+
+	else if (4 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Pattern_0>(pStageLayer, L"T3Pattern_0");
+
+	else if (5 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Pattern_1>(pStageLayer, L"T3Pattern_1");
+
+	else if (6 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Plate>(pStageLayer, L"T3Plate");
+
+	else if (7 == m_iBG_Type)
+		MakeBG_PS<CTheme3_SemicolonPlate>(pStageLayer, L"T3SemicolonPlate");
 
 }
 void CImguiBG::Stage4Object(CLayer* pStageLayer)
@@ -398,6 +399,7 @@ void CImguiBG::Stage4Object(CLayer* pStageLayer)
 	else if (4 == m_iBG_Type)
 		MakeBG_PS<CTheme4_Smoke_1>(pStageLayer, L"T4Smoke_1");
 }
+
 HRESULT CImguiBG::SaveBG(_int iStageNumber)
 {
 	TCHAR dataFile[128] = { 0 };

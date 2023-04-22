@@ -671,6 +671,9 @@
     <ClInclude Include="Theme4_Smoke_1.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_4</Filter>
     </ClInclude>
+    <ClInclude Include="Theme.h">
+      <Filter>00. GameObject\03. BackGroudObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
