@@ -1,6 +1,10 @@
 #pragma once
 
 #include"Include.h"
+BEGIN(Engine)
+class CRcTex;
+class CTransform;
+END
 class CImguiBG
 {
 public:
@@ -13,11 +17,16 @@ public:
 public:
 	_int Update_Imgui_Unit();
 	void CreateDefaultBG();
+	void CreateBackData();
+
 	void InstallBG();
 	void Release();
 	HRESULT BGMenu();
 	void Preview();
-
+	void Scale();
+	void Stage1Object(CLayer* pStageLayer);
+	void Stage2Object(CLayer* pStageLayer);
+	
 	HRESULT SaveBG(_int iStageNumber);
 	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
 
@@ -30,16 +39,15 @@ private:
 	_bool m_BG_On = false;
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;
-
+	
 	CUBE_DIR	m_tDecoDir;
 
-
+	Engine::CTransform* m_pTransformCom;
 
 
 
 private:
 	_int m_iStageNumber;
-
 
 public:
 	static	CImguiBG* Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -47,6 +55,9 @@ public:
 
 	template<typename T>
 	void MakeBG(CLayer* pLayer, const _tchar* pObjTag);
+
+	template<typename T>
+	void MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag);
 
 	template<typename T>
 	void MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);

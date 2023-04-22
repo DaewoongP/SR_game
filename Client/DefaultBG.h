@@ -21,7 +21,6 @@ private:
 
 private:
 	Engine::CTexture* m_pTextureCom2; // 맵 오브젝트 전용
-
 	int m_iDefaultIndex; // 디폴트 종류 선택
 
 public:
