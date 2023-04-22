@@ -10,7 +10,10 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Stage4.h"
+#include "Stage8.h"
 #include "FinalStage1.h"
+#include "BackGroundToolScene.h"
+#include "..\Engine\SmokeParticle.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -29,7 +32,7 @@ unsigned int CLoading::Thread_Main(void * pArg)
 {
 	CLoading*	pLoading = reinterpret_cast<CLoading*>(pArg);
 
-	_uint iFlag = 0;
+	_uint iFlag = 0; 
 
 	EnterCriticalSection(&(pLoading->Get_Crt()));
 
@@ -50,8 +53,14 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE4:
 		iFlag = pLoading->Loading_ForStage4();
 		break;
+		case LOADING_STAGE8:
+		iFlag = pLoading->Loading_ForStage8();
+		break;
 	case LOADING_FINAL1:
 		iFlag = pLoading->Loading_ForFinal1();
+		break;
+	case LOADING_BGTOOL:
+		iFlag = pLoading->Loading_ForBGTool();
 		break;
 	}
 	
@@ -92,6 +101,9 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Player_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/toodeeSpr/toodeeSpr_%d.png", 73)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Terrain_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/Grass_%d.tga", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileFloor.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalPortal_Floor", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss4blobSpr/boss4blobSpr_%d.png", 10)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalPortal", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/pedestalSpr/pedestalSpr_2.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Semicolon", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/semicolonSpr/semicolonSpr_%d.png", 24)), E_FAIL);
 	m_iLoadingTexImgNum = 3;
 	// 검정색 타일(빈 공간 묘사 용)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileBlack.png")), E_FAIL);
@@ -121,6 +133,9 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_Monster_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss1Spr/boss1Spr_0.png")), E_FAIL);
 	// imgui 디폴트 맵 오브젝트
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_MapObject_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/planetsSpr/planetsSpr_0.png")), E_FAIL);
+	// imgui default bg
+		FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Default_BG_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/planetsSpr/planetsSpr_0.png")), E_FAIL);
+
 	// 포탈
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Portal_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/portalSpr/NewportalSpr/portalSpr_%d.png", 11)), E_FAIL);
 	// 포탈 진입 애니메이션
@@ -168,6 +183,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss1_Pattern01", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/thirdeeFireballSpr/thirdeeFireballSpr_%d.png", 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss1_Pattern02", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/thirdeeHandSpr/thirdeeHandSpr_%d.png", 8)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss1_Pattern03", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/giantHandSpr/giantHandSpr_%d.png", 7)), E_FAIL);
+	//배경
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BackCloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme1CloudsSpr/theme1CloudsSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Map_Deco", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme1DecorDownSpr/theme1DecorDownSpr_%d.png",3)), E_FAIL);
 
 
 
@@ -199,6 +218,49 @@ _uint CLoading::Loading_ForLogo(void)
 	// 레이저
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireLaserSpr_0.png")), E_FAIL);
 
+	//테마 1 구름
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cloud.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1House", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/House.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Sun", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Sun.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Tree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Tree.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Wall", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Wall.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cube", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cube.png")), E_FAIL);
+	
+
+	//테마 2 수풀 석상 잎파리 나무
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_1.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_2", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_2.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_3", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_3.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_4", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_4.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2PigStatue_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/PigStatue_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2PigStatue_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/PigStatue_1.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2BatStatue", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/BatStatue.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2LongTree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/LongTree.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2BigLeaf", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/BigLeaf.png")), E_FAIL);
+	
+	//테마 3 석판 문양 뒷구름
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3AlphaPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/AlphaPlate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3BrokenPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/BrokenPlate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Cloud.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Moss", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Moss.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Pattern_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Pattern_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Pattern_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Pattern_1.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3Plate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/Plate.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T3SemicolonPlate", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme3/SemicolonPlate.png")), E_FAIL);
+
+	//테마 4 굴뚝 톱니바퀴 연기
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Chimney", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Chimney.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Gear8", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Gear8.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Gear16", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Gear16.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_1.png")), E_FAIL);
+
+	
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);
@@ -229,6 +291,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SmokeParticle", CSmokeParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/theme4SmokeSpr/theme4SmokeSpr_0.png", 1,
+		1.f, 100, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
@@ -374,6 +440,19 @@ _uint CLoading::Loading_ForStage4(void)
 	return 0;
 }
 
+_uint CLoading::Loading_ForStage8(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage8::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading8 Complete!!!!!!!!");
+	return 0;
+}
+
 _uint CLoading::Loading_ForFinal1(void)
 {
 	Set_String(L"Stage Loading..........");
@@ -384,6 +463,19 @@ _uint CLoading::Loading_ForFinal1(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading Final Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForBGTool(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CBackGroundToolScene::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading BGTool Complete!!!!!!!!");
 	return 0;
 }
 

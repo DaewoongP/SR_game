@@ -37,8 +37,8 @@ HRESULT CMainApp::Ready_MainApp(void)
 	Ready_Proto();
 	CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_LOGO);
 	m_pManagementClass->Set_Scene(pScene);
-
 	m_pCImguiMgr->GetInstance()->Ready_Imgui(m_pGraphicDev);
+
 	Engine::Ready_Frame(L"1Sec", 1.f);
 	Engine::Ready_Frame(L"0.001Sec", 1000.f);
 	return S_OK;
@@ -79,6 +79,8 @@ HRESULT CMainApp::Ready_Proto()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Select_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr_%d.png", 11)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Loading", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Loading/Loading_%d.png", 13)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Transform", CTransform::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ChapterTex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/chapterImagesSpr/chapterImagesSpr_%d.png", 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ChapterCloudTex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/chapterImagesSpr/LevelPortalSpr0%d.png", 10)), E_FAIL);
 	return S_OK;
 }
 

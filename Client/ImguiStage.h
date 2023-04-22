@@ -9,6 +9,8 @@ public:
 
 public:
 	void	Set_StageNumber(_int _iNumber) { m_iStageNumber = _iNumber; }
+	vector<OBJINFO>* Get_GridVector() { return &m_vecInstallGrid; }
+	vector<OBJINFO>* Get_CubeVector() { return &m_vecCubeInfo; }
 
 public:
 	_int Update_Imgui_Stage();
@@ -47,7 +49,7 @@ private:
 	bool m_bGridCreate;						// 최초 그라운드 그리드 생성
 	bool m_bDefaultGridCreate;				// 디폴트 그리드 생성
 
-											// 큐브 관련
+	// 큐브 관련
 	CGameObject* m_pDefaultCube;			// 디폴트 큐브
 	vector<OBJINFO> m_vecCubeInfo;			// 큐브 모음(저장 용도)
 

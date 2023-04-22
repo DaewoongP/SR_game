@@ -239,3 +239,14 @@ typedef struct ObjectInfo
 	_vec3		vObjPos;
 	_int		iObjTypeNumber;
 }OBJINFO;
+
+typedef struct BGObjectInfo
+{
+	_vec3		vObjPos;
+	_int		iObjTypeNumber;
+	const _tchar* pObjtag;
+	_vec3 vObjScale;
+	_float fAngle;
+}BGOBJINFO;
+
+

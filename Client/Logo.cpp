@@ -58,7 +58,7 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 	{
 		StopSound(SOUND_CAM);
 		PlaySound_Effect(L"51.wav", SOUND_CAM, 1.f);
-		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_FINAL1);
+		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_BGTOOL);
 		NULL_CHECK_RETURN(pScene, -1);
 
 		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
@@ -126,7 +126,6 @@ HRESULT CLogo::Ready_Layer_UI(const _tchar * pLayerTag)
 	pGameObject = CSelect::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Select", pGameObject), E_FAIL);
-
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

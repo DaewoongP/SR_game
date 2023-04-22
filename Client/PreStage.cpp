@@ -13,6 +13,8 @@
 #include "..\Engine\AbstractFactory.h"
 #include "LoadingTex.h"
 #include "Fade.h"
+#include "ChapterTex.h"
+#include "ChapterCloudTex.h"
 
 CPreStage::CPreStage(LPDIRECT3DDEVICE9 pGraphicDev, LOADINGID eID)
 	:CScene(pGraphicDev), m_pLoading(nullptr), m_eLoadingID(eID)
@@ -68,9 +70,9 @@ HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	
-	pGameObject = CTitle::Create(m_pGraphicDev);
+	/*pGameObject = CTitle::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);*/
 
 	pGameObject = CUICamera::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -81,6 +83,9 @@ HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CLoadingTex>::Create(L"LoadingTex", pLayer), E_FAIL);
+	
+	FAILED_CHECK_RETURN(FACTORY<CChapterTex>::Create(L"ChapterTex", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CChapterCloudTex>::Create(L"ChapterCloudTex", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;

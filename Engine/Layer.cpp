@@ -2,6 +2,9 @@
 #include "Layer.h"
 
 #include "Export_Function.h"
+#include "..\Client\BackGroundToolScene.h"
+#include "..\Client\Logo.h"
+#include "..\Client\PreStage.h"
 
 CLayer::CLayer()
 	: bPreState(g_Is2D)
@@ -86,6 +89,11 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 	}
 	if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN || STAGE_FAILED == iStageEvent)
 	{
+		// R키 스테이지 제거
+		if (dynamic_cast<CBackGroundToolScene*>(Engine::Get_Scene()) || 
+			dynamic_cast<CLogo*>(Engine::Get_Scene()) ||
+			dynamic_cast<CPreStage*>(Engine::Get_Scene()))
+			return 0;
 		Engine::Clear_Collision();
 		return STAGE_FAILED;
 	}

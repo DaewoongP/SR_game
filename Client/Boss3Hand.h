@@ -12,7 +12,9 @@ private:
 
 public:
 	void	Set_Attack(_bool TrueorFalse) { m_bAttack = TrueorFalse; }
-	void Set_Shock(_bool TF) { m_bShock = TF; }
+	void	Set_Shock(_bool TF) { m_bShock = TF; }
+	void	Set_Lerp() { m_bLerpMove = true; }
+
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
@@ -23,35 +25,35 @@ public:
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
-	virtual void SwapTrigger() override;
 
 private:
 	HRESULT Add_Component(void);
 
+	void	Lerp_Moving(const _float& fTimeDelta);
 	void	FollowPlayer(const _float & fTimeDelta);
 	void	BossAttack(const _float & fTimeDelta);
 	void	IdleMove(const _float & fTimeDelta);
 
 private:
 	_int	m_iIndex;
-	_float  m_fAngle;
+	_float  m_fTimer;	// �÷��̾� ��ȯ �� x�� ȸ���� ����
 	_float	m_fSpeed;
 
 	_float  m_fCoolDown;
 	_float  m_fAttackCoolDown;
 	_float m_fShockCollDown;
 
+	_bool	m_bLerpMove;		// ü�� ���� �� ���ڸ��� ���ƿ��� ���θ� �Ǵ���
 	_bool	m_bShock = false;
+	_bool   m_bSpin = true;
 
-	_int m_iBossHp=2;
 	_float  m_fIdleCycle;
 	_float  m_fIdleAngle;
+	_float  m_fLerpDist;		// ü�� ���� �� ���ڸ��� ���ƿ� �� ���� ��
 	_bool	m_bAttack;
 
 	_bool	m_bIdleMove;
 	_bool	m_bIdleStop;
-	_vec3	m_vPrePos;
-	_bool	m_bSpin;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;

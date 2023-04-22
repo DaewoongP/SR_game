@@ -350,7 +350,7 @@ void CImguiUnit::MapObjectInstall()
 		{
 			MakeGameObjectTypeNum<CLaserTurret>(pStageLayer, L"LaserTurret", ((_int)m_tLaserTurretDir -2));
 
-			m_vecLaserTurretDir.push_back(m_tLaserTurretDir);
+			m_vecLaserTurretDir.push_back((_int)m_tLaserTurretDir);
 		}
 
 		tMapObjectInfo.vObjPos = m_pDefaultMapObject->m_pTransform->m_vInfo[INFO_POS];
@@ -464,16 +464,16 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 
 	HANDLE hFile3 = CreateFile(dataFile3, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
-	if (INVALID_HANDLE_VALUE == hFile2)
+	if (INVALID_HANDLE_VALUE == hFile3)
 		return E_FAIL;
 
 	DWORD dwByte2 = 0;
 
-	int vLaserTurretInfo = {};
+	_int vLaserTurretInfo = 0;
 
 	while (true)
 	{
-		ReadFile(hFile2, &vLaserTurretInfo, sizeof(_int), &dwByte2, nullptr);
+		ReadFile(hFile3, &vLaserTurretInfo, sizeof(_int), &dwByte2, nullptr);
 		if (dwByte2 == 0)
 			break;
 		m_vecLaserTurretDir.push_back(vLaserTurretInfo);

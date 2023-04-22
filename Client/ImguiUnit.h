@@ -10,6 +10,10 @@ public:
 
 public:
 	void	Set_StageNumber(_int _iNumber) { m_iStageNumber = _iNumber; }
+	vector<OBJINFO>*	Get_MonsterVector() { return &m_vecMonsterInfo; }
+	vector<OBJINFO>*	Get_MapVector() { return &m_vecMapObjectInfo; }
+	vector<_int>*	Get_PortalVector() { return &m_vecPortalCubeDir; }
+	vector<_int>*	Get_LaserVector() { return &m_vecLaserTurretDir; }
 
 public:
 	_int Update_Imgui_Unit();

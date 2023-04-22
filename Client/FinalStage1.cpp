@@ -17,6 +17,9 @@
 #include "SkyBox.h"
 #include "MoveCube.h"
 #include "Fade.h"
+#include "FinalPortal.h"
+#include "FinalPortalFloor.h"
+#include "Semicolon.h"
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -59,9 +62,9 @@ HRESULT CFinalStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirdCamera>::Create(L"Camera", pLayer), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CMoveCamera>::Create(L"Camera", pLayer), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CThirdCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMoveCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -77,6 +80,8 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(90.f, 15.f, 25.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(60.f, 23.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(250.f, 20.f , 7.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(250.1f, 20.f, 5.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)

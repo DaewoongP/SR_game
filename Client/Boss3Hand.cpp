@@ -6,19 +6,19 @@
 #include"StageCamera.h"
 #include "Export_Function.h"
 
-
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), m_fIdleCycle(0.f), m_fIdleAngle(0.f),
-	m_iIndex(0),
-	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false), m_bSpin(true)
+	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
+	m_fIdleCycle(0.f), m_fIdleAngle(0.f),
+	m_fLerpDist(0.f),
+	m_iIndex(0), 
+	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false), m_bLerpMove(false)
 {
 }
 
 CBoss3Hand::~CBoss3Hand()
 {
 }
-
 
 HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 {
@@ -28,7 +28,6 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->Rotation(ROT_Y, D3DXToRadian(-65.f));
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = true;
-	m_vPrePos = vPos;
 	m_pCollider->Set_BoundingBox({ 4.f, 4.f, 4.f });
 	m_pCollider->Set_Group(COL_OBJ);
 
@@ -41,6 +40,9 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bLerpMove)
+		Lerp_Moving(fTimeDelta);
+
 	if (m_bDead)
 		return OBJ_DEAD;
     
@@ -73,11 +75,9 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 		m_fShockCollDown = 0.f;
 	}
 	
-
    IdleMove(fTimeDelta);
 	
 	__super::Update_GameObject(fTimeDelta);
-
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -88,8 +88,22 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 
-	if (0.f > m_fAngle)
-		m_pTransform->Rotation(ROT_X, D3DXToRadian(-(m_fAngle)++ * fTimeDelta));
+	if (m_pTransform->m_vAngle.x != D3DXToRadian(0.f))
+	{
+		m_fTimer += fTimeDelta * 4.0f;
+
+		if (1.0f <= m_fTimer)
+		{
+			m_fTimer = 1.0f;
+		}
+
+		m_pTransform->m_vAngle.x = Lerp(D3DXToRadian(-80.f), D3DXToRadian(0.f), m_fTimer);
+
+		if (1.0f == m_fTimer)
+		{
+			m_fTimer = 0.0f;
+		}
+	}
 
 	CGameObject::Update_Too(fTimeDelta);
 
@@ -98,19 +112,30 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
-	m_pTransform->Set_Pos(m_vPrePos.x, m_vPrePos.y, m_vPrePos.z);
-
 	if(!m_pTransform->m_vInfo[INFO_POS].z == 3.f)
 	{
 		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 	}
 
-	if (-100.f < m_fAngle)
-		m_pTransform->Rotation(ROT_X, D3DXToRadian(m_fAngle-- * fTimeDelta));
+	if (m_pTransform->m_vAngle.x != D3DXToRadian(-80.f))
+	{
+		m_fTimer += fTimeDelta * 4.0f;
+
+		if (1.0f <= m_fTimer)
+		{
+			m_fTimer = 1.0f;
+		}
+
+		m_pTransform->m_vAngle.x = Lerp(D3DXToRadian(0.f), D3DXToRadian(-80.f), m_fTimer);
+
+		if (1.0f == m_fTimer)
+		{
+			m_fTimer = 0.0f;
+		}
+	}
 
 	if (m_bAttack)
 		FollowPlayer(fTimeDelta);
-	m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 
 	CGameObject::Update_Top(fTimeDelta);
 
@@ -124,17 +149,42 @@ void CBoss3Hand::LateUpdate_GameObject(void)
 
 void CBoss3Hand::Render_GameObject(void)
 {
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	if (m_bShock == true)
 		m_pTextureCom->Set_Texture();
+
 	else
-		m_pTextureCom2->Set_Texture();
+		m_pTextureCom2->Set_Texture(m_iIndex);
+
 	if(!g_Is2D)
-	m_pShadowCom->Render_Shadow(m_pBufferCom);
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
+
+	if (m_bLerpMove)
+	{
+		if (0.f < m_fLerpDist && 0.02f > m_fLerpDist)
+			m_pTextureCom2->Set_Texture(m_iIndex);
+
+		else if (0.02f < m_fLerpDist && 0.04f > m_fLerpDist)
+			m_pTextureCom->Set_Texture();
+
+		else if (0.04f < m_fLerpDist && 0.06f > m_fLerpDist)
+			m_pTextureCom2->Set_Texture(m_iIndex);
+
+		else if (0.06f < m_fLerpDist && 0.08f > m_fLerpDist)
+			m_pTextureCom->Set_Texture();
+
+		else if (0.08f < m_fLerpDist && 0.1f > m_fLerpDist)
+		{
+			m_bLerpMove = false;
+			m_fLerpDist = 0.f;
+		}
+	}
+
 	m_pBufferCom->Render_Buffer();
+
 	CGameObject::Render_GameObject();
+
 	m_pLandingParticle->Update_Particle();
 	m_pSparkParticle->Update_Particle();
 	m_pElecParticle->Update_Particle();
@@ -163,10 +213,6 @@ void CBoss3Hand::OnCollisionStay(const Collision * collision)
 void CBoss3Hand::OnCollisionExit(const Collision * collision)
 {
 	CGameObject::OnCollisionExit(collision);
-}
-
-void CBoss3Hand::SwapTrigger()
-{
 }
 
 HRESULT CBoss3Hand::Add_Component(void)
@@ -208,20 +254,40 @@ HRESULT CBoss3Hand::Add_Component(void)
 	return S_OK;
 }
 
+void CBoss3Hand::Lerp_Moving(const _float & fTimeDelta)
+{
+	_vec3 vLerp;
+	_vec3 vGoal;
+	
+	if(!lstrcmp(m_pTag, L"Boss3Left"))
+		vGoal = _vec3(15.f, 20.f, 10.f);
+
+	if (!lstrcmp(m_pTag, L"Boss3Right"))
+		vGoal = _vec3(45.f, 20.f, 10.f);
+
+	D3DXVec3Lerp(&vLerp, &m_pTransform->m_vInfo[INFO_POS], &vGoal, m_fLerpDist);
+	m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
+	m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
+
+	m_fLerpDist += 0.001f;
+}
+
 void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 {
+	if (m_bLerpMove)
+		return;
+
 	m_fCoolDown += fTimeDelta;
 
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	NULL_CHECK_RETURN(pGameObject, );
 
 	// 추격을 진행하고
-	if (1.5f < m_fCoolDown && 2.f + BOSS3_CHASE > m_fCoolDown)
+	if (2.f < m_fCoolDown && 3.5f > m_fCoolDown)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 
-			m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
-			
+		m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
 	}
 
 	else if (4.f < m_fCoolDown )
@@ -262,7 +328,7 @@ void CBoss3Hand::BossAttack(const _float& fTimeDelta)
 			m_pLandingParticle->Set_SizeLifeTime(1.f);
 			m_pLandingParticle->Set_BoundingBox(box);
 			m_pLandingParticle->Start_Particle();
-			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100.0f, SHAKE_ALL);
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.7f, 100, SHAKE_ALL);
 		}
 	}
 

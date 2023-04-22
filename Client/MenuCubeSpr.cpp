@@ -5,6 +5,7 @@
 CMenuCubeSpr::CMenuCubeSpr(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
+
 }
 
 CMenuCubeSpr::~CMenuCubeSpr()
@@ -30,7 +31,7 @@ HRESULT CMenuCubeSpr::Ready_GameObject(_vec3 & vPos)
 
 _int CMenuCubeSpr::Update_GameObject(const _float & fTimeDelta)
 {
-	m_pTransform->Move_Floating(fTimeDelta, 0.5f ,30.0f);
+	m_pTransform->Move_Floating(fTimeDelta, 0.5f ,30.0f,FLOATING_Y);
 
 	__super::Update_GameObject(fTimeDelta);
 
