@@ -107,7 +107,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
 		m_pImguiStage->Set_StageNumber(m_iStageNumber);
 		m_pImguiUnit->Set_StageNumber(m_iStageNumber);
-
+		m_pImguiBG->Set_StageNumber(m_iStageNumber);
 		// 전부 세이브 버튼
 		ImGui::Text("All Save and Load");
 		
@@ -117,6 +117,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiStage->SaveGrid(m_iStageNumber);
 			m_pImguiUnit->SaveMapObject(m_iStageNumber);
 			m_pImguiUnit->SaveMonster(m_iStageNumber);
+			m_pImguiBG->SaveBG(m_iStageNumber);
 		}
 
 		// 전부 로드 버튼
@@ -127,6 +128,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiStage->LoadGrid(m_iStageNumber);
 			m_pImguiUnit->LoadMapObject(m_iStageNumber);
 			m_pImguiUnit->LoadMonster(m_iStageNumber);
+			m_pImguiBG->LoadBG(m_iStageNumber);
 		}
 		// 레이어의 모든 요소 지우기(맵 큐브 제외)
 		ImGui::Text("All Delete");
@@ -144,6 +146,9 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			{
 				CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 				pLayer->Delete_In_Layer();
+				pLayer = Engine::Get_Layer(L"Layer_Environment");
+				pLayer->Delete_In_Layer();
+
 				m_bDeleteAll = false;
 			}
 

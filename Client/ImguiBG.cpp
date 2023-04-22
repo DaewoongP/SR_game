@@ -194,10 +194,7 @@ HRESULT CImguiBG::BGMenu()
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
 			FAILED_CHECK_RETURN(LoadBG(m_iStageNumber), E_FAIL);
-		
-		
-
-
+	
 		ImGui::TreePop();
 	}
 
@@ -207,9 +204,6 @@ HRESULT CImguiBG::BGMenu()
 }
 void CImguiBG::Preview()
 {
-
-
-
 
 }
 void CImguiBG::Scale()
@@ -536,7 +530,84 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			}
 		}
 	}
+	if (m_BG_On3)
+	{
+		for (auto& iter : m_vecBGInfo)
+		{
 
+			if (0 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_AlphaPlate>::Create(L"T3AlphaPlate", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (1 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_BrokenPlate>::Create(L"T3BrokenPlate", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (2 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Cloud>::Create(L"T3Cloud", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (3 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Moss>::Create(L"T3Moss", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (4 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_0>::Create(L"T3Pattern_0", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (5 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Pattern_1>::Create(L"T3Pattern_1", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (6 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Plate>::Create(L"T3Plate", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (7 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_SemicolonPlate>::Create(L"T3SemicolonPlate", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+		}
+	}
+	if (m_BG_On4)
+	{
+		for (auto& iter : m_vecBGInfo)
+		{
+
+			if (0 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Chimney>::Create(L"T4Chimney", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (1 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear8>::Create(L"T4Gear8", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (2 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Gear16>::Create(L"T4Gear16", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (3 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Smoke_0>::Create(L"T4Smoke_0", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+
+			else if (4 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Smoke_1>::Create(L"T4Smoke_1", pStageLayer, iter.vObjPos, fScale, iAngle), E_FAIL);
+			}
+		}
+	}
 	return S_OK;
 }
 
