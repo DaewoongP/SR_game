@@ -434,9 +434,6 @@
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClInclude>
     <ClInclude Include="Select.h">
-      <Filter>01. Scene\Stages\Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
     </ClInclude>
     <ClInclude Include="StageCamera.h">
@@ -760,6 +757,9 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -921,9 +921,6 @@
     </ClCompile>
     <ClCompile Include="Boss2.cpp">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
-    </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>01. Scene\Stages\Logo</Filter>
     </ClCompile>
     <ClCompile Include="PortalCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
@@ -1251,6 +1248,9 @@
     </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>01. Scene\Stages\Logo\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
