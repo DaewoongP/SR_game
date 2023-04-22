@@ -23,7 +23,7 @@
 #include "Struct.h"
 #include "Function.h"
 #include "Typedef.h"
-
+#include"D3dx9tex.h"
 
 #include <io.h>
 

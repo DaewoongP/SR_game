@@ -171,11 +171,44 @@ void CTransform::LateUpdate_Component(void)
 {
 }
 
-void CTransform::Move_Floating(const _float & fTimeDelta, _float fPower, _float fSpeed)
+void CTransform::Move_Floating(const _float & fTimeDelta, _float fPower, _float fSpeed, FLOATING_AXIS eXYZ)
 {
 	m_fFloating += fTimeDelta * fSpeed;
 
-	m_vInfo[INFO_POS].y += fPower * sinf(D3DXToRadian(m_fFloating));
+	switch (eXYZ)
+	{
+	case Engine::FLOATING_X:
+		Floating_X(fPower);
+		break;
+	case Engine::FLOATING_Y:
+		Floating_Y(fPower);
+		break;
+	case Engine::FLOATING_Z:
+		Floating_Z(fPower);
+		break;
+	case Engine::FLOATING_XY:
+		Floating_X(fPower);
+		Floating_Y(fPower);
+		break;
+	case Engine::FLOATING_XZ:
+		Floating_X(fPower);
+		Floating_Z(fPower);
+		break;
+	case Engine::FLOATING_YZ:
+		Floating_Y(fPower);
+		Floating_Z(fPower);
+		break;
+	case Engine::FLOATING_XYZ:
+		Floating_X(fPower);
+		Floating_Y(fPower);
+		Floating_Z(fPower);
+		break;
+	case Engine::FLOATING_END:
+		break;
+	default:
+		break;
+	}
+
 }
 void CTransform::Update_Shake(_float fTimeDelta, _vec3& vPos)
 {
@@ -297,6 +330,21 @@ void CTransform::SwapYZ()
 	else
 		m_YZValue = Lerp(m_YZValue, 1.f, 0.1f);
 	cout << m_YZValue << endl;
+}
+
+void CTransform::Floating_X(_float fPower)
+{
+	m_vInfo[INFO_POS].x += fPower * cosf(D3DXToRadian(m_fFloating));
+}
+
+void CTransform::Floating_Y(_float fPower)
+{
+	m_vInfo[INFO_POS].y += fPower * sinf(D3DXToRadian(m_fFloating));
+}
+
+void CTransform::Floating_Z(_float fPower)
+{
+	m_vInfo[INFO_POS].z += fPower * cosf(D3DXToRadian(m_fFloating));
 }
 
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)

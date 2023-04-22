@@ -1,5 +1,4 @@
 #pragma once
-#include "Scene.h"
 
 class CStage1 : public Engine::CScene
 {

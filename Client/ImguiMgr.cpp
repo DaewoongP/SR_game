@@ -7,11 +7,12 @@
 
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
+#include"ImguiBG.h"
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
 CImguiMgr::CImguiMgr()
-	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pToodee(nullptr),
+	:m_pImguiStage(nullptr), m_pImguiUnit(nullptr), m_pImguiBG(nullptr), m_pToodee(nullptr),
 	m_bStageTool(false), m_bUnitTool(false), m_bOnceLoad(true), m_bDeleteAll(false),
 	m_iStageNumber(0)
 {
@@ -26,6 +27,7 @@ HRESULT CImguiMgr::Ready_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 {
 	m_pImguiStage = CImguiStage::Create(m_pGraphicDev);
 	m_pImguiUnit = CImguiUnit::Create(m_pGraphicDev);
+	m_pImguiBG =   CImguiBG::Create(m_pGraphicDev);
 
 	return S_OK;
 }
@@ -41,7 +43,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	bool show_demo_window = false;
+	bool show_demo_window = true;
 
 	//// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	if (show_demo_window)
@@ -83,13 +85,30 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			}
 		}
 
+		{
+			ImGui::Checkbox("BackGround", &m_bBGTool);
+
+			if (m_bBGTool)
+			{
+				ImGui::Begin("BackGround");
+
+				m_pImguiBG->Update_Imgui_Unit();
+
+				ImGui::End();
+
+			}
+
+		}
+
+
+
 		// 스테이지 선택 콤보 박스
 		const char* items[] = { "1", "2", "3", "4", "5", "6", "7", "8", 
 								"Final1", "Final2", "99" };
 		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
 		m_pImguiStage->Set_StageNumber(m_iStageNumber);
 		m_pImguiUnit->Set_StageNumber(m_iStageNumber);
-
+		m_pImguiBG->Set_StageNumber(m_iStageNumber);
 		// 전부 세이브 버튼
 		ImGui::Text("All Save and Load");
 		
@@ -99,6 +118,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiStage->SaveGrid(m_iStageNumber);
 			m_pImguiUnit->SaveMapObject(m_iStageNumber);
 			m_pImguiUnit->SaveMonster(m_iStageNumber);
+			m_pImguiBG->SaveBG(m_iStageNumber);
 		}
 
 		// 전부 로드 버튼
@@ -109,6 +129,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			m_pImguiStage->LoadGrid(m_iStageNumber);
 			m_pImguiUnit->LoadMapObject(m_iStageNumber);
 			m_pImguiUnit->LoadMonster(m_iStageNumber);
+			m_pImguiBG->LoadBG(m_iStageNumber);
 		}
 		// 레이어의 모든 요소 지우기(맵 큐브 제외)
 		ImGui::Text("All Delete");
@@ -126,12 +147,15 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 			{
 				CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 				pLayer->Delete_In_Layer();
+				pLayer = Engine::Get_Layer(L"Layer_Environment");
+				pLayer->Delete_In_Layer();
 				m_pImguiUnit->Get_LaserVector()->clear();
 				m_pImguiUnit->Get_MonsterVector()->clear();
 				m_pImguiUnit->Get_MapVector()->clear();
 				m_pImguiUnit->Get_PortalVector()->clear();
 				m_pImguiStage->Get_CubeVector()->clear();
 				m_pImguiStage->Get_GridVector()->clear();
+
 				m_bDeleteAll = false;
 			}
 
@@ -166,9 +190,11 @@ void CImguiMgr::Release()
 {
 	m_pImguiStage->Release();
 	m_pImguiUnit->Release();
+	m_pImguiBG->Release();
 
 	Safe_Delete(m_pImguiStage);
 	Safe_Delete(m_pImguiUnit);
+	Safe_Delete(m_pImguiBG);
 
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();

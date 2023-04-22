@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ShiningStar.h"
+#include "ShiningStar.h"// ¹ã ÇÏ´ÃÀÇ ÆÛ¾ó~
 
 CShiningStar::CShiningStar(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)

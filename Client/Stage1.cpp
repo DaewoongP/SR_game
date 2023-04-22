@@ -13,6 +13,7 @@
 #include "Tookee.h"
 #include"WaterPipe.h"
 #include "Fade.h"
+#include"BackCloud.h"
 CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
