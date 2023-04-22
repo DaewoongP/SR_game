@@ -1,5 +1,9 @@
 #pragma once
 #include "BackGroundBase.h"
+BEGIN(Engine)
+
+class CSmokeParticle;
+END
 class CTheme4_Chimney :
 	public CBackGroundBase
 {
@@ -16,4 +20,7 @@ private:
 	virtual HRESULT Add_Component(void);
 private:
 	virtual void Free(void);
+
+private:
+	Engine::CSmokeParticle*		m_pSmokeParticle;
 };
