@@ -6,7 +6,7 @@
 CGiantHand::CGiantHand(LPDIRECT3DDEVICE9 pGraphicDev) :CGameObject(pGraphicDev)
 {
 	m_bInit = true;
-	m_eState = GH_IDLE;	
+	
 }
 
 CGiantHand::~CGiantHand()
@@ -24,6 +24,8 @@ HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 	m_vSummonPos = vPos;
 	m_fweight = 0;
+	m_eState = GH_IDLE;
+	m_bCollision = false;
 	return S_OK;
 }
 
@@ -63,9 +65,9 @@ _int CGiantHand::Update_GameObject(const _float & fTimeDelta)
 		Do_Up(fTimeDelta);
 		break;
 	case GH_END:
-		for (int i = 0; i < m_PartsVec.size(); i++)
-			m_PartsVec[i]->m_pGameObject->Set_Dead();
-		m_bDead = true;
+		m_fweight = 0;
+		m_bCollision = false;
+		m_bStop = false;
 		break;
 	}
 	__super::Update_GameObject(fTimeDelta);
@@ -83,13 +85,44 @@ void CGiantHand::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 }
 
+void CGiantHand::OnCollisionEnter(const Collision * collision)
+{
+	//do_stump 멈춰주고
+	//충돌지점으로 이동해줘
+	//근데 충돌 시작은 ok exit는 어떻게 검출시킬거임?
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube")
+		&& !m_bStop)
+	{
+		_int pos_z = -9;
+		m_pTransform->m_vInfo[INFO_POS].z =
+			Lerp(m_vSummonPos.z, pos_z, m_fweight);
+		m_bStop = true;
+	}
+}
+
+void CGiantHand::OnCollisionStay(const Collision * collision)
+{
+}
+
+void CGiantHand::OnCollisionExit(const Collision * collision)
+{
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube"))
+	{
+		m_bCollision = false;
+	}
+}
+
 void CGiantHand::Do_Stump(const _float & fTimeDelta)
 {
+	if (m_bStop)
+		return;
 	if(m_fweight<1)
 		m_fweight += fTimeDelta *3.f;
 
+	//weight가 1 미만인 경우 collider에 검출되면
+	_int pos_z = -8;
 	m_pTransform->m_vInfo[INFO_POS].z =
-		Lerp(m_vSummonPos.z,-7, m_fweight);
+		Lerp(m_vSummonPos.z, pos_z, m_fweight);
 }
 
 void CGiantHand::Do_Up(const _float & fTimeDelta)

@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CAnimation;
 END
 class CBoss1Head :
 	public CGameObject
@@ -22,11 +23,14 @@ private:
 	_bool	isMoveDone(const _float & fTimeDelta);
 	void	ShootHead(const _float & fTimeDelta);
 
+	void		LerpClipAdd(AnimClip* clip, _int idx, _float itv, _float osc, _float csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count);
 protected:
 	Engine::CCollider*		m_pCollider;
 	vector<CTransform*>		m_PartsVec;
+	Engine::CAnimation*     m_pAnimation_Whole;
 	_bool					m_bInit;
 
+	//자식도 있는 그냥 애니메이션 넣어줌.
 	_float m_fMovepos[3];
 	_int   m_iShootCount;
 

@@ -18,8 +18,8 @@ HRESULT CBoss1Head::Ready_GameObject(_vec3 & vPos, _vec3 vToWard)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_fMovepos[0] = 30;
-	m_fMovepos[1] = 15;
-	m_fMovepos[2] = 00;
+	m_fMovepos[1] = 17;
+	m_fMovepos[2] = 4;
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5, 5, 5);
@@ -41,6 +41,27 @@ _int CBoss1Head::Update_GameObject(const _float & fTimeDelta)
 			FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Boss1Parts", pStageLayer, _vec3(0, 0, i*0.4f), m_pTransform, L"Boss1_Pattern01", i, false), E_FAIL);
 			m_PartsVec.push_back(m_pTransform->GetChild(i));
 		}
+		AnimClip* clip = nullptr;
+		clip = new AnimClip();
+		{
+			clip->parts.push_back(m_PartsVec[0]);
+			clip->parts.push_back(m_PartsVec[1]);
+			clip->parts.push_back(m_PartsVec[2]);
+			clip->parts.push_back(m_PartsVec[3]);
+			clip->parts.push_back(m_PartsVec[4]);
+			clip->parts.push_back(m_PartsVec[5]);
+			clip->parts.push_back(m_PartsVec[6]);
+			clip->parts.push_back(m_PartsVec[7]);
+			clip->source.resize(8);
+
+			for (int i = 0; i < 8; i++)
+				LerpClipAdd(clip, i, 0.085f, 1, 0, _vec3(0, 0, i*0.4f), _vec3(0, 0, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(abs(4-i)*25)), 8);
+		}
+
+		clip->TotalTime = 0.085f*8;
+		clip->Useloop = true;
+		m_pAnimation_Whole->AddClip(L"Idle", clip);
+		m_pAnimation_Whole->SetAnimation(L"Idle");
 		m_bInit = false;
 	}
 
@@ -88,12 +109,37 @@ void CBoss1Head::ShootHead(const _float & fTimeDelta)
 	}
 }
 
+void CBoss1Head::LerpClipAdd(AnimClip * clip, _int idx, _float itv, _float osc, _float csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count)
+{
+	_float pre = 0;
+	for (int i = 0; i < count; i++)
+	{
+		//현재 위치에서 변화량만큼 변화를 줍니다.
+		pre = (_float)(i + 1) / count;
+		csc = Lerp(csc, 0, pre);
+		ctr = Lerp(ctr, _vec3(0, 0, 0), pre);
+		crot = Lerp(crot, _vec3(0, 0, 0), pre);
+		clip->source[idx].push_back(
+			ANIMINFO{
+			(i % 2 == 0) ? (otr + ctr) : (otr - ctr),
+			(i % 2 == 0) ? (orot + crot) : (orot - crot),//rotation
+			(i % 2 == 0) ? (_vec3(osc,osc,osc) + _vec3(csc,csc,csc)) : (_vec3(osc,osc,osc) + _vec3(-csc,-csc,-csc)),//scale
+			itv,//tilltime
+			itv*i//actionTime
+		});
+	}
+}
+
 HRESULT CBoss1Head::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pAnimation_Whole = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
+	NULL_CHECK_RETURN(m_pAnimation_Whole, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
 	return S_OK;
 }
 

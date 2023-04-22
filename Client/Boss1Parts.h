@@ -26,6 +26,8 @@ public:
 	virtual void Render_GameObject(void) override;
 
 public:
+	void	MakeAnim(_tchar* name, _int startidx, _int lastidx,_float time, _bool loop) { m_pTextureCom->Add_Anim(name, startidx, lastidx, time, loop); }
+	void	SetAnim(_tchar* name) { m_pTextureCom->Switch_Anim(name); }
 	void	SetTextureIdx(_int idx) { m_TextureIdx = idx; }
 	_int	GetTextureIdx() { return m_TextureIdx; }
 

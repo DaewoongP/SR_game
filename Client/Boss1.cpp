@@ -27,7 +27,6 @@ HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 	//위치잡는 친구를 넣어주세요
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
-	//m_pCollider->Set_BoundingBox({ 10.999f,11.999f,1.0f });
 	return S_OK;
 }
 
@@ -43,6 +42,11 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		//실행해주는 코드
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+		
+		_vec3 summonpos = _vec3(60, 23, -30);
+		FAILED_CHECK_RETURN(FACTORY<CGiantHand>::Create(L"GiantHand", pStageLayer, summonpos),E_FAIL);
+		m_GiantHand = Engine::Get_GameObject(L"Layer_GameLogic", L"GiantHand");
+
 		//몸똥 0
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Body", pStageLayer, _vec3(0,0,0), m_pTransform, L"Boss1_Parts", 0, false), E_FAIL);
 		//머리통 0-0
@@ -59,7 +63,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		//눈 0 0 5
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Eye", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 7, false), E_FAIL);
 		//눈화장 0 0 6
-		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_MakeUp", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss2_MakeUp", 0, false), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_MakeUp", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss2_MakeUp", 8, true), E_FAIL);
 
 		//잘 만들어진 탑디의 조인트를 훔쳐씁니다.
 		//어꺠 0 1~2
@@ -115,8 +119,11 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		//눈
 		m_PartsVec[7]->Set_SRT(_vec3(11, 11, 11), _vec3(0, 0, 0), _vec3(-0.2f, 1, -0.2f));
 		//눈화장
-		m_PartsVec[8]->Set_SRT(_vec3(11, 11, 11), _vec3(0,0,0), _vec3(0.4f,1.4f,-0.1f));
-		
+		m_PartsVec[8]->Set_SRT(_vec3(11, 11, 11), _vec3(0,0,0), _vec3(-0.1f,1.4f,-0.1f));
+
+		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->MakeAnim(L"Attack",0,8,0.6f,true);
+		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->MakeAnim(L"Idle", 0, 0, 1, false);
+		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
 		//오른
 		//어깨조인트
 		m_PartsVec[9]->Set_SRT(_vec3(13,13,13), _vec3(0,D3DXToRadian(0), D3DXToRadian(-30)), _vec3(-9,6,0.1f));
@@ -579,7 +586,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(0.4f,1.4f,-0.1f) + _vec3(0,0.3f,0),
+					_vec3(-0.1f,1.4f,-0.1f) + _vec3(0,0.3f,0),
 					_vec3(D3DXToRadian(0),0,0),//rotation
 					_vec3(0,0,0),
 					1.8f,//tilltime
@@ -587,7 +594,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 				});
 				clip->source[6].push_back(
 					ANIMINFO{
-					_vec3(0.4f,1.4f,-0.1f) + _vec3(0,-0.3f,0),
+					_vec3(-0.1f,1.4f,-0.1f) + _vec3(0,-0.3f,0),
 					_vec3(D3DXToRadian(0),0,0),//rotation
 					_vec3(0,0,0),
 					1.2f,//tilltime
@@ -616,7 +623,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			LerpClipAdd(clip, 3, 0.2f, 10, 4, _vec3(-0.5f, -1.2f, -0.2f), _vec3(0, 0, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 4, 0.2f, 13, 2, _vec3(-1, 0.5f, -0.4f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 5, 0.2f, 11, 2, _vec3(-0.2f, 1, -0.2f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 6, 0.2f, 11, 2, _vec3(0.4f, 1.4f, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 6, 0.2f, 11, 2, _vec3(-0.1f, 1.4f, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			
 			clip->TotalTime = 0.2f * 18 ;
 			clip->Useloop = false;
@@ -727,6 +734,7 @@ void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 	m_pAnimation_Whole->SetAnimation(L"Finger_Shoot");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Attack");
 	m_dwRestTime = 1;
 	CheckIsLastActionIdx();
 }
@@ -736,6 +744,7 @@ void CBoss1::Do_EndFinger(const _float & fTimeDelta)
 	m_pAnimation_Whole->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	dynamic_cast<CBoss1Parts*>(m_PartsVec[14]->m_pGameObject)->SetTextureIdx(3);
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
 	m_dwRestTime = 3;
 }
 
@@ -753,6 +762,7 @@ void CBoss1::Do_SummonHead(const _float & fTimeDelta)
 	m_pAnimation_Whole->SetAnimation(L"Foot");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Attack");
 	m_dwRestTime = 2;
 	CheckIsLastActionIdx();
 }
@@ -761,25 +771,19 @@ void CBoss1::Do_EndHead(const _float & fTimeDelta)
 {
 	m_pAnimation_Whole->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
 	m_dwRestTime = 18;
 	CheckIsLastActionIdx();
 }
 
 void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 {
-	//플레이어 위치 기준 x 값 +n 위치에 지정된 y값으로 이동하는 
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	//애는 그냥 지정된 위치에서 생성돼도 됨
-	_vec3 summonpos = _vec3(60,	23,	-30);
-	if (pStageLayer != nullptr)
-	{
-		FACTORY<CGiantHand>::Create(L"GiantHand", pStageLayer, summonpos);
-		m_GiantHand = Engine::Get_GameObject(L"Layer_GameLogic", L"GiantHand");
-	}
 	m_pAnimation_Whole->SetAnimation(L"Finger_Ready");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
 	dynamic_cast<CGiantHand*>(m_GiantHand)->SetState(GIANTHANDSTATE::GH_STUMP);
+	dynamic_cast<CGiantHand*>(m_GiantHand)->Weight_Reset();
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Attack");
 	m_dwRestTime = 0;
 	CheckIsLastActionIdx();
 }
@@ -806,7 +810,8 @@ void CBoss1::Do_UpGiant(const _float & fTimeDelta)
 void CBoss1::Do_EndGiant(const _float & fTimeDelta)
 {
 	dynamic_cast<CGiantHand*>(m_GiantHand)->SetState(GIANTHANDSTATE::GH_END);
-	m_dwRestTime = 0.1f;
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
+	m_dwRestTime = 1.f;
 	CheckIsLastActionIdx();
 }
 
