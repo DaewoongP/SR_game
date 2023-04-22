@@ -263,6 +263,11 @@
     <ClInclude Include="Theme3_Pattern_1.h" />
     <ClInclude Include="Theme3_Plate.h" />
     <ClInclude Include="Theme3_SemicolonPlate.h" />
+    <ClInclude Include="Theme4_Chimney.h" />
+    <ClInclude Include="Theme4_Gear16.h" />
+    <ClInclude Include="Theme4_Gear8.h" />
+    <ClInclude Include="Theme4_Smoke_0.h" />
+    <ClInclude Include="Theme4_Smoke_1.h" />
     <ClInclude Include="Thirddee.h" />
     <ClInclude Include="Tookee.h" />
     <ClInclude Include="ThirdCamera.h" />
@@ -387,6 +392,11 @@
     <ClCompile Include="Theme3_Pattern_1.cpp" />
     <ClCompile Include="Theme3_Plate.cpp" />
     <ClCompile Include="Theme3_SemicolonPlate.cpp" />
+    <ClCompile Include="Theme4_Chimney.cpp" />
+    <ClCompile Include="Theme4_Gear16.cpp" />
+    <ClCompile Include="Theme4_Gear8.cpp" />
+    <ClCompile Include="Theme4_Smoke_0.cpp" />
+    <ClCompile Include="Theme4_Smoke_1.cpp" />
     <ClCompile Include="Thirddee.cpp" />
     <ClCompile Include="Tookee.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />
