@@ -198,6 +198,26 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Wall", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Wall.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cube", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cube.png")), E_FAIL);
 	
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+	//테마 2 수풀 석상 잎파리 나무
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_1.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_2", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_2.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_3", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_3.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_4", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_4.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2PigStatue_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/PigStatue_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2PigStatue_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/PigStatue_1.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2BatStatue", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/BatStatue.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2LongTree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/LongTree.png")), E_FAIL);
+	
+=======
+>>>>>>> 279f18dd86fa7b4f0f467806303efe834eca4a4d
+>>>>>>> Stashed changes
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);

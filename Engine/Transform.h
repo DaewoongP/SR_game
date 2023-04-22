@@ -69,7 +69,7 @@ public:
 	virtual		_int	Update_Component(const _float& fTimeDelta);
 	virtual		void	LateUpdate_Component(void);
 
-	void Move_Floating(const _float& fTimeDelta, _float fPower = 10.0f, _float fSpeed = 60.0f);
+	void Move_Floating(const _float& fTimeDelta, _float fPower = 0.01f, _float fSpeed = 60.0f, FLOATING_AXIS eXYZ = FLOATING_END);
 
 	void		Update_Shake(_float fTimeDelta, _vec3& vPos);
 	//����ũ �ð�, ���� �Է� �Լ�
@@ -100,6 +100,12 @@ public:
 	_matrix GetTransMat(const _float& fTimeDelta);
 	_matrix GetScaleMat();
 	void SwapYZ();
+private :
+	void Floating_X(_float fPower);
+	void Floating_Y(_float fPower);
+	void Floating_Z(_float fPower);
+
+
 private:
 	CTransform* m_Parent;
 	vector<CTransform*> m_Child;

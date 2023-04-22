@@ -19,6 +19,16 @@
 #include "Theme1_Tree.h"
 #include "Theme1_Wall.h"
 #include "Theme1_Cube.h"
+#include "Theme2_Bush_0.h"
+#include "Theme2_Bush_1.h"
+#include "Theme2_Bush_2.h"
+#include "Theme2_Bush_3.h"
+#include "Theme2_Bush_4.h"
+#include "Theme2_PigStatue_0.h"
+#include "Theme2_PigStatue_1.h"
+#include "Theme2_BatStatue.h"
+#include "Theme2_LongTree.h"
+
 
 
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -60,13 +70,36 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+<<<<<<< HEAD
 
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pLayer, _vec3(50.f, 20.f, 10.f), 20.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pLayer, _vec3(11.f, 27.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 07.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(10.f, 10.f, 10.f), 10.f), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_0>::Create(L"T2Bush_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_1>::Create(L"T2Bush_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_2>::Create(L"T2Bush_2", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_3>::Create(L"T2Bush_3", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_Bush_4>::Create(L"T2Bush_4", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_0>::Create(L"T2PigStatue_0", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_PigStatue_1>::Create(L"T2PigStatue_1", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_BatStatue>::Create(L"T2BatStatue", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme2_LongTree>::Create(L"T2LongTree", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+=======
+	//stage1
+	/*FAILED_CHECK_RETURN(FACTORY<CTheme1_Cloud>::Create(L"T1Cloud", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_House>::Create(L"T1House", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTheme1_Sun>::Create(L"T1Sun", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pLayer, _vec3(11.f, 27.f, 10.f), 10.f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 07.f, 10.f), 10.f), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Tree>::Create(L"T1Tree", pLayer, _vec3(40.f, 30.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTheme1_Cube>::Create(L"T1Cube", pLayer, _vec3(31.f, 17.f, 10.f), 10.f), E_FAIL);*/
+	
+>>>>>>> 279f18dd86fa7b4f0f467806303efe834eca4a4d
+
 
 	for (int i = 0; i < CUBEY; i++)
 	{

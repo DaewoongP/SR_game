@@ -20,6 +20,27 @@ _int CTheme1_House::Update_GameObject(const _float & fTimeDelta)
 
 _int CTheme1_House::Update_Too(const _float & fTimeDelta)
 {
+	CTransform* SunTransform = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_Environment", L"T1Sun", L"Transform", ID_DYNAMIC));
+
+	NULL_CHECK_RETURN(SunTransform, 0);
+
+	_vec2 sunPos = { SunTransform->m_vInfo[INFO_POS].x, SunTransform->m_vInfo[INFO_POS].y };
+	_vec2 ThisPos = { m_pTransform->m_vInfo[INFO_POS].x, m_pTransform->m_vInfo[INFO_POS].y };
+
+	_vec2 vdir = sunPos - ThisPos;
+
+	D3DXVec2Normalize(&vdir, &vdir);
+
+	_vec2 vStandard = { cosf(D3DXToRadian(0.f)),sinf(D3DXToRadian(0.f)) };
+
+	D3DXVec2Normalize(&vStandard, &vStandard);
+
+	m_pTransform->m_vAngle.z = acosf(D3DXVec2Dot(&vdir, &vStandard));
+
+	if (sunPos.y < ThisPos.y)
+		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
+
+	m_pTransform->Move_Floating(fTimeDelta, 0.01f, 60.f, FLOATING_Y);
 
 	return 0;
 }
@@ -53,6 +74,10 @@ HRESULT CTheme1_House::Ready_GameObject(_vec3 & vPos, _float fScale)
 	m_pTransform->m_vScale = { fScale, fScale, 1.f };
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	_float fAngleInt = rand() % 6;
+
+	m_pTransform->m_fFloating = fAngleInt * 60.f;
 
 	return S_OK;
 }

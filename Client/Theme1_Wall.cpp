@@ -23,6 +23,8 @@ _int CTheme1_Wall::Update_Too(const _float & fTimeDelta)
 {
 	CTransform* SunTransform = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_Environment", L"T1Sun", L"Transform", ID_DYNAMIC));
 
+	NULL_CHECK_RETURN(SunTransform, 0);
+
 	_vec2 sunPos = { SunTransform->m_vInfo[INFO_POS].x, SunTransform->m_vInfo[INFO_POS].y };
 	_vec2 ThisPos = { m_pTransform->m_vInfo[INFO_POS].x, m_pTransform->m_vInfo[INFO_POS].y };
 
@@ -30,7 +32,7 @@ _int CTheme1_Wall::Update_Too(const _float & fTimeDelta)
 
 	D3DXVec2Normalize(&vdir, &vdir);
 
-	_vec2 vStandard = { 0.0f,1.0f };
+	_vec2 vStandard = { cosf(D3DXToRadian(0.f)),sinf(D3DXToRadian(0.f)) };
 
 	D3DXVec2Normalize(&vStandard, &vStandard);
 
@@ -39,7 +41,7 @@ _int CTheme1_Wall::Update_Too(const _float & fTimeDelta)
 	if (sunPos.y < ThisPos.y)
 		m_pTransform->m_vAngle.z = 2 * D3DX_PI - m_pTransform->m_vAngle.z;
 
-	m_pTransform->Move_Floating(fTimeDelta, 0.01f, 60.f);
+	m_pTransform->Move_Floating(fTimeDelta, 0.01f, 60.f, FLOATING_Y);
 
 	return 0;
 }

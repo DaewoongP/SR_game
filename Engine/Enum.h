@@ -96,4 +96,16 @@ namespace Engine
 		CD_RIGHT,
 		CD_END
 	};
+
+	enum FLOATING_AXIS
+	{
+		FLOATING_X,
+		FLOATING_Y,
+		FLOATING_Z,
+		FLOATING_XY,
+		FLOATING_XZ,
+		FLOATING_YZ,
+		FLOATING_XYZ,
+		FLOATING_END
+	};
 }
