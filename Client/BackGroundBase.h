@@ -35,7 +35,8 @@ protected:
 	_float m_fTimer;
 
 	_float m_fSpeed;
-
+public:
+	void Set_StaticAngle(_float fAngle) { m_fStaticAngle = fAngle; }
 protected:
 	virtual void Free(void);
 };

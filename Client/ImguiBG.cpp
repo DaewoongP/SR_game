@@ -293,6 +293,7 @@ void CImguiBG::InstallBG()
 			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
 			DynamicPos->m_pTransform->m_vScale = { fScale,fScale,1.f };
 			DynamicPos->m_pTransform->m_vAngle.z = iAngle;
+			dynamic_cast<CBackGroundBase*>(DynamicPos)->Set_StaticAngle((_float)iAngle);
 		}
 
 
