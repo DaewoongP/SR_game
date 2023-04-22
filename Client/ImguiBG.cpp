@@ -418,6 +418,7 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 
 HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 {
+	int i = 0;
 	m_vecBGInfo.clear();
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
