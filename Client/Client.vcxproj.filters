@@ -433,9 +433,6 @@
     <ClInclude Include="Boss2.h">
       <Filter>00. GameObject\04. Boss\Boss2</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
-    </ClInclude>
     <ClInclude Include="StageCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
@@ -580,7 +577,6 @@
     <ClInclude Include="GiantHand.h">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClInclude>
-    <ClInclude Include="Boss1HeadSub.h" />
     <ClInclude Include="ChapterTex.h">
       <Filter>00. GameObject\99. Etc\LoadingTex\ChapterTex</Filter>
     </ClInclude>
@@ -761,6 +757,12 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Boss1HeadSub.h">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -926,9 +928,6 @@
     <ClCompile Include="PortalCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\PortalCube</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>01. Scene\Stages\Logo\00.Title\Select</Filter>
-    </ClCompile>
     <ClCompile Include="LogoCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
@@ -1079,7 +1078,6 @@
     <ClCompile Include="GiantHand.cpp">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
-    <ClCompile Include="Boss1HeadSub.cpp" />
     <ClCompile Include="ChapterTex.cpp">
       <Filter>00. GameObject\99. Etc\LoadingTex\ChapterTex</Filter>
     </ClCompile>
@@ -1253,6 +1251,12 @@
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1HeadSub.cpp">
+      <Filter>00. GameObject\04. Boss\Boss1</Filter>
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>

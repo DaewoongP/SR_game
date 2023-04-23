@@ -24,10 +24,13 @@ public:
 private:
 	HRESULT		Add_Component(void);
 
+	_matrix		GetRotationMatrix(const _matrix& OriginMatrix);
+
 private:
 	Engine::CCubeTex*		m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 
+	_matrix					m_matWorld;
 public:
 	static CSkyBox*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
