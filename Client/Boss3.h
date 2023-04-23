@@ -51,6 +51,7 @@ private:
 	void	End_Scream(const _float& fTimeDelta);
 	void	Lerp_Moving(const _float& fTimeDelta);
 	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
+	void	Boss3PartDead();
 
 private:
 	CToodee*		m_pToodee;

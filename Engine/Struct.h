@@ -6,8 +6,8 @@ BEGIN(Engine)
 
 typedef	 struct tagVertexColor
 {
-	_vec3			vPos;		// À§Ä¡
-	_ulong			dwColor;	// »ö»ó
+	_vec3			vPos;		// ìœ„ì¹˜
+	_ulong			dwColor;	// ìƒ‰ìƒ
 
 }VTXCOL;
 
@@ -15,9 +15,9 @@ const	_ulong		FVF_COL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX0;
 
 typedef	 struct tagVertexTexture
 {
-	_vec3			vPos;		// À§Ä¡
-	_ulong			dwColor;	// »ö»ó
-	_vec2			vTexUV;		// »ö»ó
+	_vec3			vPos;		// ìœ„ì¹˜
+	_ulong			dwColor;	// ìƒ‰ìƒ
+	_vec2			vTexUV;		// ìƒ‰ìƒ
 
 }VTXTEX;
 
@@ -25,8 +25,8 @@ const	_ulong		FVF_TEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 typedef	 struct tagVertexCube
 {
-	_vec3			vPos;		// À§Ä¡
-	_vec3			vTexUV;		// »ö»ó
+	_vec3			vPos;		// ìœ„ì¹˜
+	_vec3			vTexUV;		// ìƒ‰ìƒ
 
 }VTXCUBE;
 
@@ -38,7 +38,7 @@ typedef VTXTEX PTCTEX;
 
 const	_ulong		FVF_PTC = D3DFVF_XYZ | D3DFVF_DIFFUSE |	D3DFVF_TEX1;
 
-// D3DFVF_TEXCOORDSIZE3 : ÅØ½ºÃ³ÀÇ UV°ªÀÌ FLOATÇü 3°³ÀÇ Å©±â ¸¸Å­ÀÌ¸ç °ıÈ£ ¾È ¼ıÀÚÀÇ ÀÇ¹Ì´Â º»·¡ ¹öÅØ½ºÀÇ UV °ªÀÌ ¿©·¯°³ ÀÖÀ» ¼ö ÀÕ´Âµ¥ ±× Áß Ã¹ ¹øÂ° °ªÀ» »ç¿ëÇÏ°Ú´Ù´Â ÀÇ¹Ì
+// D3DFVF_TEXCOORDSIZE3 : í…ìŠ¤ì²˜ì˜ UVê°’ì´ FLOATí˜• 3ê°œì˜ í¬ê¸° ë§Œí¼ì´ë©° ê´„í˜¸ ì•ˆ ìˆ«ìì˜ ì˜ë¯¸ëŠ” ë³¸ë˜ ë²„í…ìŠ¤ì˜ UV ê°’ì´ ì—¬ëŸ¬ê°œ ìˆì„ ìˆ˜ ì‡ëŠ”ë° ê·¸ ì¤‘ ì²« ë²ˆì§¸ ê°’ì„ ì‚¬ìš©í•˜ê² ë‹¤ëŠ” ì˜ë¯¸
 
 typedef	struct tagIndex16
 {
@@ -124,22 +124,22 @@ struct BoundingBox
 		}
 	}
 
-	// ¿À¸®Áø À§Ä¡¸¦ ¹Ş¾Æ¿Í¼­ offsetMin ÀÌ¶û offsetMax¸¸Å­ ´õÇØÁÜ ±× ÀÌÀ¯´Â °ÔÀÓ¿ÀºêÁ§Æ®°¡ ¿òÁ÷¿´À»¶§ ¹üÀ§°¡ ´Ş¶óÁ®¾ß ÇÏ±â¶§¹®.
+	// ì˜¤ë¦¬ì§„ ìœ„ì¹˜ë¥¼ ë°›ì•„ì™€ì„œ offsetMin ì´ë‘ offsetMaxë§Œí¼ ë”í•´ì¤Œ ê·¸ ì´ìœ ëŠ” ê²Œì„ì˜¤ë¸Œì íŠ¸ê°€ ì›€ì§ì˜€ì„ë•Œ ë²”ìœ„ê°€ ë‹¬ë¼ì ¸ì•¼ í•˜ê¸°ë•Œë¬¸.
 	void Offset(const _vec3& origin)
 	{
 		_min = origin + _offsetMin + _offPos;
 		_max = origin + _offsetMax + _offPos;
 	}
 
-	// origin + Å¥ºêÀÇ Å©±â (Å¥ºê ¿ùµå ÁÂÇ¥)
+	// origin + íë¸Œì˜ í¬ê¸° (íë¸Œ ì›”ë“œ ì¢Œí‘œ)
 	_vec3 _min;
 	_vec3 _max;
 
-	// Å¥ºêÀÇ Å©±â (Å¥ºê ·ÎÄÃ ÁÂÇ¥)
+	// íë¸Œì˜ í¬ê¸° (íë¸Œ ë¡œì»¬ ì¢Œí‘œ)
 	_vec3 _offsetMin;
 	_vec3 _offsetMax;
 
-	// ÇöÀç °´Ã¼ ÁßÁ¡¿¡¼­ Äİ¶óÀÌ´õ ÁßÁ¡±îÁöÀÇ ¿ÀÇÁ¼Â
+	// í˜„ì¬ ê°ì²´ ì¤‘ì ì—ì„œ ì½œë¼ì´ë” ì¤‘ì ê¹Œì§€ì˜ ì˜¤í”„ì…‹
 	_vec3	_offPos;
 };
 
@@ -233,14 +233,11 @@ typedef struct tagRay
 
 END
 
-// À§Ä¡°ª°ú Á¾·ù¸¦ ÀúÀåÇÏ±â À§ÇÑ ±¸Á¶Ã¼
+// ìœ„ì¹˜ê°’ê³¼ ì¢…ë¥˜ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•œ êµ¬ì¡°ì²´
 typedef struct ObjectInfo
 {
 	_vec3		vObjPos;
 	_int		iObjTypeNumber;
-	const _tchar* pObjtag;
-	_vec3 vObjScale;
-	_float fAngle;
 }OBJINFO;
 
 typedef struct BGInfo
@@ -252,3 +249,4 @@ typedef struct BGInfo
 	_float fAngle;
 	_int iTexnum;
 }BGINFO;
+

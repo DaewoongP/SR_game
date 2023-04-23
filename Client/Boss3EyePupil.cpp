@@ -2,10 +2,15 @@
 #include "Boss3EyePupil.h"
 #include "Export_Function.h"
 
+#include "Toodee.h"
+#include "Topdee.h"
+
 CBoss3EyePupil::CBoss3EyePupil(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {
 	m_pBoss3 = nullptr;
+	m_pToodee = nullptr;
+	m_pTopdee = nullptr;
 }
 
 CBoss3EyePupil::~CBoss3EyePupil()
@@ -24,6 +29,9 @@ HRESULT CBoss3EyePupil::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pBoss3 = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
 	NULL_CHECK_RETURN(m_pBoss3, E_FAIL);
 
+	m_pToodee = dynamic_cast<CToodee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee"));
+	m_pTopdee = dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+
 	return S_OK;
 }
 
@@ -35,6 +43,9 @@ _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTransform->Set_ParentTransform(m_pBoss3);
+
+	if (m_pTopdee->m_bDead || m_pToodee->m_bDead)
+		return 0;
 
 	LookAtPlayer();
 

@@ -188,11 +188,11 @@ HRESULT CImguiBG::BGMenu()
 			Scale();
 			ImGui::TreePop();
 		}
-		// ÀúÀå ±â´É
+		// Ã€ÃºÃ€Ã¥ Â±Ã¢Â´Ã‰
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
 
-		// ·Îµå ±â´É
+		// Â·ÃŽÂµÃ¥ Â±Ã¢Â´Ã‰
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
 			FAILED_CHECK_RETURN(LoadBG(m_iStageNumber), E_FAIL);
@@ -420,7 +420,6 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 	DWORD    dwByte = 0;
 	{
 		BGINFO tBGInfo = {};
-
 		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;

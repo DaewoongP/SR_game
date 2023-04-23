@@ -190,6 +190,12 @@
     <ClInclude Include="WaterParticle.h">
       <Filter>Componnent\ParticleSystem\Water</Filter>
     </ClInclude>
+    <ClInclude Include="SmokeParticle.h">
+      <Filter>Componnent\ParticleSystem\Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyParticle.h">
+      <Filter>Componnent\ParticleSystem\Sky</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -342,6 +348,12 @@
     <ClCompile Include="WaterParticle.cpp">
       <Filter>Componnent\ParticleSystem\Water</Filter>
     </ClCompile>
+    <ClCompile Include="SmokeParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Sky</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -477,6 +489,12 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Water">
       <UniqueIdentifier>{560bd8ab-e608-44e4-810f-b2827b1be5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Smoke">
+      <UniqueIdentifier>{cb173d97-6115-4c3d-8142-a49dd5221b59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Sky">
+      <UniqueIdentifier>{30293d01-99d1-496c-a065-7ac9d1f45b16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
