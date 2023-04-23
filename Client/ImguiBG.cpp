@@ -54,7 +54,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","Gradation_T1" };
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","T1Cow","T1Nibble","T1Floor","Gradation_T1" };
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -331,6 +331,8 @@ void CImguiBG::Stage1Object(CLayer* pStageLayer)
 		MakeBG_PS<CTheme1_Nibble>(pStageLayer, L"T1Nibble");
 	else if (9 == m_iBG_Type)
 		MakeBGTexNum<CTheme1_Floor>(pStageLayer, L"T1Floor",iTexnum);
+	else if (10 == m_iBG_Type)
+		MakeBG_PS<CTheme1_Gradation>(pStageLayer, L"Theme1_Gradation");
 }
 void CImguiBG::Stage2Object(CLayer* pStageLayer)
 {
@@ -521,7 +523,11 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 		}
 		else if (9 == iter.iObjTypeNumber)
 		{
-			FAILED_CHECK_RETURN(FACTORY<CTheme1_Floor>::Create(L"T1Floor", pStageLayer, iter.vObjPos, iter.vObjScale.x,iter.iTexnum), E_FAIL);
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Floor>::Create(L"T1Floor", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.iTexnum), E_FAIL);
+		}
+		else if (10 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Gradation>::Create(L"Theme1_Gradation", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 		}
 	}
 	if (m_BG_On2)
@@ -747,7 +753,7 @@ void CImguiBG::MakeBGTexNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS],fScale, iNum);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.1f),fScale, iNum);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();
