@@ -786,6 +786,7 @@
     <ClInclude Include="DynamicCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="MiniStage2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1301,5 +1302,6 @@
     <ClCompile Include="DynamicCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="MiniStage2.cpp" />
   </ItemGroup>
 </Project>

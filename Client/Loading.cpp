@@ -61,6 +61,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
 		break;
+	case LOADING_MINI2:
+		iFlag = pLoading->Loading_ForMini2();
+		break;
 	case LOADING_FINAL1:
 		iFlag = pLoading->Loading_ForFinal1();
 		break;
@@ -470,6 +473,19 @@ _uint CLoading::Loading_ForStage8(void)
 	Set_String(L"Stage Loading..........");
 
 	m_pScene = CStage8::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading8 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForMini2(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CMiniStage2::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;
