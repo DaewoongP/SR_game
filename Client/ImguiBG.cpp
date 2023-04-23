@@ -265,7 +265,7 @@ void CImguiBG::InstallBG()
 
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
-		OBJINFO tBGInfo = {};
+		BGINFO tBGInfo = {};
 		
 		if(m_BG_On)
 			Stage1Object(pStageLayer);
@@ -410,7 +410,7 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 
 	DWORD    dwByte = 0;
 	{
-		OBJINFO tBGInfo = {};
+		BGINFO tBGInfo = {};
 
 		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
 		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
@@ -421,7 +421,7 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 		m_vecBGInfo.push_back(tBGInfo);
 	}
 	for (auto& iter : m_vecBGInfo)
-		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
+		WriteFile(hFile, &iter, sizeof(BGINFO), &dwByte, nullptr);
 
 	CloseHandle(hFile);
 	return S_OK;
@@ -445,11 +445,11 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 		return E_FAIL;
 
 	DWORD    dwByte = 0;
-	OBJINFO vMapObjectInfo = {};
+	BGINFO vMapObjectInfo = {};
 
 	while (true)
 	{
-		ReadFile(hFile, &vMapObjectInfo, sizeof(OBJINFO), &dwByte, nullptr);
+		ReadFile(hFile, &vMapObjectInfo, sizeof(BGINFO), &dwByte, nullptr);
 		if (dwByte == 0)
 			break;
 		m_vecBGInfo.push_back(vMapObjectInfo);

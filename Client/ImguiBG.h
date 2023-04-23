@@ -40,7 +40,7 @@ private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
 
 	CGameObject* m_pDefaultBG=nullptr;
-	vector<OBJINFO> m_vecBGInfo;
+	vector<BGINFO> m_vecBGInfo;
 	_bool m_BG_On = false;
 	_bool m_BG_On2 = false;
 	_bool m_BG_On3 = false;
