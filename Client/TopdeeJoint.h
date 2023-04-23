@@ -2,10 +2,6 @@
 #include "GameObject.h"
 #include "Include.h"
 
-BEGIN(Engine)
-class CCollider;
-END
-
 class CTopdeeJoint :
 	public CGameObject
 {
@@ -21,7 +17,6 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
-	Engine::CCollider*		m_pCollider;
 
 private:
 	virtual void Free(void) override;
