@@ -80,8 +80,19 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );
+		dynamic_cast<CToodee*>(m_pPlayer1)->SetRenderONOFF(false);
+		dynamic_cast<CTopdee*>(m_pPlayer2)->SetRenderONOFF(false);
 		m_bCreateSwallowPortal = false;
 	}
+}
+
+void CPortal::OnCollisionExit(const Collision * collision)
+{
+	if (m_pPlayer1 == collision->otherObj)
+		m_bTooCol = false;
+
+	if (m_pPlayer2 == collision->otherObj)
+		m_bTopCol = false;
 }
 
 HRESULT CPortal::Add_Component(void)

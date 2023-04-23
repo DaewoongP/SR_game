@@ -49,6 +49,8 @@ protected:
 	void		CheckIsLastActionIdx();
 	void		ReadyPartten();
 
+	void		Move(const _float& fTimeDelta);
+
 protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
@@ -59,6 +61,11 @@ protected:
 	CTransform*				m_Player;
 	vector<CTransform*>		m_PartsVec;
 	_bool					m_bInit;
+
+	_bool					m_bTurn_x;
+	_bool					m_bTurn_y;
+	_float					m_fOffset_x;
+	_float					m_fOffset_y;
 
 	//공격 사용 주기(보스가 공격을 그리 자주쓰진 않음.)
 	_float					m_dwRestTime;

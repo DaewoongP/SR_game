@@ -45,6 +45,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 		return 0;
 	if (true == m_pLoading->Get_Finish() && Engine::IsPermit_Call(L"1Sec",fTimeDelta))
 	{
+
 		g_Is2D = true;
 		CScene* pScene = m_pScene;
 		
