@@ -2,6 +2,7 @@
 #include "SkyBox.h"
 
 #include "Export_Function.h"
+#include "..\Engine\SkyParticle.h"
 
 CSkyBox::CSkyBox(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
@@ -15,9 +16,10 @@ CSkyBox::~CSkyBox()
 HRESULT CSkyBox::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	/* ÀÌÄÚµå Æ®·£½ºÆû ÄÄÆ÷³ÍÆ® ¾È½èÀ½.*/
 	m_pTransform->m_vScale = { 200.f, 200.f, 200.f };
 
+	m_pSkyParticle->Start_Particle();
 
 	return S_OK;
 }
@@ -59,6 +61,8 @@ void CSkyBox::Render_GameObject(void)
 
 	m_pBufferCom->Render_Buffer();
 
+	m_pSkyParticle->Update_Particle();
+
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
@@ -73,6 +77,10 @@ HRESULT CSkyBox::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"SkyBox_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"SkyBox_Texture", pComponent });
+
+	pComponent = m_pSkyParticle = dynamic_cast<CSkyParticle*>(Engine::Clone_Proto(L"SkyParticle", this));
+	NULL_CHECK_RETURN(m_pSkyParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SkyParticle", pComponent });
 
 	return S_OK;
 }

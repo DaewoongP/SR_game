@@ -23,6 +23,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="BulletPool.h" />
+    <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="TexParticle.h" />
     <ClInclude Include="Camera.h" />
@@ -86,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BulletPool.cpp" />
+    <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="TexParticle.cpp" />
     <ClCompile Include="Camera.cpp" />

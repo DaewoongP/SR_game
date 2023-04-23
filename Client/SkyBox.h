@@ -7,7 +7,7 @@ BEGIN(Engine)
 
 class CCubeTex;
 class CTexture;
-
+class CSkyParticle;
 END
 class CSkyBox : public Engine::CGameObject
 {
@@ -29,6 +29,7 @@ private:
 private:
 	Engine::CCubeTex*		m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
+	Engine::CSkyParticle*	m_pSkyParticle;
 
 	_matrix					m_matWorld;
 public:
