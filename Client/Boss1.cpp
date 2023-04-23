@@ -7,6 +7,15 @@
 #include "GiantHand.h"
 #include "Boss1Head.h"
 #include <functional>
+
+#define	BOSS1SCALE 1.5f
+#define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
+for (int j = 0; j < clip->source[i].size(); j++)\
+{\
+	clip->source[i][j].scale *= BOSS1SCALE;\
+	clip->source[i][j].trans *= 2;\
+}\
+
 CBoss1::CBoss1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
@@ -21,12 +30,16 @@ CBoss1::~CBoss1()
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_eCurrentState = B1_GIANT;
+	m_eCurrentState = B1_HEAD;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
 	//위치잡는 친구를 넣어주세요
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	m_bTurn_x=false;
+	m_bTurn_y=false;
+	m_fOffset_x = 0;
+	m_fOffset_y = 0;
 	return S_OK;
 }
 
@@ -48,7 +61,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		m_GiantHand = Engine::Get_GameObject(L"Layer_GameLogic", L"GiantHand");
 
 		//몸똥 0
-		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Body", pStageLayer, _vec3(0,0,0), m_pTransform, L"Boss1_Parts", 0, false), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Body", pStageLayer, _vec3(0,0,0), m_pTransform), E_FAIL);
 		//머리통 0-0
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Head", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0), L"Boss1_Parts", 6, false), E_FAIL);
 		//눈섭 0-0-0
@@ -90,7 +103,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Hand", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0), L"Boss1_Parts", 3, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Hand", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0), L"Boss1_Parts", 3, false), E_FAIL);
 
-		//머리통
+		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Body", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0), L"Boss1_Parts", 0, false), E_FAIL);
 		m_PartsVec.push_back(m_pTransform->GetChild(0));
 		
 		//재귀람다람다
@@ -153,6 +166,15 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		m_PartsVec[20]->Set_SRT(_vec3(-1, 1, 1), _vec3(0, 0, 0), _vec3(0, -1, 0));
 
 		m_bInit = false;
+
+		for (int i = 0; i < m_PartsVec.size(); i++)
+		{
+			if (i == 0)
+				continue;
+			m_PartsVec[i]->m_vScale *= BOSS1SCALE;
+			m_PartsVec[i]->m_vInfo[INFO_POS] *= BOSS1SCALE;
+		}
+			
 
 		//그냥 둥둥이임.
 		AnimClip* clip = nullptr;
@@ -294,12 +316,13 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					1.5f//actionTime
 				});
 			}
-			
+			SCALEADD;
 			clip->TotalTime = 3.f;
 			clip->Useloop = true;
 		}
 		m_pAnimation_Whole->AddClip(L"Idle", clip);
 
+			
 		//손가락 공격임
 		clip = new AnimClip();
 		{
@@ -313,7 +336,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[13]);//손목이
 			clip->source.resize(7);
 
-			LerpClipAdd(clip, 0, 0.2f, 12, 2, _vec3(16, -16, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 0, 0.2f, 12, 2, _vec3(8, -8, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 1, 0.2f, 1, 0.3f, _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
 
 			//들어올릴 어깨/팔 세팅
@@ -357,7 +380,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			LerpClipAdd(clip, 6, 0.2f, 13, 4, _vec3(0, -5, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(0)), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 4, 0.2f, 13, 4, _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 5, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
-			
+			SCALEADD;
 			clip->TotalTime = 0.2f*18;
 			clip->Useloop = true;
 		}
@@ -375,7 +398,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[13]);//손목이
 			clip->source.resize(7);
 
-			LerpClipAdd(clip, 0, 0.2f, 12, 0.4f, _vec3(16, -16, 0), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
+			LerpClipAdd(clip, 0, 0.2f, 12, 0.4f, _vec3(8, -8, 0), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
 			LerpClipAdd(clip, 1, 0.2f, 1, 0.1f, _vec3(0, 12, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
 			{
 				clip->source[2].push_back(
@@ -433,7 +456,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			}
 			LerpClipAdd(clip, 4, 0.2f, 13, 0.4f, _vec3(9, 6, 0.1f), _vec3(0, 1, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 2);
 			LerpClipAdd(clip, 5, 0.2f, 13, 0.4f, _vec3(0, -4, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 2);
-
+			SCALEADD;
 			clip->TotalTime = 0.2f * 2;
 			clip->Useloop = true;
 		}
@@ -456,6 +479,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			LerpClipAdd(clip, 3, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(120)), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 4, 0.2f, 13, 4, _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 5, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
+			
+			SCALEADD;
 			clip->TotalTime = 0.2f*18;
 			clip->Useloop = false;
 		}
@@ -601,6 +626,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					1.8f//actionTime
 				});
 			}
+			SCALEADD;
+
 			clip->TotalTime = 3.f;
 			clip->Useloop = true;
 		}
@@ -624,7 +651,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			LerpClipAdd(clip, 4, 0.2f, 13, 2, _vec3(-1, 0.5f, -0.4f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 5, 0.2f, 11, 2, _vec3(-0.2f, 1, -0.2f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 6, 0.2f, 11, 2, _vec3(-0.1f, 1.4f, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			
+			SCALEADD;
 			clip->TotalTime = 0.2f * 18 ;
 			clip->Useloop = false;
 		}
@@ -634,6 +661,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+
+	Move(fTimeDelta);
+
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
@@ -867,6 +897,28 @@ void CBoss1::ReadyPartten()
 	func.push_back(&CBoss1::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
+}
+
+void CBoss1::Move(const _float& fTimeDelta)
+{
+	_matrix		matCamWorld;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
+	D3DXMatrixInverse(&matCamWorld, 0, &matCamWorld);
+
+	if (matCamWorld._41<120)
+		m_pTransform->Set_Pos(matCamWorld._41 + 60, 16, 20);
+
+	if (fabsf(m_fOffset_x)>3)
+		m_bTurn_x = !m_bTurn_x;
+
+	if (fabsf(m_fOffset_y)>3)
+		m_bTurn_y = !m_bTurn_x;
+
+	m_fOffset_x += (m_bTurn_x) ? (fTimeDelta) : (-fTimeDelta);
+	m_fOffset_y += (m_bTurn_y) ? (fTimeDelta) : (-fTimeDelta);
+
+	m_pTransform->m_vInfo[INFO_POS].x += m_fOffset_x;
+	m_pTransform->m_vInfo[INFO_POS].y += m_fOffset_y;
 }
 
 CBoss1 * CBoss1::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

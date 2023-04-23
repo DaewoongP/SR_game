@@ -20,6 +20,7 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
+	void	Set_Die();
 private:
 	virtual void		Key_Input(const _float& fTimeDelta) override;
 	void				DoFlip() override;

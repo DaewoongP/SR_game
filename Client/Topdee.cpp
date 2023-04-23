@@ -28,7 +28,7 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_pCollider->m_bIsTrigger = true;
 	m_bRender = true;
 	m_LookVec = _vec3(0, 0, 0);
-
+	
 	__super::Update_GameObject(Engine::Get_Timer(L"Timer_FPS60"));
 	return S_OK;
 }
@@ -349,7 +349,6 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		m_pAnimation_Arm->AddClip(L"Hang", clip);
 		m_pAnimation_Arm->SetAnimation(L"Idle");
 	}
-
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -364,29 +363,32 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
+	if (!m_bDead)
+	{
+		_vec3 moveto;
+		D3DXVec3Normalize(&moveto, &m_LookVec);
+		_float dir = D3DXVec3Dot(&_vec3(0, -1, 0), &moveto);
+		dir = acosf(dir);
+		if (0> moveto.x)
+			dir = 2 * D3DX_PI - dir;
 
-	_vec3 moveto;
-	D3DXVec3Normalize(&moveto, &m_LookVec);
-	_float dir = D3DXVec3Dot(&_vec3(0,-1,0), &moveto);
-	dir = acosf(dir);
-	if ( 0> moveto.x)
-		dir = 2 * D3DX_PI - dir;
+		m_partVec[1]->m_pTransform->m_vAngle.z = lerp_angle(m_partVec[1]->m_pTransform->m_vAngle.z, dir, 0.1f);
+
+		m_partVec[2]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
+		m_partVec[3]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
+		m_partVec[4]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
+		m_partVec[5]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
+
+		_int texvalue = (_int)(D3DXToDegree(m_partVec[1]->m_pTransform->m_vAngle.z) / 10) % 36;
+		m_partVec[0]->SetTextureIdx((texvalue<0) ? 36 - abs(texvalue) : texvalue);
+
+		Key_Input(fTimeDelta);
+		RayDiskey();
+		if (m_bIsMoving)
+			Move(fTimeDelta);
+		PlayerState(fTimeDelta);
+	}
 	
-	m_partVec[1]->m_pTransform->m_vAngle.z = lerp_angle(m_partVec[1]->m_pTransform->m_vAngle.z, dir,0.1f);
-
-	m_partVec[2]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
-	m_partVec[3]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
-	m_partVec[4]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
-	m_partVec[5]->m_pTransform->m_vAngle.y = lerp_angle(m_partVec[2]->m_pTransform->m_vAngle.y, dir, 0.1f);
-
-	_int texvalue = (_int)(D3DXToDegree(m_partVec[1]->m_pTransform->m_vAngle.z) / 10) % 36;
-	m_partVec[0]->SetTextureIdx((texvalue<0)?36- abs(texvalue): texvalue);
-
-	Key_Input(fTimeDelta);
-	RayDiskey();
-	if (m_bIsMoving)
-		Move(fTimeDelta);
-	PlayerState(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -756,6 +758,21 @@ void CTopdee::SetMovePos_zero()
 {
 	m_bIsMoving = true;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+}
+
+void CTopdee::SetDie()
+{
+	m_bDead = true;
+	SetRenderONOFF(false);
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	if(pStageLayer!=nullptr)
+		FACTORY<CTopdeeParts>::Create(L"Topdee_Die", pStageLayer, _vec3(0,0,0), m_pTransform, L"Topdee_Die", 0, true);
+	CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee_Die");
+	if (die != nullptr)
+	{
+		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.4f, false);
+		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
+	}
 }
 
 

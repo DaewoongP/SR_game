@@ -16,6 +16,7 @@ HRESULT CTopdeeParts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int 
 	m_TextureName = texturename;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTextureCom->m_bUseFrameAnimation = setAnim;
 	
 	return S_OK;
 }
@@ -23,6 +24,7 @@ HRESULT CTopdeeParts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int 
 _int CTopdeeParts::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
+	m_pTextureCom->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
@@ -50,7 +52,7 @@ void CTopdeeParts::Render_GameObject(void)
 		m_pTextureCom->Set_Texture(m_TextureIdx);
 		m_pBufferCom->Render_Buffer();
 		__super::Render_GameObject();
-	}
+	}	
 }
 
 void CTopdeeParts::Render_Too(void)
