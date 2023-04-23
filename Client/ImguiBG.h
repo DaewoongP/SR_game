@@ -3,7 +3,7 @@
 #include"Include.h"
 BEGIN(Engine)
 class CRcTex;
-class CTransform;
+class CTransform; 
 END
 class CImguiBG
 {
@@ -45,7 +45,6 @@ private:
 	_bool m_BG_On2 = false;
 	_bool m_BG_On3 = false;
 	_bool m_BG_On4 = false;
-
 
 	_int m_iBG_Type=0;	
 	vector<CGameObject*> m_vecGameObject;
