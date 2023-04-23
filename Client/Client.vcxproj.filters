@@ -482,7 +482,6 @@
       <Filter>00. GameObject\04. Boss\Boss2\Boss2Part</Filter>
     </ClInclude>
     <ClInclude Include="LogoCamera.h" />
-    <ClInclude Include="Select.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="Boss3Eye.h">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
@@ -772,6 +771,9 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -989,7 +991,6 @@
       <Filter>00. GameObject\99. Etc\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="LogoCamera.cpp" />
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="Boss3Eye.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
@@ -1275,6 +1276,9 @@
     </ClCompile>
     <ClCompile Include="Boss1HeadSub.cpp">
       <Filter>00. GameObject\04. Boss\Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
