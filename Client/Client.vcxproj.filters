@@ -261,6 +261,8 @@
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_4">
       <UniqueIdentifier>{c10321d6-7491-42ed-b401-09925a8ad49a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj\BG_Gradation">
+      <UniqueIdentifier>{c49b7583-a568-4e82-b010-7b9e68332c35}</UniqueIdentifier>
     <Filter Include="01. Scene\Stages\Stage">
       <UniqueIdentifier>{07baf516-3e95-4578-bba4-88cfab8b7648}</UniqueIdentifier>
     </Filter>
@@ -744,6 +746,12 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Theme1_Gradation.h">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme2_Gradation.h" />
+    <ClInclude Include="Theme3_Gradation.h" />
+    <ClInclude Include="Theme4_Gradation.h" />
     <ClInclude Include="Theme1_Cow.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
     </ClInclude>
@@ -1265,6 +1273,12 @@
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
+    <ClCompile Include="Theme1_Gradation.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme2_Gradation.cpp" />
+    <ClCompile Include="Theme3_Gradation.cpp" />
+    <ClCompile Include="Theme4_Gradation.cpp" />
     <ClCompile Include="Theme1_Cow.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
     </ClCompile>
