@@ -7,7 +7,7 @@ BEGIN(Engine)
 
 class CCubeTex;
 class CTexture;
-
+class CSkyParticle;
 END
 class CSkyBox : public Engine::CGameObject
 {
@@ -24,10 +24,14 @@ public:
 private:
 	HRESULT		Add_Component(void);
 
+	_matrix		GetRotationMatrix(const _matrix& OriginMatrix);
+
 private:
 	Engine::CCubeTex*		m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
+	Engine::CSkyParticle*	m_pSkyParticle;
 
+	_matrix					m_matWorld;
 public:
 	static CSkyBox*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
