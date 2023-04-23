@@ -31,6 +31,8 @@ public:
 	void	SetRenderState(_bool value) { m_RenderState = value; }
 	void	SetTextureIdx(_int idx) { m_TextureIdx = idx; }
 	_int	GetTextureIdx() { return m_TextureIdx; }
+	void	MakeAnim(_tchar* name, _int startidx, _int lastidx, _float time, _bool loop) { m_pTextureCom->Add_Anim(name, startidx, lastidx, time, loop); }
+	void	SetAnim(_tchar* name) { m_pTextureCom->Switch_Anim(name); }
 
 protected:
 	_float	m_dwTimer;

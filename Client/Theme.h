@@ -5,6 +5,9 @@
 #include"Theme1_Sun.h"
 #include"Theme1_Tree.h"
 #include"Theme1_Wall.h"
+#include"Theme1_Cow.h"	
+#include"Theme1_Nibble.h"
+#include"Theme1_Floor.h"
 #include"MapDeco.h"
 
 #include"Theme2_BatStatue.h"

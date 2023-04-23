@@ -4,6 +4,7 @@
 #include "MoveCube.h"
 #include "PortalCube.h"
 #include "Export_Function.h"
+#include <functional>
 
 CThirddee::CThirddee(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CTookee(pGraphicDev)
@@ -51,7 +52,6 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		//�Ӹ�
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Head", pStageLayer, _vec3(0,0,0), m_pTransform, L"Third_Head", 0, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_BackHead", pStageLayer, _vec3(0,0, 0), m_pTransform->GetChild(0), L"Third_Head", 1, false), E_FAIL);
-		dynamic_cast<CTopdeeParts*>(m_pTransform->GetChild(0)->GetChild(0)->m_pGameObject)->SetTextureIdx(1);
 		//����
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Body", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Third_Body", 0, false), E_FAIL);
 
@@ -520,18 +520,22 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		SetRenderONOFF(true);
 		m_bInit2 = false;
 	}
+	
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	CGameObject::Update_GameObject(fTimeDelta);
+	
 	return 0;
 }
 
 _int CThirddee::Update_Too(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
-	Key_Input(fTimeDelta);
-		
-	DoFlip();
+	if (!m_bDead)
+	{
+		Key_Input(fTimeDelta);
+
+		DoFlip();
+	}
+	
 	return 0;
 }
 
@@ -545,21 +549,24 @@ void CThirddee::DoFlip()
 
 _int CThirddee::Update_Top(const _float & fTimedDelte)
 {
-	_vec3 moveto;
-	D3DXVec3Normalize(&moveto, &m_LookVec);
+	if (!m_bDead)
+	{
+		_vec3 moveto;
+		D3DXVec3Normalize(&moveto, &m_LookVec);
 
-	Key_Input2(fTimedDelte);
-	_float dir = D3DXVec3Dot(&_vec3(0, -1, 0), &moveto);
+		Key_Input2(fTimedDelte);
+		_float dir = D3DXVec3Dot(&_vec3(0, -1, 0), &moveto);
 
-	if(!lstrcmp(m_pAnimation_Leg->GetAnimationName(),L"Idle"))
-		m_pAnimation_Head->SetAnimation(L"Idle");
-	else
-		m_pAnimation_Head->SetAnimation(L"Walk");
+		if (!lstrcmp(m_pAnimation_Leg->GetAnimationName(), L"Idle"))
+			m_pAnimation_Head->SetAnimation(L"Idle");
+		else
+			m_pAnimation_Head->SetAnimation(L"Walk");
 
-	RayDiskey();
-	if (m_bIsMoving)
-		Move(fTimedDelte);
-	PlayerState(fTimedDelte);
+		RayDiskey();
+		if (m_bIsMoving)
+			Move(fTimedDelte);
+		PlayerState(fTimedDelte);
+	}
 	return 0;
 }
 
@@ -611,7 +618,7 @@ void CThirddee::SwapTrigger()
 	m_byPlayerInputDir = 0;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	m_pTransform->m_vScale = _vec3(1, 1, 1);
-	SetRenderONOFF(true);
+	//SetRenderONOFF(true);
 }
 
 void CThirddee::Key_Input2(const _float & fTimeDelta)
@@ -723,6 +730,32 @@ void CThirddee::OnCollisionStay(const Collision * collision)
 void CThirddee::OnCollisionExit(const Collision * collision)
 {
 	m_bJumpable = false;
+}
+
+void CThirddee::Set_Die()
+{
+	m_bDead = true;
+	function<void(CTransform*)> func = [&](CTransform* parent) -> void {
+		for (int i = 0; i < parent->GetChildCount(); i++)
+		{
+			CTopdeeParts* parts = dynamic_cast<CTopdeeParts*>(parent->GetChild(i)->m_pGameObject);
+			if(parts!=nullptr)
+				parts->SetRenderState(false);
+			func(parent->GetChild(i));
+		}
+	};
+	func(m_pTransform);
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	if (pStageLayer != nullptr)
+		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
+	CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
+	m_pRigid->m_bUseGrivaty = false;
+	m_pRigid->m_Velocity = _vec3(0, 0, 0);
+	if (die != nullptr)
+	{
+		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.4f, false);
+		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
+	}
 }
 
 void CThirddee::Key_Input(const _float & fTimeDelta)

@@ -52,12 +52,16 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pCollider->Set_Group(COL_OBJ);
 
 	m_pShadowCom->m_fShadowHeight = 13.0f;
+	m_pShadowCom->m_bUseOutLine = false;
 
 	return S_OK;
 }
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+	if (nullptr == m_pToodee)
+		return 0;
+
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
 
 	if (m_iATKCount == 3)
@@ -105,6 +109,9 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3::Update_Top(const _float& fTimeDelta)
 {
+	if (nullptr == m_pTopdee)
+		return 0;
+
 	if (m_pTransform->m_vAngle.x != D3DXToRadian(-80.f))
 	{
 		m_fTimer += fTimeDelta * 4.0f;
@@ -131,19 +138,25 @@ _int CBoss3::Update_Top(const _float& fTimeDelta)
 
 _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+	{
+		Boss3PartDead();
+		return OBJ_DEAD;
+	}		
+
 	if (m_bLerpMove)
 		Lerp_Moving(fTimeDelta);
-
-	if (m_bDead)
-		return OBJ_DEAD;
 
 	// Boss3 생성과 크기 조정
 	if (m_bInit)
 		CreateParts();
 
+	if (m_pTopdee->m_bDead || m_pToodee->m_bDead)
+		return 0;
+
 	LookAtPlayer();
 
-	__super::Update_GameObject(fTimeDelta);
+	CGameObject::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -152,6 +165,9 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 void CBoss3::LateUpdate_GameObject(void)
 {
+	if (0 >= m_iBossHp)
+		m_bDead = true;
+
 	__super::LateUpdate_GameObject();
 }
 
@@ -196,17 +212,17 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
-	__super::OnCollisionEnter(collision);
+	CGameObject::OnCollisionEnter(collision);
 }
 
 void CBoss3::OnCollisionStay(const Collision * collision)
 {
-	__super::OnCollisionStay(collision);
+	CGameObject::OnCollisionStay(collision);
 }
 
 void CBoss3::OnCollisionExit(const Collision * collision)
 {
-	__super::OnCollisionExit(collision);
+	CGameObject::OnCollisionExit(collision);
 }
 
 void CBoss3::SwapTrigger()
@@ -333,7 +349,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 회전하고 
 	if (4.25f > m_fTopTime)
 	{
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(720.f * fTimeDelta));
 	}
 
 	// 내려 찍기
@@ -485,6 +501,38 @@ void CBoss3::Chain_Spark(_float fCoolDown, const _float& fTimeDelta)
 
 		End_Scream(fTimeDelta);
 	}
+}
+
+void CBoss3::Boss3PartDead()
+{
+	m_pBossLeftHand->m_bDead = true;
+	m_pBossRightHand->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_bDead = true;
+	m_pBoss3Mouth->m_bDead = true;
+
+	m_pBoss3LPart->m_bDead = true;
+	m_pBoss3RPart->m_bDead = true;
+	m_pBoss3LPart1->m_bDead = true;
+	m_pBoss3RPart1->m_bDead = true;
+	m_pBoss3LPart2->m_bDead = true;
+	m_pBoss3RPart2->m_bDead = true;
+	m_pBoss3LPart3->m_bDead = true;
+	m_pBoss3RPart3->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPartShadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPartShadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
 }
 
 HRESULT CBoss3::CreateParts()

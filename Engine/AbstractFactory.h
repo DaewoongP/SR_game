@@ -36,6 +36,18 @@ public:
 		return S_OK;
 	}
 
+	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos,_vec3& vtoward)
+	{
+		// �ʱ�ȭ
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		// ����
+		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, vtoward);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
+		return S_OK;
+	}
+
 	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos, int iIndex)
 	{
 		// �ʱ�ȭ
@@ -101,6 +113,15 @@ public:
 	{
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
 		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, fScale, fAngle);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
+		return S_OK;
+	}
+	static HRESULT	Create(const _tchar* pObjTag, CLayer* pLayer, _vec3& vPos, _float fScale,_int iTexnum)
+	{
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, fScale,iTexnum);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		pGameObject->Sort_Component();
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);

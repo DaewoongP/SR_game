@@ -83,7 +83,7 @@ void CThirdCamera::Set_PlayerPos()
 	pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee");
 	if (pObj == nullptr)
 		return;
-	m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS];
+	m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-10);
 
 	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
 	m_vTooView[AT] = m_vPlayerPos;

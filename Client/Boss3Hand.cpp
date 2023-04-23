@@ -34,6 +34,7 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_iIndex = iIndex;
 
 	m_pShadowCom->m_fShadowHeight = 12.f;
+	m_pShadowCom->m_bUseOutLine = false;
 
 	return S_OK;
 }
@@ -77,7 +78,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	
    IdleMove(fTimeDelta);
 	
-	__super::Update_GameObject(fTimeDelta);
+   CGameObject::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 

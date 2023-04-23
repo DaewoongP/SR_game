@@ -29,6 +29,7 @@ public:
 	virtual void Render_GameObject(void) override;
 
 	virtual void OnCollisionEnter(const Collision* collision);
+	virtual void OnCollisionExit(const class Collision* collision);
 
 private:
 	HRESULT		Add_Component(void);

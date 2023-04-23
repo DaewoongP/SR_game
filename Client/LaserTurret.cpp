@@ -23,7 +23,11 @@ HRESULT CLaserTurret::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
 
-	m_iIndex = iIndex;
+	if (1 == iIndex || 0 == iIndex)
+		m_iIndex = iIndex;
+
+	else
+		m_iIndex = 1;
 
 	m_pRedLine->Set_Width(10.f);
 	m_pWhiteLine->Set_Width(8.f);

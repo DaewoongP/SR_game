@@ -4,7 +4,6 @@
 
 //						반환?�?? 보스?�의 ?�수 ?�용?�기 ?�함, 매개변??
 #define BOSS2_STATE_FUNC vector<void(CBoss2::*)(const _float& fTimeDelta)>
-
 BEGIN(Engine)
 class CRcTex;
 class CTexture;

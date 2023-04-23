@@ -40,7 +40,8 @@ private:
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
 
 	CGameObject* m_pDefaultBG=nullptr;
-	vector<BGOBJINFO> m_vecBGInfo;
+	vector<BGINFO> m_vecBGInfo;
+
 	_bool m_BG_On = false;
 	_bool m_BG_On2 = false;
 	_bool m_BG_On3 = false;
@@ -70,6 +71,9 @@ public:
 
 	template<typename T>
 	void MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
+
+	template<typename T>
+	void MakeBGTexNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
 
 	
 
