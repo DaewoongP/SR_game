@@ -50,6 +50,12 @@ _int CPortalCube::Update_Too(const _float & fTimeDelta)
 			static_cast<CPortalCube*>(m_pOtherCube)->Set_Other(this);
 		m_bInit = false;
 	}
+	if (m_pOtherCube == nullptr)
+	{
+		m_bInit = true;
+		return 0 ;
+	}
+		
 	return 0;
 }
 
@@ -167,6 +173,11 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				{
 					CRigidbody* rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
 					_vec3 velocity = rigid->m_Velocity;
+					if (nullptr == m_pOtherCube)
+					{
+						rigid->m_Velocity = -velocity;
+						return;
+					}
 					rigid->m_Velocity = Trans_Velocity(velocity, static_cast<CPortalCube*>(m_pOtherCube));
 				}
 				static_cast<CPortalCube*>(m_pOtherCube)->CoolReset();
@@ -226,6 +237,8 @@ void CPortalCube::Set_CubeDir(CUBE_DIR dir)
 _vec3 CPortalCube::Get_CubeHeadPos()
 {
 	//방향에 따라 헤드 위치를 반환시켜주는 친구임.
+	if (nullptr == m_pTransform)
+		return _vec3{0, 0, 0};
 	return _vec3(m_pTransform->m_vInfo[INFO_POS] + (m_DirVec*2));
 }
 

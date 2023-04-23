@@ -25,6 +25,8 @@ HRESULT CGravityCube::Ready_GameObject(_vec3 & vPos)
 
 _int CGravityCube::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
 	__super::Update_GameObject(0.02f);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;

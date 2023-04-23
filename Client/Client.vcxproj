@@ -215,6 +215,7 @@
     <ClInclude Include="MenuSmoke.h" />
     <ClInclude Include="MiniStage1.h" />
     <ClInclude Include="MiniStage2.h" />
+    <ClInclude Include="MiniTopdee.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
@@ -369,6 +370,7 @@
     <ClCompile Include="MenuSmoke.cpp" />
     <ClCompile Include="MiniStage1.cpp" />
     <ClCompile Include="MiniStage2.cpp" />
+    <ClCompile Include="MiniTopdee.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />

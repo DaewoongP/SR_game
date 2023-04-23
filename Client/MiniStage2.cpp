@@ -5,6 +5,11 @@
 #include "Fade.h"
 #include "Cube.h"
 #include "DynamicCamera.h"
+#include "Toodee.h"
+#include "MiniTopdee.h"
+#include "CrackCube.h"
+#include "StageCamera.h"
+#include "LaserTurret.h"
 
 CMiniStage2::CMiniStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -48,7 +53,7 @@ HRESULT CMiniStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -61,6 +66,33 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
+
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 26.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMiniTopdee>::CreateParent(L"MiniTopdee", pLayer, _vec3(3.f, 4.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(60.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(58.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(56.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(54.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(3.f, 2.f, 10.f), _int(0)), E_FAIL);
+
+	for (int i = 0; i < CUBEY; i++)
+	{
+		for (int j = 0; j < CUBEX; j++)
+		{
+			//맨 윗줄
+			if (i == 0)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//사이 첫줄
+			if (i == CUBEY - 1)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//사이 마지막줄
+			if (j == 0)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//맨 아랫줄
+			if (j == CUBEX - 1)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+		}
+	}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
