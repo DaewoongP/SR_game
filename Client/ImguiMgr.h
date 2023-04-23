@@ -21,6 +21,7 @@ public:
 
 	CImguiStage* Get_Stage() { return m_pImguiStage; }
 	CImguiUnit*	Get_Unit() { return m_pImguiUnit; }
+	CImguiBG*	Get_BG() { return m_pImguiBG; }
 private:
 	CImguiStage* m_pImguiStage;		// 스테이지 툴
 	CImguiUnit*  m_pImguiUnit;		// 유닛 툴

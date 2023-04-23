@@ -130,7 +130,7 @@ void CDefaultBG::Mouse_Move()
 	// 위에서 변환한 z좌표 대입하여 z가 10인 x,y좌표로 변환됨.
 	m_pTransform->m_vInfo[INFO_POS].x = (_int)vPos.x;
 	m_pTransform->m_vInfo[INFO_POS].y = (_int)vPos.y;
-	m_pTransform->m_vInfo[INFO_POS].z = 10.f;
+	m_pTransform->m_vInfo[INFO_POS].z = 11.1f;
 }
 
 CDefaultBG* CDefaultBG::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
