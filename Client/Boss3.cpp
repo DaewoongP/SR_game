@@ -156,7 +156,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 	LookAtPlayer();
 
-	__super::Update_GameObject(fTimeDelta);
+	CGameObject::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -212,17 +212,17 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
-	__super::OnCollisionEnter(collision);
+	CGameObject::OnCollisionEnter(collision);
 }
 
 void CBoss3::OnCollisionStay(const Collision * collision)
 {
-	__super::OnCollisionStay(collision);
+	CGameObject::OnCollisionStay(collision);
 }
 
 void CBoss3::OnCollisionExit(const Collision * collision)
 {
-	__super::OnCollisionExit(collision);
+	CGameObject::OnCollisionExit(collision);
 }
 
 void CBoss3::SwapTrigger()
@@ -349,7 +349,7 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	// 회전하고 
 	if (4.25f > m_fTopTime)
 	{
-		m_pTransform->Rotation(ROT_Y, D3DXToRadian(735.f * fTimeDelta));
+		m_pTransform->Rotation(ROT_Y, D3DXToRadian(720.f * fTimeDelta));
 	}
 
 	// 내려 찍기
