@@ -78,7 +78,7 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 	
    IdleMove(fTimeDelta);
 	
-	__super::Update_GameObject(fTimeDelta);
+   CGameObject::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
