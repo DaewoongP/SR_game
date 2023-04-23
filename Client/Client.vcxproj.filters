@@ -762,6 +762,7 @@
     </ClInclude>
     <ClInclude Include="Theme1_Floor.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
@@ -1268,6 +1269,7 @@
     </ClCompile>
     <ClCompile Include="Theme1_Floor.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
