@@ -16,6 +16,7 @@
 #include "..\Engine\SmokeParticle.h"
 #include "..\Engine\SkyParticle.h"
 #include "MiniStage1.h"
+#include "MiniStage2.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
