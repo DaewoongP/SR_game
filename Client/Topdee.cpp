@@ -563,6 +563,7 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"FoodCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))
 		{
 
@@ -742,7 +743,8 @@ _bool CTopdee::CheckCubeExist(_vec3 dir, CCollider** col)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"PortalCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"FoodCube"))
 		{
 			*col = _detectedCOL[0].col;
 			return true;
