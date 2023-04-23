@@ -15,6 +15,7 @@
 #include "BackGroundToolScene.h"
 #include "..\Engine\SmokeParticle.h"
 #include "..\Engine\SkyParticle.h"
+#include "MiniStage1.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -54,7 +55,10 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE4:
 		iFlag = pLoading->Loading_ForStage4();
 		break;
-		case LOADING_STAGE8:
+	case LOADING_MINI1:
+		iFlag = pLoading->Loading_ForMini1();
+		break;
+	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
 		break;
 	case LOADING_FINAL1:
@@ -445,6 +449,19 @@ _uint CLoading::Loading_ForStage4(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading4 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForMini1(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CMiniStage1::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"LoadingMini1 Complete!!!!!!!!");
 	return 0;
 }
 

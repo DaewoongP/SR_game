@@ -189,6 +189,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
+    <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniStage1.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
@@ -341,6 +343,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
+    <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -363,6 +366,7 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniStage1.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />
