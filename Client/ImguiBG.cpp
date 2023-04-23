@@ -13,6 +13,7 @@ static _vec3 m_vPos;
 static _vec3 vPos;
 static _float fScale=0;
 static _int iAngle=0;
+static _int iTexnum = 0;
 CImguiBG::CImguiBG(LPDIRECT3DDEVICE9 pGraphicDev):m_pGraphicDev(pGraphicDev)
 {
 }
@@ -47,12 +48,13 @@ HRESULT CImguiBG::BGMenu()
 			m_BG_On2 = false;
 		if (m_BG_On2 == true)
 			m_BG_On = false;
+
 		if (ImGui::TreeNode("Stage1"))
 		{
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall" };
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","T1Cow","T1Nibble","T1Floor"};
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -213,8 +215,8 @@ void CImguiBG::Scale()
 
 	ImGui::DragFloat("Scale", &fScale); 
 	ImGui::DragInt("Angle", &iAngle);
-	if (fScale < 0)
-		fScale = 0;
+	if (fScale <= 0)
+		fScale = 1;
 	ImGui::PushItemWidth(100);
 	
 	ImGui::DragFloat("X", &vPos.x);
@@ -222,7 +224,8 @@ void CImguiBG::Scale()
 	ImGui::DragFloat("Y", &vPos.y);
 	ImGui::SameLine();
 	ImGui::DragFloat("Z", &vPos.z);
-	
+	if (m_iBG_Type == 9)
+		ImGui::InputInt("Texture Number", &iTexnum);
 	
 }
 
@@ -321,6 +324,12 @@ void CImguiBG::Stage1Object(CLayer* pStageLayer)
 
 	else if (6 == m_iBG_Type)
 		MakeBG_PS<CTheme1_Wall>(pStageLayer, L"T1Wall");
+	else if (7 == m_iBG_Type)
+		MakeBG_PS<CTheme1_Cow>(pStageLayer, L"T1Cow");
+	else if (8 == m_iBG_Type)
+		MakeBG_PS<CTheme1_Nibble>(pStageLayer, L"T1Nibble");
+	else if (9 == m_iBG_Type)
+		MakeBGTexNum<CTheme1_Floor>(pStageLayer, L"T1Floor",iTexnum);
 }
 void CImguiBG::Stage2Object(CLayer* pStageLayer)
 {
@@ -417,7 +426,7 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
 		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		tBGInfo.fAngle = iAngle;
-
+		tBGInfo.iTexnum = iTexnum;
 		m_vecBGInfo.push_back(tBGInfo);
 	}
 	for (auto& iter : m_vecBGInfo)
@@ -492,7 +501,18 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 		{
 			FAILED_CHECK_RETURN(FACTORY<CTheme1_Wall>::Create(L"T1Wall", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 		}
-
+		else if (7 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cow>::Create(L"T1Cow", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+		}
+		else if (8 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Cow>::Create(L"T1Nibble", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+		}
+		else if (9 == iter.iObjTypeNumber)
+		{
+			FAILED_CHECK_RETURN(FACTORY<CTheme1_Floor>::Create(L"T1Floor", pStageLayer, iter.vObjPos, iter.vObjScale.x,iter.iTexnum), E_FAIL);
+		}
 	}
 	if (m_BG_On2)
 	{
@@ -691,6 +711,18 @@ void CImguiBG::MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
 		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], iNum);
+	if (pGameObject == nullptr)
+		return;
+	pGameObject->Sort_Component();
+	pLayer->Add_GameObject(pObjTag, pGameObject);
+	m_vecGameObject.push_back(pGameObject);
+}
+template<typename T>
+void CImguiBG::MakeBGTexNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
+{
+	CGameObject* pGameObject = nullptr;
+	pGameObject = T::Create(m_pGraphicDev,
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS],fScale, iNum);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

@@ -253,8 +253,11 @@
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Theme1_Cloud.h" />
+    <ClInclude Include="Theme1_Cow.h" />
     <ClInclude Include="Theme1_Cube.h" />
+    <ClInclude Include="Theme1_Floor.h" />
     <ClInclude Include="Theme1_House.h" />
+    <ClInclude Include="Theme1_Nibble.h" />
     <ClInclude Include="Theme1_Sun.h" />
     <ClInclude Include="Theme1_Tree.h" />
     <ClInclude Include="Theme1_Wall.h" />
@@ -398,8 +401,11 @@
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Theme1_Cloud.cpp" />
+    <ClCompile Include="Theme1_Cow.cpp" />
     <ClCompile Include="Theme1_Cube.cpp" />
+    <ClCompile Include="Theme1_Floor.cpp" />
     <ClCompile Include="Theme1_House.cpp" />
+    <ClCompile Include="Theme1_Nibble.cpp" />
     <ClCompile Include="Theme1_Sun.cpp" />
     <ClCompile Include="Theme1_Tree.cpp" />
     <ClCompile Include="Theme1_Wall.cpp" />

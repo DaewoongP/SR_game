@@ -760,6 +760,15 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Theme1_Cow.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme1_Nibble.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme1_Floor.h">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1254,6 +1263,15 @@
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme1_Cow.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme1_Nibble.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme1_Floor.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

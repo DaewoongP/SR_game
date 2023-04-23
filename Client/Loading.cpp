@@ -224,7 +224,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Tree", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Tree.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Wall", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Wall.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cube", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cube.png")), E_FAIL);
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cow.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Nibble", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Nibble.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Floor", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme1FloorSpr/theme1FloorSpr_%d.png",19)), E_FAIL);
+
 
 	//테마 2 수풀 석상 잎파리 나무
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T2Bush_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme2/Bush_0.png")), E_FAIL);

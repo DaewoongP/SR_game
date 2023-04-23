@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
+class CRcAlpha;
 END
 class CBackGroundBase :
 	public CGameObject
@@ -29,7 +30,7 @@ protected:
 protected:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
-
+	Engine::CRcAlpha*		m_pAlphaCom;
 	_float m_fStaticAngle;
 
 	_float m_fTimer;

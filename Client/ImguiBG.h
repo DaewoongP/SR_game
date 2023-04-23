@@ -72,6 +72,9 @@ public:
 	template<typename T>
 	void MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
 
+	template<typename T>
+	void MakeBGTexNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum);
+
 	
 
 };

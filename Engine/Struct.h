@@ -250,4 +250,5 @@ typedef struct BGInfo
 	const _tchar* pObjtag;
 	_vec3 vObjScale;
 	_float fAngle;
+	_int iTexnum;
 }BGINFO;
