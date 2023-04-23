@@ -74,7 +74,7 @@ static void GetRandomVector(
 	out->y = GetRandomFloat(min->y, max->y);
 	out->z = GetRandomFloat(min->z, max->z);
 }
-/* 특정 반지름을 가진 원의 벡터를 랜덤 반환 */
+/* 특정 반지름을 가진 원의 벡터를 랜덤 반환 (2차원 xy 공간 기준임.)*/
 static void GetRandomVectorIncircle(D3DXVECTOR3* out, _float radius)
 {
 	_float randNum = (rand() % 10000) * 0.0001;

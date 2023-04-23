@@ -189,6 +189,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
+    <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
@@ -212,6 +213,8 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniStage1.h" />
+    <ClInclude Include="MiniStage2.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
@@ -254,8 +257,11 @@
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="Theme1_Cloud.h" />
+    <ClInclude Include="Theme1_Cow.h" />
     <ClInclude Include="Theme1_Cube.h" />
+    <ClInclude Include="Theme1_Floor.h" />
     <ClInclude Include="Theme1_House.h" />
+    <ClInclude Include="Theme1_Nibble.h" />
     <ClInclude Include="Theme1_Sun.h" />
     <ClInclude Include="Theme1_Tree.h" />
     <ClInclude Include="Theme1_Wall.h" />
@@ -338,6 +344,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
+    <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -360,6 +367,8 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniStage1.cpp" />
+    <ClCompile Include="MiniStage2.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />
@@ -400,8 +409,11 @@
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="Theme1_Cloud.cpp" />
+    <ClCompile Include="Theme1_Cow.cpp" />
     <ClCompile Include="Theme1_Cube.cpp" />
+    <ClCompile Include="Theme1_Floor.cpp" />
     <ClCompile Include="Theme1_House.cpp" />
+    <ClCompile Include="Theme1_Nibble.cpp" />
     <ClCompile Include="Theme1_Sun.cpp" />
     <ClCompile Include="Theme1_Tree.cpp" />
     <ClCompile Include="Theme1_Wall.cpp" />

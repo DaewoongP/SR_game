@@ -560,9 +560,6 @@ void CTopdee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"CrackCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"InstallCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"SwitchCube") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
-			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right")||
 			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||

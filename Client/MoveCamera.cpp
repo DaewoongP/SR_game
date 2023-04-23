@@ -29,7 +29,6 @@ _int CMoveCamera::Update_GameObject(const _float & fTimeDelta)
 	Move_Cam(fTimeDelta);
 
 
-
 	Update_Matrix();
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);

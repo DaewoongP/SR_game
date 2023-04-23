@@ -37,6 +37,7 @@ private:
 	_bool  m_bStaticON;
 	_float m_fSpeed;
 	_float m_fStaticOFF;
+	_float m_fDegree;
 	_vec3  m_vDir;
 
 public:

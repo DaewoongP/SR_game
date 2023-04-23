@@ -27,10 +27,10 @@ CGameObject* CBulletPool::Use_Bullet(_vec3& vPos, _int eDir)
 	if (m_bCreate)
 	{
 		CLayer* pLayer = Get_Layer(L"Layer_GameLogic");
-		NULL_CHECK_RETURN(pLayer, );
+		NULL_CHECK_RETURN(pLayer, nullptr);
 
 		m_pGraphicDev = Get_GraphicDev();
-		NULL_CHECK_RETURN(m_pGraphicDev, );
+		NULL_CHECK_RETURN(m_pGraphicDev, nullptr);
 
 		for (int i = 0; i < 20; ++i)
 		{

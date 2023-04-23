@@ -5,7 +5,7 @@
 CFireball::CFireball(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev),
 	m_bSetTarget(true), m_bStaticON(true),
-	m_fSpeed(8.f), m_fStaticOFF(0.f)
+	m_fSpeed(8.f), m_fStaticOFF(0.f), m_fDegree(0.f)
 {
 
 }
@@ -55,6 +55,8 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 
 		m_pTransform->Rotation(ROT_Z, fAngle);
 
+		m_fDegree = D3DXToDegree(fAngle);
+
 		m_bSetTarget = false;
 	}
 
@@ -69,8 +71,31 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 			m_bStaticON = false;
 			m_pTransform->m_vScale = {5.f, 2.5f, 1.f};
 			m_pCollider->Set_BoundingBox({ 5.f, 2.5f, 1.f });
-			//m_pCollider->Set_BoundOffset(_vec3{-1.f, -2.f, 0.f});
 			m_pTransform->m_vInfo[INFO_POS].z = 10.f;
+
+			if (0.f <= m_fDegree && 45.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ -2.f, -1.f, 0.f });
+
+			else if (45.f <= m_fDegree && 90.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ -1.f, -2.f, 0.f });
+
+			else if (90.f <= m_fDegree && 135.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ 1.f, -2.f, 0.f });
+
+			else if (135.f <= m_fDegree && 180.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ 2.f, -1.f, 0.f });
+
+			else if (180.f <= m_fDegree && 225.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ 2.f, 1.f, 0.f });
+
+			else if (225.f <= m_fDegree && 270.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ 1.f, 2.f, 0.f });
+
+			else if (270.f <= m_fDegree && 315.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ -1.f, 2.f, 0.f });
+
+			else if (315.f <= m_fDegree && 360.f > m_fDegree)
+				m_pCollider->Set_BoundOffset(_vec3{ -2.f, 1.f, 0.f });
 		}			
 	}
 
