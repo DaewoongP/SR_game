@@ -174,7 +174,7 @@ HRESULT CImguiBG::BGMenu()
 
 			if (m_BG_On4 && nullptr == m_pDefaultBG)
 				CreateDefaultBG();
-
+			
 			if (m_BG_On4 && nullptr != m_pDefaultBG)
 			{
 				InstallBG();
@@ -194,7 +194,7 @@ HRESULT CImguiBG::BGMenu()
 		// ·Îµå ±â´É
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
-			FAILED_CHECK_RETURN(LoadBG(m_iStageNumber), E_FAIL);
+			LoadBG(m_iStageNumber);
 	
 		ImGui::TreePop();
 	}
@@ -263,7 +263,8 @@ void CImguiBG::CreateBackData()
 void CImguiBG::InstallBG()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
-	NULL_CHECK_RETURN(pStageLayer, );
+	if (nullptr == pStageLayer)
+		return;
 
 	if (!m_vecGameObject.empty() && (dynamic_cast<CTheme1_Gradation*>(m_vecGameObject.back()) ||
 		dynamic_cast<CTheme2_Gradation*>(m_vecGameObject.back()) ||
@@ -476,7 +477,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
-		return E_FAIL;
+		return 0 ;
 
 	DWORD    dwByte = 0;
 	BGINFO vMapObjectInfo = {};

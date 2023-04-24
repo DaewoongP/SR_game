@@ -76,8 +76,8 @@ HRESULT CStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 30.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(60.f, 30.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(60.f, 27.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(32.f, 32.f, 11.f)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

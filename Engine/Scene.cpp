@@ -5,12 +5,14 @@
 #include "..\Client\Key.h"
 #include "..\Client\Fade.h"
 #include "AbstractFactory.h"
+#include "..\Client\Switch.h"
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev), m_eLoadingID(LOADING_END), m_pFade(nullptr), m_pPreScene(nullptr)
 {
 	// ±ÍÂú¾Æ¼­ ½ºÅÃ¿¡ ¿Ã·È´Ù°¡ ´õ±ÍÂú¾ÆÁ®¹ö¸²;
 	Engine::Clear_Collision();
 	CKey::iKeyCnt = 0;
+	CSwitch::m_bSwtichON = false;
 	m_pGraphicDev->AddRef();
 }
 

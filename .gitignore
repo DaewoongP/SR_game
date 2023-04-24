@@ -402,8 +402,7 @@ FodyWeavers.xsd
 *.exp
 *.lib
 *.dll
-*.exe 
-*.dat
+*.exe
 
 !fmodexL.dll
 !fmodex_vc.lib

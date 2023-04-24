@@ -8,6 +8,7 @@
 #include "Key.h"
 #include "LaserTurret.h"
 #include "KeyCube.h"
+#include "PinkCloud.h"
 
 CMiniTopdee::CMiniTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_fSpeed(5.f), m_pLayer(nullptr), m_fCubeSpeed(10.f), m_iChkPortalCube(0)
@@ -74,7 +75,7 @@ void CMiniTopdee::ShootCube(const _float& fTimeDelta)
 {
 	if (Engine::IsPermit_Call(L"ShootCubeTime", fTimeDelta))
 	{
-		_int iRandCube = rand() % 8;
+		_int iRandCube = rand() % 9;
 
 		switch (iRandCube)
 		{
@@ -112,6 +113,9 @@ void CMiniTopdee::ShootCube(const _float& fTimeDelta)
 				CreateCube<CKeyCube>(L"KeyCube");
 			else
 				CreateCube<CMoveCube>(L"MoveCube");
+			break;
+		case 8:
+			CreateCube<CPinkCloud>(L"PinkCloud");
 			break;
 		}
 	}
