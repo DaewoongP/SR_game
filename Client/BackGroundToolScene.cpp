@@ -44,6 +44,11 @@
 #include "Theme4_Gear16.h"
 #include "Theme4_Chimney.h"
 
+#include "Theme1_Gradation.h"
+#include "Theme2_Gradation.h"
+#include "Theme3_Gradation.h"
+#include "Theme4_Gradation.h"
+
 CBackGroundToolScene::CBackGroundToolScene(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CScene(pGraphicDev)
@@ -83,6 +88,12 @@ HRESULT CBackGroundToolScene::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+
+	//FAILED_CHECK_RETURN(FACTORY<CTheme1_Gradation>::Create(L"Theme1_Gradation", pLayer, _vec3(31.f, 17.f, 11.f), 30.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme2_Gradation>::Create(L"Theme2_Gradation", pLayer, _vec3(31.f, 17.f, 11.f), 30.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme3_Gradation>::Create(L"Theme3_Gradation", pLayer, _vec3(31.f, 17.f, 11.f), 30.f, 0.0f), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CTheme4_Gradation>::Create(L"Theme4_Gradation", pLayer, _vec3(31.f, 17.f, 11.f), 30.f, 0.0f), E_FAIL);
+
 
 	for (int i = 0; i < CUBEY; i++)
 	{

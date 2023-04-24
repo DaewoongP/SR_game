@@ -17,18 +17,18 @@ CMainApp::~CMainApp()
 }
 HRESULT CMainApp::Ready_MainApp(void)
 {
-//#ifdef _DEBUG
-//
-//	if (::AllocConsole() == TRUE)
-//	{
-//		FILE* nfp[3];
-//		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
-//		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
-//		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
-//		std::ios::sync_with_stdio();
-//	}
-//
-//#endif // _DEBUG
+#ifdef _DEBUG
+
+	if (::AllocConsole() == TRUE)
+	{
+		FILE* nfp[3];
+		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+		std::ios::sync_with_stdio();
+	}
+
+#endif // _DEBUG
 
 	srand((unsigned int)time(NULL));
 	FAILED_CHECK_RETURN(Ready_DefaultSetting(&m_pGraphicDev), E_FAIL);
@@ -72,7 +72,11 @@ void CMainApp::Render_MainApp(void)
 HRESULT CMainApp::Ready_Proto()
 {
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcTex", CRcTex::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation", CRcGradation::Create(m_pGraphicDev, D3DXCOLOR(0.f, 12.0f / 255.0f, 50.0f / 255.0f, 1.f), D3DXCOLOR(0.f, 12.0f / 255.0f, 150.0f / 255.0f, 1.f))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation_1", CRcGradation::Create(m_pGraphicDev, D3DXCOLOR(253.f / 255.0f, 227.f / 255.0f, 219.f / 255.0f, 1.f), D3DXCOLOR(176.f / 255.0f, 121.f / 255.0f, 150.0f / 255.0f, 1.f))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation_2", CRcGradation::Create(m_pGraphicDev, D3DXCOLOR(255.f / 255.0f, 255.f / 255.0f, 255.f / 255.0f, 1.f), D3DXCOLOR(237.f / 255.0f, 242.f / 255.0f, 213.f / 255.0f, 1.f))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation_3", CRcGradation::Create(m_pGraphicDev, D3DXCOLOR(83.f/255.f, 170.f / 255.0f, 234.f / 255.0f, 1.f), D3DXCOLOR(189.f/255.f, 223.f / 255.0f, 250.f / 255.0f, 1.f))), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"RcGradation_4", CRcGradation::Create(m_pGraphicDev, D3DXCOLOR(240.f/255.f, 147.f / 255.0f, 193.f / 255.0f, 1.f), D3DXCOLOR(227.f/255.f, 209.f / 255.0f, 163.f / 255.0f, 1.f))), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Title_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuLogoSpr/menuLogoSpr.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Spark_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MenuCube_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/menuCubeSpr/menuCube.png")), E_FAIL);

@@ -189,6 +189,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
+    <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
@@ -212,6 +213,9 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniStage1.h" />
+    <ClInclude Include="MiniStage2.h" />
+    <ClInclude Include="MiniTopdee.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
@@ -258,6 +262,7 @@
     <ClInclude Include="Theme1_Cloud.h" />
     <ClInclude Include="Theme1_Cow.h" />
     <ClInclude Include="Theme1_Cube.h" />
+    <ClInclude Include="Theme1_Gradation.h" />
     <ClInclude Include="Theme1_Floor.h" />
     <ClInclude Include="Theme1_House.h" />
     <ClInclude Include="Theme1_Nibble.h" />
@@ -271,12 +276,14 @@
     <ClInclude Include="Theme2_Bush_2.h" />
     <ClInclude Include="Theme2_Bush_3.h" />
     <ClInclude Include="Theme2_Bush_4.h" />
+    <ClInclude Include="Theme2_Gradation.h" />
     <ClInclude Include="Theme2_LongTree.h" />
     <ClInclude Include="Theme2_PigStatue_0.h" />
     <ClInclude Include="Theme2_PigStatue_1.h" />
     <ClInclude Include="Theme3_AlphaPlate.h" />
     <ClInclude Include="Theme3_BrokenPlate.h" />
     <ClInclude Include="Theme3_Cloud.h" />
+    <ClInclude Include="Theme3_Gradation.h" />
     <ClInclude Include="Theme3_Moss.h" />
     <ClInclude Include="Theme3_Pattern_0.h" />
     <ClInclude Include="Theme3_Pattern_1.h" />
@@ -285,6 +292,7 @@
     <ClInclude Include="Theme4_Chimney.h" />
     <ClInclude Include="Theme4_Gear16.h" />
     <ClInclude Include="Theme4_Gear8.h" />
+    <ClInclude Include="Theme4_Gradation.h" />
     <ClInclude Include="Theme4_Smoke_0.h" />
     <ClInclude Include="Theme4_Smoke_1.h" />
     <ClInclude Include="Thirddee.h" />
@@ -343,6 +351,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
+    <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -365,6 +374,9 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniStage1.cpp" />
+    <ClCompile Include="MiniStage2.cpp" />
+    <ClCompile Include="MiniTopdee.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />
@@ -409,6 +421,7 @@
     <ClCompile Include="Theme1_Cloud.cpp" />
     <ClCompile Include="Theme1_Cow.cpp" />
     <ClCompile Include="Theme1_Cube.cpp" />
+    <ClCompile Include="Theme1_Gradation.cpp" />
     <ClCompile Include="Theme1_Floor.cpp" />
     <ClCompile Include="Theme1_House.cpp" />
     <ClCompile Include="Theme1_Nibble.cpp" />
@@ -422,12 +435,14 @@
     <ClCompile Include="Theme2_Bush_2.cpp" />
     <ClCompile Include="Theme2_Bush_3.cpp" />
     <ClCompile Include="Theme2_Bush_4.cpp" />
+    <ClCompile Include="Theme2_Gradation.cpp" />
     <ClCompile Include="Theme2_LongTree.cpp" />
     <ClCompile Include="Theme2_PigStatue_0.cpp" />
     <ClCompile Include="Theme2_PigStatue_1.cpp" />
     <ClCompile Include="Theme3_AlphaPlate.cpp" />
     <ClCompile Include="Theme3_BrokenPlate.cpp" />
     <ClCompile Include="Theme3_Cloud.cpp" />
+    <ClCompile Include="Theme3_Gradation.cpp" />
     <ClCompile Include="Theme3_Moss.cpp" />
     <ClCompile Include="Theme3_Pattern_0.cpp" />
     <ClCompile Include="Theme3_Pattern_1.cpp" />
@@ -436,6 +451,7 @@
     <ClCompile Include="Theme4_Chimney.cpp" />
     <ClCompile Include="Theme4_Gear16.cpp" />
     <ClCompile Include="Theme4_Gear8.cpp" />
+    <ClCompile Include="Theme4_Gradation.cpp" />
     <ClCompile Include="Theme4_Smoke_0.cpp" />
     <ClCompile Include="Theme4_Smoke_1.cpp" />
     <ClCompile Include="Thirddee.cpp" />

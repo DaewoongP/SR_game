@@ -261,11 +261,17 @@
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_4">
       <UniqueIdentifier>{c10321d6-7491-42ed-b401-09925a8ad49a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\03. BackGroudObj\BG_Gradation">
+      <UniqueIdentifier>{c49b7583-a568-4e82-b010-7b9e68332c35}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Scene\Stages\Stage">
       <UniqueIdentifier>{07baf516-3e95-4578-bba4-88cfab8b7648}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Scene\Stages\Mini">
       <UniqueIdentifier>{0d34829b-a08e-43dd-95c4-184c852fe1b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\MiniTopdee">
+      <UniqueIdentifier>{6272a202-37f8-41ac-836c-7cd4e76b1661}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -492,11 +498,9 @@
     <ClInclude Include="Boss3Eye.h">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h" />
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h" />
     <ClInclude Include="Boss3EyePupil.h">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClInclude>
@@ -741,6 +745,9 @@
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
+    <ClInclude Include="Theme1_Gradation.h">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClInclude>
     <ClInclude Include="Theme1_Cow.h">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
     </ClInclude>
@@ -785,6 +792,32 @@
     </ClInclude>
     <ClInclude Include="Stage6.h">
       <Filter>01. Scene\Stages\Stage</Filter>
+    <ClInclude Include="MiniStage1.h">
+      <Filter>01. Scene\Stages\Mini</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniStage2.h">
+      <Filter>01. Scene\Stages\Mini</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniTopdee.h">
+      <Filter>00. GameObject\00. Player\MiniTopdee</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme4_Gradation.h">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme2_Gradation.h">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClInclude>
+    <ClInclude Include="Theme3_Gradation.h">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1007,11 +1040,9 @@
     <ClCompile Include="Boss3Eye.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3Eye</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Boss3EyePupil.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClCompile>
@@ -1256,6 +1287,9 @@
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
+    <ClCompile Include="Theme1_Gradation.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
     <ClCompile Include="Theme1_Cow.cpp">
       <Filter>00. GameObject\03. BackGroudObj\Theme_1</Filter>
     </ClCompile>
@@ -1300,6 +1334,32 @@
     </ClCompile>
     <ClCompile Include="Stage6.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
+    <ClCompile Include="MiniStage1.cpp">
+      <Filter>01. Scene\Stages\Mini</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniStage2.cpp">
+      <Filter>01. Scene\Stages\Mini</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniTopdee.cpp">
+      <Filter>00. GameObject\00. Player\MiniTopdee</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme2_Gradation.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme3_Gradation.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Theme4_Gradation.cpp">
+      <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

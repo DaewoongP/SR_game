@@ -50,6 +50,8 @@ public:
 	void		SetMovePos_zero();
 	void		SetTookee(CTookee* third) { m_Tookee=third; }
 
+	void		SetDie();
+
 protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;

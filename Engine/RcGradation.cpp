@@ -16,7 +16,7 @@ CRcGradation::~CRcGradation()
 {
 }
 
-HRESULT CRcGradation::Ready_Buffer(void)
+HRESULT CRcGradation::Ready_Buffer(D3DXCOLOR upColer, D3DXCOLOR downColer)
 {
 	m_dwFVF = FVF_COL;
 	m_dwVtxSize = sizeof(VTXCOL);
@@ -31,19 +31,22 @@ HRESULT CRcGradation::Ready_Buffer(void)
 	VTXCOL*		pVertex = nullptr;
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
-	// ¹öÅØ½º ¹öÆÛ ¸Þ¸ð¸® °ø°£ÀÇ Á¢±ÙÀ» ¸·´Â ÇàÀ§, 3¹ø ÀÎÀÚ´Â ¹öÅØ½º ¹öÆÛ¿¡ ÀúÀåµÈ ¹öÅØ½ºµé Áß Ã¹ ¹øÂ° ¹öÅØ½ºÀÇ ÁÖ¼Ò¸¦ ¹ÝÈ¯ÇÑ´Ù.
+	// ë²„í…ìŠ¤ ë²„í¼ ë©”ëª¨ë¦¬ ê³µê°„ì˜ ì ‘ê·¼ì„ ë§‰ëŠ” í–‰ìœ„, 3ë²ˆ ì¸ìžëŠ” ë²„í…ìŠ¤ ë²„í¼ì— ì €ìž¥ëœ ë²„í…ìŠ¤ë“¤ ì¤‘ ì²« ë²ˆì§¸ ë²„í…ìŠ¤ì˜ ì£¼ì†Œë¥¼ ë°˜í™˜í•œë‹¤.
 
 	pVertex[0].vPos = { -1.f, 1.f, 0.f };
-	pVertex[0].dwColor = D3DXCOLOR(0.f, 200.0f / 255.0f, 50.0f / 255.0f, 1.f);
-
+	pVertex[0].dwColor = upColer;
+	//D3DXCOLOR(0.f, 12.0f / 255.0f, 50.0f / 255.0f, 1.f);
 	pVertex[1].vPos = { 1.f, 1.f, 0.f };
-	pVertex[1].dwColor = D3DXCOLOR(0.f, 12.0f / 255.0f, 50.0f / 255.0f, 1.f);
+	pVertex[1].dwColor = upColer;
+	//D3DXCOLOR(0.f, 12.0f / 255.0f, 50.0f / 255.0f, 1.f);
 
 	pVertex[2].vPos = { 1.f, -1.f, 0.f };
-	pVertex[2].dwColor = D3DXCOLOR(0.f, 12.0f / 255.0f, 150.0f / 255.0f, 1.f);
+	pVertex[2].dwColor = downColer;
+	//D3DXCOLOR(0.f, 12.0f / 255.0f, 150.0f / 255.0f, 1.f);
 
 	pVertex[3].vPos = { -1.f, -1.f, 0.f };
-	pVertex[3].dwColor = D3DXCOLOR(0.f, 12.0f / 255.0f, 150.0f / 255.0f, 1.f);
+	pVertex[3].dwColor = downColer;
+	//D3DXCOLOR(0.f, 12.0f / 255.0f, 150.0f / 255.0f, 1.f);
 
 	m_pVB->Unlock();
 
@@ -69,11 +72,11 @@ void CRcGradation::Render_Buffer(void)
 	__super::Render_Buffer();
 }
 
-CRcGradation * CRcGradation::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CRcGradation * CRcGradation::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXCOLOR upColer, D3DXCOLOR downColer)
 {
 	CRcGradation *	pInstance = new CRcGradation(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Buffer()))
+	if (FAILED(pInstance->Ready_Buffer(upColer, downColer)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

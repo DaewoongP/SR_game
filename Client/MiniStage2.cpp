@@ -1,61 +1,52 @@
 #include "stdafx.h"
-#include "Stage1.h"
+#include "MiniStage2.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
-#include "Cube.h"
-#include "StageCamera.h"
-#include "StageBG.h"
-#include "Toodee.h"
-#include "Topdee.h"
-#include "ImguiMgr.h"
-#include "ImguiStage.h"
-#include "ImguiUnit.h"
-#include"ImguiBG.h"
-#include "Tookee.h"
-#include"WaterPipe.h"
 #include "Fade.h"
-#include"BackCloud.h"
-CStage1::CStage1(LPDIRECT3DDEVICE9 pGraphicDev)
+#include "Cube.h"
+#include "DynamicCamera.h"
+#include "Toodee.h"
+#include "MiniTopdee.h"
+#include "CrackCube.h"
+#include "StageCamera.h"
+#include "LaserTurret.h"
+
+CMiniStage2::CMiniStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
 }
 
 
-CStage1::~CStage1()
+CMiniStage2::~CMiniStage2()
 {
 }
 
-HRESULT CStage1::Ready_Scene(void)
+HRESULT CMiniStage2::Ready_Scene(void)
 {
-	m_eLoadingID = LOADING_STAGE1;
+	m_eLoadingID = LOADING_MINI2;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(0, this);
-	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(0, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(0, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(0, this);
-	CImguiMgr::GetInstance()->Get_BG()->LoadBG(0, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
 
-_int CStage1::Update_Scene(const _float & fTimeDelta)
+_int CMiniStage2::Update_Scene(const _float & fTimeDelta)
 {
 	return __super::Update_Scene(fTimeDelta);
 }
 
-void CStage1::LateUpdate_Scene(void)
+void CMiniStage2::LateUpdate_Scene(void)
 {
 	__super::LateUpdate_Scene();
 }
 
-void CStage1::Render_Scene(void)
+void CMiniStage2::Render_Scene(void)
 {
 }
 
-HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
+HRESULT CMiniStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -63,37 +54,41 @@ HRESULT CStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
 }
 
-HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
+HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-  
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 26.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMiniTopdee>::CreateParent(L"MiniTopdee", pLayer, _vec3(3.f, 4.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(60.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(58.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(56.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(54.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(3.f, 2.f, 10.f), _int(0)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//Îß® ÏúóÏ§Ñ
+			//∏« ¿≠¡Ÿ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
+			//ªÁ¿Ã √π¡Ÿ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
+			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//Îß® ÏïÑÎû´Ï§Ñ
+			//∏« æ∆∑ß¡Ÿ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}
@@ -104,7 +99,7 @@ HRESULT CStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CStage1::Ready_Layer_UI(const _tchar * pLayerTag)
+HRESULT CMiniStage2::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -116,9 +111,9 @@ HRESULT CStage1::Ready_Layer_UI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-CStage1 * CStage1::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMiniStage2 * CMiniStage2::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CStage1 *	pInstance = new CStage1(pGraphicDev);
+	CMiniStage2 *	pInstance = new CMiniStage2(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Scene()))
 	{
@@ -129,7 +124,7 @@ CStage1 * CStage1::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CStage1::Free(void)
+void CMiniStage2::Free(void)
 {
 	__super::Free();
 }

@@ -13,8 +13,6 @@ CTopdeeJoint::~CTopdeeJoint()
 HRESULT CTopdeeJoint::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
-	m_pCollider->Set_BoundOffset(_vec3(0, 0, 0));
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	return S_OK;
 }
@@ -57,11 +55,6 @@ CTopdeeJoint * CTopdeeJoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 
 HRESULT CTopdeeJoint::Add_Component(void)
 {
-	CComponent*		pComponent = nullptr;
-	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
-	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
-
 	return S_OK;
 }
 
