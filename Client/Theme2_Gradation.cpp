@@ -50,6 +50,8 @@ HRESULT CTheme2_Gradation::Ready_GameObject(_vec3 & vPos, _float fScale, _float 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vAngle.z = fAngle;
 
+
+
 	return S_OK;
 }
 

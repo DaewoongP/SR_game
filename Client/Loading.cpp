@@ -308,7 +308,7 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Move_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/NormalBox.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Texture_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Texture.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"KeyBox_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/KeyBox.dds")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage_%d.dds", 7)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage_%d.dds", 9)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CrackBlock_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/CrackBlock.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SwitchCube_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/SwitchCube.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Portal_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/PortalCube.dds")), E_FAIL);
@@ -500,9 +500,9 @@ _uint CLoading::Loading_ForStage5(void)
 	Set_String(L"Stage Loading..........");
 
 	m_pScene = CStage5::Create(m_pGraphicDev);
-  dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+    dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
   
-  m_bFinish = true;
+    m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading5 Complete!!!!!!!!");
 	return 0;

@@ -64,7 +64,8 @@ _int CFireball::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_fStaticOFF += fTimeDelta;
 
-		m_pTransform->m_vScale = {1.f + m_fStaticOFF,  1.f + m_fStaticOFF, 1.f + m_fStaticOFF, };
+		m_pTransform->m_vScale = {1.f + m_fStaticOFF,  1.f + m_fStaticOFF, 1.f };
+		m_pTransform->m_vInfo[INFO_POS].z += m_fStaticOFF * 0.1;
 
 		if (1.f < m_fStaticOFF)
 		{
