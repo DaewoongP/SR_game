@@ -21,6 +21,8 @@
 #include "FinalPortalFloor.h"
 #include "Semicolon.h"
 #include "DynamicCamera.h"
+#include "InvisibleGrid.h"
+
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -100,6 +102,8 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			//맨 아랫줄
 			if (j == CUBEX * 4 - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
+
+			FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InvisibleGrid", pLayer, _vec3{ (_float)j * 2,(_float)i * 2, 12.f }), E_FAIL);
 		}
 	}
 

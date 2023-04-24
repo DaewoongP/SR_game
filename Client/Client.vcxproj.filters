@@ -279,6 +279,9 @@
     <Filter Include="00. GameObject\00. Player\MiniTopdee">
       <UniqueIdentifier>{6272a202-37f8-41ac-836c-7cd4e76b1661}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\InvisibleGrid">
+      <UniqueIdentifier>{42479730-9dac-483f-af57-c4d6f645e429}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -847,6 +850,9 @@
     <ClInclude Include="MiniGameBat.h">
       <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
     </ClInclude>
+    <ClInclude Include="InvisibleGrid.h">
+      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1410,6 +1416,9 @@
     </ClCompile>
     <ClCompile Include="MiniGameBat.cpp">
       <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
+    </ClCompile>
+    <ClCompile Include="InvisibleGrid.cpp">
+      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
