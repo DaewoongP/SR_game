@@ -808,7 +808,6 @@
     <ClInclude Include="DynamicCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="MiniStage2.h" />
     <ClInclude Include="MiniGamePig.h">
       <Filter>00. GameObject\01. Monster\MiniGamePig</Filter>
     </ClInclude>
@@ -838,6 +837,9 @@
     </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniStage2.h">
+      <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1361,7 +1363,6 @@
     <ClCompile Include="DynamicCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="MiniStage2.cpp" />
     <ClCompile Include="MiniGamePig.cpp">
       <Filter>00. GameObject\01. Monster\MiniGamePig</Filter>
     </ClCompile>
@@ -1391,6 +1392,9 @@
     </ClCompile>
     <ClCompile Include="Select.cpp">
       <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniStage2.cpp">
+      <Filter>01. Scene\Stages\Mini</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
