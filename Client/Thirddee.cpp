@@ -52,7 +52,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 		//�Ӹ�
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Head", pStageLayer, _vec3(0,0,0), m_pTransform, L"Third_Head", 0, false), E_FAIL);
-		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_BackHead", pStageLayer, _vec3(0,0, 0), m_pTransform->GetChild(0), L"Third_Head", 1, false), E_FAIL);
+		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_BackHead", pStageLayer, _vec3(0,0, -0.01f), m_pTransform->GetChild(0), L"Third_Head", 1, false), E_FAIL);
 		//����
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeParts>::Create(L"Third_Body", pStageLayer, _vec3(-1.f, 0.f, -0.2f), m_pTransform, L"Third_Body", 0, false), E_FAIL);
 
@@ -86,6 +86,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 
 		//���
 		m_partVec[0]->m_pTransform->GetChild(0)->m_vInfo[INFO_POS] = _vec3(0,0,+0.02f);
+		dynamic_cast<CTopdeeParts*>(m_partVec[0]->m_pTransform->GetChild(0)->m_pGameObject)->SetTextureIdx(1);
 
 
 		//����
@@ -548,7 +549,19 @@ void CThirddee::DoFlip()
 	else if (m_eKeyState == DIR_RIGHT)
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(270), 0.1f);
 }
-
+void CThirddee::SetRenderONOFF(_bool value)
+{
+	function<void(CTransform*)> func = [&](CTransform* parent) -> void {
+		for (int i = 0; i < parent->GetChildCount(); i++)
+		{
+			CTopdeeParts* parts = dynamic_cast<CTopdeeParts*>(parent->GetChild(i)->m_pGameObject);
+			if (parts != nullptr)
+				parts->SetRenderState(value);
+			func(parent->GetChild(i));
+		}
+	};
+	func(m_pTransform);
+}
 void CThirddee::Spiwn_End(const _float& fTimeDelta)
 {
 	if (m_EndingTrigger)

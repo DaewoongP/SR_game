@@ -22,6 +22,7 @@ public:
 
 	void	Set_Die();
 private:
+	virtual void		SetRenderONOFF(_bool value) override;
 	virtual void		Key_Input(const _float& fTimeDelta) override;
 	void				DoFlip() override;
 	void				Spiwn_End(const _float& fTimeDelta);
