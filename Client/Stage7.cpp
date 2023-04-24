@@ -12,6 +12,8 @@
 #include "Boss3.h"
 #include "Boss2.h"
 #include "Fade.h"
+#include"ImguiBG.h"
+
 CStage7::CStage7(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -33,6 +35,8 @@ HRESULT CStage7::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(6, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(6, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(6, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(6, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"0.wav", 0.35f);

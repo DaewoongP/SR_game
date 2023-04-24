@@ -15,6 +15,7 @@
 #include "KeyCube.h"
 #include "Spike.h"
 #include "InstallCube.h"
+#include"ImguiBG.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -39,6 +40,8 @@ HRESULT CStage8::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(7, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(7, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(7, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(7, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"0.wav", 0.35f);

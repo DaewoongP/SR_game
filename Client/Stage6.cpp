@@ -10,6 +10,7 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 #include "Fade.h"
+#include"ImguiBG.h"
 
 CStage6::CStage6(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
@@ -32,6 +33,8 @@ HRESULT CStage6::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(5, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(5, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(5, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(5, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"0.wav", 0.35f);

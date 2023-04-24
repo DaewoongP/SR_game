@@ -222,7 +222,7 @@ void CImguiBG::Scale()
 	ImGui::SameLine();
 	ImGui::DragFloat("Y", &vPos.y);
 	ImGui::SameLine();
-	ImGui::DragFloat("Z", &vPos.z);
+	ImGui::DragFloat("Z", &vPos.z, 0.01f,-2.0f,2.0f);
 	if (m_iBG_Type == 9)
 		ImGui::InputInt("Texture Number", &iTexnum);
 	
@@ -272,14 +272,18 @@ void CImguiBG::InstallBG()
 		dynamic_cast<CTheme4_Gradation*>(m_vecGameObject.back())))
 	{
 		fScale = 50.f;
-		m_vecBGInfo.back().vObjPos = _vec3(31.f, 17.0f, 11.5f);
+		m_vecBGInfo.back().vObjPos = _vec3(31.f, 17.0f, 12.f);
 		vPos = { 0.0f,0.0f,0.0f };
 	}
 
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
+		if (!m_vecBGInfo.empty())
+		{
+			m_vecBGInfo.back().vObjScale = _vec3(fScale, fScale, 0.0f);
+			m_vecBGInfo.back().vObjPos += vPos;
+		}
 		vPos = { 0.0f,0.0f,-1.0f };
-
 		BGINFO tBGInfo = {};
 		
 		if(m_BG_On)
@@ -294,14 +298,10 @@ void CImguiBG::InstallBG()
 		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
 		tBGInfo.vObjPos = m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
-		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		tBGInfo.fAngle = iAngle;
+		tBGInfo.iTexnum = iTexnum;
 		
-		if (!m_vecBGInfo.empty())
-		{
-			m_vecBGInfo.back().vObjScale = _vec3(fScale, fScale, 0.0f);
-			m_vecBGInfo.back().vObjPos += vPos;
-		}
+		
 		m_vecBGInfo.push_back(tBGInfo);
 	}
 	if (!m_vecGameObject.empty())
@@ -445,15 +445,10 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 		return E_FAIL;
 
 	DWORD    dwByte = 0;
+	if (!m_vecBGInfo.empty())
 	{
-		BGINFO tBGInfo = {};
-		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
-		tBGInfo.vObjPos = m_vecBGInfo.back().vObjPos + vPos;
-		tBGInfo.iObjTypeNumber = m_iBG_Type;
-		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
-		tBGInfo.fAngle = iAngle;
-		tBGInfo.iTexnum = iTexnum;
-		m_vecBGInfo.push_back(tBGInfo);
+		m_vecBGInfo.back().vObjScale = _vec3(fScale, fScale, 0.0f);
+		m_vecBGInfo.back().vObjPos += vPos;
 	}
 	for (auto& iter : m_vecBGInfo)
 		WriteFile(hFile, &iter, sizeof(BGINFO), &dwByte, nullptr);
@@ -466,6 +461,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 {
 	int i = 0;
 	m_vecBGInfo.clear();
+	m_vecGameObject.clear();
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
 	if (pStageLayer == nullptr)
@@ -490,7 +486,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 		m_vecBGInfo.push_back(vMapObjectInfo);
 	}
 	CloseHandle(hFile);
-	if(m_BG_On)
+	if(m_BG_On|| iStageNumber==0|| iStageNumber==1)
 	for (auto& iter : m_vecBGInfo)
 	{
 		if (0 == iter.iObjTypeNumber)
@@ -544,7 +540,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			FAILED_CHECK_RETURN(FACTORY<CTheme1_Gradation>::Create(L"Theme1_Gradation", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 		}
 	}
-	if (m_BG_On2)
+	if (m_BG_On2 || iStageNumber == 2 || iStageNumber == 3 || iStageNumber == 4)
 	{
 		for (auto& iter : m_vecBGInfo)
 		{
@@ -604,7 +600,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			}
 		}
 	}
-	if (m_BG_On3)
+	if (m_BG_On3 || iStageNumber == 5 || iStageNumber == 6 || iStageNumber == 7)
 	{
 		for (auto& iter : m_vecBGInfo)
 		{
@@ -767,7 +763,7 @@ void CImguiBG::MakeBGTexNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.1f),fScale, iNum);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.05f),fScale, iNum);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

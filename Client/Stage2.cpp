@@ -12,6 +12,7 @@
 #include "ImguiUnit.h"
 #include "Boss2.h"
 #include "Fade.h"
+#include"ImguiBG.h"
 
 CStage2::CStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
@@ -34,6 +35,7 @@ HRESULT CStage2::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(1, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(1, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(1, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(1, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
@@ -60,7 +62,7 @@ HRESULT CStage2::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -83,16 +85,16 @@ HRESULT CStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 		{
 			//�� ����
 			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 			//���� ù��
 			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 			//���� ��������
 			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 			//�� �Ʒ���
 			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 2), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}
 	}
 
