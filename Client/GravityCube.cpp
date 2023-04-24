@@ -17,6 +17,7 @@ HRESULT CGravityCube::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_bUseGraivty = false;
+	m_pRigid->m_bUseGrivaty = false;
 	m_pTransform->m_bIsStatic = false;
 	m_pCollider->m_bIsTrigger = false;
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
@@ -70,7 +71,7 @@ void CGravityCube::SwapTrigger()
 			((int)m_pTransform->m_vInfo[INFO_POS].z % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].z) : ((int)m_pTransform->m_vInfo[INFO_POS].z + 1);
 		m_pRigid->m_bUseGrivaty = false;
 	}
-	else if (!m_bIsStone) {
+	else if(!m_bIsStone){
 		m_pRigid->m_bUseGrivaty = true;
 	}
 }
@@ -183,6 +184,9 @@ CGravityCube * CGravityCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 
 void CGravityCube::Do_CheckRay_Down()
 {
+	if (m_bIsStone)
+		return;
+
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
