@@ -16,7 +16,6 @@
 
 #include "Transform.h"
 #include "Texture.h"
-#include "Camera.h"
 #include "CubeTex.h"
 #include "Rigidbody.h"
 #include "Line.h"

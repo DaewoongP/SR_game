@@ -841,6 +841,9 @@
     <ClInclude Include="MiniStage2.h">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1395,6 +1398,9 @@
     </ClCompile>
     <ClCompile Include="MiniStage2.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

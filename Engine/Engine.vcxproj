@@ -26,7 +26,6 @@
     <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="TexParticle.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="CircularParticle.h" />
     <ClInclude Include="Collider.h" />
@@ -90,7 +89,6 @@
     <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="TexParticle.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="CircularParticle.cpp" />
     <ClCompile Include="Collider.cpp" />

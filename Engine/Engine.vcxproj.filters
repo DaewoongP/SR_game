@@ -40,9 +40,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Includes / Exports</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Componnent\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Componnent\Collider</Filter>
     </ClInclude>
@@ -203,9 +200,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Includes / Exports</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Componnent\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Componnent\Collider</Filter>
@@ -378,9 +372,6 @@
     </Filter>
     <Filter Include="Componnent\VIBuffer">
       <UniqueIdentifier>{15a5e433-be7a-4eb4-86ff-ab48e69ea59f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Componnent\Camera">
-      <UniqueIdentifier>{065bbc3e-0e6e-47fa-a149-ffd0a512d54c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Componnent\ParticleSystem">
       <UniqueIdentifier>{57b55658-92fb-4281-bd32-840a79a5aba0}</UniqueIdentifier>
