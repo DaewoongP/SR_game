@@ -787,6 +787,11 @@
     <ClInclude Include="Stage8.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Stage5.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage6.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
     <ClInclude Include="MiniStage1.h">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
@@ -1324,6 +1329,11 @@
     <ClCompile Include="Stage8.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Stage5.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage6.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
     <ClCompile Include="MiniStage1.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClCompile>
