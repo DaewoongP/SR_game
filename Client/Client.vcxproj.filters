@@ -812,6 +812,9 @@
     <ClInclude Include="Theme3_Gradation.h">
       <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
     </ClInclude>
+    <ClInclude Include="Stage7.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1346,6 +1349,9 @@
     </ClCompile>
     <ClCompile Include="Theme4_Gradation.cpp">
       <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage7.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

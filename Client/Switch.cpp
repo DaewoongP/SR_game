@@ -125,5 +125,6 @@ CSwitch * CSwitch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 
 void CSwitch::Free()
 {
+	m_iCnt = 0;
 	__super::Free();
 }
