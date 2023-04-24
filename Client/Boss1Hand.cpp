@@ -47,12 +47,9 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 	D3DXVec3Normalize(&lookvec, &m_pTransform->m_vInfo[INFO_LOOK]);
 	float dot = D3DXVec3Dot(&lookvec, &dir);
 	float radian = acosf(dot);
-	m_pTransform->Rotation(ROT_Z, D3DXToRadian(radian));
 	if (out.z > cur.z)
 		radian = 2 * D3DX_PI - radian;
-
-	//if(len>0.5f)
-		//m_pTransform->m_vAngle.z = radian;
+	m_pTransform->Rotation(ROT_Z, D3DXToRadian(radian));
 	m_pTransform->m_vInfo[INFO_POS] = out;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	__super::Update_GameObject(fTimeDelta);

@@ -19,6 +19,8 @@ HRESULT CSemicolon::Ready_GameObject(_vec3& vPos)
 	m_pSemicolon->Add_Anim(L"Idle", 0, 23, 1.f, true);
 	m_pSemicolon->Switch_Anim(L"Idle");
 	m_pSemicolon->m_bUseFrameAnimation = true;
+
+	m_pCollider->Set_BoundingBox({ 3.f,3.f,6.0f } ,{0,0,3});
 	return S_OK;
 }
 
@@ -58,6 +60,10 @@ HRESULT CSemicolon::Add_Component(void)
 	pComponent = m_pSemicolon = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Semicolon", this));
 	NULL_CHECK_RETURN(m_pSemicolon, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Semicolon", pComponent });
+
+	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }

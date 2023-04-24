@@ -24,6 +24,7 @@ public:
 private:
 	virtual void		Key_Input(const _float& fTimeDelta) override;
 	void				DoFlip() override;
+	void				Spiwn_End(const _float& fTimeDelta);
 	
 	//삼디는 키 입력이 다름.
 	virtual void		Key_Input2(const _float& fTimeDelta);
@@ -32,6 +33,7 @@ private:
 private:
 	_float	m_fTopOffset;
 	Engine::CAnimation*     m_pAnimation_Head;
+	_bool					m_EndingTrigger;
 
 public:
 	static CThirddee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

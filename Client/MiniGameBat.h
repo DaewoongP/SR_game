@@ -4,7 +4,7 @@
 #define BATSCALE 4.0f
 #define BATTOOZ 8.0f
 #define BATTOPZ 5.0f
-
+class CCube;
 BEGIN(Engine)
 
 class CTexture;
@@ -12,12 +12,12 @@ class CShadow;
 
 END
 
-class CBat :
+class CMiniGameBat :
 	public CMonster
 {
 private:
-	explicit CBat(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBat();
+	explicit CMiniGameBat(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CMiniGameBat();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -41,7 +41,7 @@ private:
 	virtual void OnCollisionExit(const Collision* collision);
 
 public:
-	static	CBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static	CMiniGameBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 private:
 	virtual void Free(void) override;
 
@@ -50,15 +50,13 @@ private:
 	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
-
 	_bool m_bBackSprite;
-
 	_vec3 m_vEscapeDir;
-
 	vector<_tchar*> m_vecCol;
-
 	_bool m_bStart2D;
-
 	_float m_fTimer;
+	_bool m_bInit;
+
+	CCube* m_GrabCube;
 };
 

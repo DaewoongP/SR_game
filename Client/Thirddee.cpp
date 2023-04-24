@@ -5,6 +5,7 @@
 #include "PortalCube.h"
 #include "Export_Function.h"
 #include <functional>
+#include "ThirdCamera.h"
 
 CThirddee::CThirddee(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CTookee(pGraphicDev)
@@ -20,7 +21,7 @@ HRESULT CThirddee::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_LookVec = _vec3(0, 0, 0);
-
+	m_EndingTrigger = false;
 	m_pTransform->m_vScale = { 0.6f, 0.6f, 0.6f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
@@ -521,6 +522,7 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		m_bInit2 = false;
 	}
 	
+	Spiwn_End(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	CGameObject::Update_GameObject(fTimeDelta);
 	
@@ -547,10 +549,21 @@ void CThirddee::DoFlip()
 		m_pTransform->m_vAngle.y = Lerp(m_pTransform->m_vAngle.y, D3DXToRadian(270), 0.1f);
 }
 
+void CThirddee::Spiwn_End(const _float& fTimeDelta)
+{
+	if (m_EndingTrigger)
+	{
+		m_pRigid->AddTorque(_vec3(0, 1, 0), fTimeDelta*600);
+		m_pTransform->m_vInfo[INFO_POS].z -= 3.f*fTimeDelta;
+	}
+}
+
 _int CThirddee::Update_Top(const _float & fTimedDelte)
 {
 	if (!m_bDead)
 	{
+		if (m_EndingTrigger)
+			return 0;
 		_vec3 moveto;
 		D3DXVec3Normalize(&moveto, &m_LookVec);
 
@@ -618,7 +631,7 @@ void CThirddee::SwapTrigger()
 	m_byPlayerInputDir = 0;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	m_pTransform->m_vScale = _vec3(1, 1, 1);
-	//SetRenderONOFF(true);
+	SetRenderONOFF(true);
 }
 
 void CThirddee::Key_Input2(const _float & fTimeDelta)
@@ -694,6 +707,16 @@ void CThirddee::OnCollisionEnter(const Collision * collision)
 
 	if (collision->_dir == DIR_DOWN)
 		LandingParticle_logic(collision->otherObj->m_pTag);
+
+	if (!lstrcmp(collision->otherObj->m_pTag, L"SemiColon"))
+	{
+		m_EndingTrigger = true;
+		m_pAnimation_Leg->SetAnimation(L"Idle");
+		m_pAnimation_Arm->SetAnimation(L"Idle");
+		m_pAnimation_Head->SetAnimation(L"Idle");
+		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetShakeValue(.06f);
+
+	}
 }
 
 void CThirddee::OnCollisionStay(const Collision * collision)

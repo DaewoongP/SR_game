@@ -166,6 +166,9 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				lstrcmp(collision->otherObj->m_pTag, L"Topdee") &&//애 제외면?
 				IsIntersect)
 			{
+
+				
+
 				StopSound(SOUND_EFFECT_GIMMICK);
 				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, 1.f);
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos(); //들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고
@@ -173,6 +176,9 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				{
 					CRigidbody* rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
 					_vec3 velocity = rigid->m_Velocity;
+					if (D3DXVec3Length(&velocity) < 1)
+						rigid->AddForce(velocity, 300, IMPULSE, 0.02f);
+						
 					if (nullptr == m_pOtherCube)
 					{
 						rigid->m_Velocity = -velocity;
@@ -180,6 +186,8 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 					}
 					rigid->m_Velocity = Trans_Velocity(velocity, static_cast<CPortalCube*>(m_pOtherCube));
 				}
+				if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
+					dynamic_cast<CToodee*>(collision->otherObj)->SetMovePos_zero();
 				static_cast<CPortalCube*>(m_pOtherCube)->CoolReset();
 				Start_PortalParticle();
 				static_cast<CPortalCube*>(m_pOtherCube)->Start_PortalParticle();
@@ -237,8 +245,8 @@ void CPortalCube::Set_CubeDir(CUBE_DIR dir)
 _vec3 CPortalCube::Get_CubeHeadPos()
 {
 	//방향에 따라 헤드 위치를 반환시켜주는 친구임.
-	if (nullptr == m_pTransform)
-		return _vec3{0, 0, 0};
+	//if (nullptr == m_pTransform)
+	//	return _vec3{0, 0, 0};
 	return _vec3(m_pTransform->m_vInfo[INFO_POS] + (m_DirVec*2));
 }
 

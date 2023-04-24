@@ -66,6 +66,7 @@ protected:
 	_bool					m_bTurn_y;
 	_float					m_fOffset_x;
 	_float					m_fOffset_y;
+	_vec3					m_vOriginPos;
 
 	//공격 사용 주기(보스가 공격을 그리 자주쓰진 않음.)
 	_float					m_dwRestTime;

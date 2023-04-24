@@ -4,7 +4,7 @@ BEGIN(Engine)
 
 class CRcTex;
 class CTexture;
-
+class CCollider;
 END
 
 class CSemicolon : public CGameObject
@@ -27,6 +27,7 @@ private:
 private:
 	Engine::CRcTex*		m_pBufferCom;
 	Engine::CTexture*	m_pSemicolon;
+	Engine::CCollider*		m_pCollider;
 
 public:
 	static CSemicolon*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
