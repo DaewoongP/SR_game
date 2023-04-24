@@ -36,6 +36,9 @@ public:
 	void				Sort_Component();
 public:
 	void				Set_Dead() { m_bDead = true; }
+	_int				Get_Hp() { return m_iHp; }
+	_bool		Get_Damage() { return m_bDamage = true; }
+	_bool		m_bDamage = false;
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
@@ -47,7 +50,7 @@ public:
 	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
-
+	_int m_iHp;
 protected:
 	virtual void		Free(void);
 };

@@ -193,6 +193,7 @@
     <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
+    <ClInclude Include="HpUI.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />
+    <ClCompile Include="HpUI.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />

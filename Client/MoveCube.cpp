@@ -189,6 +189,7 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	tagName.push_back(L"MoveCube");
 	tagName.push_back(L"GravityCube");
 	tagName.push_back(L"PortalCube");
+	
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{

@@ -60,13 +60,14 @@ void CSwitchCube::Render_GameObject(void)
 	if (!CSwitch::m_bSwtichON)
 	{
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
+	
 		m_pTextureCom->Set_Texture();
 
 		m_pBufferCom->Render_Buffer();
 	}
 	
 	CGameObject::Render_GameObject();
+
 }
 
 void CSwitchCube::OnCollisionEnter(const Collision * collision)
