@@ -266,8 +266,20 @@ void CImguiBG::InstallBG()
 	if (nullptr == pStageLayer)
 		return;
 
+	if (!m_vecGameObject.empty() && (dynamic_cast<CTheme1_Gradation*>(m_vecGameObject.back()) ||
+		dynamic_cast<CTheme2_Gradation*>(m_vecGameObject.back()) ||
+		dynamic_cast<CTheme3_Gradation*>(m_vecGameObject.back()) ||
+		dynamic_cast<CTheme4_Gradation*>(m_vecGameObject.back())))
+	{
+		fScale = 50.f;
+		m_vecBGInfo.back().vObjPos = _vec3(31.f, 17.0f, 11.5f);
+		vPos = { 0.0f,0.0f,0.0f };
+	}
+
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
+		vPos = { 0.0f,0.0f,-1.0f };
+
 		BGINFO tBGInfo = {};
 		
 		if(m_BG_On)
@@ -303,6 +315,7 @@ void CImguiBG::InstallBG()
 			m_vecGameObject.back()->m_pTransform->m_vAngle.z = iAngle;
 		}
 	}
+	
 }
 void CImguiBG::Stage1Object(CLayer* pStageLayer)
 {
