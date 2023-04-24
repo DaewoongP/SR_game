@@ -3,7 +3,7 @@
 #include "Export_Function.h"
 #include "CrackCube.h"
 
-CGravityCube::CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev):CMoveCube(pGraphicDev)
+CGravityCube::CGravityCube(LPDIRECT3DDEVICE9 pGraphicDev) :CMoveCube(pGraphicDev)
 {
 }
 
@@ -34,7 +34,8 @@ _int CGravityCube::Update_GameObject(const _float & fTimeDelta)
 
 _int CGravityCube::Update_Too(const _float & fTimeDelta)
 {
-	Do_CheckRay_Down();
+	if (!m_bIsFall)
+		Do_CheckRay_Down();
 	__super::Update_Too(fTimeDelta);
 	return 0;
 }
@@ -58,18 +59,18 @@ void CGravityCube::Render_GameObject(void)
 void CGravityCube::SwapTrigger()
 {
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
-	
+
 	if (!g_Is2D)
 	{
-		m_pTransform->m_vInfo[INFO_POS].x = 
-			((int)m_pTransform->m_vInfo[INFO_POS].x%2==0)? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x+1);
-		m_pTransform->m_vInfo[INFO_POS].y = 
+		m_pTransform->m_vInfo[INFO_POS].x =
+			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
+		m_pTransform->m_vInfo[INFO_POS].y =
 			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
-		m_pTransform->m_vInfo[INFO_POS].z = 
+		m_pTransform->m_vInfo[INFO_POS].z =
 			((int)m_pTransform->m_vInfo[INFO_POS].z % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].z) : ((int)m_pTransform->m_vInfo[INFO_POS].z + 1);
 		m_pRigid->m_bUseGrivaty = false;
 	}
-	else {
+	else if (!m_bIsStone) {
 		m_pRigid->m_bUseGrivaty = true;
 	}
 }
@@ -182,12 +183,12 @@ CGravityCube * CGravityCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 
 void CGravityCube::Do_CheckRay_Down()
 {
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0,-1,0), 1.f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
 		if (dynamic_cast<CCube*>(_detectedCOL[0].col->m_pGameObject))
 		{
-			if (!lstrcmp(_detectedCOL[0].tag, L"CrackCube")&&
+			if (!lstrcmp(_detectedCOL[0].tag, L"CrackCube") &&
 				!dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->GetCrackDead())
 			{
 				dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->DoShootRay(DIR_DOWN);
@@ -225,6 +226,6 @@ HRESULT CGravityCube::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Gravity_Cube", pComponent });
 
-	
+
 	return S_OK;
 }
