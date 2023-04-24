@@ -630,6 +630,11 @@ void CThirddee::SwapTrigger()
 		m_pTransform->m_vInfo[INFO_POS].z = 11;
 		m_fTopOffset = 1;
 	}
+	m_pTransform->m_vInfo[INFO_POS].x =
+		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
+	m_pTransform->m_vInfo[INFO_POS].y =
+		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
+
 	m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0+ m_fTopOffset, +0.02f);
 
 	m_partVec[0]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 1 + m_fTopOffset, -0.01f);

@@ -192,6 +192,7 @@
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
     <ClInclude Include="DynamicCamera.h" />
+    <ClInclude Include="EvilBat.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
     <ClInclude Include="ImguiBG.h" />
@@ -360,6 +361,7 @@
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
     <ClCompile Include="DynamicCamera.cpp" />
+    <ClCompile Include="EvilBat.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />
     <ClCompile Include="ImguiBG.cpp" />

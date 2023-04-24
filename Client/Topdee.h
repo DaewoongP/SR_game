@@ -42,7 +42,7 @@ protected:
 
 	_bool		CheckAnythingExist(_vec3 dir, CCollider** col);
 	void		DirApply(_int dir,_int& x,_int& y);
-
+	void		LerpClipAdd(AnimClip* clip, _int idx, _float itv, _float osc, _float csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count);
 	void		Set_SlerpParticle();
 public:
 	void		SetRenderONOFF(_bool value) { m_bRender = value; for (int i = 0; i < m_partVec.size(); i++)m_partVec[i]->SetRenderState(value);	}
@@ -58,6 +58,7 @@ protected:
 	Engine::CShadow*		m_pShadow;
 	Engine::CAnimation*     m_pAnimation_Arm;
 	Engine::CAnimation*     m_pAnimation_Leg;
+	Engine::CAnimation*     m_pAnimation_Head;
 	//      LRUD
 	// 0000 0000
 	_byte					m_byPlayerInputDir;

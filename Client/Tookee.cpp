@@ -468,6 +468,10 @@ void CTookee::SwapTrigger()
 		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 		m_pCollider->m_bIsTrigger = true;
 	}
+	m_pTransform->m_vInfo[INFO_POS].x =
+		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
+	m_pTransform->m_vInfo[INFO_POS].y =
+		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
 	m_bIsMoving = false;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;

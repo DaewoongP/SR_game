@@ -348,6 +348,43 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		}
 		m_pAnimation_Arm->AddClip(L"Hang", clip);
 		m_pAnimation_Arm->SetAnimation(L"Idle");
+
+
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[0]->m_pTransform);
+			clip->source.resize(2);
+
+			{
+				clip->source[0].push_back(
+					ANIMINFO{
+					_vec3(0,0,0),
+					_vec3(D3DXToRadian(0.1f),0,0),//rotation
+					_vec3(2,2,2),//scale
+					0.2f,//tilltime
+					0.f//actionTime
+				});
+			}
+			clip->TotalTime = 0.2f;
+			clip->Useloop = true;
+		}
+		m_pAnimation_Head->AddClip(L"Idle", clip);
+		clip = new AnimClip();
+		{
+			//Face
+			clip->parts.push_back(m_partVec[0]->m_pTransform);
+			clip->source.resize(2);
+
+			{
+				LerpClipAdd(clip,0,0.2f,2,4,_vec3(0,0,0), _vec3(0, 0, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(20)),12);
+			}
+			clip->TotalTime = 0.2f*12;
+			clip->Useloop = false;
+		}
+		m_pAnimation_Head->AddClip(L"Scream", clip);
+		m_pAnimation_Head->SetAnimation(L"Idle");
+		
 	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
@@ -388,6 +425,9 @@ _int CTopdee::Update_Top(const _float & fTimeDelta)
 			Move(fTimeDelta);
 		PlayerState(fTimeDelta);
 	}
+
+	if(m_pAnimation_Head->GetAnimEnd()&& !lstrcmp(m_pAnimation_Head->GetAnimationName(),L"Scream"))
+		m_pAnimation_Head->SetAnimation(L"Idle");
 	
 
 	__super::Update_GameObject(fTimeDelta);
@@ -431,6 +471,12 @@ void CTopdee::SwapTrigger()
 	m_bIsMoving = false;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;
+
+	m_pTransform->m_vInfo[INFO_POS].x =
+		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
+	m_pTransform->m_vInfo[INFO_POS].y =
+		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
+
 	if (g_Is2D)
 	{
 		Set_SlerpParticle();
@@ -462,6 +508,11 @@ HRESULT CTopdee::Add_Component(void)
 	pComponent = m_pAnimation_Leg = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
 	NULL_CHECK_RETURN(m_pAnimation_Leg, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+
+	pComponent = m_pAnimation_Head = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
+	NULL_CHECK_RETURN(m_pAnimation_Head, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+	
 	return S_OK;
 }
 
@@ -494,6 +545,8 @@ void CTopdee::Key_Input(const _float & fTimeDelta)
 		PlaySound_Effect(L"78.wav", SOUND_EFFECT, 1.f);
 		m_bIsMoving = true;
 	}
+	if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN)
+		m_pAnimation_Head->SetAnimation(L"Scream");
 
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_byPlayerInputDir |= 8;
@@ -821,6 +874,27 @@ void CTopdee::DirApply(_int dir, _int & x, _int & y)
 		x += 2;
 	if (dir & 8)
 		x -= 2;
+}
+
+void CTopdee::LerpClipAdd(AnimClip * clip, _int idx, _float itv, _float osc, _float csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count)
+{
+	_float pre = 0;
+	for (int i = 0; i < count; i++)
+	{
+		//현재 위치에서 변화량만큼 변화를 줍니다.
+		pre = (_float)(i + 1) / count;
+		csc = Lerp(csc, 0, pre);
+		ctr = Lerp(ctr, _vec3(0, 0, 0), pre);
+		crot = Lerp(crot, _vec3(0, 0, 0), pre);
+		clip->source[idx].push_back(
+			ANIMINFO{
+			(i % 2 == 0) ? (otr + ctr) : (otr - ctr),
+			(i % 2 == 0) ? (orot + crot) : (orot - crot),//rotation
+			(i % 2 == 0) ? (_vec3(osc,osc,osc) + _vec3(csc,csc,csc)) : (_vec3(osc,osc,osc) + _vec3(-csc,-csc,-csc)),//scale
+			itv,//tilltime
+			itv*i//actionTime
+		});
+	}
 }
 
 void CTopdee::Set_SlerpParticle()

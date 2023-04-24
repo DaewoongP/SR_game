@@ -89,8 +89,8 @@ public:
 	}
 
 	void SetParent(CTransform* trans) {
-		if (trans != nullptr)
 			m_Parent = trans;
+			if (trans != nullptr)
 		trans->m_Child.push_back(this);
 	}
 	CTransform* GetParent() { return m_Parent; }

@@ -189,6 +189,7 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	tagName.push_back(L"MoveCube");
 	tagName.push_back(L"GravityCube");
 	tagName.push_back(L"PortalCube");
+	tagName.push_back(L"FoodCube");
 	vector<RayCollision> _detectedCOL;
 	switch (dir)
 	{
@@ -209,7 +210,8 @@ _bool CMoveCube::DoRayToDir(COL_DIR  dir)
 	if (_detectedCOL.size() == 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"FoodCube"))
 		{
 			m_bIsCol[dir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[dir];
 			if (dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->DoRayToDir(dir)&&!m_bIsStone)

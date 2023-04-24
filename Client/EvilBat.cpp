@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "MiniGameBat.h"
+#include "EvilBat.h"
 #include "Cube.h"
 #include "GravityCube.h"
 #include "CrackCube.h"
@@ -8,16 +8,16 @@
 #include "StageCamera.h"
 #include "MoveCube.h"
 
-CMiniGameBat::CMiniGameBat(LPDIRECT3DDEVICE9 pGraphicDev)
+CEvilBat::CEvilBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev), m_bBackSprite(false)
 {
 }
 
-CMiniGameBat::~CMiniGameBat()
+CEvilBat::~CEvilBat()
 {
 }
 
-HRESULT CMiniGameBat::Ready_GameObject(_vec3& vPos)
+HRESULT CEvilBat::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 10.0f;
@@ -49,15 +49,17 @@ HRESULT CMiniGameBat::Ready_GameObject(_vec3& vPos)
 	m_vecCol.push_back(L"MoveCube");
 	m_vecCol.push_back(L"GravityCube");
 	m_vecCol.push_back(L"KeyCube");
-
+	m_dwDropTimer = 2;
 	m_bInit = true;
 	return S_OK;
 }
 
-_int CMiniGameBat::Update_GameObject(const _float & fTimeDelta)
+_int CEvilBat::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	m_dwDropTimer -= fTimeDelta;
 
 	if (m_bInit)
 	{
@@ -65,32 +67,34 @@ _int CMiniGameBat::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = false;
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
-		int _rand = rand() % 4;
-		switch (_rand)
-		{
-		case 0:
-			FACTORY<CCube>::Create(L"MapCube", pStageLayer, _vec3(0, -1, 0), m_pTransform);
-			break;
-		case 1:
-			FACTORY<CMoveCube>::Create(L"MoveCube", pStageLayer, _vec3(0, -1, 0), m_pTransform);
-			break;
-		case 2:
-			FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, _vec3(0, -1, 0), m_pTransform);
-			dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject)->SetGravity(false);
-			break;
-		case 3:
-			FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer, _vec3(0, -1, 0), m_pTransform);
-			break;
-		}
+		FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, _vec3(0, -1, 0), m_pTransform);
+		dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject)->SetGravity(false);
 		
 		m_GrabCube = dynamic_cast<CCube*>(m_pTransform->GetChild(0)->m_pGameObject);
 		m_GrabCube->m_pTransform->m_vScale = _vec3(0.2f, 0.2f, 0.2f);
 
 		m_pCollider->m_bIsTrigger = true;
-		m_bMoveLeft = (rand() % 2 == 0 ? true : false);
+		m_bMoveLeft = false;
 		m_pTransform->m_vInfo[INFO_POS] = _vec3(40, 30, 10);
 	}
 	//위치 영역 이탈시 사망처리
+
+	if (m_dwDropTimer < 0&&m_GrabCube!=nullptr)
+	{
+		//상자를 놓고 런친다.
+		m_GrabCube->m_pTransform->SetParent(nullptr);
+		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].x =
+			(_int)m_pTransform->m_vInfo[INFO_POS].x / 2 * 2;
+		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].y =
+			(_int)m_pTransform->m_vInfo[INFO_POS].y / 2 * 2;
+		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_GrabCube->m_pTransform->m_vScale = _vec3(1, 1, 1);
+		m_pCollider->Set_BoundOffset(_vec3(0, 0, -30));
+		if (dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject))
+			dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject)->SetGravity(true);
+		m_GrabCube = nullptr;
+	}
+
 	if (2.0f * (CUBEX - 1) + 1 < m_pTransform->m_vInfo[INFO_POS].x ||
 		m_pTransform->m_vInfo[INFO_POS].x < 0 ||
 		2.0f * (CUBEY - 1) < m_pTransform->m_vInfo[INFO_POS].y ||
@@ -107,7 +111,7 @@ _int CMiniGameBat::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-_int CMiniGameBat::Update_Too(const _float & fTimeDelta)
+_int CEvilBat::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -147,7 +151,7 @@ _int CMiniGameBat::Update_Too(const _float & fTimeDelta)
 	return 0;
 }
 
-_int CMiniGameBat::Update_Top(const _float & fTimeDelta)
+_int CEvilBat::Update_Top(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
@@ -201,42 +205,24 @@ _int CMiniGameBat::Update_Top(const _float & fTimeDelta)
 		if (1.0f == m_fTimer)
 			m_fTimer = 0.0f;
 	}
-
-	if (Engine::Get_DIKeyState(DIK_A) == Engine::KEYDOWN&&m_GrabCube!=nullptr)
-	{
-		//상자를 놓고 런친다.
-		m_GrabCube->m_pTransform->SetParent(nullptr);
-		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].x=
-			(_int)m_pTransform->m_vInfo[INFO_POS].x/2*2;
-		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].y =
-			(_int)m_pTransform->m_vInfo[INFO_POS].y / 2 * 2;
-		m_GrabCube->m_pTransform->m_vInfo[INFO_POS].z =10;
-		m_GrabCube->m_pTransform->m_vScale = _vec3(1, 1, 1);
-		m_pCollider->Set_BoundOffset(_vec3(0, 0, -30));
-		if(dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject))
-		dynamic_cast<CGravityCube*>(m_pTransform->GetChild(0)->m_pGameObject)->SetGravity(true);
-		m_pCollider->Set_BoundingBox({ 0,0,0 });
-		m_GrabCube = nullptr;
-	}
-
 	return 0;
 }
 
-void CMiniGameBat::LateUpdate_Too()
+void CEvilBat::LateUpdate_Too()
 {
 }
 
-void CMiniGameBat::LateUpdate_GameObject(void)
+void CEvilBat::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CMiniGameBat::Render_GameObject(void)
+void CEvilBat::Render_GameObject(void)
 {
 	__super::Render_GameObject();
 }
 
-void CMiniGameBat::SwapTrigger()
+void CEvilBat::SwapTrigger()
 {
 	if (g_Is2D)
 		m_pCollider->Set_BoundingBox({ 2.f, 2.f, 4.f }, { 0.f, 0.f, 0.f });
@@ -244,7 +230,7 @@ void CMiniGameBat::SwapTrigger()
 		m_pCollider->Set_BoundingBox({ 2.f, 2.f, 4.f }, { 0.f, 0.f, 4.f });
 }
 
-void CMiniGameBat::Render_Too()
+void CEvilBat::Render_Too()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	m_pTextureCom->Set_Texture(0);
@@ -254,7 +240,7 @@ void CMiniGameBat::Render_Too()
 	m_pBufferCom->Render_Buffer();
 }
 
-void CMiniGameBat::Render_Top()
+void CEvilBat::Render_Top()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 	if (m_bBackSprite)
@@ -270,12 +256,12 @@ void CMiniGameBat::Render_Top()
 	m_pBufferCom->Render_Buffer();
 }
 
-void CMiniGameBat::OnCollisionEnter(const Collision * collision)
+void CEvilBat::OnCollisionEnter(const Collision * collision)
 {
 	__super::OnCollisionEnter(collision);
 }
 
-void CMiniGameBat::OnCollisionStay(const Collision * collision)
+void CEvilBat::OnCollisionStay(const Collision * collision)
 {
 	//만약 충돌체가 박쥐면 강제로 밀어준다.
 	if (!lstrcmp(collision->otherObj->m_pTag, L"MiniGameBat"))
@@ -345,7 +331,7 @@ void CMiniGameBat::OnCollisionStay(const Collision * collision)
 	__super::OnCollisionStay(collision);
 }
 
-void CMiniGameBat::OnCollisionExit(const Collision * collision)
+void CEvilBat::OnCollisionExit(const Collision * collision)
 {
 	if (dynamic_cast<CCube*>(collision->otherObj))
 	{
@@ -354,7 +340,7 @@ void CMiniGameBat::OnCollisionExit(const Collision * collision)
 	__super::OnCollisionExit(collision);
 }
 
-HRESULT CMiniGameBat::Add_Component(void)
+HRESULT CEvilBat::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -386,9 +372,9 @@ HRESULT CMiniGameBat::Add_Component(void)
 	return S_OK;
 }
 
-CMiniGameBat * CMiniGameBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
+CEvilBat * CEvilBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
-	CMiniGameBat*		pInstance = new CMiniGameBat(pGraphicDev);
+	CEvilBat*		pInstance = new CEvilBat(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
@@ -399,7 +385,7 @@ CMiniGameBat * CMiniGameBat::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 	return pInstance;
 }
 
-void CMiniGameBat::Free(void)
+void CEvilBat::Free(void)
 {
 	__super::Free();
 }

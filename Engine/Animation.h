@@ -54,6 +54,7 @@ public:
 	HRESULT SetAnimation(_tchar* Name);
 	HRESULT AddClip(_tchar* Name, ANIMCLIP* clip);
 	_tchar*	GetAnimationName() { return m_AnimState; }
+	_bool	GetAnimEnd() { return m_clipMap.at(m_AnimState)->TotalTime< m_CurrentTime; }
 
 	//머리통만을 위해 만든거임.
 	void	DynamicChangeAnimation(_tchar* name, _int partIdx, _int sourceIdx, VECTYPE type, _vec3 value);

@@ -279,6 +279,9 @@
     <Filter Include="00. GameObject\00. Player\MiniTopdee">
       <UniqueIdentifier>{6272a202-37f8-41ac-836c-7cd4e76b1661}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\01. Monster\EvilBat">
+      <UniqueIdentifier>{472991d9-1997-4da3-9f40-54327e03de36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -847,6 +850,9 @@
     <ClInclude Include="MiniGameBat.h">
       <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
     </ClInclude>
+    <ClInclude Include="EvilBat.h">
+      <Filter>00. GameObject\01. Monster\EvilBat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1410,6 +1416,9 @@
     </ClCompile>
     <ClCompile Include="MiniGameBat.cpp">
       <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
+    </ClCompile>
+    <ClCompile Include="EvilBat.cpp">
+      <Filter>00. GameObject\01. Monster\EvilBat</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
