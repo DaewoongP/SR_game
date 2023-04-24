@@ -30,7 +30,6 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	if (m_bInit)
 	{
-		//�������ִ� �ڵ�
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 		for (int i = 0; i < 8; i++)
@@ -47,7 +46,7 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 	if (cur.z <= -100.f)
 	{
 		cur = m_vToWard;
-		cur.z -= 100.f;
+		cur.z -= 40.f;
 		m_fSpeed *= -1.f;
 		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 	}
