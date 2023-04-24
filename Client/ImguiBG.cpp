@@ -54,7 +54,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","T1Cow","T1Nibble","T1Floor"};
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","T1Cow","T1Nibble","T1Floor","Gradation_T1"};
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -97,7 +97,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On2);
 
-			const char* items[] = { "T2BatStatue", "T2PigStatue0","T2PigStatue1","T2Bush0","T2Bush1","T2Bush2","T2Bush3","T2Bush4","T2LongTree","T2BigLeaf"};
+			const char* items[] = { "T2BatStatue", "T2PigStatue0","T2PigStatue1","T2Bush0","T2Bush1","T2Bush2","T2Bush3","T2Bush4","T2LongTree","T2BigLeaf","Gradation_T2" };
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -143,7 +143,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On3);
 
-			const char* items[] = { "T3AlphaPlate", "T3BrokenPlate","T3Cloud","T3Moss","T3Pattern_0","T3Pattern_1","T3Plate","T3SemicolonPlate"};
+			const char* items[] = { "T3AlphaPlate", "T3BrokenPlate","T3Cloud","T3Moss","T3Pattern_0","T3Pattern_1","T3Plate","T3SemicolonPlate","Gradation_T3" };
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 
@@ -168,13 +168,13 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On4);
 
-			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1" };
+			const char* items[] = { "T4Chimney", "T4Gear8","T4Gear16","T4Smoke_0","T4Smoke_1","Gradation_T4" };
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 
 			if (m_BG_On4 && nullptr == m_pDefaultBG)
 				CreateDefaultBG();
-
+			
 			if (m_BG_On4 && nullptr != m_pDefaultBG)
 			{
 				InstallBG();
@@ -188,7 +188,6 @@ HRESULT CImguiBG::BGMenu()
 			Scale();
 			ImGui::TreePop();
 		}
-		// ÀúÀå ±â´É
 		if (ImGui::Button("BackGround Save"))
 			FAILED_CHECK_RETURN(SaveBG(m_iStageNumber), E_FAIL);
 
@@ -280,11 +279,16 @@ void CImguiBG::InstallBG()
 			Stage4Object(pStageLayer);
 
 		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
-		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
+		tBGInfo.vObjPos = m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS];
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
 		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		tBGInfo.fAngle = iAngle;
-
+		
+		if (!m_vecBGInfo.empty())
+		{
+			m_vecBGInfo.back().vObjScale = _vec3(fScale, fScale, 0.0f);
+			m_vecBGInfo.back().vObjPos += vPos;
+		}
 		m_vecBGInfo.push_back(tBGInfo);
 	}
 	if (!m_vecGameObject.empty())
@@ -293,12 +297,10 @@ void CImguiBG::InstallBG()
 		m_vPos = m_vecBGInfo.back().vObjPos;
 		if (DynamicPos != nullptr)
 		{
-			DynamicPos->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
-			DynamicPos->m_pTransform->m_vScale = { fScale,fScale,1.f };
-			DynamicPos->m_pTransform->m_vAngle.z = iAngle;
+			m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
+			m_vecGameObject.back()->m_pTransform->m_vScale = { fScale,fScale,1.f };
+			m_vecGameObject.back()->m_pTransform->m_vAngle.z = iAngle;
 		}
-
-
 	}
 }
 void CImguiBG::Stage1Object(CLayer* pStageLayer)
@@ -321,7 +323,6 @@ void CImguiBG::Stage1Object(CLayer* pStageLayer)
 
 	else if (5 == m_iBG_Type)
 		MakeBG_PS<CTheme1_Tree>(pStageLayer, L"T1Tree");
-
 	else if (6 == m_iBG_Type)
 		MakeBG_PS<CTheme1_Wall>(pStageLayer, L"T1Wall");
 	else if (7 == m_iBG_Type)
@@ -362,6 +363,9 @@ void CImguiBG::Stage2Object(CLayer* pStageLayer)
 
 	else if (9 == m_iBG_Type)
 		MakeBG_PS<CTheme2_BigLeaf>(pStageLayer, L"T2BigLeaf");
+
+	else if (10 == m_iBG_Type)
+		MakeBG_PS<CTheme2_Gradation>(pStageLayer, L"Theme2_Gradation");
 }
 void CImguiBG::Stage3Object(CLayer* pStageLayer)
 {
@@ -389,6 +393,9 @@ void CImguiBG::Stage3Object(CLayer* pStageLayer)
 	else if (7 == m_iBG_Type)
 		MakeBG_PS<CTheme3_SemicolonPlate>(pStageLayer, L"T3SemicolonPlate");
 
+	else if (8 == m_iBG_Type)
+		MakeBG_PS<CTheme3_Gradation>(pStageLayer, L"Theme3_Gradation");
+
 }
 void CImguiBG::Stage4Object(CLayer* pStageLayer)
 {
@@ -406,7 +413,11 @@ void CImguiBG::Stage4Object(CLayer* pStageLayer)
 
 	else if (4 == m_iBG_Type)
 		MakeBG_PS<CTheme4_Smoke_1>(pStageLayer, L"T4Smoke_1");
+
+	else if (5 == m_iBG_Type)
+		MakeBG_PS<CTheme4_Gradation>(pStageLayer, L"Theme4_Gradation");
 }
+
 
 HRESULT CImguiBG::SaveBG(_int iStageNumber)
 {
@@ -421,7 +432,7 @@ HRESULT CImguiBG::SaveBG(_int iStageNumber)
 	{
 		BGINFO tBGInfo = {};
 		tBGInfo.vObjScale = _vec3(fScale, fScale, 0.0f);
-		tBGInfo.vObjPos = m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS];
+		tBGInfo.vObjPos = m_vecBGInfo.back().vObjPos + vPos;
 		tBGInfo.iObjTypeNumber = m_iBG_Type;
 		tBGInfo.pObjtag = m_vecGameObject.back()->m_pTag;
 		tBGInfo.fAngle = iAngle;
@@ -566,6 +577,11 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			{
 				FAILED_CHECK_RETURN(FACTORY<CTheme2_BigLeaf>::Create(L"T2BigLeaf", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 			}
+
+			else if (10 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme2_Gradation>::Create(L"Theme2_Gradation", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+			}
 		}
 	}
 	if (m_BG_On3)
@@ -613,6 +629,11 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 				FAILED_CHECK_RETURN(FACTORY<CTheme3_SemicolonPlate>::Create(L"T3SemicolonPlate", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 			}
 
+			else if (8 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme3_Gradation>::Create(L"Theme3_Gradation", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+			}
+
 		}
 	}
 	if (m_BG_On4)
@@ -643,6 +664,11 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			else if (4 == iter.iObjTypeNumber)
 			{
 				FAILED_CHECK_RETURN(FACTORY<CTheme4_Smoke_1>::Create(L"T4Smoke_1", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
+			}
+
+			else if (5 == iter.iObjTypeNumber)
+			{
+				FAILED_CHECK_RETURN(FACTORY<CTheme4_Gradation>::Create(L"Theme4_Gradation", pStageLayer, iter.vObjPos, iter.vObjScale.x, iter.fAngle), E_FAIL);
 			}
 		}
 	}
@@ -685,7 +711,7 @@ void CImguiBG::MakeBG(CLayer* pLayer, const _tchar* pObjTag)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS]);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.1f));
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();
@@ -697,7 +723,7 @@ void CImguiBG::MakeBG_PS(CLayer* pLayer, const _tchar* pObjTag)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], fScale,0.0f);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.1f), fScale,0.0f);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();
@@ -709,7 +735,7 @@ void CImguiBG::MakeBGNum(CLayer* pLayer, const _tchar* pObjTag, _int iNum)
 {
 	CGameObject* pGameObject = nullptr;
 	pGameObject = T::Create(m_pGraphicDev,
-		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS], iNum);
+		m_pDefaultBG->m_pTransform->m_vInfo[INFO_POS] + _vec3(0.0f, 0.0f, 1.1f), iNum);
 	if (pGameObject == nullptr)
 		return;
 	pGameObject->Sort_Component();

@@ -153,6 +153,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 				m_pImguiUnit->Get_PortalVector()->clear();
 				m_pImguiStage->Get_CubeVector()->clear();
 				m_pImguiStage->Get_GridVector()->clear();
+				
 
 				m_bDeleteAll = false;
 			}

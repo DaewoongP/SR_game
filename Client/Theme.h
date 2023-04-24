@@ -35,3 +35,8 @@
 #include"Theme4_Gear16.h"
 #include"Theme4_Smoke_0.h"
 #include"Theme4_Smoke_1.h"
+
+#include "Theme1_Gradation.h"
+#include "Theme2_Gradation.h"
+#include "Theme3_Gradation.h"
+#include "Theme4_Gradation.h"

@@ -81,6 +81,7 @@ HRESULT CFade::Add_Component(void)
 
 CFade * CFade::Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool isFadeIn)
 {
+	PlaySound_Effect(L"67.wav", SOUND_CAM, 1.f);
 	CFade*		pInstance = new CFade(pGraphicDev);
 
 	if (FAILED(pInstance->Ready(isFadeIn)))

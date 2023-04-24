@@ -10,6 +10,7 @@
 #include "ImguiMgr.h"
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
+#include"ImguiBG.h"
 #include "Tookee.h"
 #include"WaterPipe.h"
 #include "Fade.h"
@@ -35,6 +36,7 @@ HRESULT CStage1::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(0, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(0, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(0, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(0, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }

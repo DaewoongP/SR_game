@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Loading.h"
-
+#include "SkyParticle.h"
+#include "SmokeParticle.h"
 #include "Export_Function.h"
 #include "ImguiMgr.h"
 #include "imgui.h"
@@ -10,13 +11,14 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Stage4.h"
+#include "Stage5.h"
+#include "Stage6.h"
+#include "Stage7.h"
 #include "Stage8.h"
-#include "FinalStage1.h"
-#include "BackGroundToolScene.h"
-#include "..\Engine\SmokeParticle.h"
-#include "..\Engine\SkyParticle.h"
 #include "MiniStage1.h"
 #include "MiniStage2.h"
+#include "FinalStage1.h"
+#include "BackGroundToolScene.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -58,6 +60,15 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_MINI1:
 		iFlag = pLoading->Loading_ForMini1();
+		break;
+	case LOADING_STAGE5:
+		iFlag = pLoading->Loading_ForStage5();
+		break;
+	case LOADING_STAGE6:
+		iFlag = pLoading->Loading_ForStage6();
+		break;
+	case LOADING_STAGE7:
+		iFlag = pLoading->Loading_ForStage7();
 		break;
 	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
@@ -113,6 +124,7 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalPortal_Floor", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss4blobSpr/boss4blobSpr_%d.png", 10)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalPortal", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/pedestalSpr/pedestalSpr_2.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Semicolon", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/semicolonSpr/semicolonSpr_%d.png", 24)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"MiniTopdee", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/MiniTopdee.png")), E_FAIL);
 	m_iLoadingTexImgNum = 3;
 	// 검정색 타일(빈 공간 묘사 용)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage1_Tile_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Terrain/TileBlack.png")), E_FAIL);
@@ -458,7 +470,18 @@ _uint CLoading::Loading_ForStage4(void)
 	Set_String(L"Loading4 Complete!!!!!!!!");
 	return 0;
 }
+_uint CLoading::Loading_ForStage7(void)
+{
+	Set_String(L"Stage Loading..........");
 
+	m_pScene = CStage7::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading4 Complete!!!!!!!!");
+	return 0;
+}
 _uint CLoading::Loading_ForMini1(void)
 {
 	Set_String(L"Stage Loading..........");
@@ -469,6 +492,33 @@ _uint CLoading::Loading_ForMini1(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"LoadingMini1 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage5(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage5::Create(m_pGraphicDev);
+  dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+  
+  m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading5 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage6(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage6::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading5 Complete!!!!!!!!");
+	
 	return 0;
 }
 
