@@ -57,6 +57,9 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 			SetTookee(dynamic_cast<CTookee*>(otherTrans->m_pGameObject));
 		m_bInit = false;
 	}
+
+	m_Tookee = dynamic_cast<CTookee*>(Get_GameObject(L"Layer_GameLogic", L"Toodee"));
+
 	if (m_Tookee != nullptr)
 	{
 		//Æ÷Å»Å¸¸é ¹Ù²ãÁà¾ßÇÏ´Âµí ¤»¤»

@@ -147,6 +147,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"KeyCube");
 	tagName.push_back(L"Toodee");
 	tagName.push_back(L"Topdee");
+	tagName.push_back(L"Tookee");
 	tagName.push_back(L"Boss3");
 	tagName.push_back(L"Boss3Left");
 	tagName.push_back(L"Boss3Right");
@@ -170,7 +171,8 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		}			
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") ||
-			!lstrcmp(_detectedCOL[0].tag, L"Topdee")
+			!lstrcmp(_detectedCOL[0].tag, L"Topdee") ||
+			!lstrcmp(_detectedCOL[0].tag, L"Tookee")
 			)
 		{
 			Engine::Get_GameObject(L"Layer_GameLogic", _detectedCOL[0].tag)->m_bDead = true;
