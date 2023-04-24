@@ -282,6 +282,9 @@
     <Filter Include="00. GameObject\01. Monster\EvilBat">
       <UniqueIdentifier>{472991d9-1997-4da3-9f40-54327e03de36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\InvisibleGrid">
+      <UniqueIdentifier>{42479730-9dac-483f-af57-c4d6f645e429}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -853,6 +856,9 @@
     <ClInclude Include="EvilBat.h">
       <Filter>00. GameObject\01. Monster\EvilBat</Filter>
     </ClInclude>
+    <ClInclude Include="InvisibleGrid.h">
+      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1419,6 +1425,9 @@
     </ClCompile>
     <ClCompile Include="EvilBat.cpp">
       <Filter>00. GameObject\01. Monster\EvilBat</Filter>
+    </ClCompile>
+    <ClCompile Include="InvisibleGrid.cpp">
+      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

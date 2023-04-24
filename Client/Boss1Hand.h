@@ -26,7 +26,7 @@ protected:
 	_bool					m_bInit;
 
 	_vec3					m_vToWard;
-
+	_float					m_fSpeed;
 protected:
 	HRESULT		Add_Component(void);
 
