@@ -144,6 +144,24 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	return 0;
 }
 
+void CPig::LateUpdate_Too()
+{
+	if (m_bCol)
+	{
+		if (m_bMoveLeft)
+		{
+			m_bMoveLeft = false;
+			m_pTransform->m_vScale.x = -PIGSCALE;
+		}
+		else if (!m_bMoveLeft)
+		{
+			m_bMoveLeft = true;
+			m_pTransform->m_vScale.x = PIGSCALE;
+		}
+		m_bCol = false;
+	}
+}
+
 void CPig::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
@@ -188,7 +206,7 @@ void CPig::OnCollisionEnter(const Collision * collision)
 		//카메라 쉐이크 사용함수 예
 		//dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.0f, 100.0f, SHAKE_ALL);
 
-		if (m_bMoveLeft)
+		/*if (m_bMoveLeft)
 		{
 			m_bMoveLeft = false;
 			m_pTransform->m_vScale.x = -PIGSCALE;
@@ -197,8 +215,8 @@ void CPig::OnCollisionEnter(const Collision * collision)
 		{
 			m_bMoveLeft = true;
 			m_pTransform->m_vScale.x = PIGSCALE;
-		}
-
+		}*/
+		m_bCol = true;
 	}
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike")&&( collision->_dir == DIR_DOWN || collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT))
 		m_bDead = true;
