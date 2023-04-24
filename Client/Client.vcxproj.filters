@@ -792,6 +792,7 @@
     </ClInclude>
     <ClInclude Include="Stage6.h">
       <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
     <ClInclude Include="MiniStage1.h">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
@@ -1334,6 +1335,7 @@
     </ClCompile>
     <ClCompile Include="Stage6.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
+    </ClCompile>
     <ClCompile Include="MiniStage1.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClCompile>
