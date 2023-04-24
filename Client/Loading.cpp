@@ -10,6 +10,8 @@
 #include "Stage2.h"
 #include "Stage3.h"
 #include "Stage4.h"
+#include "Stage5.h"
+#include "Stage6.h"
 #include "Stage8.h"
 #include "FinalStage1.h"
 #include "BackGroundToolScene.h"
@@ -54,7 +56,13 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE4:
 		iFlag = pLoading->Loading_ForStage4();
 		break;
-		case LOADING_STAGE8:
+	case LOADING_STAGE5:
+		iFlag = pLoading->Loading_ForStage5();
+		break;
+	case LOADING_STAGE6:
+		iFlag = pLoading->Loading_ForStage6();
+		break;
+	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
 		break;
 	case LOADING_FINAL1:
@@ -445,6 +453,32 @@ _uint CLoading::Loading_ForStage4(void)
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading4 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage5(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage5::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading5 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage6(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage6::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading5 Complete!!!!!!!!");
 	return 0;
 }
 
