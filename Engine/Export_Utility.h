@@ -36,6 +36,9 @@
 #include "RainParticle.h"
 #include "CircleParticle.h"
 #include "WaterParticle.h"
+#include "BoxParticle.h"
+#include "SkyParticle.h"
+#include "SmokeParticle.h"
 
 BEGIN(Engine)
 

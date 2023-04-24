@@ -137,6 +137,11 @@ HRESULT CGiantHand::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pBoxParticle = dynamic_cast<CBoxParticle*>(Engine::Clone_Proto(L"BoxParticle", this));
+	NULL_CHECK_RETURN(m_pBoxParticle, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"BoxParticle", pComponent });
+
 	return S_OK;
 }
 
