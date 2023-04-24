@@ -5,6 +5,7 @@
 
 bool CSwitch::m_bSwtichON = false;
 _int CSwitch::m_iCnt = 0;
+
 CSwitch::CSwitch(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
 	m_pSwitchCube(nullptr),
@@ -82,7 +83,9 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 void CSwitch::OnCollisionExit(const Collision * collision)
 {
 	CSwitch::m_iCnt--;
+
 	m_iTextureIndex = 0;
+
 	if (m_iCnt == 0)
 		m_bSwtichON = false;				
 }
@@ -106,7 +109,6 @@ HRESULT CSwitch::Add_Component(void)
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
-
 
 	return S_OK;
 }

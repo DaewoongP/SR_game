@@ -501,7 +501,6 @@
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h" />
     <ClInclude Include="Boss3EyePupil.h">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClInclude>
@@ -788,6 +787,12 @@
     <ClInclude Include="Stage8.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Stage5.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage6.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
     <ClInclude Include="MiniStage1.h">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
@@ -814,6 +819,8 @@
     </ClInclude>
     <ClInclude Include="Stage7.h">
       <Filter>01. Scene\Stages\Stage</Filter>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1039,7 +1046,6 @@
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Boss3EyePupil.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClCompile>
@@ -1326,6 +1332,12 @@
     <ClCompile Include="Stage8.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Stage5.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage6.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClCompile>
     <ClCompile Include="MiniStage1.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClCompile>
@@ -1352,6 +1364,8 @@
     </ClCompile>
     <ClCompile Include="Stage7.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
