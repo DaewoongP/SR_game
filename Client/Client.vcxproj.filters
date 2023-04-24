@@ -270,6 +270,15 @@
     <Filter Include="01. Scene\Stages\Mini">
       <UniqueIdentifier>{0d34829b-a08e-43dd-95c4-184c852fe1b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\01. Monster\MiniGamePig">
+      <UniqueIdentifier>{27795cd6-8f94-4d35-b1da-538c6443501b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\FoodCube">
+      <UniqueIdentifier>{1aa496d0-3ea0-466c-96b0-fe4315cfbc14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\01. Monster\MiniGameBat">
+      <UniqueIdentifier>{ea9db627-0fd4-49d8-8928-a7ac1dadfa56}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00. GameObject\00. Player\MiniTopdee">
       <UniqueIdentifier>{6272a202-37f8-41ac-836c-7cd4e76b1661}</UniqueIdentifier>
     </Filter>
@@ -798,6 +807,13 @@
     </ClInclude>
     <ClInclude Include="DynamicCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniStage2.h" />
+    <ClInclude Include="MiniGamePig.h">
+      <Filter>00. GameObject\01. Monster\MiniGamePig</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\FoodCube</Filter>
     </ClInclude>
     <ClInclude Include="MiniStage2.h">
       <Filter>01. Scene\Stages\Mini</Filter>
@@ -1344,6 +1360,13 @@
     </ClCompile>
     <ClCompile Include="DynamicCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniStage2.cpp" />
+    <ClCompile Include="MiniGamePig.cpp">
+      <Filter>00. GameObject\01. Monster\MiniGamePig</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\FoodCube</Filter>
     </ClCompile>
     <ClCompile Include="MiniStage2.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>

@@ -191,6 +191,7 @@
     <ClInclude Include="ChapterTex.h" />
     <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="Floor1.h" />
+    <ClInclude Include="FoodCube.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniGamePig.h" />
     <ClInclude Include="MiniStage1.h" />
     <ClInclude Include="MiniStage2.h" />
     <ClInclude Include="MiniTopdee.h" />
@@ -354,6 +356,7 @@
     <ClCompile Include="ChapterTex.cpp" />
     <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="Floor1.cpp" />
+    <ClCompile Include="FoodCube.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
@@ -375,6 +378,7 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniGamePig.cpp" />
     <ClCompile Include="MiniStage1.cpp" />
     <ClCompile Include="MiniStage2.cpp" />
     <ClCompile Include="MiniTopdee.cpp" />
