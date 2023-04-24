@@ -154,6 +154,7 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	tagName.push_back(L"SwitchCube");
 	tagName.push_back(L"CrackCube");
 	tagName.push_back(L"PortalCube");
+	tagName.push_back(L"FoodCube");
 
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1)
@@ -168,7 +169,8 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 			m_bIsCol[edir] = false;
 
 		if (!lstrcmp(_detectedCOL[0].tag, L"MoveCube") ||
-			!lstrcmp(_detectedCOL[0].tag, L"GravityCube"))
+			!lstrcmp(_detectedCOL[0].tag, L"GravityCube")||
+			!lstrcmp(_detectedCOL[0].tag, L"FoodCube"))
 			m_bIsCol[edir] = dynamic_cast<CMoveCube*>(_detectedCOL[0].col->m_pGameObject)->m_bIsCol[edir];
 
 		//포탈 큐브고									//검출 레이의 방향이 포탈큐브 입구와 다르다면?

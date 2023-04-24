@@ -246,6 +246,8 @@ void CPortalCube::Start_PortalParticle()
 {
 	BoundingBox box;
 	box.Offset(m_pTransform->m_vInfo[INFO_POS] + m_DirVec * 2);
+	if (nullptr == m_pPortalParticle)
+		return;
 	m_pPortalParticle->Set_Color(D3DXCOLOR(0.4f, 0.8f, 0.7f, 0.8f));
 	m_pPortalParticle->Set_SizeLifeTime(0.997f);
 	m_pPortalParticle->Set_BoundingBox(box);

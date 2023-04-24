@@ -42,7 +42,7 @@ private:
 	int m_iMapObjectType;					// 맵 오브젝트 종류
 
 	// 맵 오브젝트 중 포탈 큐브 관련
-	vector<int> m_vecPortalCubeDir;			// 포탈 큐브 방향 저장용
+	vector<_int> m_vecPortalCubeDir;			// 포탈 큐브 방향 저장용
 	int m_iPortalCubeCount;					// 포탈 큐브 개수
 	CUBE_DIR	m_tPortalCubeDir;			// 포탈 큐브 방향
 

@@ -19,7 +19,7 @@ CPig::~CPig()
 HRESULT CPig::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_fSpeed = 5.0f;
+	m_fSpeed = 8.0f;
 	m_pTransform->m_vScale = { -PIGSCALE, PIGSCALE, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;

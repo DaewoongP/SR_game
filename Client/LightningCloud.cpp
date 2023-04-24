@@ -246,6 +246,7 @@ BoundingBox CLightningCloud::Check_BoundingBox(size_t ParticleNum)
 	tagName.push_back(L"SwitchCube");
 	tagName.push_back(L"CrackCube");
 	tagName.push_back(L"PortalCube");
+	tagName.push_back(L"KeyCube");
 
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(
 		RAYCAST(centerpos, vDir, len), m_pCollider, tagName);

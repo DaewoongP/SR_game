@@ -174,7 +174,7 @@ HRESULT CImguiBG::BGMenu()
 
 			if (m_BG_On4 && nullptr == m_pDefaultBG)
 				CreateDefaultBG();
-
+			
 			if (m_BG_On4 && nullptr != m_pDefaultBG)
 			{
 				InstallBG();

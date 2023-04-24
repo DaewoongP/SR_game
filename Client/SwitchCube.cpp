@@ -5,8 +5,7 @@
 #include "Switch.h"
 
 CSwitchCube::CSwitchCube(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CCube(pGraphicDev),
-	m_bSwitchON(false)
+	:CCube(pGraphicDev)
 {
 }
 
@@ -31,17 +30,21 @@ _int CSwitchCube::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	if (CSwitch::m_bSwtichON)
-	{
-		m_pTransform->m_bIsStatic = false;
-		m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
-	}
-		
+
 	if (!CSwitch::m_bSwtichON)
 	{
 		m_pTransform->m_bIsStatic = true;
+		m_pCollider->m_bIsTrigger = false;
 		m_pCollider->Set_BoundingBox(_vec3(2, 2, 2));
 	}
+
+	if (CSwitch::m_bSwtichON)
+	{
+		m_pTransform->m_bIsStatic = false;
+		m_pCollider->m_bIsTrigger = true;
+		m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
+	}
+
 	__super::Update_GameObject(fTimeDelta);
 
 	return S_OK;
@@ -75,6 +78,11 @@ void CSwitchCube::OnCollisionEnter(const Collision * collision)
 	//		!lstrcmp(L"Boss2", collision->otherObj->m_pTag))
 	//		
 	//}
+}
+
+void CSwitchCube::OnCollisionStay(const Collision * collision)
+{
+	__super::OnCollisionStay(collision);
 }
 
 HRESULT CSwitchCube::Add_Component(void)
