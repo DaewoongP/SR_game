@@ -35,10 +35,10 @@ public:
 	virtual void SwapTrigger() override;
 
 	_int	Get_ATKCount() { return m_iATKCount; }
-	_int	Get_Boss3Hp() { return m_iBossHp; }
+	_int	Get_Boss3Hp() { return m_iHp; }
 
 	void	Set_Lerp() { m_bLerpMove = true; }	
-	void	Set_Damage() { --m_iBossHp; }
+	void	Set_Damage() { --m_iHp; }
 
 private:
 	HRESULT Add_Component(void);

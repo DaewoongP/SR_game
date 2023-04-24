@@ -33,7 +33,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_bIsStatic = false;
-	m_bHealth = 3;
+	m_iHp = 3;
 	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
@@ -2051,6 +2051,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 	{
 		if (m_bAttackAble)
 		{
+			m_bDamage = true;
 			//8
 			for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
@@ -2078,7 +2079,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 					}
 				}
 			}
-			m_bHealth--;
+			m_iHp--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
 		}

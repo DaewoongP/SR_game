@@ -18,7 +18,6 @@ CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(25.f),
 	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f),
-	m_iBossHp(3),
 	m_bInit(true), m_bLerpMove(false)
 {
 	m_pToodee = nullptr;
@@ -50,7 +49,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
-
+	m_iHp = 3;
 	m_pShadowCom->m_fShadowHeight = 13.0f;
 	m_pShadowCom->m_bUseOutLine = false;
 

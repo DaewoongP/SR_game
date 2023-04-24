@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene.h"
 
-class CStage4 : public Engine::CScene
+class CStage9 : public Engine::CScene
 {
 private:
-	explicit CStage4(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStage4();
+	explicit CStage9(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStage9();
 
 public:
 	// CScene을(를) 통해 상속됨
@@ -20,8 +20,8 @@ private:
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 
 public:
-	static CStage4*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	_int m_iHp;
+	static CStage9* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+
 private:
 	virtual void		Free(void);
 };

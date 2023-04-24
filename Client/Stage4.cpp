@@ -12,6 +12,8 @@
 #include "Boss3.h"
 #include "Boss2.h"
 #include "Fade.h"
+#include"HpUI.h"
+#include"UICamera.h"
 CStage4::CStage4(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -26,9 +28,11 @@ HRESULT CStage4::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE4;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
+
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+
 	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(3, this);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(3, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(3, this);
@@ -41,6 +45,9 @@ HRESULT CStage4::Ready_Scene(void)
 
 _int CStage4::Update_Scene(const _float & fTimeDelta)
 {
+	if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Damage())
+		Get_GameObject(L"Layer_UI", L"HpUI")->Get_Damage();
+		
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -59,7 +66,7 @@ HRESULT CStage4::Ready_Layer_Environment(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
+	
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
@@ -79,7 +86,7 @@ HRESULT CStage4::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 28.f, 11.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(50.f, 20.f, 10.f)), E_FAIL);
-
+	m_iHp=pLayer->Get_GameObject(L"Boss2")->Get_Hp();
 	
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
@@ -90,9 +97,14 @@ HRESULT CStage4::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
+	CGameObject* pGameObject = nullptr;
 
-	CGameObject*		pGameObject = nullptr;
-
+	for (int i = 0; i < m_iHp; ++i)
+	{
+		pGameObject = CHpUI::Create(m_pGraphicDev, m_iHp,i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HpUI", pGameObject), E_FAIL);
+	}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
