@@ -841,6 +841,9 @@
     <ClInclude Include="MiniStage2.h">
       <Filter>01. Scene\Stages\Mini</Filter>
     </ClInclude>
+    <ClInclude Include="Stage9.h">
+      <Filter>01. Scene\Stages\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1395,6 +1398,9 @@
     </ClCompile>
     <ClCompile Include="MiniStage2.cpp">
       <Filter>01. Scene\Stages\Mini</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage9.cpp">
+      <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

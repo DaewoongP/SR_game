@@ -15,6 +15,7 @@
 #include "Stage6.h"
 #include "Stage7.h"
 #include "Stage8.h"
+#include"Stage9.h"
 #include "MiniStage1.h"
 #include "MiniStage2.h"
 #include "FinalStage1.h"
@@ -72,6 +73,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
+		break;
+	case LOADING_STAGE9:
+		iFlag = pLoading->Loading_ForStage9();
 		break;
 	case LOADING_MINI2:
 		iFlag = pLoading->Loading_ForMini2();
@@ -534,7 +538,18 @@ _uint CLoading::Loading_ForStage8(void)
 	Set_String(L"Loading8 Complete!!!!!!!!");
 	return 0;
 }
+_uint CLoading::Loading_ForStage9(void)
+{
+	Set_String(L"Stage Loading..........");
 
+	m_pScene = CStage9::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading8 Complete!!!!!!!!");
+	return 0;
+}
 _uint CLoading::Loading_ForMini2(void)
 {
 	Set_String(L"Stage Loading..........");
