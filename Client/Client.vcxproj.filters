@@ -843,6 +843,8 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    <ClInclude Include="MiniGameBat.h">
+      <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1404,6 +1406,8 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
+    <ClCompile Include="MiniGameBat.cpp">
+      <Filter>00. GameObject\01. Monster\MiniGameBat</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

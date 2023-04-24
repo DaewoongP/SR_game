@@ -216,6 +216,7 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniGameBat.h" />
     <ClInclude Include="MiniGamePig.h" />
     <ClInclude Include="MiniStage1.h" />
     <ClInclude Include="MiniStage2.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniGameBat.cpp" />
     <ClCompile Include="MiniGamePig.cpp" />
     <ClCompile Include="MiniStage1.cpp" />
     <ClCompile Include="MiniStage2.cpp" />

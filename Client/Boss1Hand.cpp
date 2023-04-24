@@ -29,7 +29,7 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	if (m_bInit)
 	{
-		//½ÇÇàÇØÁÖ´Â ÄÚµå
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Úµï¿½
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 		for (int i = 0; i < 8; i++)
@@ -40,9 +40,9 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = false;
 	}
 	
-	_vec3 out; //¸ñÇ¥Á¡
-	_vec3 cur= m_pTransform->m_vInfo[INFO_POS]; //ÇöÀç À§Ä¡
-	_float len = D3DXVec3Length(&(cur - m_vToWard)) / 4; //¹ÝÁö¸§
+	_vec3 out; //ï¿½ï¿½Ç¥ï¿½ï¿½
+	_vec3 cur= m_pTransform->m_vInfo[INFO_POS]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+	_float len = D3DXVec3Length(&(cur - m_vToWard)) / 4; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	GetVectorSlerp(&out, &cur,&m_vToWard,&_vec3(0, 1, 0), len,fTimeDelta);
 	
 	_vec3 dir, lookvec;
@@ -68,7 +68,7 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS] = out;
 	if (m_pCircularParticle->IsRendering())
 	{
-		// ¾Èµå·Î¸Þ´Ù·Î
+		// ï¿½Èµï¿½Î¸Þ´Ù·ï¿½
 		m_pTransform->m_vInfo[INFO_POS].z += 30.f;
 	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);

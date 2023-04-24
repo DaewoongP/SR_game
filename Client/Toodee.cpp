@@ -49,6 +49,7 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 		return OBJ_DEAD;
 	if (m_bInit)
 	{
+		
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 		
 		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
@@ -58,6 +59,7 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 	}
 	if (m_Tookee != nullptr)
 	{
+		//Æ÷Å»Å¸¸é ¹Ù²ãÁà¾ßÇÏ´Âµí ¤»¤»
 		_float move_x = (m_pTransform->m_vInfo[INFO_POS].x - m_prePos);
 		m_Tookee->m_pRigid->m_Velocity.x = move_x*60;
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;

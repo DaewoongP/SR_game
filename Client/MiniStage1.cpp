@@ -10,6 +10,7 @@
 #include "Topdee.h"
 #include "MiniGamePig.h"
 #include "FoodCube.h"
+#include "MiniGameBat.h"
 
 CMiniStage1::CMiniStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -34,6 +35,23 @@ HRESULT CMiniStage1::Ready_Scene(void)
 
 _int CMiniStage1::Update_Scene(const _float & fTimeDelta)
 {
+	if (g_Is2D)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+		m_dwSpawnTimer += fTimeDelta;
+		if (m_dwSpawnTimer > 1)
+		{
+			//박쥐소환
+
+			//근데 박쥐는 지들끼리 충돌이 안돼야함.
+			//상자있는 위치는 못넘어가야함.
+			FAILED_CHECK_RETURN(FACTORY<CMiniGameBat>::Create(L"MiniGameBat", pStageLayer, _vec3(0,30,10)), E_FAIL);
+			m_dwSpawnTimer = 0;
+		}
+	}
+
 	return __super::Update_Scene(fTimeDelta);
 }
 
