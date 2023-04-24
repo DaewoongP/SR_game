@@ -39,6 +39,7 @@ void CBoxParticle::ResetParticle(Particle * particle)
 	GetRandomVector(&particle->vPos,
 		&m_BoundingBox._min,
 		&m_BoundingBox._max);
+	D3DXVec3Normalize(&particle->vVelocity, &(particle->vPos - m_BoundingBox.Get_Center()));
 	particle->fAge = 0.f;
 	particle->fLifeTime = 2.f;
 }
@@ -54,7 +55,7 @@ _int CBoxParticle::Update_Particle()
 		if (it->bIsAlive)
 		{
 			it->fAge += fTimeDelta;
-
+			it->vPos += it->vVelocity * fTimeDelta;
 			if (it->fAge > it->fLifeTime)
 				it->bIsAlive = false;
 		}

@@ -34,6 +34,7 @@ private:
 	void Do_Stump(const _float & fTimeDelta);
 	void Do_Up(const _float & fTimeDelta);
 
+	void	Set_Particle();
 public:
 	void	SetState(GIANTHANDSTATE state) { m_eState = state; }
 	void	Weight_Reset() { m_fweight = 0; }

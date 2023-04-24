@@ -319,7 +319,7 @@ _uint CLoading::Loading_ForLogo(void)
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BoxParticle", CBoxParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
-		1.f, 50, false)), E_FAIL);
+		2.f, 50, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyParticle", CSkyParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_%d.png", 10,
