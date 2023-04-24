@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Loading.h"
-
+#include "SkyParticle.h"
+#include "SmokeParticle.h"
 #include "Export_Function.h"
 #include "ImguiMgr.h"
 #include "imgui.h"
@@ -65,8 +66,8 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_STAGE6:
 		iFlag = pLoading->Loading_ForStage6();
-    break;
-  case LOADING_STAGE7:
+		break;
+	case LOADING_STAGE7:
 		iFlag = pLoading->Loading_ForStage7();
 		break;
 	case LOADING_STAGE8:
