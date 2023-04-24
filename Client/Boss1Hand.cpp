@@ -2,6 +2,7 @@
 #include "Boss1Hand.h"
 #include "AbstractFactory.h"
 #include "Boss1Parts.h"
+#include "..\Engine\CircularParticle.h"
 
 CBoss1Hand::CBoss1Hand(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
 {
@@ -24,6 +25,8 @@ HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 
 _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_pCircularParticle->IsDead())
+		return OBJ_DEAD;
 	if (m_bInit)
 	{
 		//실행해주는 코드
@@ -49,10 +52,25 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 	_float radian = acosf(dot);
 	m_pTransform->Rotation(ROT_Z, D3DXToRadian(-radian));
 	
-	if (D3DXVec3Length(&(out - m_vToWard)) < 12.f)
-		return OBJ_DEAD;
-
+	if (D3DXVec3Length(&(out - m_vToWard)) < 12.f && !m_pCircularParticle->IsRendering())
+	{
+		BoundingBox box;
+		_vec3 vInfo = cur;
+		vInfo.z = 10.f;
+		box.Offset(vInfo);
+		m_pCircularParticle->Set_Size(2.f);
+		m_pCircularParticle->Set_Options(2.f, 25.f);
+		m_pCircularParticle->Set_SizeLifeTime(1.f);
+		m_pCircularParticle->Set_BoundingBox(box);
+		m_pCircularParticle->Start_Particle();
+	}
+	
 	m_pTransform->m_vInfo[INFO_POS] = out;
+	if (m_pCircularParticle->IsRendering())
+	{
+		// 안드로메다로
+		m_pTransform->m_vInfo[INFO_POS].z += 30.f;
+	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -65,16 +83,23 @@ void CBoss1Hand::LateUpdate_GameObject(void)
 
 void CBoss1Hand::Render_GameObject(void)
 {
+	if (m_pCircularParticle->IsRendering())
+		m_pCircularParticle->Update_Particle();
 	__super::Render_GameObject();
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 }
 
 HRESULT CBoss1Hand::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
+
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Boss2LandParticle", pComponent });
+
 	return S_OK;
 }
 

@@ -50,6 +50,7 @@ public:
 		m_bTrigger = true;
 	}
 	void End_Particle() { m_bTrigger = false; }
+	_bool	IsRendering() { return m_bTrigger; }
 	void Set_Size(_float fSize)
 	{
 		m_InitSize = fSize;
