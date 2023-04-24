@@ -23,11 +23,17 @@ HRESULT CLaserTurret::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
 
-	if (1 == iIndex || 0 == iIndex)
-		m_iIndex = iIndex;
+	if (0 == iIndex)
+		m_iIndex = 0;
+
+	else if (2 == iIndex)
+		m_iIndex = 1;
+
+	else if (3 == iIndex)
+		m_iIndex = 2;
 
 	else
-		m_iIndex = 1;
+		m_iIndex = 2;
 
 	m_pRedLine->Set_Width(10.f);
 	m_pWhiteLine->Set_Width(8.f);
@@ -54,8 +60,12 @@ _int CLaserTurret::Update_GameObject(const _float & fTimeDelta)
 	m_vPos = m_pTransform->m_vInfo[INFO_POS] + _vec3(0.f, 0.f, 0.1f);
 
 	if (0 == m_iIndex)
+		m_vEnd = m_vPos + _vec3{ 0.f, m_fColdist, 0.f };
+
+	else if(1 == m_iIndex)
 		m_vEnd = m_vPos + _vec3(m_fColdist, 0.f, 0.f);
-	else
+
+	else if(2 == m_iIndex)
 		m_vEnd = m_vPos + _vec3(-m_fColdist, 0.f, 0.f);
 
 	__super::Update_GameObject(fTimeDelta);
@@ -123,8 +133,8 @@ HRESULT CLaserTurret::Add_Component(void)
 
 void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 {
-	// 우 좌 순서임
-	_vec3 vDir[2] = { {1.f, 0.f, 0.f},{ -1.f, 0.f, 0.f } };
+	// 상 우 좌 순서임
+	_vec3 vDir[3] = { {0.f, 1.f, 0.f}, {1.f, 0.f, 0.f},{ -1.f, 0.f, 0.f } };
 	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
 	vector<_tchar*> tagName;
 	tagName.push_back(L"MapCube");
@@ -137,6 +147,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"KeyCube");
 	tagName.push_back(L"Toodee");
 	tagName.push_back(L"Topdee");
+	tagName.push_back(L"Tookee");
 	tagName.push_back(L"Boss3");
 	tagName.push_back(L"Boss3Left");
 	tagName.push_back(L"Boss3Right");
@@ -160,7 +171,8 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		}			
 
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") ||
-			!lstrcmp(_detectedCOL[0].tag, L"Topdee")
+			!lstrcmp(_detectedCOL[0].tag, L"Topdee") ||
+			!lstrcmp(_detectedCOL[0].tag, L"Tookee")
 			)
 		{
 			Engine::Get_GameObject(L"Layer_GameLogic", _detectedCOL[0].tag)->m_bDead = true;

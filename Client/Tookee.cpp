@@ -47,6 +47,9 @@ HRESULT CTookee::Ready_GameObject(_vec3 & vPos)
 
 _int CTookee::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	if (m_bInit2)
 	{
 
@@ -377,17 +380,15 @@ _int CTookee::Update_GameObject(const _float & fTimeDelta)
 
 _int CTookee::Update_Too(const _float & fTimeDelta)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
 	Key_Input(fTimeDelta);
 	DoStrech();
 	CGameObject::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
-	//텍스쳐컴의 애니가 die고 완료됐다면?
-	if (m_pTextureCom->IsAnimationEnd(L"Die"))
-		m_bDead = true;
+	////텍스쳐컴의 애니가 die고 완료됐다면?
+	//if (m_pTextureCom->IsAnimationEnd(L"Die"))
+	//	m_bDead = true;
 
 	DoFlip();
 	return 0;
@@ -468,6 +469,10 @@ void CTookee::SwapTrigger()
 		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 		m_pCollider->m_bIsTrigger = true;
 	}
+	m_pTransform->m_vInfo[INFO_POS].x =
+		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
+	m_pTransform->m_vInfo[INFO_POS].y =
+		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
 	m_bIsMoving = false;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;

@@ -8,12 +8,12 @@
 #include "Boss1Head.h"
 #include <functional>
 
-#define	BOSS1SCALE 1.5f
+#define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
 for (int j = 0; j < clip->source[i].size(); j++)\
 {\
 	clip->source[i][j].scale *= BOSS1SCALE;\
-	clip->source[i][j].trans *= 2;\
+	clip->source[i][j].trans *= 4.f;\
 }\
 
 CBoss1::CBoss1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -30,11 +30,12 @@ CBoss1::~CBoss1()
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_eCurrentState = B1_HEAD;
+	m_eCurrentState = B1_GIANT;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
 	//위치잡는 친구를 넣어주세요
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_vOriginPos = vPos;
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 	m_bTurn_x=false;
 	m_bTurn_y=false;
@@ -382,7 +383,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			LerpClipAdd(clip, 5, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
 			SCALEADD;
 			clip->TotalTime = 0.2f*18;
-			clip->Useloop = true;
+			clip->Useloop = false;
 		}
 		m_pAnimation_Whole->AddClip(L"Finger_Ready", clip);
 
@@ -732,18 +733,15 @@ void CBoss1::LerpClipAdd(AnimClip* clip,_int idx, _float itv,_float osc, _float 
 
 void CBoss1::SetPattern()
 {
-	int ran = (rand() % 3);
+	int ran = (rand() % 2);
 
 	switch (ran)
 	{
 	case 0:
-		m_eCurrentState = B1_GIANT;
+		m_eCurrentState = B1_FINGER;
 		break;
 	case 1:
-		m_eCurrentState = B1_GIANT;
-		break;
-	case 2:
-		m_eCurrentState = B1_GIANT;
+		m_eCurrentState = B1_HEAD;
 		break;
 	}
 	m_iCurrentActionIdx = 0;
@@ -755,8 +753,12 @@ void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 	_vec3 summonpos = _vec3(m_PartsVec[14]->Get_WorldMatrixPointer()->_41,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_42,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_43);
+	if (summonpos.x <= 1.f)
+		return;
 	if (pStageLayer != nullptr)
-		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, _vec3(34.f, 15.f, 11.f));
+		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, 
+			m_Player->m_vInfo[INFO_POS]
+			);
 
 	dynamic_cast<CBoss1Parts*>(m_PartsVec[14]->m_pGameObject)->SetTextureIdx(5);
 
@@ -774,7 +776,8 @@ void CBoss1::Do_EndFinger(const _float & fTimeDelta)
 	m_pAnimation_Whole->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	dynamic_cast<CBoss1Parts*>(m_PartsVec[14]->m_pGameObject)->SetTextureIdx(3);
-	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
+	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle"); 
+	CheckIsLastActionIdx();
 	m_dwRestTime = 3;
 }
 
@@ -802,7 +805,7 @@ void CBoss1::Do_EndHead(const _float & fTimeDelta)
 	m_pAnimation_Whole->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
-	m_dwRestTime = 18;
+	m_dwRestTime = 9;
 	CheckIsLastActionIdx();
 }
 
@@ -901,24 +904,29 @@ void CBoss1::ReadyPartten()
 
 void CBoss1::Move(const _float& fTimeDelta)
 {
-	_matrix		matCamWorld;
+	/*_matrix		matCamWorld;
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
 	D3DXMatrixInverse(&matCamWorld, 0, &matCamWorld);
 
 	if (matCamWorld._41<120)
-		m_pTransform->Set_Pos(matCamWorld._41 + 60, 16, 20);
+		m_pTransform->Set_Pos(matCamWorld._41 + 60, 16, 20);*/
 
-	if (fabsf(m_fOffset_x)>3)
-		m_bTurn_x = !m_bTurn_x;
+	if (m_fOffset_x>3.f)
+		m_bTurn_x = false;
+	else if(m_fOffset_x<-3.f)
+		m_bTurn_x = true;
 
-	if (fabsf(m_fOffset_y)>3)
-		m_bTurn_y = !m_bTurn_x;
+	if (m_fOffset_y>3.f)
+		m_bTurn_y = false;
+	else if (m_fOffset_y<-3.f)
+		m_bTurn_y = true;
 
+	cout << m_fOffset_y << endl;
 	m_fOffset_x += (m_bTurn_x) ? (fTimeDelta) : (-fTimeDelta);
 	m_fOffset_y += (m_bTurn_y) ? (fTimeDelta) : (-fTimeDelta);
 
-	m_pTransform->m_vInfo[INFO_POS].x += m_fOffset_x;
-	m_pTransform->m_vInfo[INFO_POS].y += m_fOffset_y;
+	m_pTransform->m_vInfo[INFO_POS].x = m_vOriginPos.x + m_fOffset_x;
+	m_pTransform->m_vInfo[INFO_POS].y = m_vOriginPos.y + m_fOffset_y;
 }
 
 CBoss1 * CBoss1::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

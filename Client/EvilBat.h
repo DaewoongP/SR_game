@@ -12,12 +12,12 @@ class CShadow;
 
 END
 
-class CMiniGameBat :
+class CEvilBat :
 	public CMonster
 {
 private:
-	explicit CMiniGameBat(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMiniGameBat();
+	explicit CEvilBat(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CEvilBat();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -41,7 +41,7 @@ private:
 	virtual void OnCollisionExit(const Collision* collision);
 
 public:
-	static	CMiniGameBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static	CEvilBat* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 private:
 	virtual void Free(void) override;
 
@@ -56,6 +56,8 @@ private:
 	_bool m_bStart2D;
 	_float m_fTimer;
 	_bool m_bInit;
+
+	_float	m_dwDropTimer;
 
 	CCube* m_GrabCube;
 };

@@ -40,9 +40,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Includes / Exports</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Componnent\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Componnent\Collider</Filter>
     </ClInclude>
@@ -196,6 +193,9 @@
     <ClInclude Include="SkyParticle.h">
       <Filter>Componnent\ParticleSystem\Sky</Filter>
     </ClInclude>
+    <ClInclude Include="BoxParticle.h">
+      <Filter>Componnent\ParticleSystem\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -203,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Includes / Exports</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Componnent\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Componnent\Collider</Filter>
@@ -354,6 +351,9 @@
     <ClCompile Include="SkyParticle.cpp">
       <Filter>Componnent\ParticleSystem\Sky</Filter>
     </ClCompile>
+    <ClCompile Include="BoxParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Box</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -378,9 +378,6 @@
     </Filter>
     <Filter Include="Componnent\VIBuffer">
       <UniqueIdentifier>{15a5e433-be7a-4eb4-86ff-ab48e69ea59f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Componnent\Camera">
-      <UniqueIdentifier>{065bbc3e-0e6e-47fa-a149-ffd0a512d54c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Componnent\ParticleSystem">
       <UniqueIdentifier>{57b55658-92fb-4281-bd32-840a79a5aba0}</UniqueIdentifier>
@@ -495,6 +492,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Sky">
       <UniqueIdentifier>{30293d01-99d1-496c-a065-7ac9d1f45b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Box">
+      <UniqueIdentifier>{302f660d-1efe-4f5f-9832-ad0d847d6340}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

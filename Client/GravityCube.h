@@ -28,6 +28,7 @@ public:
 
 public:
 	static CGravityCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	void SetGravity(_bool value) { m_bIsStone = !value; }
 
 private:
 	void Do_CheckRay_Down();

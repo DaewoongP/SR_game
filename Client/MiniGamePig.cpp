@@ -50,22 +50,6 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-	m_pTextureCom->Update_Anim(fTimeDelta);
-	__super::Update_GameObject(fTimeDelta);
-	return 0;
-}
-
-_int CMiniGamePig::Update_Too(const _float & fTimeDelta)
-{
-	m_bBackSprite = false;
-	return 0;
-}
-
-_int CMiniGamePig::Update_Top(const _float & fTimeDelta)
-{
-	if (m_bDead)
-		return OBJ_DEAD;
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 
@@ -84,7 +68,7 @@ _int CMiniGamePig::Update_Top(const _float & fTimeDelta)
 			FACTORY<CMiniGamePig>::Create(L"MiniGamePig", pStageLayer, _vec3(5.f, 14.f, 8.9f));
 		}
 	}
-		
+
 
 	m_pTransform->m_vScale.y = MINIPIGSCALE;
 
@@ -101,7 +85,7 @@ _int CMiniGamePig::Update_Top(const _float & fTimeDelta)
 	}
 	else
 		m_bBackSprite = false;
-	
+
 	if (vPlayerPos.x < m_pTransform->m_vInfo[INFO_POS].x)
 	{
 		m_pTransform->m_vScale.x = -MINIPIGSCALE;
@@ -113,7 +97,7 @@ _int CMiniGamePig::Update_Top(const _float & fTimeDelta)
 	D3DXVec3Normalize(&vDir, &(vPlayerPos - m_pTransform->m_vInfo[INFO_POS]));
 	vDir.z = 8.9f;
 	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 } };
-	_vec3 vpos[MD_END] = { 
+	_vec3 vpos[MD_END] = {
 		{ m_pTransform->m_vInfo[INFO_POS].x, m_pTransform->m_vInfo[INFO_POS].y + 0.6f, m_pTransform->m_vInfo[INFO_POS].z + 2 },
 		{ m_pTransform->m_vInfo[INFO_POS].x, m_pTransform->m_vInfo[INFO_POS].y - 0.4f, m_pTransform->m_vInfo[INFO_POS].z + 2 },
 		{ m_pTransform->m_vInfo[INFO_POS].x - 0.4f, m_pTransform->m_vInfo[INFO_POS].y, m_pTransform->m_vInfo[INFO_POS].z + 2 },
@@ -150,6 +134,20 @@ _int CMiniGamePig::Update_Top(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].y += vDir.y*fTimeDelta*m_fSpeed;
 	}
 	m_pTextureCom_Back->Update_Anim(fTimeDelta);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	m_pTextureCom->Update_Anim(fTimeDelta);
+	__super::Update_GameObject(fTimeDelta);
+	return 0;
+}
+
+_int CMiniGamePig::Update_Too(const _float & fTimeDelta)
+{
+	m_bBackSprite = false;
+	return 0;
+}
+
+_int CMiniGamePig::Update_Top(const _float & fTimeDelta)
+{
 	return 0;
 }
 

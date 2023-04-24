@@ -2,6 +2,7 @@
 #include "Boss1Hand.h"
 #include "AbstractFactory.h"
 #include "Boss1Parts.h"
+#include "..\Engine\CircularParticle.h"
 
 CBoss1Hand::CBoss1Hand(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
 {
@@ -17,16 +18,18 @@ HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5,5,5);
-	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
 	m_vToWard = vToWard;
+	m_fSpeed = 1.f;
 	return S_OK;
 }
 
 _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_pCircularParticle->IsDead())
+		return OBJ_DEAD;
 	if (m_bInit)
 	{
-		//실행해주는 코드
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 		for (int i = 0; i < 8; i++)
@@ -37,23 +40,33 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = false;
 	}
 	
-	_vec3 out; //목표점
-	_vec3 cur= m_pTransform->m_vInfo[INFO_POS]; //현재 위치
-	_float len = D3DXVec3Length(&(cur - m_vToWard)) / 2; //반지름
-	GetVectorSlerp(&out, &cur,&m_vToWard,&_vec3(0, 1, 0), len,fTimeDelta);
+	_vec3 out;
+	_vec3 cur= m_pTransform->m_vInfo[INFO_POS];
 	
-	_vec3 dir, lookvec;
-	D3DXVec3Normalize(&dir,&(out - cur));
-	D3DXVec3Normalize(&lookvec, &m_pTransform->m_vInfo[INFO_LOOK]);
-	float dot = D3DXVec3Dot(&lookvec, &dir);
-	float radian = acosf(dot);
-	m_pTransform->Rotation(ROT_Z, D3DXToRadian(radian));
-	if (out.z > cur.z)
-		radian = 2 * D3DX_PI - radian;
+	if (cur.z <= -100.f)
+	{
+		cur = m_vToWard;
+		cur.z -= 40.f;
+		m_fSpeed *= -1.f;
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	}
+	
+	cur.z -= m_fSpeed;
+	m_pTransform->m_vInfo[INFO_POS] = cur;
 
-	//if(len>0.5f)
-		//m_pTransform->m_vAngle.z = radian;
-	m_pTransform->m_vInfo[INFO_POS] = out;
+	if (cur.z >= 10.f && !m_pCircularParticle->IsRendering())
+	{
+		BoundingBox box;
+		_vec3 vInfo = cur;
+		vInfo.z = 10.f;
+		box.Offset(vInfo);
+		m_pCircularParticle->Set_Size(2.f);
+		m_pCircularParticle->Set_Options(2.f, 25.f);
+		m_pCircularParticle->Set_SizeLifeTime(1.f);
+		m_pCircularParticle->Set_BoundingBox(box);
+		m_pCircularParticle->Start_Particle();
+	}
+	
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -66,16 +79,23 @@ void CBoss1Hand::LateUpdate_GameObject(void)
 
 void CBoss1Hand::Render_GameObject(void)
 {
+	if (m_pCircularParticle->IsRendering())
+		m_pCircularParticle->Update_Particle();
 	__super::Render_GameObject();
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 }
 
 HRESULT CBoss1Hand::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
+
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pCircularParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"Boss2LandParticle", this));
+	NULL_CHECK_RETURN(m_pCircularParticle, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Boss2LandParticle", pComponent });
+
 	return S_OK;
 }
 

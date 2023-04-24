@@ -15,7 +15,7 @@ HRESULT CFoodCube::Ready_GameObject(_vec3 & vPos)
 	__super::Ready_GameObject(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransform->m_bIsStatic = false;
+	m_pTransform->m_bIsStatic = true;
 	m_pCollider->m_bIsTrigger = false;
 	m_pCollider->Set_BoundingBox({ 2.f,2.f,2.f });
 	return S_OK;

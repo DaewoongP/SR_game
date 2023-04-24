@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Loading.h"
-#include "SkyParticle.h"
-#include "SmokeParticle.h"
 #include "Export_Function.h"
 #include "ImguiMgr.h"
 #include "imgui.h"
@@ -16,6 +14,7 @@
 #include "Stage7.h"
 #include "Stage8.h"
 #include"Stage9.h"
+#include "Stage10.h"
 #include "MiniStage1.h"
 #include "MiniStage2.h"
 #include "FinalStage1.h"
@@ -76,6 +75,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 		break;
 	case LOADING_STAGE9:
 		iFlag = pLoading->Loading_ForStage9();
+    break;
+	case LOADING_STAGE10:
+		iFlag = pLoading->Loading_ForStage10();
 		break;
 	case LOADING_MINI2:
 		iFlag = pLoading->Loading_ForMini2();
@@ -243,9 +245,7 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Spark_Animation", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3ElectrictySpr/boss3ElectrictySpr_%d.png", 5)), E_FAIL);
 
 	// 레이저 터렛
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser_Turret", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireSpr_%d.png", 2)), E_FAIL);
-	// 레이저
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireLaserSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser_Turret", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireSpr_%d.png", 3)), E_FAIL);
 
 	//테마 1 구름
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cloud.png")), E_FAIL);
@@ -324,6 +324,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BoxParticle", CBoxParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		2.f, 50, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyParticle", CSkyParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_%d.png", 10,
@@ -561,7 +565,20 @@ _uint CLoading::Loading_ForMini2(void)
 
 	m_bFinish = true;
 	m_iLoadingTexImgNum = 12;
-	Set_String(L"Loading8 Complete!!!!!!!!");
+	Set_String(L"LoadingMini2 Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForStage10(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CStage10::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading10 Complete!!!!!!!!");
 	return 0;
 }
 

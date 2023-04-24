@@ -3,7 +3,7 @@
 
 
 CMoveCamera::CMoveCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CCamera(pGraphicDev)
 {
 }
 
@@ -17,9 +17,11 @@ HRESULT CMoveCamera::Ready_GameObject(void)
 	D3DXMatrixIdentity(&m_matRot);
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matProj);
-	m_vViewInfo[EYE] = _vec3(3.f, 24.f, 0.f);
-	m_vViewInfo[AT] = _vec3(20.f, 24.f, 10.f);
-	D3DXVec3Cross(&m_vViewInfo[UP], &_vec3(0.f, 1.f, 0.f), &(m_vViewInfo[AT] - m_vViewInfo[EYE]));
+	m_vCam[EYE] = _vec3(3.f, 24.f, 0.f);
+	m_vCam[AT] = _vec3(20.f, 24.f, 10.f);
+	D3DXVec3Cross(&m_vCam[UP], &_vec3(0.f, 1.f, 0.f), &(m_vCam[AT] - m_vCam[EYE]));
+	m_fProj[FOV] = D3DXToRadian(45.f);
+	m_fProj[FAR_] = 500.f;
 	m_fSpeed = 50.f;
 	return S_OK;
 }
@@ -27,54 +29,49 @@ HRESULT CMoveCamera::Ready_GameObject(void)
 _int CMoveCamera::Update_GameObject(const _float & fTimeDelta)
 {
 	Move_Cam(fTimeDelta);
-
-
-	Update_Matrix();
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
 
-void CMoveCamera::Update_Matrix()
+void CMoveCamera::Render_GameObject()
 {
-	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DXToRadian(45.f), (_float)WINCX / WINCY, 1.f, 500.f);
-	D3DXMatrixLookAtLH(&m_matView, &m_vViewInfo[EYE], &m_vViewInfo[AT], &m_vViewInfo[UP]);
+	__super::Render_GameObject();
 }
 
 void CMoveCamera::Move_Cam(const _float& fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].x += m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].x += m_fSpeed * fTimeDelta;
+		m_vCam[EYE].x += m_fSpeed * fTimeDelta;
+		m_vCam[AT].x += m_fSpeed * fTimeDelta;
 	}
 	if (Engine::Get_DIKeyState(DIK_DOWN) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].x -= m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].x -= m_fSpeed * fTimeDelta;
+		m_vCam[EYE].x -= m_fSpeed * fTimeDelta;
+		m_vCam[AT].x -= m_fSpeed * fTimeDelta;
 	}
 
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].y -= m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].y -= m_fSpeed * fTimeDelta;
+		m_vCam[EYE].y -= m_fSpeed * fTimeDelta;
+		m_vCam[AT].y -= m_fSpeed * fTimeDelta;
 	}
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].y += m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].y += m_fSpeed * fTimeDelta;
+		m_vCam[EYE].y += m_fSpeed * fTimeDelta;
+		m_vCam[AT].y += m_fSpeed * fTimeDelta;
 	}
 
 	if (Engine::Get_DIKeyState(DIK_Z) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].z += m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].z += m_fSpeed * fTimeDelta;
+		m_vCam[EYE].z += m_fSpeed * fTimeDelta;
+		m_vCam[AT].z += m_fSpeed * fTimeDelta;
 	}
 
 	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYPRESS)
 	{
-		m_vViewInfo[EYE].z -= m_fSpeed * fTimeDelta;
-		m_vViewInfo[AT].z -= m_fSpeed * fTimeDelta;
+		m_vCam[EYE].z -= m_fSpeed * fTimeDelta;
+		m_vCam[AT].z -= m_fSpeed * fTimeDelta;
 	}
 }
 
