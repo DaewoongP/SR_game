@@ -194,7 +194,7 @@ HRESULT CImguiBG::BGMenu()
 		// ·Îµå ±â´É
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
-			FAILED_CHECK_RETURN(LoadBG(m_iStageNumber), E_FAIL);
+			LoadBG(m_iStageNumber);
 	
 		ImGui::TreePop();
 	}
@@ -263,7 +263,8 @@ void CImguiBG::CreateBackData()
 void CImguiBG::InstallBG()
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_Environment"));
-	NULL_CHECK_RETURN(pStageLayer, );
+	if (nullptr == pStageLayer)
+		return;
 
 	if (Engine::Get_DIKeyState(DIK_F6) == Engine::KEYDOWN)
 	{
@@ -463,7 +464,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == hFile)
-		return E_FAIL;
+		return 0 ;
 
 	DWORD    dwByte = 0;
 	BGINFO vMapObjectInfo = {};
