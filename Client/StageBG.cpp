@@ -50,7 +50,7 @@ void CStage1BG::LateUpdate_GameObject(void)
 void CStage1BG::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	//m_pTextureCom->Set_Texture(0);
+	m_pTextureCom->Set_Texture(0);
 
 	m_pBufferCom->Render_Buffer();
 	Render_Particle();
@@ -64,9 +64,9 @@ HRESULT CStage1BG::Add_Component(void)
 	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
 
-	/*pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage_Texture", this));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Stage_Texture", this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Stage_Texture", pComponent });*/
+	m_vecComponent[ID_STATIC].push_back({ L"Stage_Texture", pComponent });
 
 	pComponent = m_pLeafParticle0 = dynamic_cast<CLeafParticle*>(Engine::Clone_Proto(L"LeafParticle0", this));
 	NULL_CHECK_RETURN(m_pLeafParticle0, E_FAIL);
