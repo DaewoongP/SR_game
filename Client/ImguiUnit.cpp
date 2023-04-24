@@ -31,6 +31,9 @@ CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
+
+	m_vecLaserTurretDir.reserve(1);
+	m_vecPortalCubeDir.reserve(1);
 }
 
 CImguiUnit::~CImguiUnit()
@@ -245,6 +248,10 @@ HRESULT CImguiUnit::MapObjectMenu()
 			ImGui::SameLine();
 			if (ImGui::Button("RIGHT"))
 				m_tLaserTurretDir = CD_RIGHT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("UP"))
+				m_tLaserTurretDir = CD_UP;
 		}
 
 		// 체크 박스가 켜졌을 때 디폴트 맵 오브젝트 생성
@@ -348,7 +355,7 @@ void CImguiUnit::MapObjectInstall()
 
 		else if (12 == m_iMapObjectType) // 레이저 터렛
 		{
-			MakeGameObjectTypeNum<CLaserTurret>(pStageLayer, L"LaserTurret", ((_int)m_tLaserTurretDir -2));
+			MakeGameObjectTypeNum<CLaserTurret>(pStageLayer, L"LaserTurret", ((_int)m_tLaserTurretDir));
 
 			m_vecLaserTurretDir.push_back((_int)m_tLaserTurretDir);
 		}
@@ -400,7 +407,7 @@ HRESULT CImguiUnit::SaveMapObject(_int iStageNumber)
 	DWORD dwByte2 = 0;
 
 	for (auto& iter : m_vecLaserTurretDir)
-		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte2, nullptr);
+		WriteFile(hFile, &iter, sizeof(_int), &dwByte2, nullptr);
 
 	CloseHandle(hFile3);
 
@@ -411,6 +418,9 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 	m_vecMapObjectInfo.clear();
 	m_vecPortalCubeDir.clear();
 	m_vecLaserTurretDir.clear();
+
+	m_iPortalCubeCount = 0;
+	m_iLaserTurretCount = 0;
 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer == nullptr)
@@ -425,7 +435,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 		return E_FAIL;
 
 	DWORD    dwByte = 0;
-	OBJINFO vMapObjectInfo = {};
+	OBJINFO  vMapObjectInfo = {};
 
 	while (true)
 	{
@@ -548,7 +558,7 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 		else if (12 == iter.iObjTypeNumber) // 레이저 터렛
 		{
 			FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pStageLayer, iter.vObjPos,
-				(_int)(m_vecLaserTurretDir.at(m_iLaserTurretCount) - 2)), E_FAIL);
+				(_int)(m_vecLaserTurretDir.at(m_iLaserTurretCount))), E_FAIL);
 			++m_iLaserTurretCount;
 		}
 	}

@@ -228,6 +228,7 @@
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Stage10.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stage4.h" />
@@ -392,6 +393,7 @@
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Stage10.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stage4.cpp" />

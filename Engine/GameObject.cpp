@@ -70,7 +70,37 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 {
 	if (!m_pTransform->m_bIsStatic)
 		return;
-	
+	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
+	CRigidbody* _rigid;
+
+	if ((collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC)) == nullptr) return;
+	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
+
+	//velocity / trans 둘다 밀어내기를 진행해줘야함.
+	_vec3 reaction = _vec3(0, 0, 0);
+
+	switch (collision->_dir)
+	{
+	case DIR_UP:
+		if (_rigid->m_Velocity.y < 0)
+			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+		_rigid->m_Velocity.x *= 0.8f;
+		break;
+	case DIR_DOWN:
+		if (_rigid->m_Velocity.y > 0)
+			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
+		_rigid->m_Velocity.x *= 0.8f;
+		break;
+	case DIR_LEFT:
+		if (_rigid->m_Velocity.x > 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		break;
+	case DIR_RIGHT:
+		if (_rigid->m_Velocity.x < 0)
+			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
+		break;
+	}
+	_rigid->m_Velocity -= reaction;
  	CTransform* trans_other = collision->otherObj->m_pTransform;
 	CCollider* collider_other = collision->otherCol;
 	if (collider_other->m_bIsTrigger)
@@ -113,37 +143,7 @@ void CGameObject::OnCollisionStay(const Collision * collision)
 	else if (collision->_dir == DIR_RIGHT&&center_other.x > min_x)
 		trans_other->m_vInfo[INFO_POS].x = max_x - offset_other.x;
 		
-	//나랑 충돌한 물체가 리짓바디를 가지고있지 않다면 실행 X
-	CRigidbody* _rigid;
-
-	if ((collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC)) == nullptr) return;
-	_rigid = dynamic_cast<CRigidbody*>(collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC));
-
-	//velocity / trans 둘다 밀어내기를 진행해줘야함.
-	_vec3 reaction = _vec3(0, 0, 0);
-
-	switch (collision->_dir)
-	{
-	case DIR_UP:
-		if (_rigid->m_Velocity.y < 0)
-			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-		_rigid->m_Velocity.x *= 0.8f;
-		break;
-	case DIR_DOWN:
-		if (_rigid->m_Velocity.y > 0)
-			reaction = _vec3(0, _rigid->m_Velocity.y, 0);
-		_rigid->m_Velocity.x *= 0.8f;
-		break;
-	case DIR_LEFT:
-		if (_rigid->m_Velocity.x > 0)
-			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		break;
-	case DIR_RIGHT:
-		if (_rigid->m_Velocity.x < 0)
-			reaction = _vec3(_rigid->m_Velocity.x, 0, 0);
-		break;
-	}
-	_rigid->m_Velocity -= reaction;
+	
 }
 
 void CGameObject::OnCollisionExit(const Collision * collision)
