@@ -33,6 +33,8 @@ public:
   _uint				Loading_ForStage7(void);
 	_uint				Loading_ForStage8(void);
 	_uint				Loading_ForMini2(void);
+
+	_uint				Loading_ForStage10(void);
 	_uint				Loading_ForFinal1(void);
 	_uint				Loading_ForBGTool(void);
 	_int				Get_LoadingPercent() { return m_iLoadingTexImgNum; }

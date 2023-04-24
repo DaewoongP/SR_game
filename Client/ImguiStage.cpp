@@ -335,10 +335,14 @@ HRESULT CImguiStage::LoadCube(_int iStageNumber, CScene* pScene)
 	}
 	CloseHandle(hFile);
 
+	int i = 0;
+
 	for (auto& iter : m_vecCubeInfo)
 	{
 		FAILED_CHECK_RETURN(FACTORY<CInstallCube>::Create(L"InstallCube", pStageLayer,
 			iter.vObjPos, iter.iObjTypeNumber), E_FAIL);
+
+		++i;
 	}
 
 	return S_OK;
