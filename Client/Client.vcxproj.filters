@@ -501,7 +501,6 @@
     <ClInclude Include="Fireball.h">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h" />
     <ClInclude Include="Boss3EyePupil.h">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClInclude>
@@ -812,6 +811,9 @@
     <ClInclude Include="Theme3_Gradation.h">
       <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
     </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1036,7 +1038,6 @@
     <ClCompile Include="Fireball.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\BossBullet</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Boss3EyePupil.cpp">
       <Filter>00. GameObject\04. Boss\Boss3\Boss3expression\Boss3EyePupil</Filter>
     </ClCompile>
@@ -1346,6 +1347,9 @@
     </ClCompile>
     <ClCompile Include="Theme4_Gradation.cpp">
       <Filter>00. GameObject\03. BackGroudObj\BG_Gradation</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>01. Scene\Stages\Logo\Title\Select</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
