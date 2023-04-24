@@ -22,11 +22,11 @@
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="BoxParticle.h" />
     <ClInclude Include="BulletPool.h" />
     <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="TexParticle.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="CircularParticle.h" />
     <ClInclude Include="Collider.h" />
@@ -86,11 +86,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BoxParticle.cpp" />
     <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="TexParticle.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="CircularParticle.cpp" />
     <ClCompile Include="Collider.cpp" />

@@ -16,7 +16,6 @@
 
 #include "Transform.h"
 #include "Texture.h"
-#include "Camera.h"
 #include "CubeTex.h"
 #include "Rigidbody.h"
 #include "Line.h"
@@ -37,6 +36,9 @@
 #include "RainParticle.h"
 #include "CircleParticle.h"
 #include "WaterParticle.h"
+#include "BoxParticle.h"
+#include "SkyParticle.h"
+#include "SmokeParticle.h"
 
 BEGIN(Engine)
 

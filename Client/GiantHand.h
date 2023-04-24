@@ -11,6 +11,7 @@ enum GIANTHANDSTATE{
 
 BEGIN(Engine)
 class CCollider;
+class CBoxParticle;
 END
 class CGiantHand :
 	public CGameObject
@@ -33,11 +34,13 @@ private:
 	void Do_Stump(const _float & fTimeDelta);
 	void Do_Up(const _float & fTimeDelta);
 
+	void	Set_Particle();
 public:
 	void	SetState(GIANTHANDSTATE state) { m_eState = state; }
 	void	Weight_Reset() { m_fweight = 0; }
 protected:
 	Engine::CCollider*		m_pCollider;
+	Engine::CBoxParticle*	m_pBoxParticle;
 	vector<CTransform*>		m_PartsVec;
 	_bool					m_bInit;
 	_vec3					m_vSummonPos;

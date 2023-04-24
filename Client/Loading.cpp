@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Loading.h"
-#include "SkyParticle.h"
-#include "SmokeParticle.h"
 #include "Export_Function.h"
 #include "ImguiMgr.h"
 #include "imgui.h"
@@ -320,6 +318,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BoxParticle", CBoxParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		2.f, 50, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyParticle", CSkyParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_%d.png", 10,

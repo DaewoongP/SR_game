@@ -238,7 +238,7 @@ _vec3 CPortalCube::Get_CubeHeadPos()
 {
 	//방향에 따라 헤드 위치를 반환시켜주는 친구임.
 	if (nullptr == m_pTransform)
-		return _vec3{0, 0, 0};
+		return _vec3{ 0, 0, 0 };
 	return _vec3(m_pTransform->m_vInfo[INFO_POS] + (m_DirVec*2));
 }
 

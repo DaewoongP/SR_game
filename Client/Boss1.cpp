@@ -30,7 +30,7 @@ CBoss1::~CBoss1()
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_eCurrentState = B1_HEAD;
+	m_eCurrentState = B1_GIANT;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
 	//위치잡는 친구를 넣어주세요
@@ -755,6 +755,8 @@ void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 	_vec3 summonpos = _vec3(m_PartsVec[14]->Get_WorldMatrixPointer()->_41,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_42,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_43);
+	if (summonpos.x <= 1.f)
+		return;
 	if (pStageLayer != nullptr)
 		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, _vec3(34.f, 15.f, 11.f));
 

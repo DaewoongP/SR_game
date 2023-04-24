@@ -188,6 +188,7 @@
     <ClInclude Include="Boss3Mouth.h" />
     <ClInclude Include="Boss3HandPart.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
     <ClInclude Include="DynamicCamera.h" />
@@ -354,6 +355,7 @@
     <ClCompile Include="Boss3Mouth.cpp" />
     <ClCompile Include="Boss3HandPart.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
     <ClCompile Include="DynamicCamera.cpp" />
