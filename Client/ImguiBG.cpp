@@ -54,7 +54,7 @@ HRESULT CImguiBG::BGMenu()
 			ImGui::Text("Create:F6");
 			ImGui::Checkbox("BackGround Install", &m_BG_On);
 
-			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","Gradation_T1" };
+			const char* items[] = { "T1Cloud", "MapDeco","T1Cube","T1House","T1Sun","T1Tree","T1Wall","T1Cow","T1Nibble","T1Floor","Gradation_T1"};
 			ImGui::Combo("BG Type", &m_iBG_Type, items, IM_ARRAYSIZE(items));
 
 			if (1 == m_iBG_Type)
@@ -174,7 +174,7 @@ HRESULT CImguiBG::BGMenu()
 
 			if (m_BG_On4 && nullptr == m_pDefaultBG)
 				CreateDefaultBG();
-
+			
 			if (m_BG_On4 && nullptr != m_pDefaultBG)
 			{
 				InstallBG();
