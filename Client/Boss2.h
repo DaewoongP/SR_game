@@ -13,11 +13,11 @@ class CAnimation;
 class CCircleParticle;
 class CJumpParticle;
 class CTexParticle;
+class CSuperLandingParticle;
 END
 
 enum BOSS2STATE
 {
-	B2_THROW,
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -39,7 +39,6 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject() override;
-	virtual void SwapTrigger();
 
 	virtual void OnCollisionEnter(const class Collision* collision);
 	virtual void OnCollisionStay(const class Collision* collision);
@@ -119,6 +118,8 @@ private:
 	_bool		m_bIsOnGround;
 	_bool		m_bInit;
 	_bool		m_bAttackAble;
+	_int		m_iJumpCount;
+
 private:
 	Engine::CCollider*			m_pCollider;
 	Engine::CRigidbody*			m_pRigid;
@@ -127,6 +128,7 @@ private:
 	Engine::CCircleParticle*	m_pCircleParticle;
 	Engine::CJumpParticle*		m_pJumpParticle;
 	Engine::CTexParticle*		m_pScreamParticle;
+	Engine::CSuperLandingParticle*	m_pLandingParticle;
 public:
 	static CBoss2*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

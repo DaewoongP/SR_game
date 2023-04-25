@@ -91,3 +91,30 @@
 				m_pInstance = NULL;						\
 			}											\
 		}
+
+#define TOODEEDIE CToodee* toodee = dynamic_cast<CToodee*>(collision->otherObj);\
+if (toodee != nullptr&&g_Is2D)\
+toodee->Set_AnimDead();
+
+#define TOOKEEDIE CTookee* tookee = dynamic_cast<CTookee*>(collision->otherObj);\
+if (tookee != nullptr)\
+tookee->Set_Dead();
+
+#define TOPDEEDIE CTopdee* topdee = dynamic_cast<CTopdee*>(collision->otherObj);\
+if (topdee != nullptr&&!g_Is2D)\
+topdee->SetDie();
+
+#define THIRDDEEDIE CThirddee* thirddee = dynamic_cast<CThirddee*>(collision->otherObj);\
+if (thirddee != nullptr)\
+thirddee->Set_Die();
+/*
+#include "Tookee.h"
+#include "Toodee.h"
+#include "Topdee.h"
+#include "Thirddee.h"
+
+TOOKEEDIE;
+TOODEEDIE;
+TOPDEEDIE;
+THIRDDEEDIE;
+*/

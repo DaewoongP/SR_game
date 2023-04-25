@@ -4,7 +4,6 @@
 #include "Boss2Parts.h"
 BEGIN(Engine)
 class CRcTex;
-class CTexture;
 class CShadow;
 
 END
@@ -31,7 +30,6 @@ public:
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
 	Engine::CShadow*		m_pShadow;
 
 	_bool m_bMetronome = true;

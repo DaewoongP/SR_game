@@ -211,6 +211,10 @@ void CBoss3::Render_GameObject(void)
 
 void CBoss3::OnCollisionEnter(const Collision * collision)
 {
+	if (collision->_dir == DIR_BACK)
+	{
+		TOPDEEDIE;
+	}
 	CGameObject::OnCollisionEnter(collision);
 }
 

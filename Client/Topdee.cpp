@@ -386,6 +386,9 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		m_pAnimation_Head->SetAnimation(L"Idle");
 		
 	}
+		
+	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+		return OBJ_DEAD;
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -400,6 +403,9 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
+	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+		return OBJ_DEAD;
+
 	if (!m_bDead)
 	{
 		_vec3 moveto;
@@ -449,15 +455,6 @@ void CTopdee::Render_GameObject(void)
 
 void CTopdee::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Boss3Left") && collision->_dir==DIR_FRONT || 
-		!lstrcmp(collision->otherObj->m_pTag, L"Boss3Right") && collision->_dir == DIR_FRONT||
-		!lstrcmp(collision->otherObj->m_pTag, L"Boss3") && collision->_dir == DIR_FRONT)
-	{
-		//m_pTextureCom->Switch_Anim(L"Die");
-		int i = 0;
-	}
-
-
 	__super::OnCollisionEnter(collision);
 }
 
@@ -833,6 +830,7 @@ void CTopdee::SetDie()
 	CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee_Die");
 	if (die != nullptr)
 	{
+		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
 		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.4f, false);
 		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
 	}

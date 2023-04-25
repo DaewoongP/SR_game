@@ -17,7 +17,7 @@
 #include "InstallCube.h"
 #include"ImguiBG.h"
 #include"HpUI.h"
-#include"Fade.h"
+#include "Fade.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -121,16 +121,16 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//∏« ¿≠¡Ÿ
+			//Îß® ÏúóÏ§Ñ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//ªÁ¿Ã √π¡Ÿ
+			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
+			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//∏« æ∆∑ß¡Ÿ
+			//Îß® ÏïÑÎû´Ï§Ñ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
 		}
@@ -165,7 +165,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		iBossHp = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Boss3Hp();
 
-	// ∫∏Ω∫ √º∑¬¿Ã 2∞° µ«∏È
+	// Î≥¥Ïä§ Ï≤¥Î†•Ïù¥ 2Í∞Ä ÎêòÎ©¥
 	if (2 == iBossHp && 3 == m_iPreBossHp)
 	{
 		for (int i = 0; i < 30; ++i)
@@ -191,7 +191,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		m_iPreBossHp = 2;
 	}
 
-	// ∫∏Ω∫ √º∑¬¿Ã 1¿Ã µ«∏È
+	// Î≥¥Ïä§ Ï≤¥Î†•Ïù¥ 1Ïù¥ ÎêòÎ©¥
 	if (1 == iBossHp && 2 == m_iPreBossHp)
 	{
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
