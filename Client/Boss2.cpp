@@ -2096,6 +2096,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				}
 			}
 			m_iHp--;
+			m_bDamage = true;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
 			if (fabsf(m_pTransform->m_vAngle.y)>D3DXToRadian(180))
