@@ -608,28 +608,6 @@ void CThirddee::Render_GameObject(void)
 
 void CThirddee::SwapTrigger()
 {
-	if (g_Is2D)
-	{
-		m_pRigid->m_bUseGrivaty = true;
-		m_pCollider->m_bIsTrigger = false;
-		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
-		m_pTransform->m_vAngle = _vec3(D3DXToRadian(0), D3DXToRadian(0), 0);
-		m_pTransform->m_vInfo[INFO_POS].z = 10;
-		m_fTopOffset = 0;
-	}
-	else
-	{ 
-		m_pRigid->m_bUseGrivaty = false;
-		m_pTransform->m_vInfo[INFO_POS].x =
-			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
-		m_pTransform->m_vInfo[INFO_POS].y =
-			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
-		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
-		m_pCollider->m_bIsTrigger = true;
-		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(-90), D3DXToRadian(0));
-		m_pTransform->m_vInfo[INFO_POS].z = 11;
-		m_fTopOffset = 1;
-	}
 	int x = round(m_pTransform->m_vInfo[INFO_POS].x);
 	int y = round(m_pTransform->m_vInfo[INFO_POS].y);
 
@@ -646,7 +624,30 @@ void CThirddee::SwapTrigger()
 		m_MovetoPos.y = y - 1;
 	else
 		m_MovetoPos.y = y + 1;
-
+	if (g_Is2D)
+	{
+		m_pRigid->m_bUseGrivaty = true;
+		m_pCollider->m_bIsTrigger = false;
+		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(0), D3DXToRadian(0), 0);
+		m_pTransform->m_vInfo[INFO_POS].z = 10;
+		m_MovetoPos.z = 10;
+		m_fTopOffset = 0;
+	}
+	else
+	{ 
+		m_pRigid->m_bUseGrivaty = false;
+		m_pTransform->m_vInfo[INFO_POS].x =
+			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
+		m_pTransform->m_vInfo[INFO_POS].y =
+			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
+		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+		m_pCollider->m_bIsTrigger = true;
+		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(-90), D3DXToRadian(0));
+		m_pTransform->m_vInfo[INFO_POS].z = 11;
+		m_MovetoPos.z = 11;
+		m_fTopOffset = 1;
+	}
 	m_bIsMoving = true;
 
 	m_partVec[1]->m_pTransform->m_vInfo[INFO_POS] = _vec3(0, 0+ m_fTopOffset, +0.02f);
