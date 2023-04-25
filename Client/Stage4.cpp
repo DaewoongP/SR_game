@@ -30,7 +30,6 @@ HRESULT CStage4::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE4;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
-
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -50,7 +49,14 @@ HRESULT CStage4::Ready_Scene(void)
 _int CStage4::Update_Scene(const _float & fTimeDelta)
 {
 	if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Damage())
-		Get_GameObject(L"Layer_UI", L"HpUI")->Get_Damage();
+	{ 
+		if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Hp() >= 0)
+		{	
+			Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+			Get_GameObject(L"Layer_GameLogic", L"Boss2")->Set_Damage();
+		}
+	}
+
 		
 	return __super::Update_Scene(fTimeDelta);
 }

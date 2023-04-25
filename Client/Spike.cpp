@@ -19,7 +19,7 @@ HRESULT CSpike::Ready_GameObject(_vec3& vPos)
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pTransform->m_bIsStatic = false;
 	
-	m_pCollider->Set_Options({ 1.f, 0.8f, 2.f }, COL_ENV, true);
+	m_pCollider->Set_Options({ 2.f, 2.f, 2.f }, COL_ENV, true);
 	m_pTextureCom->Add_Anim(L"Idle", 0, 0, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Goto2D", 7, 12, 0.3f, false);
 	m_pTextureCom->Add_Anim(L"GotoTop", 0, 6, 0.3f, false);

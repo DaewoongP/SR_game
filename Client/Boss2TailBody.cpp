@@ -146,7 +146,8 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 
 		m_bInit = true;
 	}
-
+	__super::Update_GameObject(fTimeDelta);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	if (m_bMetronome)
 	{
 		if (1.0f > m_fTimer)
@@ -188,9 +189,6 @@ _int CBoss2TailBody::Update_GameObject(const _float & fTimeDelta)
 			
 		}
 	}
-
-	__super::Update_GameObject(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
 }
 
@@ -206,6 +204,7 @@ _int CBoss2TailBody::Update_Top(const _float & fTimeDelta)
 
 void CBoss2TailBody::LateUpdate_GameObject(void)
 {
+	__super::LateUpdate_GameObject();
 }
 
 void CBoss2TailBody::Render_GameObject(void)

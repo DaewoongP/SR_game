@@ -30,6 +30,8 @@ private:
 
 public:
 	static CStage8*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	_int m_iHp;
+	_bool m_bUICheck = false;
 
 private:
 	virtual void		Free(void);

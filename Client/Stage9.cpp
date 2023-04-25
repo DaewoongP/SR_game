@@ -11,6 +11,8 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 #include "Fade.h"
+#include"ImguiBG.h"
+
 CStage9::CStage9(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -34,6 +36,8 @@ HRESULT CStage9::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(8, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(8, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(8, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(8, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
 	return S_OK;
@@ -61,7 +65,6 @@ HRESULT CStage9::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject* pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

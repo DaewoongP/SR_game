@@ -72,7 +72,7 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 			return STAGE_END;
 		}
 
-		else if (OBJ_DEAD == iResult)
+		else if (OBJ_DEAD == iResult && STAGE_END != iResult)
 		{
 			if (!lstrcmp(iter->second->m_pTag, L"Toodee") ||
 				!lstrcmp(iter->second->m_pTag, L"Topdee") ||

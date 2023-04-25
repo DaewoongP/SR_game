@@ -3,7 +3,9 @@
 #include "Cube.h"
 #include "Export_Function.h"
 #include "StageCamera.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBat::CBat(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CMonster(pGraphicDev), m_bMoveLeft(false), m_bBackSprite(false)
 {
@@ -111,7 +113,7 @@ _int CBat::Update_Top(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
+	if (pPlayerTransformCom == nullptr)return 0;
 
 	_vec3	vPlayerPos;
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
@@ -218,6 +220,10 @@ void CBat::Render_Top()
 
 void CBat::OnCollisionEnter(const Collision * collision)
 {
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
+
 	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Bat")))
 	{
 		m_bCol = true;
@@ -239,8 +245,7 @@ void CBat::OnCollisionStay(const Collision * collision)
 	//	m_pTransform->m_vScale.x = -BATSCALE;
 	//	
 	//	m_pTransform->m_vInfo[INFO_POS].x = 2.0f * (CUBEX - 1);
-	//}
-	
+	//}	
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bat"))
 	{
 		_vec3 vBoundSize = m_pCollider->Get_BoundSize();

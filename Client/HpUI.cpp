@@ -18,7 +18,7 @@ HRESULT CHpUI::Ready_GameObject(_int Hp,_int i)
 {
 	m_iHp = Hp;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 500.f+i*40,-450.f,1.f };
+	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 550.f+i*50,-450.f,1.f };
 	m_pTransform->m_vScale = { 20,20,1.f };
 	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100.f);
 
@@ -36,9 +36,20 @@ HRESULT CHpUI::Ready_GameObject(_int Hp,_int i)
 
 _int CHpUI::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bDead)
+	{
+		m_fDelay += fTimeDelta;
+		if (m_fDelay < 0.8)
+		Shaking(m_pTransform->m_vInfo[INFO_POS], fTimeDelta);
+		else if(m_fDelay<=1.f)
+			m_pTransform->m_vInfo[INFO_POS].y -= 10.f;
+		else if (m_fDelay >= 1.f)
+			return OBJ_DEAD;
+	}
 	m_HPUI += fTimeDelta;
-	if(m_pTransform->m_vInfo[INFO_POS].y<=-360&&m_HPUI>=1.f)
+	if(m_pTransform->m_vInfo[INFO_POS].y<=-360&&m_HPUI>=1.f&&m_bDead==false)
 	m_pTransform->m_vInfo[INFO_POS].y += 10.f;
+
 	
 	__super::Update_GameObject(fTimeDelta);
 
@@ -60,8 +71,10 @@ void CHpUI::Render_GameObject(void)
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matViewSpace);
 
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProjection);
+	if (!m_bDead)
 	m_pTextureCom->Set_Texture(0);
-
+	else
+	m_pTextureCom->Set_Texture(1);
 	m_pBufferCom->Render_Buffer();
 	__super::Render_GameObject();
 }
@@ -94,7 +107,27 @@ CHpUI* CHpUI::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int Hp,_int i)
 	
 	return pInstance;
 }
+void CHpUI::Shaking(_vec3& vPos, const _float& fTimeDelta)
+{
+	static _float fTime = 0.f;
+	fTime += fTimeDelta;
 
+	if (fTime > 0.05f)
+	{
+		fTime = 0.f;
+		_float fRandomX = 0;
+		if (m_bShakeDir)
+			fRandomX = -1;
+		else
+			fRandomX = 1;
+		m_bShakeDir = !m_bShakeDir;
+
+		_float fRandomY = (_float)(rand() % 100) / 100.f;
+		_vec3 ShakePos = { vPos.x + 0.075f * fRandomX,
+					vPos.y ,  10.f };
+		m_pTransform->Set_Pos(ShakePos.x, ShakePos.y, 10.f);
+	}
+}
 void CHpUI::Free(void)
 {
 	__super::Free();
