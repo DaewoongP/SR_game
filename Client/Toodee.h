@@ -39,7 +39,7 @@ public:
 	void		Set_AnimDead() { m_pTextureCom->Switch_Anim(L"Die"); }
 	void		SetRenderONOFF(_bool value) { m_bRender = value; }
 	void		SetTookee(CTookee* third) { m_Tookee = third; }
-
+	void		SetMovePos_zero() { m_prePos = m_pTransform->m_vInfo[INFO_POS].x; }
 protected:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);

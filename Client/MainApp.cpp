@@ -122,7 +122,7 @@ void CMainApp::Free(void)
 {
 	m_pCImguiMgr->DestroyInstance();
 
-	FreeConsole();
+	//FreeConsole();
 	Safe_Release(m_pGraphicDev);
 
 	Safe_Release(m_pManagementClass);

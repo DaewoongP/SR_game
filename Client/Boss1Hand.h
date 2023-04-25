@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CCircularParticle;
 END
 class CBoss1Hand :
 	public CGameObject
@@ -20,11 +21,12 @@ private:
 
 protected:
 	Engine::CCollider*		m_pCollider;
+	Engine::CCircularParticle*	m_pCircularParticle;
 	vector<CTransform*>		m_PartsVec;
 	_bool					m_bInit;
 
 	_vec3					m_vToWard;
-
+	_float					m_fSpeed;
 protected:
 	HRESULT		Add_Component(void);
 

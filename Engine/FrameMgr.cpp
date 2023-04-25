@@ -34,9 +34,18 @@ _bool CFrameMgr::IsPermit_Call(const _tchar * pFrameTag, const _float & fTimeDel
 	return pFrame->IsPermit_Call(fTimeDelta);
 }
 
+HRESULT CFrameMgr::FrameResetToZero(const _tchar * pFrameTag)
+{
+	CFrame*	pFrame = Find_Frame(pFrameTag);
+	if (nullptr == pFrame)
+		return E_FAIL;
+	FAILED_CHECK_RETURN(pFrame->Reset_Frame());
+	return S_OK;
+}
+
 CFrame * CFrameMgr::Find_Frame(const _tchar * pFrameTag)
 {
-	auto		iter = find_if(m_umapFrame.begin(), m_umapFrame.end(), CTag_Finder(pFrameTag));
+	auto	iter = find_if(m_umapFrame.begin(), m_umapFrame.end(), CTag_Finder(pFrameTag));
 
 	if (iter == m_umapFrame.end())
 		return nullptr;

@@ -4,6 +4,7 @@
 #define		TOPY			18.f
 #define		BOTY			8.f
 #define		SHOOTCUBETIME	0.5f
+#define		WAIT_FOR_MINI2_FINISH		20.f
 BEGIN(Engine)
 class CRcTex;
 class CTexture;
@@ -43,4 +44,6 @@ private:
 	vector<CGameObject*>	m_vecCube;
 
 	_int					m_iChkPortalCube;
+
+	_bool					m_bIsPortal;
 };

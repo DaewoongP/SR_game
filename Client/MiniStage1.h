@@ -22,6 +22,8 @@ public:
 	static CMiniStage1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
+
+	_float				m_dwSpawnTimer;
 	virtual void		Free(void);
 };
 

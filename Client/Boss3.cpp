@@ -18,7 +18,6 @@ CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(25.f),
 	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f),
-	m_iBossHp(3),
 	m_bInit(true), m_bLerpMove(false)
 {
 	m_pToodee = nullptr;
@@ -50,7 +49,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
-
+	m_iHp = 3;
 	m_pShadowCom->m_fShadowHeight = 13.0f;
 	m_pShadowCom->m_bUseOutLine = false;
 
@@ -70,7 +69,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		m_fShootterm += fTimeDelta;
 
 		// 스파크 이동 후 스파크 공격
-		if (m_fShootterm > 1.f && m_iBossHp == 1)
+		if (m_fShootterm > 1.f && m_iHp == 1)
 			Chain_Spark(m_fShootterm, fTimeDelta);
 	}
 
@@ -165,7 +164,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 void CBoss3::LateUpdate_GameObject(void)
 {
-	if (0 >= m_iBossHp)
+	if (0 >= m_iHp)
 		m_bDead = true;
 
 	__super::LateUpdate_GameObject();
@@ -383,14 +382,14 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 		m_pBossRightHand->Set_Attack(true);
 
 	// 체력 여부에 따른 패턴 마무리(3, 2)
-	else if (1 != m_iBossHp && 14.f < m_fTopTime)
+	else if (1 != m_iHp && 14.f < m_fTopTime)
 	{
 		m_fTopTime = 0.f;
 		m_bSpin = true;
 	}
 
 	// 체력 여부에 따른 패턴 마무리(1)
-	else if (1 == m_iBossHp && 14.f < m_fTopTime)
+	else if (1 == m_iHp && 14.f < m_fTopTime)
 	{
 		m_fShockDown += fTimeDelta;
 

@@ -16,7 +16,7 @@ public:
 public:
 	HRESULT		Ready_Frame(const _float& fCallLimit);
 
-
+	HRESULT		Reset_Frame();
 private:
 	_float		m_fCallLimit = 0.f;
 	_float		m_fAccTimeDelta = 0.f;

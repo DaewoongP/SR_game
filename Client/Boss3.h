@@ -35,10 +35,10 @@ public:
 	virtual void SwapTrigger() override;
 
 	_int	Get_ATKCount() { return m_iATKCount; }
-	_int	Get_Boss3Hp() { return m_iBossHp; }
+	_int	Get_Boss3Hp() { return m_iHp; }
 
 	void	Set_Lerp() { m_bLerpMove = true; }	
-	void	Set_Damage() { --m_iBossHp; }
+	void	Set_Damage() { --m_iHp; }
 
 private:
 	HRESULT Add_Component(void);
@@ -83,7 +83,6 @@ private:
 	_float  m_fLerpDist;		// 체력 차감 시 제자리로 돌아올 때 비율 값
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
-	_int	m_iBossHp; //추후에 스테이지로 옮겨야함
 	_int	m_iATKCount;// 카운트 3이되면 전기공격
 	_bool	m_bShoot = true;
 	_bool	m_bSpin = true;

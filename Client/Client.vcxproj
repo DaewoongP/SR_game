@@ -188,11 +188,14 @@
     <ClInclude Include="Boss3Mouth.h" />
     <ClInclude Include="Boss3HandPart.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ChapterCloudTex.h" />
     <ClInclude Include="ChapterTex.h" />
     <ClInclude Include="DynamicCamera.h" />
+    <ClInclude Include="EvilBat.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
+    <ClInclude Include="HpUI.h" />
     <ClInclude Include="ImguiBG.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Cloud.h" />
@@ -208,6 +211,7 @@
     <ClInclude Include="GiantHand.h" />
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
+    <ClInclude Include="InvisibleGrid.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LoadingTex.h" />
@@ -215,6 +219,7 @@
     <ClInclude Include="MapDeco.h" />
     <ClInclude Include="MenuCubeSpr.h" />
     <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniGameBat.h" />
     <ClInclude Include="MiniGamePig.h" />
     <ClInclude Include="MiniStage1.h" />
     <ClInclude Include="MiniStage2.h" />
@@ -228,6 +233,7 @@
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Stage10.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stage4.h" />
@@ -235,6 +241,7 @@
     <ClInclude Include="Stage5.h" />
     <ClInclude Include="Stage6.h" />
     <ClInclude Include="Stage8.h" />
+    <ClInclude Include="Stage9.h" />
     <ClInclude Include="StageCamera.h" />
     <ClInclude Include="GroundGrid.h" />
     <ClInclude Include="imconfig.h" />
@@ -353,11 +360,14 @@
     <ClCompile Include="Boss3Mouth.cpp" />
     <ClCompile Include="Boss3HandPart.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChapterCloudTex.cpp" />
     <ClCompile Include="ChapterTex.cpp" />
     <ClCompile Include="DynamicCamera.cpp" />
+    <ClCompile Include="EvilBat.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />
+    <ClCompile Include="HpUI.cpp" />
     <ClCompile Include="ImguiBG.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Cloud.cpp" />
@@ -372,6 +382,7 @@
     <ClCompile Include="GiantHand.cpp" />
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
+    <ClCompile Include="InvisibleGrid.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LoadingTex.cpp" />
@@ -379,6 +390,7 @@
     <ClCompile Include="MapDeco.cpp" />
     <ClCompile Include="MenuCubeSpr.cpp" />
     <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniGameBat.cpp" />
     <ClCompile Include="MiniGamePig.cpp" />
     <ClCompile Include="MiniStage1.cpp" />
     <ClCompile Include="MiniStage2.cpp" />
@@ -392,6 +404,7 @@
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Stage10.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stage4.cpp" />
@@ -399,6 +412,7 @@
     <ClCompile Include="Stage5.cpp" />
     <ClCompile Include="Stage6.cpp" />
     <ClCompile Include="Stage8.cpp" />
+    <ClCompile Include="Stage9.cpp" />
     <ClCompile Include="StageCamera.cpp" />
     <ClCompile Include="GroundGrid.cpp" />
     <ClCompile Include="imgui.cpp" />

@@ -10,6 +10,9 @@
 #include "Topdee.h"
 #include "MiniGamePig.h"
 #include "FoodCube.h"
+#include "MiniGameBat.h"
+#include "CrackCube.h"
+#include "EvilBat.h"
 
 CMiniStage1::CMiniStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -34,6 +37,23 @@ HRESULT CMiniStage1::Ready_Scene(void)
 
 _int CMiniStage1::Update_Scene(const _float & fTimeDelta)
 {
+	if (g_Is2D)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+
+		m_dwSpawnTimer += fTimeDelta;
+		if (m_dwSpawnTimer > 1)
+		{
+			//박쥐소환
+
+			//근데 박쥐는 지들끼리 충돌이 안돼야함.
+			//상자있는 위치는 못넘어가야함.
+			FAILED_CHECK_RETURN(FACTORY<CMiniGameBat>::Create(L"MiniGameBat", pStageLayer, _vec3(0,30,10)), E_FAIL);
+			m_dwSpawnTimer = 0;
+		}
+	}
+
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -68,7 +88,16 @@ HRESULT CMiniStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(14.f, 32.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMiniGamePig>::Create(L"MiniGamePig", pLayer, _vec3(5.f, 14.f, 8.9f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CFoodCube>::Create(L"FoodCube", pLayer, _vec3(10.f, 16.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFoodCube>::Create(L"FoodCube", pLayer, _vec3(50.f, 14.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CEvilBat>::Create(L"EvilBat", pLayer, _vec3(0, 30, 10)), E_FAIL);
+
+	for (int i = 0; i < 54 - 6; i += 2)
+	{
+		if ((i + 8) == 50)
+			continue;
+		FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(8+i, 14, 10)), E_FAIL);
+	}
+	
 
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(4, 10, 10), 1), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(4, 12, 10), 1), E_FAIL);
@@ -80,6 +109,17 @@ HRESULT CMiniStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(6, 12, 10), 1), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(6, 16, 10), 1), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(6, 18, 10), 1), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(54, 10, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(54, 12, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(54, 14, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(54, 16, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(54, 18, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(56, 10, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(56, 14, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(56, 12, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(56, 16, 10), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(56, 18, 10), 1), E_FAIL);
 
 	//중복되지 않는 랜덤 위치에 큐브들을 배치해줄것.
 

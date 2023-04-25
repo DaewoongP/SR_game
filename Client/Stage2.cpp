@@ -83,16 +83,16 @@ HRESULT CStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			//¸Ç À­ÁÙ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ï¿½ï¿½ï¿½ï¿½ Ã¹ï¿½ï¿½
+			//»çÀÌ Ã¹ÁÙ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//»çÀÌ ¸¶Áö¸·ÁÙ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½
+			//¸Ç ¾Æ·§ÁÙ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}

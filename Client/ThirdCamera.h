@@ -36,9 +36,10 @@ private:
 
 	_float		m_fs;
 	_float		m_fCamChangeSpeed;
-	
+	_float		m_fShakeValue;
 public:
 	static CThirdCamera*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	void SetShakeValue(_float value) { m_fShakeValue = value; }
 private:
 	virtual void Free(void) override;
 };

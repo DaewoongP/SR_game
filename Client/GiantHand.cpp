@@ -81,8 +81,8 @@ void CGiantHand::LateUpdate_GameObject(void)
 
 void CGiantHand::Render_GameObject(void)
 {
+	m_pBoxParticle->Update_Particle();
 	__super::Render_GameObject();
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 }
 
 void CGiantHand::OnCollisionEnter(const Collision * collision)
@@ -98,6 +98,7 @@ void CGiantHand::OnCollisionEnter(const Collision * collision)
 			Lerp(m_vSummonPos.z, pos_z, m_fweight);
 		m_bStop = true;
 	}
+	Set_Particle();
 }
 
 void CGiantHand::OnCollisionStay(const Collision * collision)
@@ -116,8 +117,9 @@ void CGiantHand::Do_Stump(const _float & fTimeDelta)
 {
 	if (m_bStop)
 		return;
+
 	if(m_fweight<1)
-		m_fweight += fTimeDelta *3.f;
+		m_fweight += fTimeDelta * 3.f;
 
 	//weight가 1 미만인 경우 collider에 검출되면
 	_int pos_z = -8;
@@ -131,12 +133,27 @@ void CGiantHand::Do_Up(const _float & fTimeDelta)
 		Lerp(m_pTransform->m_vInfo[INFO_POS].z, -30, fTimeDelta*0.6f);
 }
 
+void CGiantHand::Set_Particle()
+{
+	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+	BoundingBox box;
+	box._min = _vec3(vPos.x - 4.f, 2.f, 10.f);
+	box._max = _vec3(vPos.x + 4.f, 32.f, 10.f);
+	m_pBoxParticle->Set_BoundingBox(box);
+	m_pBoxParticle->Start_Particle();
+}
+
 HRESULT CGiantHand::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pBoxParticle = dynamic_cast<CBoxParticle*>(Engine::Clone_Proto(L"BoxParticle", this));
+	NULL_CHECK_RETURN(m_pBoxParticle, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"BoxParticle", pComponent });
+
 	return S_OK;
 }
 
