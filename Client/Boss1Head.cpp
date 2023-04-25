@@ -24,6 +24,7 @@ HRESULT CBoss1Head::Ready_GameObject(_vec3 & vPos, _vec3 vToWard)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5, 5, 5);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	m_pCollider->Set_BoundingBox({ 2,6,6 }, { 0,0,2 });
 	m_fSpeed = 4;
 	return S_OK;
 }

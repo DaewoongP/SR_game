@@ -35,6 +35,7 @@ private:
 	_float	m_fTopOffset;
 	Engine::CAnimation*     m_pAnimation_Head;
 	_bool					m_EndingTrigger;
+	CTopdeeParts*			m_DiePart;
 
 public:
 	static CThirddee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
