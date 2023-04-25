@@ -47,10 +47,7 @@ vector PS_MAIN_TOODEE(PS_IN In) : COLOR0
 	vector		vColor = (vector)0;
 
 	vColor = tex2D(DefaultSampler, In.vTexUV);
-    if(!g_Is2D)
-    {
-        vColor.rgba = 0.2f;
-    }
+
 	return vColor;
 }
 
