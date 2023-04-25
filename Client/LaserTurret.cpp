@@ -189,6 +189,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		{
    			m_fColdist = _detectedCOL[0].dist + 2.f;
 			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
+
 		}
 	}
 }	

@@ -115,9 +115,9 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
-	//Engine::PlayBGM(L"9.wav", 0.5f);
+	Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
-	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
 
 	Set_String(L"Texture Loading....");
@@ -219,7 +219,7 @@ _uint CLoading::Loading_ForLogo(void)
 
 	
 	//보스체력
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss_HP_Tex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bossHealthSpr/bossHealthSpr_%d.png",1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss_HP_Tex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bossHealthSpr/bossHealthSpr_%d.png",2)), E_FAIL);
 
 	//Boss2 머리털
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
