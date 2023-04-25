@@ -16,6 +16,7 @@ private:
 
 public:
 	void	Set_SparkOn(_bool tf) { m_bSparkON = tf; }
+	void	Set_Damaged() { m_bDamaged = true; }
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos,_int iIndex);
@@ -28,6 +29,7 @@ public:
 
 private:
 	HRESULT		Add_Component(void);
+	void	DamagedBoss3(const _float& fTimeDelta);
 
 private:
 	Engine::CRcTex* m_pBufferCom;
@@ -37,7 +39,6 @@ private:
 	Engine::CTexture* m_pCreateTextureCom;
 	Engine::CTexture* m_pSparkAnimation;
 	Engine::CCollider* m_pCollider;
-	Engine::CShadow* m_pShadowCom;
 
 	CGameObject* m_pBoss3;
 	CGameObject* m_pBoss3LPart;
@@ -49,6 +50,10 @@ private:
 	_float m_fSpeed;
 	_vec3  m_vDir;
 	_bool  m_bSparkON;
+
+	_bool					m_bDamaged;
+	_float	m_fDamagedTime;
+	_int	m_bWhiteIndex;
 
 public:
 	static CBoss3HandPart* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos,_int iIndex);

@@ -14,6 +14,7 @@ public:
 	void	Set_Attack(_bool TrueorFalse) { m_bAttack = TrueorFalse; }
 	void	Set_Shock(_bool TF) { m_bShock = TF; }
 	void	Set_Lerp() { m_bLerpMove = true; }
+	void	Set_Damaged() { m_bDamaged = true; }
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
@@ -33,6 +34,7 @@ private:
 	void	FollowPlayer(const _float & fTimeDelta);
 	void	BossAttack(const _float & fTimeDelta);
 	void	IdleMove(const _float & fTimeDelta);
+	void	DamagedBoss3(const _float& fTimeDelta);
 
 private:
 	_int	m_iIndex;
@@ -54,6 +56,9 @@ private:
 
 	_bool	m_bIdleMove;
 	_bool	m_bIdleStop;
+
+	_bool	m_bDamaged;
+	_float	m_fDamagedTime;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;

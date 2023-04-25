@@ -107,7 +107,8 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == CUBEX * 4 - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 
-			FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InvisibleGrid", pLayer, _vec3{ (_float)j * 2,(_float)i * 2, 12.f }), E_FAIL);
+			/*if(i != 0 && i != CUBEY - 1 && j != 0 && j != CUBEX * 4 - 1)
+				FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InvisibleGrid", pLayer, _vec3{ (_float)j * 2,(_float)i * 2, 11.f }), E_FAIL);*/
 		}
 	}
 

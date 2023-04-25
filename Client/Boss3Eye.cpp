@@ -3,7 +3,9 @@
 #include "Export_Function.h"
 
 CBoss3Eye::CBoss3Eye(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev),
+	m_fDamagedTime(0.f),
+	m_bDamaged(false)
 {
 	m_pBoss3 = nullptr;
 }
@@ -31,6 +33,9 @@ _int CBoss3Eye::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	if(m_bDamaged)
+		DamagedBoss3(fTimeDelta);
 	
 	__super::Update_GameObject(fTimeDelta);
 
@@ -49,7 +54,19 @@ void CBoss3Eye::LateUpdate_GameObject(void)
 void CBoss3Eye::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_iIndex);
+
+	if (m_bDamaged)
+	{
+		if (0 == (_int)(m_fDamagedTime * 250) % 2)
+			m_pTextureCom->Set_Texture(m_iIndex);
+
+		else
+			m_pTextureCom->Set_Texture(4);
+	}
+
+	else
+		m_pTextureCom->Set_Texture(m_iIndex);
+
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
@@ -68,6 +85,17 @@ HRESULT CBoss3Eye::Add_Component(void)
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_Eye", pComponent });
 
 	return S_OK;
+}
+
+void CBoss3Eye::DamagedBoss3(const _float & fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta * 0.01f;
+
+	if (3.f <= m_fDamagedTime * 100.f)
+	{
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+	}		
 }
 
 CBoss3Eye * CBoss3Eye::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

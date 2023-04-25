@@ -6,7 +6,9 @@
 #include "Fireball.h"
 
 CBoss3Mouth::CBoss3Mouth(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_bShootAnimation(false), m_bShootBullet(false)
+	:CGameObject(pGraphicDev), m_bShootAnimation(false), m_bShootBullet(false),
+	m_fDamagedTime(0.f),
+	m_bDamaged(false)
 {
 	m_pBoss3 = nullptr;
 }
@@ -36,6 +38,10 @@ _int CBoss3Mouth::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	if (m_bDamaged)
+		DamagedBoss3(fTimeDelta);
+
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTextureCom->Update_Anim(fTimeDelta);
@@ -82,10 +88,25 @@ void CBoss3Mouth::LateUpdate_GameObject(void)
 void CBoss3Mouth::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(0);
+
+	if (m_bDamaged)
+	{
+		m_pTextureCom->m_bUseFrameAnimation = false;
+
+		if (0 == (_int)(m_fDamagedTime * 250) % 2)
+			m_pTextureCom->Set_Texture(3);
+
+		else
+			m_pTextureCom->Set_Texture(6);
+	}
+
+	else
+		m_pTextureCom->Set_Texture(0);
+
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+
 	m_pFireParticle->Update_Particle();
 }
 
@@ -123,6 +144,19 @@ void CBoss3Mouth::ShootBullet(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CFireball>::Create(L"Fireball", pStageLayer, _vec3{ fX, fY, fZ}), );
 
 		m_bShootBullet = false;
+	}
+}
+
+void CBoss3Mouth::DamagedBoss3(const _float & fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta * 0.01f;
+
+	if (3.f <= m_fDamagedTime * 100.f)
+	{
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+
+		m_pTextureCom->m_bUseFrameAnimation = true;
 	}
 }
 

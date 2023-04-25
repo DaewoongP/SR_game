@@ -6,7 +6,9 @@
 #include "Topdee.h"
 
 CBoss3EyePupil::CBoss3EyePupil(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev),
+	m_fDamagedTime(0.f),
+	m_bDamaged(false)
 {
 	m_pBoss3 = nullptr;
 	m_pToodee = nullptr;
@@ -40,6 +42,9 @@ _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	if (m_bDamaged)
+		DamagedBoss3(fTimeDelta);
+
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTransform->Set_ParentTransform(m_pBoss3);
@@ -62,7 +67,19 @@ void CBoss3EyePupil::LateUpdate_GameObject(void)
 void CBoss3EyePupil::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-	m_pTextureCom->Set_Texture(m_iIndex);
+
+	if (m_bDamaged)
+	{
+		if (0 == (_int)(m_fDamagedTime * 250) % 2)
+			m_pTextureCom->Set_Texture(m_iIndex);
+
+		else
+			m_pTextureCom->Set_Texture(5);
+	}
+
+	else
+		m_pTextureCom->Set_Texture(m_iIndex);
+
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
@@ -110,6 +127,17 @@ void CBoss3EyePupil::LookAtPlayer()
 
 	m_pTransform->m_vInfo[INFO_POS].y += m_vDir.y;
 	m_pTransform->m_vInfo[INFO_POS].z -= m_vDir.x;
+}
+
+void CBoss3EyePupil::DamagedBoss3(const _float & fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta * 0.01f;
+
+	if (3.f <= m_fDamagedTime * 100.f)
+	{
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+	}
 }
 
 CBoss3EyePupil * CBoss3EyePupil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)
