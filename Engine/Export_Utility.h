@@ -39,6 +39,8 @@
 #include "BoxParticle.h"
 #include "SkyParticle.h"
 #include "SmokeParticle.h"
+#include "WaveParticle.h"
+#include "SuperLandingParticle.h"
 
 BEGIN(Engine)
 

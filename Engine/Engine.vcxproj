@@ -26,6 +26,7 @@
     <ClInclude Include="BulletPool.h" />
     <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
+    <ClInclude Include="SuperLandingParticle.h" />
     <ClInclude Include="TexParticle.h" />
     <ClInclude Include="CircleParticle.h" />
     <ClInclude Include="CircularParticle.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Typedef.h" />
     <ClInclude Include="VIBuffer.h" />
     <ClInclude Include="WaterParticle.h" />
+    <ClInclude Include="WaveParticle.h" />
     <ClInclude Include="WindParticle.h" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +92,7 @@
     <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
+    <ClCompile Include="SuperLandingParticle.cpp" />
     <ClCompile Include="TexParticle.cpp" />
     <ClCompile Include="CircleParticle.cpp" />
     <ClCompile Include="CircularParticle.cpp" />
@@ -136,6 +139,7 @@
     <ClCompile Include="TriCol.cpp" />
     <ClCompile Include="VIBuffer.cpp" />
     <ClCompile Include="WaterParticle.cpp" />
+    <ClCompile Include="WaveParticle.cpp" />
     <ClCompile Include="WindParticle.cpp" />
   </ItemGroup>
   <ItemGroup>

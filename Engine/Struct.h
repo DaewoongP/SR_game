@@ -69,10 +69,14 @@ struct Particle
 	_vec3 vPos;
 	_vec3 vVelocity;
 	_vec3 vAccel;
+	_vec3 vStart;
+	_vec3 vEnd;
 	_float fGenTime = 0;
 	_float fLifeTime;
 	_float fAge;
 	_float fSizeoverLifetime;
+	_float fStartPoint;
+	_float fRandFloat;
 	_ulong dwColor;
 	_ulong dwColorFade;
 	_vec2	vTexUV;
