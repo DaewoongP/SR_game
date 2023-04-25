@@ -107,6 +107,18 @@ topdee->SetDie();
 #define THIRDDEEDIE CThirddee* thirddee = dynamic_cast<CThirddee*>(collision->otherObj);\
 if (thirddee != nullptr&&!g_IsInvin)\
 thirddee->Set_Die();
+
+#define TOODEEDIE_RAY if (_detectedCOL.size() >= 1&&!lstrcmp(_detectedCOL[0].tag, L"Toodee")&&g_Is2D&&!g_IsInvin)\
+	dynamic_cast<CToodee*>(_detectedCOL[0].col->m_pGameObject)->Set_AnimDead();
+
+#define TOOKEEDIE_RAY if (_detectedCOL.size() >= 1&&!lstrcmp(_detectedCOL[0].tag, L"Tookee")&&!g_IsInvin)\
+	dynamic_cast<CTookee*>(_detectedCOL[0].col->m_pGameObject)->Set_Dead();
+
+#define TOPDEEDIE_RAY if (_detectedCOL.size() >= 1&&!lstrcmp(_detectedCOL[0].tag, L"Topdee")&&!g_Is2D&&!g_IsInvin)\
+	dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
+
+#define THIRDDEEDIE_RAY if (_detectedCOL.size() >= 1&&!lstrcmp(_detectedCOL[0].tag, L"Thirddee")&&!g_IsInvin)\
+	dynamic_cast<CThirddee*>(_detectedCOL[0].col->m_pGameObject)->Set_Die();
 /*
 #include "Tookee.h"
 #include "Toodee.h"
@@ -117,4 +129,9 @@ TOOKEEDIE;
 TOODEEDIE;
 TOPDEEDIE;
 THIRDDEEDIE;
+
+TOODEEDIE_RAY
+TOOKEEDIE_RAY
+TOPDEEDIE_RAY
+THIRDDEEDIE_RAY
 */

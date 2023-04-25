@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Spike.h"
-
+#include "Toodee.h"
+#include "Thirddee.h"
+#include "Tookee.h"
 #include"..\Engine\Export_Function.h"
 CSpike::CSpike(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
@@ -88,6 +90,9 @@ void CSpike::OnCollisionEnter(const Collision* collision)
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"54.wav", SOUND_EFFECT_GIMMICK, 1.f);
 	}
+	TOOKEEDIE;
+	TOODEEDIE;
+	THIRDDEEDIE;
 	__super::OnCollisionEnter(collision);
 }
 

@@ -408,16 +408,9 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 		RAYCAST(vPos, vDir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1&&!g_IsInvin)
 	{
-		if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") && _detectedCOL[0].dist <= fLightningSizeY)
-		{
-			dynamic_cast<CToodee*>(_detectedCOL[0].col->m_pGameObject)->Set_AnimDead();
-			return true;
-		}
-		if (!lstrcmp(_detectedCOL[0].tag, L"Topdee") && _detectedCOL[0].dist <= fLightningSizeY)
-		{
-			dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
-			return true;
-		}
+		TOODEEDIE_RAY
+		TOPDEEDIE_RAY
+		return true;
 	}
 	return false;
 }
