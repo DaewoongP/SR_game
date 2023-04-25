@@ -30,7 +30,7 @@ CBoss1::~CBoss1()
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_eCurrentState = B1_FINGER;
+	m_eCurrentState = B1_GIANT;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
 	//위치잡는 친구를 넣어주세요
@@ -738,10 +738,10 @@ void CBoss1::SetPattern()
 	switch (ran)
 	{
 	case 0:
-		m_eCurrentState = B1_HEAD;
+		m_eCurrentState = B1_GIANT;
 		break;
 	case 1:
-		m_eCurrentState = B1_HEAD;
+		m_eCurrentState = B1_GIANT;
 		break;
 	}
 	m_iCurrentActionIdx = 0;

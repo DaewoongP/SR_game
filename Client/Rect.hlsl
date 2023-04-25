@@ -45,9 +45,12 @@ struct PS_IN
 vector PS_MAIN_TOODEE(PS_IN In) : COLOR0
 {
 	vector		vColor = (vector)0;
-    vector      vMulColor = vector(1.f, 1.f, 1.f, 1.f);
+
 	vColor = tex2D(DefaultSampler, In.vTexUV);
-    
+    if(!g_Is2D)
+    {
+        vColor.rgba = 0.2f;
+    }
 	return vColor;
 }
 
@@ -56,7 +59,7 @@ vector PS_MAIN_TOPDEE(PS_IN In) : COLOR0
 	vector		vColor = (vector)0;
 
 	vColor = tex2D(DefaultSampler, In.vTexUV);
-    
+
 	return vColor;
 }
 
@@ -65,11 +68,14 @@ technique		DefaultTechnique
 {
 	pass Toodee
 	{
+        
 		VertexShader = compile vs_2_0 VS_MAIN();
 		PixelShader = compile ps_2_0 PS_MAIN_TOODEE();
 	}
     pass Topdee
     {
+        CullMode = none;
+        
         VertexShader = compile vs_2_0 VS_MAIN();
 		PixelShader = compile ps_2_0 PS_MAIN_TOPDEE();
     }

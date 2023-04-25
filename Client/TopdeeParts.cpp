@@ -53,9 +53,21 @@ void CTopdeeParts::Render_GameObject(void)
 		return;
 	if (m_RenderState)
 	{
+		_matrix matView, matProj;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-		m_pTextureCom->Set_Texture(m_TextureIdx);
+		m_pTextureCom->Set_TextureOnShader(m_pShader, "g_Texture", m_TextureIdx);
+
+		m_pShader->Set_Matrix("g_WorldMatrix", m_pTransform->Get_WorldMatrixPointer());
+		m_pShader->Set_Matrix("g_ViewMatrix", &matView);
+		m_pShader->Set_Matrix("g_ProjMatrix", &matProj);
+		m_pShader->Set_Bool("g_Is2D", &g_Is2D);
+
+		m_pShader->Begin(1);
 		m_pBufferCom->Render_Buffer();
+		m_pShader->End();
 		__super::Render_GameObject();
 	}	
 }
@@ -79,6 +91,10 @@ HRESULT CTopdeeParts::Add_Component(void)
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(m_TextureName, this));
 	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Texture", pComponent });
+
+	pComponent = m_pShader = dynamic_cast<CShader*>(Engine::Clone_Proto(L"Shader_Rect", this));
+	NULL_CHECK_RETURN(m_pShader, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shader_Rect", pComponent });
 
 	return S_OK;
 }

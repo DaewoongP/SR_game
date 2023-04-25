@@ -20,22 +20,20 @@ HRESULT CHpUI::Ready_GameObject(_int Hp,_int i)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = _vec3{ 550.f+i*50,-450.f,1.f };
 	m_pTransform->m_vScale = { 20,20,1.f };
-	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100.f);
-
-
-
-	_vec3 vEye, vAt, vUp;
-
-	vEye = { 0.0f,0.0f,0.0f };
-	vAt = { 0.0f,0.0f,1.0f };
-	vUp = { 0.0f,1.0f,0.0f };
-
-	D3DXMatrixLookAtLH(&m_matViewSpace, &vEye, &vAt, &vUp);
+	
 	return S_OK;
 }
 
 _int CHpUI::Update_GameObject(const _float& fTimeDelta)
 {
+	_vec3 vEye, vAt, vUp;
+
+	vEye = { 0.0f,0.0f,0.0f };
+	vAt = { 0.0f,0.0f,1.0f };
+	vUp = { 0.0f,1.0f,0.0f };
+	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100.f);
+	D3DXMatrixLookAtLH(&m_matViewSpace, &vEye, &vAt, &vUp);
+
 	if (m_bDead)
 	{
 		m_fDelay += fTimeDelta;
