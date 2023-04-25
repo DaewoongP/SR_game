@@ -2128,6 +2128,18 @@ void CBoss2::OnCollisionExit(const Collision * collision)
 	__super::OnCollisionExit(collision);
 }
 
+void CBoss2::SwapTrigger()
+{
+	if (g_Is2D)
+	{
+		m_pCircleParticle->End_Particle();
+	}
+	else
+	{
+		m_pLandingParticle->End_Particle();
+	}
+}
+
 HRESULT CBoss2::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
@@ -2616,7 +2628,7 @@ void CBoss2::Check_CircleParticle()
 		}
 	}
 
-	if (!m_pCircleParticle->IsDead() && !g_Is2D)
+	if (!m_pCircleParticle->IsDead())
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");

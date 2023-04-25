@@ -44,6 +44,8 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
+	virtual void SwapTrigger();
+
 private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
