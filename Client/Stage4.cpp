@@ -15,6 +15,7 @@
 #include"HpUI.h"
 #include"UICamera.h"
 #include"ImguiBG.h"
+#include "Boss2Camera.h"
 
 CStage4::CStage4(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
@@ -78,6 +79,7 @@ HRESULT CStage4::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss2Camera>::Create(L"Boss2Camera", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -94,7 +96,7 @@ HRESULT CStage4::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 16.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 28.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(50.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(50.f, 14.f, 10.f)), E_FAIL);
 	m_iHp=pLayer->Get_GameObject(L"Boss2")->Get_Hp();
 	
 	for (int i = 0; i < CUBEY; i++)

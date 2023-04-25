@@ -8,8 +8,8 @@ CCamera::CCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matProj);
 
-	m_vCam[EYE] = { 32.0f, 18.0f, -30.0f };
-	m_vCam[AT] = { 32.0f, 18.0f, 0.0f };
+	m_vCam[EYE] = { 31.0f ,17.0f,-22.0f };
+	m_vCam[AT] = { 31.0f ,17.0f,0.0f };
 	m_vCam[UP] = { 0.0f, 1.0f, 0.0f };
 
 	m_fProj[FOV] = D3DXToRadian(60.f);

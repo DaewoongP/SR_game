@@ -523,6 +523,9 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		m_bInit2 = false;
 	}
 	
+	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+		return OBJ_DEAD;
+
 	Spiwn_End(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	CGameObject::Update_GameObject(fTimeDelta);
@@ -805,6 +808,7 @@ void CThirddee::Set_Die()
 	if (pStageLayer != nullptr)
 		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
 	CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
+	m_DiePart = dynamic_cast<CTopdeeParts*>(die);
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	if (die != nullptr)
