@@ -291,6 +291,9 @@
     <Filter Include="00. GameObject\99. Etc\InvisibleGrid">
       <UniqueIdentifier>{42479730-9dac-483f-af57-c4d6f645e429}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\Camera\DirectCamera">
+      <UniqueIdentifier>{b0d50749-fec2-4657-b1dc-17bdfc815e10}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{fd8f21a7-b7c9-4eee-9b67-38fecd18ec66}</UniqueIdentifier>
     </Filter>
@@ -877,6 +880,13 @@
     <ClInclude Include="MiniGame1Portal.h">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="DirectCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Camera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1456,6 +1466,13 @@
     <ClCompile Include="MiniGame1Portal.cpp">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="DirectCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Camera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">
