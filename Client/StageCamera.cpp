@@ -103,6 +103,11 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 		}
 		
 	}
+
+	if (Engine::Get_DIKeyState(DIK_F5) == Engine::KEYDOWN)
+	{
+		g_IsInvin = !g_IsInvin;
+	}
 }
 
 void CStage1Camera::Move_Camera(const _float & fTimeDelta)

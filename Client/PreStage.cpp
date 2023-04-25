@@ -47,6 +47,7 @@ _int CPreStage::Update_Scene(const _float & fTimeDelta)
 	{
 
 		g_Is2D = true;
+		g_IsInvin = false;
 		CScene* pScene = m_pScene;
 		
 		Engine::Set_Scene(pScene);

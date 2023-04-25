@@ -406,7 +406,7 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 		
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(
 		RAYCAST(vPos, vDir, len), m_pCollider, tagName);
-	if (_detectedCOL.size() >= 1)
+	if (_detectedCOL.size() >= 1&&!g_IsInvin)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") && _detectedCOL[0].dist <= fLightningSizeY)
 		{
