@@ -155,6 +155,7 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 	tagName.push_back(L"CrackCube");
 	tagName.push_back(L"PortalCube");
 	tagName.push_back(L"FoodCube");
+	tagName.push_back(L"KeyCube");
 
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(centerpos, vdir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1)
@@ -162,7 +163,8 @@ void CMoveCube::CheckColAble(_vec3 vdir, float len, COL_DIR edir)
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"InstallCube")||
 			!lstrcmp(_detectedCOL[0].tag, L"SwitchCube")||
-			!lstrcmp(_detectedCOL[0].tag, L"CrackCube")
+			!lstrcmp(_detectedCOL[0].tag, L"CrackCube") ||
+			!lstrcmp(_detectedCOL[0].tag, L"KeyCube")
 			)
 			m_bIsCol[edir] = true;
 		else
