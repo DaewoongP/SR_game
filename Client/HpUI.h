@@ -30,8 +30,12 @@ private:
 	_matrix m_matViewSpace;
 	_int m_iHp=0;
 	_float m_HPUI;
+	_float m_fDelay;
+	_bool m_bShakeDir;
 public:
 	static CHpUI* Create(LPDIRECT3DDEVICE9 pGraphicDev,_int Hp,_int i);
+
+	void Shaking(_vec3& vPos, const _float& fTimeDelta);
 
 private:
 	virtual void Free(void) override;

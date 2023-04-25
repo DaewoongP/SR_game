@@ -122,7 +122,7 @@ private:
 	_bool		m_bInit;
 
 	_bool		m_bAttackAble;
-
+	_bool m_bCheckout = true;
 private:
 	Engine::CCollider*			m_pCollider;
 	Engine::CRigidbody*			m_pRigid;
