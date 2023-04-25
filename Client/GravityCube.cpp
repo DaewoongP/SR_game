@@ -78,7 +78,9 @@ void CGravityCube::SwapTrigger()
 
 void CGravityCube::OnCollisionEnter(const Collision * collision)
 {
-	if (collision->_dir == DIR_DOWN)
+	if (lstrcmp(collision->otherObj->m_pTag, L"InstallGrid")&&
+		lstrcmp(collision->otherObj->m_pTag, L"Portal")&&
+		collision->_dir == DIR_DOWN)
 	{
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"54.wav", SOUND_EFFECT_GIMMICK, 1.f);

@@ -16,11 +16,14 @@ HRESULT CFade::Ready(_bool isFadeIn)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	if (isFadeIn)
 	{
+		StopSound(SOUND_CAM);
+		PlaySound_Effect(L"67.wav", SOUND_CAM, 1.f);
 		m_fFadeSpeed = -70.f;
 		m_pTransform->m_vScale *= 80.f;
 	}
 	else
 	{
+		
 		m_fFadeSpeed = 70.f;
 		m_pTransform->m_vScale *= 5.1f;
 	}
@@ -81,7 +84,7 @@ HRESULT CFade::Add_Component(void)
 
 CFade * CFade::Create(LPDIRECT3DDEVICE9 pGraphicDev, _bool isFadeIn)
 {
-	PlaySound_Effect(L"67.wav", SOUND_CAM, 1.f);
+	
 	CFade*		pInstance = new CFade(pGraphicDev);
 
 	if (FAILED(pInstance->Ready(isFadeIn)))

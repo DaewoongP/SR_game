@@ -326,7 +326,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			
 		//손가락 공격임
 		clip = new AnimClip();
-		{
+		{ PlaySound_Effect(L"34", SOUND_EFFECT_ENEMY, 1.f);
 			clip->parts.push_back(m_PartsVec[0]); //몸통
 			clip->parts.push_back(m_PartsVec[1]); //머리통
 			clip->parts.push_back(m_PartsVec[9]);//어깨도 동동

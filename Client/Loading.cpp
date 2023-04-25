@@ -115,9 +115,9 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
-	Engine::PlayBGM(L"9.wav", 0.5f);
+	//Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
-	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
 
 	Set_String(L"Texture Loading....");
@@ -585,7 +585,7 @@ _uint CLoading::Loading_ForStage10(void)
 _uint CLoading::Loading_ForFinal1(void)
 {
 	Set_String(L"Stage Loading..........");
-
+	
 	m_pScene = CFinalStage1::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 

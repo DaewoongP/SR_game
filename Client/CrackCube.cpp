@@ -35,7 +35,7 @@ _int CCrackCube::Update_GameObject(const _float& fTimeDelta)
 	if (m_pExpParticle->IsDead())
 	{
 		StopSound(SOUND_EFFECT_GIMMICK);
-		PlaySound_Effect(L"3.wav",SOUND_EFFECT_GIMMICK, 0.8f);
+		PlaySound_Effect(L"3.wav",SOUND_EFFECT_GIMMICK, 0.6f);
 		return OBJ_DEAD;
 	}
 	if (m_bDead)

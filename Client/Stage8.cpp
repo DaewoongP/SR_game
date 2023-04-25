@@ -44,7 +44,7 @@ HRESULT CStage8::Ready_Scene(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
-	Engine::PlayBGM(L"0.wav", 0.35f);
+	Engine::PlayBGM(L"1.wav", 0.35f);
 	return S_OK;
 }
 
