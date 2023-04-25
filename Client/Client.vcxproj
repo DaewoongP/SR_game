@@ -169,6 +169,8 @@
     <ClInclude Include="Boss2.h" />
     <ClInclude Include="Boss2Body.h" />
     <ClInclude Include="Boss2Camera.h" />
+    <ClInclude Include="Boss3Camera.h" />
+    <ClInclude Include="DirectCamera.h" />
     <ClInclude Include="Boss2Chain.h" />
     <ClInclude Include="Boss2Eye.h" />
     <ClInclude Include="Boss2EyeBrow.h" />
@@ -343,6 +345,8 @@
     <ClCompile Include="Boss2.cpp" />
     <ClCompile Include="Boss2Body.cpp" />
     <ClCompile Include="Boss2Camera.cpp" />
+    <ClCompile Include="Boss3Camera.cpp" />
+    <ClCompile Include="DirectCamera.cpp" />
     <ClCompile Include="Boss2Chain.cpp" />
     <ClCompile Include="Boss2Eye.cpp" />
     <ClCompile Include="Boss2EyeBrow.cpp" />

@@ -877,9 +877,13 @@
     <ClInclude Include="MiniGame1Portal.h">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="DirectCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
     <ClInclude Include="Boss2Camera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
+    <ClInclude Include="Boss3Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1459,8 +1463,12 @@
     <ClCompile Include="MiniGame1Portal.cpp">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="DirectCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
     <ClCompile Include="Boss2Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
+    <ClCompile Include="Boss3Camera.cpp" />
   </ItemGroup>
 </Project>

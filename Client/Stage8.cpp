@@ -16,6 +16,7 @@
 #include "Spike.h"
 #include "InstallCube.h"
 #include"ImguiBG.h"
+#include "Boss3Camera.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -76,6 +77,8 @@ HRESULT CStage8::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
+
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
