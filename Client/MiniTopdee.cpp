@@ -9,6 +9,7 @@
 #include "LaserTurret.h"
 #include "KeyCube.h"
 #include "PinkCloud.h"
+#include "Portal.h"
 
 CMiniTopdee::CMiniTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_fSpeed(5.f), m_pLayer(nullptr), m_fCubeSpeed(10.f), m_iChkPortalCube(0)
@@ -26,8 +27,10 @@ HRESULT CMiniTopdee::Ready_GameObject(CLayer* pLayer, _vec3& vPos)
 	m_pTransform->m_vScale *= 2.f;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pLayer = pLayer;
-
+	Engine::Ready_Frame(L"MiniFin", (1 / WAIT_FOR_MINI2_FINISH));
 	Engine::Ready_Frame(L"ShootCubeTime", _float(1 / SHOOTCUBETIME));
+
+	m_bIsPortal = true;
 	return S_OK;
 }
 
@@ -36,6 +39,15 @@ _int CMiniTopdee::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	MoveY(fTimeDelta);
 	ShootCube(fTimeDelta);
+
+	if (IsPermit_Call(L"MiniFin", fTimeDelta) && m_bIsPortal)
+	{
+		CGameObject* pGameObject = CPortal::Create(m_pGraphicDev, _vec3(30.f, 26.f, 10.f));
+		pGameObject->Sort_Component();
+		m_pLayer->Add_GameObject(L"Portal", pGameObject);
+		m_bIsPortal = false;
+	}
+
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }

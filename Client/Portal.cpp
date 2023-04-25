@@ -39,6 +39,13 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
+	//debug
+	if (Engine::Get_DIKeyState(DIK_F7) == Engine::KEYDOWN)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]);
+	}
+		
 	return 0;
 }
 

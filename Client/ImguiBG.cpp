@@ -272,7 +272,7 @@ void CImguiBG::InstallBG()
 		dynamic_cast<CTheme4_Gradation*>(m_vecGameObject.back())))
 	{
 		fScale = 50.f;
-		m_vecBGInfo.back().vObjPos = _vec3(31.f, 17.0f, 12.f);
+		m_vecBGInfo.back().vObjPos = _vec3(31.f, 17.0f, 12.1f);
 		vPos = { 0.0f,0.0f,0.0f };
 	}
 

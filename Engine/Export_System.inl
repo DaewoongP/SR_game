@@ -40,6 +40,10 @@ _bool		IsPermit_Call(const _tchar * pFrameTag, const _float& fTimeDelta)
 {
 	return CFrameMgr::GetInstance()->IsPermit_Call(pFrameTag, fTimeDelta);
 }
+HRESULT		FrameResetToZero(const _tchar * pFrameTag)
+{
+	return CFrameMgr::GetInstance()->FrameResetToZero(pFrameTag);
+}
 
 //FOntMgr
 

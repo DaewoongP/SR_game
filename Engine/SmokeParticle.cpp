@@ -38,8 +38,8 @@ void CSmokeParticle::ResetParticle(Particle * particle)
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	particle->vVelocity = _vec3(0.f, 1.f, 0.f);
 	particle->vPos = m_BoundingBox.Get_Center();
-	particle->vPos.x += GetRandomFloat(-0.3f, 0.3f);
-	particle->vPos.z += 0.1f;
+	particle->vPos.x += GetRandomFloat(-0.2f, 0.4f);
+	particle->vPos.z += 0.5f;
 	particle->fGenTime = m_fGenTime;
 	particle->fAge = 0.f;
 	particle->fLifeTime = m_fParticleNum * 0.5f + m_fGenTime;
@@ -71,6 +71,7 @@ _int CSmokeParticle::Update_Particle()
 			it->fAge = fAge;
 		}
 	}
+
 	__super::Render_Particle();
 	return -1;
 }

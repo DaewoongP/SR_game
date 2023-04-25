@@ -24,7 +24,7 @@ public:
 
 public:
 	void				Delete_In_Layer();
-
+	void				Delete_Tag(const _tchar* pObjTag);
 	HRESULT				Delete_LastObject(CGameObject* pGameObject);
 private:
 	list<pair<const _tchar*, CGameObject*>>	m_uMapObject;

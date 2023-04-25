@@ -27,6 +27,8 @@ private:
 
 	virtual _int Update_Too(const _float & fTimeDelta);
 	virtual _int Update_Top(const _float & fTimeDelta);
+	virtual void LateUpdate_Too();
+
 	virtual void Render_Too();
 	virtual void Render_Top();
 
