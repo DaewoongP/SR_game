@@ -50,6 +50,18 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	m_pTextureCom_Back->Update_Anim(fTimeDelta);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	m_pTextureCom->Update_Anim(fTimeDelta);
+	__super::Update_GameObject(fTimeDelta);
+	return 0;
+}
+
+_int CMiniGamePig::Update_Too(const _float & fTimeDelta)
+{
+	if (m_bDead)
+		return OBJ_DEAD;
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 
@@ -68,8 +80,6 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 			FACTORY<CMiniGamePig>::Create(L"MiniGamePig", pStageLayer, _vec3(5.f, 14.f, 8.9f));
 		}
 	}
-
-
 	m_pTransform->m_vScale.y = MINIPIGSCALE;
 
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"FoodCube", L"Transform", ID_DYNAMIC));
@@ -80,16 +90,12 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 	pPlayerTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
 	if (vPlayerPos.y > m_pTransform->m_vInfo[INFO_POS].y)
-	{
 		m_bBackSprite = true;
-	}
 	else
 		m_bBackSprite = false;
 
 	if (vPlayerPos.x < m_pTransform->m_vInfo[INFO_POS].x)
-	{
 		m_pTransform->m_vScale.x = -MINIPIGSCALE;
-	}
 	else
 		m_pTransform->m_vScale.x = MINIPIGSCALE;
 
@@ -133,15 +139,6 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 		m_pTransform->m_vInfo[INFO_POS].x += vDir.x*fTimeDelta*m_fSpeed;
 		m_pTransform->m_vInfo[INFO_POS].y += vDir.y*fTimeDelta*m_fSpeed;
 	}
-	m_pTextureCom_Back->Update_Anim(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-	m_pTextureCom->Update_Anim(fTimeDelta);
-	__super::Update_GameObject(fTimeDelta);
-	return 0;
-}
-
-_int CMiniGamePig::Update_Too(const _float & fTimeDelta)
-{
 	m_bBackSprite = false;
 	return 0;
 }
@@ -278,7 +275,6 @@ _bool CMiniGamePig::ShootRay(_vec3 dir,_vec3 pos)
 				continue;	
 			if (dynamic_cast<CCube*>(_detectedCOL[i].col->m_pGameObject))
 				return true;
-			
 		}
 			
 	}

@@ -460,20 +460,34 @@ void CTookee::SwapTrigger()
 	{
 		m_pTransform->m_vInfo[INFO_POS].z=11;
 		m_pRigid->m_bUseGrivaty = false;
-		m_pTransform->m_vInfo[INFO_POS].x =
+		/*m_pTransform->m_vInfo[INFO_POS].x =
 			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
 		m_pTransform->m_vInfo[INFO_POS].y =
-			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
+			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);*/
 		SetRenderONOFF(true);
 		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
 		m_pCollider->m_bIsTrigger = true;
 	}
-	m_pTransform->m_vInfo[INFO_POS].x =
-		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
-	m_pTransform->m_vInfo[INFO_POS].y =
-		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
-	m_bIsMoving = false;
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	int x = round(m_pTransform->m_vInfo[INFO_POS].x);
+	int y = round(m_pTransform->m_vInfo[INFO_POS].y);
+
+	if (x % 2 == 0)
+		m_MovetoPos.x = x;
+	else if (x > m_pTransform->m_vInfo[INFO_POS].x)
+		m_MovetoPos.x = x - 1;
+	else
+		m_MovetoPos.x = x + 1;
+
+	if (y % 2 == 0)
+		m_MovetoPos.y = y;
+	else if (y > m_pTransform->m_vInfo[INFO_POS].y)
+		m_MovetoPos.y = y - 1;
+	else
+		m_MovetoPos.y = y + 1;
+
+	m_MovetoPos.z = m_pTransform->m_vInfo[INFO_POS].z;
+
+	m_bIsMoving = true;
 	m_byPlayerInputDir = 0;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	m_pTransform->m_vAngle = _vec3(0, 0, 0);

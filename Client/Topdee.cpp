@@ -468,14 +468,26 @@ void CTopdee::OnCollisionStay(const Collision * collision)
 
 void CTopdee::SwapTrigger()
 {
-	m_bIsMoving = false;
-	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
+	m_bIsMoving = true;
+	//m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_byPlayerInputDir = 0;
 
-	m_pTransform->m_vInfo[INFO_POS].x =
-		round(m_pTransform->m_vInfo[INFO_POS].x / 2 * 2);
-	m_pTransform->m_vInfo[INFO_POS].y =
-		round(m_pTransform->m_vInfo[INFO_POS].y / 2 * 2);
+	int x = round(m_pTransform->m_vInfo[INFO_POS].x);
+	int y = round(m_pTransform->m_vInfo[INFO_POS].y);
+
+	if (x % 2 == 0)
+		m_MovetoPos.x = x;
+	else if(x > m_pTransform->m_vInfo[INFO_POS].x)
+		m_MovetoPos.x = x-1;
+	else
+		m_MovetoPos.x = x + 1;
+
+	if (y % 2 == 0)
+		m_MovetoPos.y = y;
+	else if (y > m_pTransform->m_vInfo[INFO_POS].y)
+		m_MovetoPos.y = y - 1;
+	else
+		m_MovetoPos.y = y + 1;
 
 	if (g_Is2D)
 	{
