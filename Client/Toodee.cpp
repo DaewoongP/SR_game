@@ -143,11 +143,6 @@ void CToodee::Render_GameObject(void)
 
 void CToodee::OnCollisionEnter(const Collision * collision)
 {
-	//스파이크랑 충돌시 본인 데드 트루
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
-		collision->_dir == DIR_DOWN)
-		m_pTextureCom->Switch_Anim(L"Die");
-
 	if (!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud") &&
 		collision->_dir == DIR_DOWN)
 	{

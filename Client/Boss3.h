@@ -3,7 +3,6 @@
 #include "Cube.h"
 
 BEGIN(Engine)
-
 class CRcTex;
 class CCircularParticle;
 class CTexParticle;

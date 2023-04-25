@@ -207,6 +207,10 @@ void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 
 void CBoss3Hand::OnCollisionStay(const Collision * collision)
 {
+	if (m_bShock)
+	{
+		TOODEEDIE;
+	}
 	CGameObject::OnCollisionStay(collision);
 }
 

@@ -62,7 +62,6 @@ HRESULT CTexture::Ready_Texture(TEXTYPE eTextype, const _tchar * pPath, const _u
 	
 		m_vecTexture.push_back(pTexture);
 	}
-	
 	return S_OK;
 }
 
@@ -97,6 +96,7 @@ void CTexture::Switch_Anim(_tchar * name)
 		return;
 	m_CurrentAnimName = name;
 	m_fTimer = 0;
+	m_CurIdx = iter->second.iStartIdx;
 	m_CurrentAnim = iter->second;
 	m_bisLoop = m_CurrentAnim.bisLoop;
 }

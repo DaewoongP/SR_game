@@ -23,6 +23,9 @@ HRESULT CTopdeeParts::Ready_GameObject(_vec3 & vPos, _tchar * texturename, _int 
 
 _int CTopdeeParts::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return 1;
+
 	__super::Update_GameObject(fTimeDelta);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
@@ -46,6 +49,8 @@ void CTopdeeParts::LateUpdate_GameObject(void)
 
 void CTopdeeParts::Render_GameObject(void)
 {
+	if (m_bDead)
+		return;
 	if (m_RenderState)
 	{
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
