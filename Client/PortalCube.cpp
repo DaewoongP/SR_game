@@ -166,9 +166,6 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				lstrcmp(collision->otherObj->m_pTag, L"Topdee") &&//애 제외면?
 				IsIntersect)
 			{
-
-				
-
 				StopSound(SOUND_EFFECT_GIMMICK);
 				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, 1.f);
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos(); //들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고
@@ -253,6 +250,8 @@ _vec3 CPortalCube::Get_CubeHeadPos()
 void CPortalCube::Start_PortalParticle()
 {
 	BoundingBox box;
+	if (nullptr == m_pTransform)
+		return;
 	box.Offset(m_pTransform->m_vInfo[INFO_POS] + m_DirVec * 2);
 	if (nullptr == m_pPortalParticle)
 		return;

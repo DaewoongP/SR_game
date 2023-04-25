@@ -415,8 +415,11 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 		}
 		if (!lstrcmp(_detectedCOL[0].tag, L"Topdee") && _detectedCOL[0].dist <= fLightningSizeY)
 		{
-			dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
-			return true;
+			if (nullptr == dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->Get_Grab())
+			{
+				dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
+				return true;
+			}
 		}
 	}
 	return false;

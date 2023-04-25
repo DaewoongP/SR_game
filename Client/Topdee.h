@@ -52,6 +52,7 @@ public:
 
 	void		SetDie();
 
+	CGameObject*	Get_Grab() { return m_pGrabObj; }
 protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
