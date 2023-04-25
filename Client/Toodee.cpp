@@ -129,6 +129,7 @@ void CToodee::Render_GameObject(void)
 		m_pShader->Set_Matrix("g_WorldMatrix", m_pTransform->Get_WorldMatrixPointer());
 		m_pShader->Set_Matrix("g_ViewMatrix", &matView);
 		m_pShader->Set_Matrix("g_ProjMatrix", &matProj);
+		m_pShader->Set_Bool("g_Is2D", &g_Is2D);
 
 		m_pShader->Begin(0);
 		m_pShadow->Render_Shadow(m_pBufferCom);

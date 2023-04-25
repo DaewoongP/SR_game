@@ -19,7 +19,7 @@ public:
 	HRESULT Set_Float3(D3DXHANDLE hParameter, const _vec3* pVector);
 	HRESULT Set_Matrix(D3DXHANDLE hParameter, const _matrix* pMatrix);
 	HRESULT Set_Texture(D3DXHANDLE hParameter, LPDIRECT3DBASETEXTURE9 pTexture);
-
+	HRESULT	Set_Bool(D3DXHANDLE hParameter, const _bool* pBool);
 private:
 	LPD3DXEFFECT			m_pEffect = { nullptr };
 

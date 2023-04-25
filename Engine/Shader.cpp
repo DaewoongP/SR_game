@@ -76,6 +76,17 @@ HRESULT CShader::Set_Texture(D3DXHANDLE hParameter, LPDIRECT3DBASETEXTURE9 pText
 	return m_pEffect->SetTexture(hParameter, pTexture);
 }
 
+HRESULT CShader::Set_Bool(D3DXHANDLE hParameter, const _bool* pBool)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	if (FAILED(m_pEffect->SetBool(hParameter, *pBool)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CShader * CShader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pShaderFilePath)
 {
 	CShader *	pInstance = new CShader(pGraphic_Device);
