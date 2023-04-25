@@ -51,8 +51,8 @@ private:
 	void	End_Scream(const _float& fTimeDelta);
 	void	Lerp_Moving(const _float& fTimeDelta);
 	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
-	void	Boss3PartDead();
 	void	DamagedBoss3(const _float& fTimeDelta);
+	void	Delay(const _float& fTimeDelta);
 
 private:
 	CToodee*		m_pToodee;
@@ -92,6 +92,9 @@ private:
 
 	_bool	m_bDamaged;
 	_float	m_fDamagedTime;
+
+	_bool	m_bDelay;
+	_float  m_fDelay;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;
