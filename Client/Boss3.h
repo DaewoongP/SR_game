@@ -83,7 +83,6 @@ private:
 	_float  m_fLerpDist;		// 체력 차감 시 제자리로 돌아올 때 비율 값
 	_float  m_fPreTop;			// 이전 탑디 값을 저장해둠
 
-	_int	m_iBossHp; //추후에 스테이지로 옮겨야함
 	_int	m_iATKCount;// 카운트 3이되면 전기공격
 	_bool	m_bShoot = true;
 	_bool	m_bSpin = true;

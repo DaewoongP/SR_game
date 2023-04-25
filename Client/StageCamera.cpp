@@ -103,12 +103,6 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 		}
 		
 	}
-
-	//카메라 쉐이크 사용 예
-	if (Engine::Get_DIKeyState(DIK_F5) == Engine::KEYDOWN)
-		m_pTransform->Set_Shake(1.0f, 100.0f, SHAKE_X);
-
-
 }
 
 void CStage1Camera::Move_Camera(const _float & fTimeDelta)

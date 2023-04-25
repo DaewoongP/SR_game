@@ -87,16 +87,16 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 		else
 			++iter;
 	}
-	//if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN || STAGE_FAILED == iStageEvent)
-	//{
-	//	// R키 스테이지 제거
-	//	if (dynamic_cast<CBackGroundToolScene*>(Engine::Get_Scene()) || 
-	//		dynamic_cast<CLogo*>(Engine::Get_Scene()) ||
-	//		dynamic_cast<CPreStage*>(Engine::Get_Scene()))
-	//		return 0;
-	//	Engine::Clear_Collision();
-	//	return STAGE_FAILED;
-	//}
+	if (Engine::Get_DIKeyState(DIK_R) == Engine::KEYDOWN || STAGE_FAILED == iStageEvent)
+	{
+		// R키 스테이지 제거
+		if (dynamic_cast<CBackGroundToolScene*>(Engine::Get_Scene()) ||
+			dynamic_cast<CLogo*>(Engine::Get_Scene()) ||
+			dynamic_cast<CPreStage*>(Engine::Get_Scene()))
+			return 0;
+		Engine::Clear_Collision();
+		return STAGE_FAILED;
+	}
 	return 0;
 }
 
@@ -128,6 +128,15 @@ void CLayer::Delete_In_Layer()
 			continue;
 		iter->second->m_bDead = true;
 	}	
+}
+
+void CLayer::Delete_Tag(const _tchar * pObjTag)
+{
+	for (auto& iter : m_uMapObject)
+	{
+		if (!lstrcmp(iter.second->m_pTag, pObjTag))
+			iter.second->m_bDead = true;
+	}
 }
 
 HRESULT CLayer::Delete_LastObject(CGameObject* pGameObject)
