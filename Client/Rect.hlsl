@@ -47,11 +47,6 @@ vector PS_MAIN_TOODEE(PS_IN In) : COLOR0
 	vector		vColor = (vector)0;
     vector      vMulColor = vector(1.f, 1.f, 1.f, 1.f);
 	vColor = tex2D(DefaultSampler, In.vTexUV);
-
-    if(!g_Is2D)
-    {
-        vColor.a = 0.5f;
-    }
     
 	return vColor;
 }
@@ -62,11 +57,6 @@ vector PS_MAIN_TOPDEE(PS_IN In) : COLOR0
 
 	vColor = tex2D(DefaultSampler, In.vTexUV);
     
-    if(g_Is2D)
-    {
-        vColor.a = 0.5f;
-    }
-
 	return vColor;
 }
 
@@ -75,10 +65,6 @@ technique		DefaultTechnique
 {
 	pass Toodee
 	{
-        AlphaBlendEnable = true;
-        SRCBlend = SRCAlpha;
-        DESTBlend = INVSRCAlpha;
-
 		VertexShader = compile vs_2_0 VS_MAIN();
 		PixelShader = compile ps_2_0 PS_MAIN_TOODEE();
 	}
