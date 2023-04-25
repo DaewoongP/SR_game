@@ -27,7 +27,7 @@ _int CInvisibleGrid::Update_GameObject(const _float & fTimeDelta)
 
 	CGameObject::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return 0;
 }
