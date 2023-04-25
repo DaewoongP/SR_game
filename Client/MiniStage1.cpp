@@ -14,6 +14,8 @@
 #include "CrackCube.h"
 #include "EvilBat.h"
 #include "MiniGame1Portal.h"
+#include "ImguiMgr.h"
+#include"ImguiBG.h"
 
 CMiniStage1::CMiniStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -33,6 +35,8 @@ HRESULT CMiniStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(13, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	return S_OK;
 }
