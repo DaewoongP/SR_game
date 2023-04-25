@@ -90,6 +90,8 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 _int CToodee::Update_Top(const _float & fTimedDelte)
 {
 	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC);
+	if (otherTrans == nullptr)
+		return 0;
 	m_pSlerpParticle->Set_Vectors(m_pTransform->m_vInfo[INFO_POS],
 		dynamic_cast<CTransform*>(otherTrans)->m_vInfo[INFO_POS]);
 	return 0;
@@ -132,6 +134,7 @@ void CToodee::OnCollisionEnter(const Collision * collision)
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Spike") &&
 		collision->_dir == DIR_DOWN)
 		m_pTextureCom->Switch_Anim(L"Die");
+
 	if (!lstrcmp(collision->otherObj->m_pTag, L"PinkCloud") &&
 		collision->_dir == DIR_DOWN)
 	{

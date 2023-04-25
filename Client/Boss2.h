@@ -18,7 +18,6 @@ END
 
 enum BOSS2STATE
 {
-	B2_THROW,
 	B2_JUMPING,
 	B2_SCREAM,
 	B2_PUNCH,
@@ -122,6 +121,8 @@ private:
 	_bool		m_bInit;
 
 	_bool		m_bAttackAble;
+
+	_int		m_iJumpCount;
 
 private:
 	Engine::CCollider*			m_pCollider;

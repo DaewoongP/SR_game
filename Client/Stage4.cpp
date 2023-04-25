@@ -29,7 +29,7 @@ CStage4::~CStage4()
 HRESULT CStage4::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE4;
-	m_pFade = CFade::Create(m_pGraphicDev, false);
+	//m_pFade = CFade::Create(m_pGraphicDev, false);
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);

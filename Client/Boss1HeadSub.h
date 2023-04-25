@@ -15,6 +15,7 @@ private:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
+	virtual void OnCollisionEnter(const class Collision* collision);
 protected:
 	Engine::CCollider*		m_pCollider;
 	vector<CTransform*>		m_PartsVec;
