@@ -186,31 +186,23 @@ void CGravityCube::Do_CheckRay_Down()
 {
 	if (m_bIsStone)
 		return;
-
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.01f), m_pCollider);
-	if (_detectedCOL.size() >= 1)
+	for (int i = 0; i < _detectedCOL.size(); i++)
 	{
-		if (dynamic_cast<CCube*>(_detectedCOL[0].col->m_pGameObject))
+		if (dynamic_cast<CCube*>(_detectedCOL[i].col->m_pGameObject))
 		{
-			if (!lstrcmp(_detectedCOL[0].tag, L"CrackCube") &&
-				!dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->GetCrackDead())
+			if (!lstrcmp(_detectedCOL[i].tag, L"CrackCube") &&
+				!dynamic_cast<CCrackCube*>(_detectedCOL[i].col->m_pGameObject)->GetCrackDead())
 			{
-				dynamic_cast<CCrackCube*>(_detectedCOL[0].col->m_pGameObject)->DoShootRay(DIR_DOWN);
+				dynamic_cast<CCrackCube*>(_detectedCOL[i].col->m_pGameObject)->DoShootRay(DIR_DOWN);
 			}
 			m_pTransform->m_bIsStatic = true;
 			m_pRigid->m_bUseGrivaty = false;
-		}
-		else
-		{
-			m_pTransform->m_bIsStatic = false;
-			m_pRigid->m_bUseGrivaty = true;
+			return;
 		}
 	}
-	else
-	{
-		m_pTransform->m_bIsStatic = false;
-		m_pRigid->m_bUseGrivaty = true;
-	}
+	m_pTransform->m_bIsStatic = false;
+	m_pRigid->m_bUseGrivaty = true;
 }
 
 void CGravityCube::Free(void)
