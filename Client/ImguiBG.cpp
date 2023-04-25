@@ -652,7 +652,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 
 		}
 	}
-	if (m_BG_On4)
+	if (m_BG_On4 || iStageNumber == 8 || iStageNumber == 9)
 	{
 		for (auto& iter : m_vecBGInfo)
 		{
