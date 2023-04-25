@@ -23,4 +23,7 @@ private:
 
 private:
 	Engine::CSmokeParticle*		m_pSmokeParticle;
+
+	_vec3						m_vPrePos;
+	_float						m_fPreScale;
 };

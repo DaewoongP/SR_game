@@ -17,6 +17,18 @@ _int CTheme4_Chimney::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pSmokeParticle->Set_Size(m_pTransform->m_vScale.x / 5.2f);
 	m_pTransform->Move_Floating(fTimeDelta, 0.001f*m_pTransform->m_vScale.x, 180.0f, FLOATING_Y);
+
+	if (0.1f <= D3DXVec3Length(&(m_vPrePos - m_pTransform->m_vInfo[INFO_POS])) ||
+		0.1f <= fabs(m_fPreScale - m_pTransform->m_vScale.x))
+	{
+		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
+		m_fPreScale = m_pTransform->m_vScale.x;
+		BoundingBox box;
+		box.Offset(m_vPrePos);
+		m_pSmokeParticle->Set_BoundingBox(box);
+		m_pSmokeParticle->Set_Size(m_pTransform->m_vScale.x / 5.2f);
+	}
+
 	__super::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	return 0;
@@ -52,6 +64,9 @@ HRESULT CTheme4_Chimney::Ready_GameObject(_vec3& vPos, _float fScale, _float fAn
 
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vAngle.z = m_fStaticAngle = fAngle;
+	m_vPrePos = vPos;
+	m_fPreScale = fScale;
+
 	BoundingBox box;
 	box.Offset(vPos);
 	m_pSmokeParticle->Set_BoundingBox(box);

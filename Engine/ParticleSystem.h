@@ -58,6 +58,11 @@ public:
 	}
 	void Set_AnimSpeed(_float fSpeed) { m_fAnimSpeed = fSpeed; }
 	void Set_World(_matrix mat) { m_matWorld = mat; }
+	void Set_Dead() 
+	{
+		for (auto& iter : m_Particles)
+			iter.bIsAlive = false;
+	}
 
 	list<Particle>	Get_Particles() { return m_Particles; }
 protected:
