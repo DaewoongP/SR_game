@@ -35,7 +35,7 @@ _int CUICamera::Update_GameObject(const _float & fTimeDelta)
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProjection);
 
 	__super::Update_GameObject(fTimeDelta);
-	Engine::Add_RenderGroup(RENDER_UI, this);
+	Engine::Add_RenderGroup(RENDER_NONE, this);
 	return _int();
 }
 

@@ -30,7 +30,7 @@ HRESULT CDynamicCamera::Ready_GameObject(void)
 
 _int CDynamicCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	Engine::Add_RenderGroup(RENDER_UI, this);
+	Engine::Add_RenderGroup(RENDER_NONE, this);
 	Key_Input(fTimeDelta);
 
 	if (m_bFix)

@@ -27,7 +27,7 @@ CCamera::~CCamera()
 
 _int CCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	Add_RenderGroup(RENDER_UI, this);
+	Add_RenderGroup(RENDER_NONE, this);
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
