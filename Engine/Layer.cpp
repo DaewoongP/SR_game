@@ -130,6 +130,15 @@ void CLayer::Delete_In_Layer()
 	}	
 }
 
+void CLayer::Delete_Tag(const _tchar * pObjTag)
+{
+	for (auto& iter : m_uMapObject)
+	{
+		if (!lstrcmp(iter.second->m_pTag, pObjTag))
+			iter.second->m_bDead = true;
+	}
+}
+
 HRESULT CLayer::Delete_LastObject(CGameObject* pGameObject)
 {
 	if (!lstrcmp(pGameObject->m_pTag, L"LaserTurret"))

@@ -61,7 +61,7 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 		vInfo.z = 10.f;
 		box.Offset(vInfo);
 		m_pCircularParticle->Set_Size(2.f);
-		m_pCircularParticle->Set_Options(2.f, 25.f);
+		m_pCircularParticle->Set_Options(1.f, 25.f);
 		m_pCircularParticle->Set_SizeLifeTime(1.f);
 		m_pCircularParticle->Set_BoundingBox(box);
 		m_pCircularParticle->Start_Particle();
@@ -80,7 +80,11 @@ void CBoss1Hand::LateUpdate_GameObject(void)
 void CBoss1Hand::Render_GameObject(void)
 {
 	if (m_pCircularParticle->IsRendering())
+	{
 		m_pCircularParticle->Update_Particle();
+		return;
+	}
+		
 	__super::Render_GameObject();
 }
 
