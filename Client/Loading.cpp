@@ -337,6 +337,10 @@ _uint CLoading::Loading_ForLogo(void)
 		L"../Resource/Texture/Export_Textures/Sprites/theme4SmokeSpr/theme4SmokeSpr_0.png", 1,
 		1.f, 100, false)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"GlowEye", CTexParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/indiGlowEyeSpr/indiGlowEyeSpr_%d.png", 5,
+		1.f, 1, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
 		9, 0.8f, 1, false)), E_FAIL);
