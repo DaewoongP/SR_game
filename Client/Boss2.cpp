@@ -65,6 +65,8 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 
 	if (!m_bInit)
 	{
+		m_dwApperance_Timer = 9;
+		m_iAppearanceCnt = 0;
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
@@ -1988,11 +1990,14 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 		m_bInit = true;
 	}
 	
-	CheckZFloor();
-	DoFlip();
-	m_dwActionTime -= fTimeDelta;
-	m_dwRestTime -= fTimeDelta;
-	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	if (AppearanceAction(fTimeDelta))
+	{
+		CheckZFloor();
+		DoFlip();
+		m_dwActionTime -= fTimeDelta;
+		m_dwRestTime -= fTimeDelta;
+		(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	}
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
   	
 	return 0;
@@ -2625,6 +2630,39 @@ void CBoss2::Check_CircleParticle()
 			}
 		}
 	}
+}
+
+_bool CBoss2::AppearanceAction(const _float& fTimeDelta)
+{
+	m_dwApperance_Timer -= fTimeDelta;
+	switch (m_iAppearanceCnt)
+	{
+	case 0:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_iAppearanceCnt++;
+			m_dwApperance_Timer = 1;
+			Do_Scream(fTimeDelta);
+		}
+		return false;
+	case 1:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_iAppearanceCnt++;
+			m_dwApperance_Timer = 1;
+			Do_ScreamEnd(fTimeDelta);
+			m_iCurrentActionIdx = 0;
+		}
+		return false;
+	case 2:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_dwRestTime = 0;
+			m_iAppearanceCnt++;
+		}
+		return false;
+	}
+	return true;
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
