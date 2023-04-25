@@ -871,6 +871,9 @@
     <ClInclude Include="InvisibleGrid.h">
       <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
     </ClInclude>
+    <ClInclude Include="MiniGame1Portal.h">
+      <Filter>00. GameObject\02. MapObject\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1446,6 +1449,9 @@
     </ClCompile>
     <ClCompile Include="InvisibleGrid.cpp">
       <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGame1Portal.cpp">
+      <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

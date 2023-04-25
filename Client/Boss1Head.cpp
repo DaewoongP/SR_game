@@ -104,7 +104,7 @@ void CBoss1Head::ShootHead(const _float & fTimeDelta)
 		//이동 방향과 생성 위치를 알려주는 CREATE
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		if (pStageLayer != nullptr)
-			FACTORY<CBoss1HeadSub>::Create(L"Boss1Hand", pStageLayer, m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0));
+			FACTORY<CBoss1HeadSub>::Create(L"Boss1Head", pStageLayer, m_pTransform->m_vInfo[INFO_POS], _vec3(1,0,0));
 		m_iShootCount++;
 	}
 }

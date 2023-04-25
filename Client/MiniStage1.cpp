@@ -13,6 +13,7 @@
 #include "MiniGameBat.h"
 #include "CrackCube.h"
 #include "EvilBat.h"
+#include "MiniGame1Portal.h"
 
 CMiniStage1::CMiniStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -90,6 +91,8 @@ HRESULT CMiniStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CMiniGamePig>::Create(L"MiniGamePig", pLayer, _vec3(5.f, 14.f, 8.9f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CFoodCube>::Create(L"FoodCube", pLayer, _vec3(50.f, 14.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CEvilBat>::Create(L"EvilBat", pLayer, _vec3(0, 30, 10)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMiniGame1Portal>::Create(L"MiniGame1Portal", pLayer, _vec3(56, 14, 8.9f)), E_FAIL);
+	
 
 	for (int i = 0; i < 54 - 6; i += 2)
 	{
