@@ -501,7 +501,7 @@ void CBoss3::Chain_Spark(_float fCoolDown, const _float& fTimeDelta)
 
 void CBoss3::Delay(const _float & fTimeDelta)
 {
-	_float fFinishDelayTime = 5.f;
+	_float fFinishDelayTime = 10.f;
 
 	m_fDelay += fTimeDelta;
 
