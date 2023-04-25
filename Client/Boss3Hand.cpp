@@ -5,7 +5,9 @@
 #include"..\Client\Topdee.h"
 #include"StageCamera.h"
 #include "Export_Function.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
@@ -193,15 +195,9 @@ void CBoss3Hand::Render_GameObject(void)
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") && m_bShock == true)
+	if (collision->_dir == DIR_BACK)
 	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead(); 
-	}
-
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
-	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		TOPDEEDIE;
 	}
 	__super::OnCollisionEnter(collision);
 }
@@ -281,7 +277,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	m_fCoolDown += fTimeDelta;
 
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-	NULL_CHECK_RETURN(pGameObject, );
+	if (pGameObject == nullptr)return;
 
 	// 추격을 진행하고
 	if (2.f < m_fCoolDown && 3.5f > m_fCoolDown)

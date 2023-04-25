@@ -77,7 +77,7 @@ protected:
 	_bool					m_bInit;
 	_bool					m_bWalkingAnim;
 	CTookee*				m_Tookee;
-
+	CTopdeeParts*			m_DiePart;
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:

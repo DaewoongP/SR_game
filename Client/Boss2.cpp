@@ -17,7 +17,9 @@
 #include "Boss2JointSpot.h"
 #include "AbstractFactory.h"
 #include "Spike.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
 {
@@ -2020,6 +2022,10 @@ void CBoss2::SwapTrigger()
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
 	//?…ì´???¿ìœ¼ë©?ì¶©ê²© ??ì£¼ê²Ÿ??
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
+
 	if (dynamic_cast<CCube*>(collision->otherObj)&&collision->_dir == DIR_DOWN)
 	{
 		m_bIsOnGround = true;
@@ -2058,6 +2064,9 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+			int a = 0;
+			dynamic_cast<CBoss2TailBody*>(m_pTransform->GetChild(1)->GetChild(13)->m_pGameObject)->TextureBlinkStart();
+			
 			//테일 
 			{
 				CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
@@ -2067,7 +2076,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				}
 
 				_tchar	_name[256] = {0};
-				for (int i = 0; i < 18; i++)
+				for (int i = 0; i < 19; i++)
 				{
 					wsprintf(_name,L"Boss2Tail_%d", i);
 					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
@@ -2080,6 +2089,10 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			m_iHp--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
+			if (fabsf(m_pTransform->m_vAngle.y)>D3DXToRadian(180))
+				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(180), 0);
+			else 
+				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(0), 0);
 		}
 	
 	}
@@ -2233,7 +2246,7 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Jump");
-
+	m_iJumpCount++;
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
 }
@@ -2306,18 +2319,14 @@ void CBoss2::SetPartten()
 	m_ePreState = m_eCurrentState;
 	switch (m_eCurrentState)
 	{
-	case B2_THROW:
-		if (ran <4)
-			m_eCurrentState = B2_JUMPING;
-		else
-			m_eCurrentState = B2_SCREAM;
-		break;
-		break;
 	case B2_JUMPING:
-		if (ran <4)
+		if (m_iJumpCount!=2)
 			m_eCurrentState = B2_JUMPING;
 		else
+		{
 			m_eCurrentState = B2_SCREAM;
+			m_iJumpCount = 0;
+		}
 		break;
 	case B2_SCREAM:
 		if (ran <3)
@@ -2328,14 +2337,9 @@ void CBoss2::SetPartten()
 			m_eCurrentState = B2_PUNCH;
 		break;
 	case B2_PUNCH:
-		if (ran <4)
-			m_eCurrentState = B2_JUMPING;
-		else
-			m_eCurrentState = B2_SCREAM;
-		break;
+		m_eCurrentState = B2_JUMPING;
 		break;
 	case B2_STUMP:
-		//찍기후엔 무조건 점프
 		m_eCurrentState = B2_JUMPING;
 		break;
 	}
@@ -2348,18 +2352,6 @@ void CBoss2::ReadyPartten()
 	funcAction.reserve(B2_END);
 
 	BOSS2_STATE_FUNC func; //idle
-
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	func.push_back(&CBoss2::Do_Idle);
-	func.push_back(&CBoss2::Do_Rest);
-	funcAction.push_back(func);
-	func.clear();
 
 	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
@@ -2507,9 +2499,9 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 {
 	if(g_Is2D)
-		m_pRigid->AddTorque(_vec3(0, 1, 0), 100.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddTorque(_vec3(0, 1, 0), (rand()%2==0)?110:90, IMPULSE, fTimeDelta);
 	else
-		m_pRigid->AddTorque(_vec3(1, 0, 0), 100.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddTorque(_vec3(1, 0, 0), (rand() % 2 == 0) ? 110 : 90, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 }
 

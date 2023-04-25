@@ -4,7 +4,9 @@
 #include "Export_Function.h"
 
 #include "Cube.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 #include "StageCamera.h"
 
 CPig::CPig(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -32,7 +34,7 @@ HRESULT CPig::Ready_GameObject(_vec3& vPos)
 	m_pTextureCom_Back->Switch_Anim(L"Idle");
 	m_pTextureCom_Back->m_bUseFrameAnimation = true;
 
-	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 0.2f }, { 0.f, -1.f, 0.f });
+	m_pCollider->Set_BoundingBox({ 2.f, 2.f, 2.f }, { 0.f, -1.f, 0.f });
 	
 	return S_OK;
 }
@@ -112,7 +114,7 @@ _int CPig::Update_Top(const _float & fTimeDelta)
 	m_pTransform->m_vScale.y = PIGSCALE;
 
 	CTransform*	pPlayerTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
-	NULL_CHECK_RETURN(pPlayerTransformCom, -1);
+	if (pPlayerTransformCom == nullptr)return 0;
 
 	m_pRigid->m_Velocity = { 0.0f, 0.0f, 0.0f };
 
@@ -201,6 +203,9 @@ void CPig::Render_Top()
 
 void CPig::OnCollisionEnter(const Collision * collision)
 {
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
 	if ((collision->_dir == DIR_LEFT || collision->_dir == DIR_RIGHT) && (dynamic_cast<CCube*>(collision->otherObj) || !lstrcmp(collision->otherObj->m_pTag, L"Pig")))
 	{
 		//카메라 쉐이크 사용함수 예

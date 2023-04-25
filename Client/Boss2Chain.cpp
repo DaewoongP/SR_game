@@ -86,7 +86,7 @@ void CBoss2Chain::SetChain()
 	m_pTransform->m_vScale.x =
 		D3DXVec3Length(&_vec3(m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS])) * 0.5f;
 	//lerp (����Ʈ 01, ����Ʈ 02 , 0.5f) << ����Ʈ 1 2�� ����
-	m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTrans_Joint01->m_vInfo[INFO_POS], m_pTrans_Joint02->m_vInfo[INFO_POS],0.45f);
+	m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTrans_Joint01->m_vInfo[INFO_POS]-_vec3(0,0,-0.1f), m_pTrans_Joint02->m_vInfo[INFO_POS],0.45f);
 
 	//dir = ����Ʈ���� �Ÿ�
 	_vec3 dir = m_pTrans_Joint01->m_vInfo[INFO_POS] - m_pTrans_Joint02->m_vInfo[INFO_POS];

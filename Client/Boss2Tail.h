@@ -28,6 +28,7 @@ public:
 	virtual void Render_Top(void) override;
 
 	void Set_PreTail(CTransform* PreTail) { m_pPreTail = PreTail; }
+	CTransform* Get_PreTail() { return m_pPreTail; }
 
 private:
 	Engine::CRcTex*			m_pBufferCom;
