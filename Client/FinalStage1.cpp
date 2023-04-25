@@ -92,7 +92,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	for (int i = 0; i < CUBEY; i++)
 	{
-		for (int j = 0; j < CUBEX * 4; j++)
+		for (int j = 0; j < CUBEX * 3; j++)
 		{
 			//맨 윗줄
 			if (i == 0)
@@ -104,11 +104,8 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 			//맨 아랫줄
-			if (j == CUBEX * 4 - 1)
+			if (j == CUBEX * 3 - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-
-			/*if(i != 0 && i != CUBEY - 1 && j != 0 && j != CUBEX * 4 - 1)
-				FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InvisibleGrid", pLayer, _vec3{ (_float)j * 2,(_float)i * 2, 11.f }), E_FAIL);*/
 		}
 	}
 
