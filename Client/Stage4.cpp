@@ -50,9 +50,9 @@ HRESULT CStage4::Ready_Scene(void)
 _int CStage4::Update_Scene(const _float & fTimeDelta)
 {
 	if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Damage())
-	{
+	{ 
 		if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Hp() >= 0)
-		{
+		{	
 			Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
 			Get_GameObject(L"Layer_GameLogic", L"Boss2")->Set_Damage();
 		}

@@ -97,7 +97,6 @@ private:
   void		Check_CircleParticle();
 public:
 	_bool		Get_Flip_Y() { return m_bFlip_Y; }
-	
 
 private:	
 	BOSS2STATE m_eCurrentState;
@@ -106,7 +105,6 @@ private:
 	_float		m_dwRestTime;
 	_float		m_dwActionTime;
 	_bool		m_bFlip_Y;
-
 	//state, ?�수?�인??vec�?가지??vector
 	vector<BOSS2_STATE_FUNC> funcAction;
 
@@ -120,9 +118,7 @@ private:
 
 	_bool		m_bIsOnGround;
 	_bool		m_bInit;
-
 	_bool		m_bAttackAble;
-	_bool m_bCheckout = true;
 private:
 	Engine::CCollider*			m_pCollider;
 	Engine::CRigidbody*			m_pRigid;

@@ -56,9 +56,9 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	return S_OK;
 }
 
-_int CBoss2::Update_GameObject(const _float & fTimeDelta)
+_int CBoss2::Update_GameObject(const _float& fTimeDelta)
 {
-	m_bDamage = false;
+
 	__super::Update_GameObject(fTimeDelta);
 
 	if (!m_bInit)
@@ -2047,8 +2047,10 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
-	{
-		m_bDamage = true;
+	{	
+		
+		
+			
 		if (m_bAttackAble)
 		{
 			
@@ -2082,10 +2084,12 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			m_iHp--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
+			m_bDamage = true;
+
 		}
 	
 	}
-		
+
 	__super::OnCollisionEnter(collision);
 }
 

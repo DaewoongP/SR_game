@@ -16,6 +16,8 @@
 #include "Spike.h"
 #include "InstallCube.h"
 #include"ImguiBG.h"
+#include"HpUI.h"
+#include"Fade.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -33,6 +35,7 @@ CStage8::~CStage8()
 HRESULT CStage8::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE8;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -41,7 +44,6 @@ HRESULT CStage8::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(7, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(7, this);
 	CImguiMgr::GetInstance()->Get_BG()->LoadBG(7, this);
-
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"1.wav", 0.35f);
@@ -50,9 +52,28 @@ HRESULT CStage8::Ready_Scene(void)
 
 _int CStage8::Update_Scene(const _float & fTimeDelta)
 {
+	if (m_iPreBossHp == 2 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+	}
+	if (m_iPreBossHp == 1 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+
+	}
+	if (m_iPreBossHp == 0 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+
+	}
+
+
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		PatternSet(fTimeDelta);
-
+	
 	if (m_bLerp)
 		Player_Reset();
 
@@ -94,6 +115,7 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(58.f, 10.f, 11.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 18.f, 10.f)), E_FAIL);
+	m_iHp = pLayer->Get_GameObject(L"Boss3")->Get_Hp();
 
 	for (int i = 0; i < CUBEY; i++)
 	{
@@ -123,7 +145,12 @@ HRESULT CStage8::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
+	for (int i = 0; i < m_iHp; ++i)
+	{
+		pGameObject = CHpUI::Create(m_pGraphicDev, m_iHp, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HpUI", pGameObject), E_FAIL);
+	}
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
 }
@@ -160,7 +187,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
-
+		m_bUICheck = true;
 		m_iPreBossHp = 2;
 	}
 
@@ -181,7 +208,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
-
+		m_bUICheck = true;
 		m_iPreBossHp = 1;
 	}
 }
