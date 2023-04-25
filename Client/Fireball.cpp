@@ -153,7 +153,7 @@ void CFireball::OnCollisionEnter(const Collision* collision)
 {
 	TOOKEEDIE;
 	TOODEEDIE;
-	TOPDEEDIE;
+	//TOPDEEDIE;
 
 	if (!lstrcmp(collision->otherObj->m_pTag, L"LaserTurret"))
 		m_bDead = true;

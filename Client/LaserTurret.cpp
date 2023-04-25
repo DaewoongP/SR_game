@@ -192,7 +192,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"Topdee");
 	tagName.push_back(L"Tookee");
 	tagName.push_back(L"Thidedee");
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos + _vec3(0, 0, 1.f), vDir[m_iIndex], 60.f), m_pCollider, tagName);
+	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos + _vec3(0, 0, 1.f), vDir[m_iIndex], m_fColdist), m_pCollider, tagName);
 	TOOKEEDIE_RAY
 	TOPDEEDIE_RAY
 	THIRDDEEDIE_RAY
