@@ -19,7 +19,7 @@ public:
 	void			Switch_Anim(_tchar* name);
 	void			Update_Anim(const _float & fTimeDelta);
 	void			Set_Texture(const _uint& iIndex = 0);
-	void			Set_Cube(_tchar* pProtoTag);
+	void			Set_TextureOnShader(class CShader * pShader, D3DXHANDLE hParameter, const _uint & iIndex = 0);
 	_bool			IsAnimationEnd(_tchar* name);
 	_tchar*			Get_AnimState() { return m_CurrentAnimName; }
 	

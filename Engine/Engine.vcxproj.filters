@@ -202,6 +202,9 @@
     <ClInclude Include="SuperLandingParticle.h">
       <Filter>Componnent\ParticleSystem\SuperLanding</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Componnent\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -366,6 +369,9 @@
     <ClCompile Include="SuperLandingParticle.cpp">
       <Filter>Componnent\ParticleSystem\SuperLanding</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Componnent\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -513,6 +519,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\SuperLanding">
       <UniqueIdentifier>{b0511d02-547e-4e16-be5f-6c8f05227bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\Shader">
+      <UniqueIdentifier>{5e4fff54-0fe9-4206-96e6-cd0b58bcd1b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
