@@ -52,6 +52,7 @@ public:
 
 	void		SetDie();
 
+	CGameObject*	Get_Grab() { return m_pGrabObj; }
 protected:
 	Engine::CCollider*		m_pCollider;
 	Engine::CSlerpParticle*	m_pSlerpParticle;
@@ -77,7 +78,7 @@ protected:
 	_bool					m_bInit;
 	_bool					m_bWalkingAnim;
 	CTookee*				m_Tookee;
-
+	CTopdeeParts*			m_DiePart;
 public:
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:

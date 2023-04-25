@@ -25,6 +25,7 @@ HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 	m_vSummonPos = vPos;
 	m_fweight = 0;
 	m_eState = GH_IDLE;
+	m_pTransform->m_bIsStatic = true;
 	m_bCollision = false;
 	return S_OK;
 }

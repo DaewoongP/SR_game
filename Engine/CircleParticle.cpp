@@ -11,10 +11,16 @@ CCircleParticle::CCircleParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	_float fLifeTime)
 	:CParticleSystem(pGraphicDev)
 {
-	m_fLifeTime = fLifeTime;
 	m_pTexture = CTexture::Create(m_pGraphicDev,
 		TEX_NORMAL,
-		pPath);
+		pPath,
+		iTextureNum);
+	if (iTextureNum > 1)
+	{
+		m_pTexture->Add_Anim(L"Idle", 0, iTextureNum - 1, 5.f, false);
+		m_pTexture->Switch_Anim(L"Idle");
+		m_pTexture->m_bUseFrameAnimation = true;
+	}
 	m_bIsWorld = isWorld;
 	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
@@ -85,6 +91,8 @@ _int CCircleParticle::Update_Particle()
 			if (D3DXVec3Length(&it->vAccel) > D3DXVec3Length(&it->vVelocity))
 				it->vAccel = { 0.f, 0.f, 0.f };
 			m_Size *= it->fSizeoverLifetime;
+			if (m_pTexture->IsAnimationEnd(L"Idle"))
+				m_pTexture->Reset_Anim();
 
 			if (m_BoundingBox.Intersect(it->vPos) == false)
 			{

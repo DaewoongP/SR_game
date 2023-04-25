@@ -16,7 +16,7 @@ class CLandingParticle;
 class CSparkParticle;
 class CSlerpParticle;
 class CShadow;
-
+class CShader;
 END
 class CToodee : public CGameObject
 {
@@ -63,6 +63,7 @@ protected:
 	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CSlerpParticle*		m_pSlerpParticle;
 	Engine::CShadow*		m_pShadow;
+	Engine::CShader*		m_pShader;
 	CTookee*				m_Tookee;
 	_bool					m_bRender;
 	_bool					m_bInit;

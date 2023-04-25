@@ -294,6 +294,9 @@
     <Filter Include="00. GameObject\99. Etc\Camera\DirectCamera">
       <UniqueIdentifier>{b0d50749-fec2-4657-b1dc-17bdfc815e10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{fd8f21a7-b7c9-4eee-9b67-38fecd18ec66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -1470,5 +1473,10 @@
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
     <ClCompile Include="Boss3Camera.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rect.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

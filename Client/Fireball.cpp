@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Fireball.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 #include"..\Engine\Export_Function.h"
 CFireball::CFireball(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev),
@@ -149,6 +151,10 @@ void CFireball::Render_GameObject(void)
 
 void CFireball::OnCollisionEnter(const Collision* collision)
 {
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
+
 	if (!lstrcmp(collision->otherObj->m_pTag, L"LaserTurret"))
 		m_bDead = true;
 

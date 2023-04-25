@@ -738,10 +738,10 @@ void CBoss1::SetPattern()
 	switch (ran)
 	{
 	case 0:
-		m_eCurrentState = B1_FINGER;
+		m_eCurrentState = B1_GIANT;
 		break;
 	case 1:
-		m_eCurrentState = B1_HEAD;
+		m_eCurrentState = B1_GIANT;
 		break;
 	}
 	m_iCurrentActionIdx = 0;

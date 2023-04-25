@@ -52,6 +52,11 @@ void CThirdCamera::Swap_Camera(const _float& fTimeDelta)
 
 	}
 
+	if (Engine::Get_DIKeyState(DIK_F5) == Engine::KEYDOWN)
+	{
+		g_IsInvin = !g_IsInvin;
+	}
+
 	if (g_Is2D)
 		Set_ToodeeCam(fTimeDelta);
 

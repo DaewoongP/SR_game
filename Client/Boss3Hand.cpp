@@ -5,14 +5,17 @@
 #include"..\Client\Topdee.h"
 #include"StageCamera.h"
 #include "Export_Function.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
-	m_fIdleCycle(0.f), m_fIdleAngle(0.f),
+	m_fIdleCycle(0.f), m_fIdleAngle(0.f), m_fDamagedTime(0.f),
 	m_fLerpDist(0.f),
 	m_iIndex(0), 
-	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false), m_bLerpMove(false)
+	m_bAttack(false), m_bIdleMove(true), m_bIdleStop(false), m_bLerpMove(false),
+	m_bDamaged(false)
 {
 }
 
@@ -41,11 +44,16 @@ HRESULT CBoss3Hand::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_bLerpMove)
-		Lerp_Moving(fTimeDelta);
-
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	if (m_bDamaged)
+	{
+		DamagedBoss3(fTimeDelta);
+
+		if (m_bLerpMove)
+			Lerp_Moving(fTimeDelta);
+	}
     
 	if (m_bShock)
 	{
@@ -87,6 +95,9 @@ _int CBoss3Hand::Update_GameObject(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 {
+	if (m_bDamaged)
+		return 0;
+
 	m_pTransform->m_vInfo[INFO_POS].z = 9.f;
 
 	if (m_pTransform->m_vAngle.x != D3DXToRadian(0.f))
@@ -113,6 +124,9 @@ _int CBoss3Hand::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3Hand::Update_Top(const _float & fTimeDelta)
 {
+	if (m_bDamaged)
+		return 0;
+
 	if(!m_pTransform->m_vInfo[INFO_POS].z == 3.f)
 	{
 		m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
@@ -158,29 +172,20 @@ void CBoss3Hand::Render_GameObject(void)
 	else
 		m_pTextureCom2->Set_Texture(m_iIndex);
 
-	if(!g_Is2D)
-		m_pShadowCom->Render_Shadow(m_pBufferCom);
-
-	if (m_bLerpMove)
+	if (m_bDamaged)
 	{
-		if (0.f < m_fLerpDist && 0.02f > m_fLerpDist)
+		if (0 == (_int)(m_fLerpDist * 250) % 2)
 			m_pTextureCom2->Set_Texture(m_iIndex);
 
-		else if (0.02f < m_fLerpDist && 0.04f > m_fLerpDist)
+		else
 			m_pTextureCom->Set_Texture();
-
-		else if (0.04f < m_fLerpDist && 0.06f > m_fLerpDist)
-			m_pTextureCom2->Set_Texture(m_iIndex);
-
-		else if (0.06f < m_fLerpDist && 0.08f > m_fLerpDist)
-			m_pTextureCom->Set_Texture();
-
-		else if (0.08f < m_fLerpDist && 0.1f > m_fLerpDist)
-		{
-			m_bLerpMove = false;
-			m_fLerpDist = 0.f;
-		}
 	}
+
+	else
+		m_pTextureCom2->Set_Texture(m_iIndex);
+
+	if (!g_Is2D)
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -193,21 +198,19 @@ void CBoss3Hand::Render_GameObject(void)
 
 void CBoss3Hand::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") && m_bShock == true)
+	if (collision->_dir == DIR_BACK)
 	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead(); 
-	}
-
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee") && m_bShock == true)
-	{
-		CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		TOPDEEDIE;
 	}
 	__super::OnCollisionEnter(collision);
 }
 
 void CBoss3Hand::OnCollisionStay(const Collision * collision)
 {
+	if (m_bShock)
+	{
+		TOODEEDIE;
+	}
 	CGameObject::OnCollisionStay(collision);
 }
 
@@ -270,7 +273,7 @@ void CBoss3Hand::Lerp_Moving(const _float & fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
 	m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
 
-	m_fLerpDist += 0.001f;
+	m_fLerpDist += fTimeDelta * 0.01f;
 }
 
 void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
@@ -281,7 +284,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	m_fCoolDown += fTimeDelta;
 
 	CGameObject* pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-	NULL_CHECK_RETURN(pGameObject, );
+	if (pGameObject == nullptr)return;
 
 	// 추격을 진행하고
 	if (2.f < m_fCoolDown && 3.5f > m_fCoolDown)
@@ -391,6 +394,22 @@ void CBoss3Hand::IdleMove(const _float & fTimeDelta)
 			m_fIdleCycle = 0.f;
 			m_bIdleStop = false;
 		}			
+	}
+}
+
+void CBoss3Hand::DamagedBoss3(const _float & fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta;
+
+	if (3.f <= m_fDamagedTime)
+	{
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+
+		m_bLerpMove = false;
+		m_fLerpDist = 0.f;
+
+		m_fTimer = 0.f;
 	}
 }
 

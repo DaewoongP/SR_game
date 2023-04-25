@@ -15,8 +15,10 @@
 #include "KeyCube.h"
 #include "Spike.h"
 #include "InstallCube.h"
-#include"ImguiBG.h"
+#include "ImguiBG.h"
 #include "Boss3Camera.h"
+#include "HpUI.h"
+#include "Fade.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -34,6 +36,7 @@ CStage8::~CStage8()
 HRESULT CStage8::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE8;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -42,7 +45,6 @@ HRESULT CStage8::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(7, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(7, this);
 	CImguiMgr::GetInstance()->Get_BG()->LoadBG(7, this);
-
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"1.wav", 0.35f);
@@ -51,11 +53,30 @@ HRESULT CStage8::Ready_Scene(void)
 
 _int CStage8::Update_Scene(const _float & fTimeDelta)
 {
+	if (m_iPreBossHp == 2 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+	}
+	if (m_iPreBossHp == 1 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+
+	}
+	if (m_iPreBossHp == 0 && m_bUICheck == true)
+	{
+		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+		m_bUICheck = false;
+
+	}
+
+
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		PatternSet(fTimeDelta);
-
+	
 	if (m_bLerp)
-		Player_Reset();
+		Player_Reset(fTimeDelta);
 
 	return __super::Update_Scene(fTimeDelta);
 }
@@ -93,25 +114,26 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(4.f, 4.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(4.f, 28.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(58.f, 10.f, 11.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 18.f, 10.f)), E_FAIL);
+	m_iHp = pLayer->Get_GameObject(L"Boss3")->Get_Hp();
 
 	for (int i = 0; i < CUBEY; i++)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//∏« ¿≠¡Ÿ
+			//Îß® ÏúóÏ§Ñ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//ªÁ¿Ã √π¡Ÿ
+			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
+			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
-			//∏« æ∆∑ß¡Ÿ
+			//Îß® ÏïÑÎû´Ï§Ñ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
 		}
@@ -126,7 +148,12 @@ HRESULT CStage8::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
+	for (int i = 0; i < m_iHp; ++i)
+	{
+		pGameObject = CHpUI::Create(m_pGraphicDev, m_iHp, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HpUI", pGameObject), E_FAIL);
+	}
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
 }
@@ -141,7 +168,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		iBossHp = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Boss3Hp();
 
-	// ∫∏Ω∫ √º∑¬¿Ã 2∞° µ«∏È
+	// Î≥¥Ïä§ Ï≤¥Î†•Ïù¥ 2Í∞Ä ÎêòÎ©¥
 	if (2 == iBossHp && 3 == m_iPreBossHp)
 	{
 		for (int i = 0; i < 30; ++i)
@@ -158,16 +185,19 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(4.f, 6.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(6.f, 6.f, 10.f)), );
 
+		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Damaged();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Damaged();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Damaged();
 		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Lerp();
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
-
+		m_bUICheck = true;
 		m_iPreBossHp = 2;
 	}
 
-	// ∫∏Ω∫ √º∑¬¿Ã 1¿Ã µ«∏È
+	// Î≥¥Ïä§ Ï≤¥Î†•Ïù¥ 1Ïù¥ ÎêòÎ©¥
 	if (1 == iBossHp && 2 == m_iPreBossHp)
 	{
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
@@ -179,17 +209,20 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(4.f, 6.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pLayer, _vec3(6.f, 6.f, 10.f)), );
 
+		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Damaged();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Damaged();
+		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Damaged();
 		dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Set_Lerp();
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"))->Set_Lerp();
 		dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"))->Set_Lerp();
 		m_bLerp = true;
 		m_bLerpInit = true;
-
+		m_bUICheck = true;
 		m_iPreBossHp = 1;
 	}
 }
 
-void CStage8::Player_Reset()
+void CStage8::Player_Reset(const _float & fTimeDelta)
 {
 	_vec3 vLerp, vGoal;
 	vGoal = _vec3{ 6.f, 10.f, 10.f };
@@ -204,7 +237,7 @@ void CStage8::Player_Reset()
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee")->m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
 
-	m_fDist += 0.01f;
+	m_fDist += 0.005f;
 
 	if (1.f <= m_fDist)
 	{

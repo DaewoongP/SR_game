@@ -2,7 +2,10 @@
 #include "LaserTurret.h"
 #include "Export_Function.h"
 #include "AbstractFactory.h"
-
+#include "Tookee.h"
+#include "Toodee.h"
+#include "Topdee.h"
+#include "Thirddee.h"
 #include "Boss3.h"
 
 CLaserTurret::CLaserTurret(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -146,15 +149,17 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"PortalCube");
 	tagName.push_back(L"KeyCube");
 	tagName.push_back(L"Toodee");
-	tagName.push_back(L"Topdee");
 	tagName.push_back(L"Tookee");
+	tagName.push_back(L"Thidedee");
 	tagName.push_back(L"Boss3");
 	tagName.push_back(L"Boss3Left");
 	tagName.push_back(L"Boss3Right");
 	vector<RayCollision> _detectedCOL;
 
 	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos, vDir[m_iIndex], 60.f), m_pCollider, tagName);
-
+	TOODEEDIE_RAY
+	TOOKEEDIE_RAY
+	THIRDDEEDIE_RAY
 	if (_detectedCOL.size() >= 1)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"MapCube") ||
@@ -169,15 +174,6 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		{
 			m_fColdist = _detectedCOL[0].dist;
 		}			
-
-		else if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") ||
-			!lstrcmp(_detectedCOL[0].tag, L"Topdee") ||
-			!lstrcmp(_detectedCOL[0].tag, L"Tookee")
-			)
-		{
-			Engine::Get_GameObject(L"Layer_GameLogic", _detectedCOL[0].tag)->m_bDead = true;
-		}
-
 		else if (!lstrcmp(_detectedCOL[0].tag, L"Boss3"))
 		{
 			m_fColdist = _detectedCOL[0].dist + 10.f;
@@ -189,8 +185,17 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 		{
    			m_fColdist = _detectedCOL[0].dist + 2.f;
 			dynamic_cast<CBoss3*>(m_pBoss3)->Set_Damage();
+
 		}
 	}
+	tagName.clear();
+	tagName.push_back(L"Topdee");
+	tagName.push_back(L"Tookee");
+	tagName.push_back(L"Thidedee");
+	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos + _vec3(0, 0, 1.f), vDir[m_iIndex], 60.f), m_pCollider, tagName);
+	TOOKEEDIE_RAY
+	TOPDEEDIE_RAY
+	THIRDDEEDIE_RAY
 }	
 
 CLaserTurret * CLaserTurret::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int iIndex)

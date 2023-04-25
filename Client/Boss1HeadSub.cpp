@@ -2,7 +2,7 @@
 #include "Boss1HeadSub.h"
 #include "AbstractFactory.h"
 #include "Boss1Parts.h"
-
+#include "Thirddee.h"
 CBoss1HeadSub::CBoss1HeadSub(LPDIRECT3DDEVICE9 pGraphicDev) :CGameObject(pGraphicDev)
 {
 	m_bInit = true;
@@ -18,6 +18,7 @@ HRESULT CBoss1HeadSub::Ready_GameObject(_vec3 & vPos,_vec3 & vtoward)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5, 5, 5);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
+	m_pCollider->Set_BoundingBox({ 2,6,6 }, { 0,0,2 });
 	m_vMoveDir = vtoward;
 	m_fSpeed = -0.7f;
 	return S_OK;
@@ -57,6 +58,11 @@ void CBoss1HeadSub::Render_GameObject(void)
 {
 	__super::Render_GameObject();
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+}
+
+void CBoss1HeadSub::OnCollisionEnter(const Collision * collision)
+{
+	THIRDDEEDIE;
 }
 
 HRESULT CBoss1HeadSub::Add_Component(void)

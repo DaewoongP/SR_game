@@ -31,7 +31,6 @@ HRESULT CStage4::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE4;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
-
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -51,7 +50,14 @@ HRESULT CStage4::Ready_Scene(void)
 _int CStage4::Update_Scene(const _float & fTimeDelta)
 {
 	if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Damage())
-		Get_GameObject(L"Layer_UI", L"HpUI")->Get_Damage();
+	{ 
+		if (Get_GameObject(L"Layer_GameLogic", L"Boss2")->Get_Hp() >= 0)
+		{	
+			Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
+			Get_GameObject(L"Layer_GameLogic", L"Boss2")->Set_Damage();
+		}
+	}
+
 		
 	return __super::Update_Scene(fTimeDelta);
 }
@@ -90,7 +96,7 @@ HRESULT CStage4::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(6.f, 16.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(16.f, 28.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(50.f, 20.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss2>::Create(L"Boss2", pLayer, _vec3(50.f, 14.f, 10.f)), E_FAIL);
 	m_iHp=pLayer->Get_GameObject(L"Boss2")->Get_Hp();
 	
 	for (int i = 0; i < CUBEY; i++)

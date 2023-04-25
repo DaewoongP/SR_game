@@ -13,7 +13,7 @@
 #include "Collision.h"
 
 #include "GameObject.h"
-
+#include "Shader.h"
 #include "Transform.h"
 #include "Texture.h"
 #include "CubeTex.h"
@@ -39,6 +39,8 @@
 #include "BoxParticle.h"
 #include "SkyParticle.h"
 #include "SmokeParticle.h"
+#include "WaveParticle.h"
+#include "SuperLandingParticle.h"
 
 BEGIN(Engine)
 

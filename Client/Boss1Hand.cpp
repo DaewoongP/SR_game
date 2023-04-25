@@ -3,7 +3,7 @@
 #include "AbstractFactory.h"
 #include "Boss1Parts.h"
 #include "..\Engine\CircularParticle.h"
-
+#include "Thirddee.h"
 CBoss1Hand::CBoss1Hand(LPDIRECT3DDEVICE9 pGraphicDev):CGameObject(pGraphicDev)
 {
 	m_bInit = true;
@@ -19,6 +19,7 @@ HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5,5,5);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
+	m_pCollider->Set_BoundingBox({4,4,4}, {0,0,0});
 	m_vToWard = vToWard;
 	m_fSpeed = 1.f;
 	return S_OK;
@@ -27,7 +28,11 @@ HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_pCircularParticle->IsDead())
+	{
+		for (int i = 0; i < m_PartsVec.size(); i++)
+			m_PartsVec[i]->m_pGameObject->Set_Dead();
 		return OBJ_DEAD;
+	}
 	if (m_bInit)
 	{
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
@@ -86,6 +91,11 @@ void CBoss1Hand::Render_GameObject(void)
 	}
 		
 	__super::Render_GameObject();
+}
+
+void CBoss1Hand::OnCollisionEnter(const Collision * collision)
+{
+	THIRDDEEDIE;
 }
 
 HRESULT CBoss1Hand::Add_Component(void)

@@ -75,6 +75,8 @@ void CMiniGame1Portal::OnCollisionEnter(const Collision * collision)
 
 	if (m_pPig)
 	{
+		if (m_pPig != collision->otherObj)
+			return;
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );

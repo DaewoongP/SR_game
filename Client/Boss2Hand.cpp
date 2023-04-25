@@ -3,7 +3,9 @@
 #include "Export_Function.h"
 #include "StageCamera.h"
 #include "Cube.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBoss2Hand::CBoss2Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 {
@@ -80,6 +82,9 @@ void CBoss2Hand::Render_GameObject(void)
 
 void CBoss2Hand::OnCollisionEnter(const Collision * collision)
 {
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
 }
 
 void CBoss2Hand::OnCollisionStay(const Collision * collision)

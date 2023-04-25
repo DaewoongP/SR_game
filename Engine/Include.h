@@ -35,6 +35,7 @@
 extern HWND		 g_hWnd;
 extern HINSTANCE g_hInst;
 extern	_bool	g_Is2D;
+extern	_bool	g_IsInvin;
 
 using namespace std;
 using namespace Engine;

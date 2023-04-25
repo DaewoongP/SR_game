@@ -17,7 +17,9 @@
 #include "Boss2JointSpot.h"
 #include "AbstractFactory.h"
 #include "Spike.h"
-
+#include "Toodee.h"
+#include "Tookee.h"
+#include "Topdee.h"
 CBoss2::CBoss2(LPDIRECT3DDEVICE9 pGraphicDev) 
 	: CGameObject(pGraphicDev)
 {
@@ -37,7 +39,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
-	//?˜ë¨¸ì§€ ?„ì¹˜?????Œí™˜
+
 	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
 	m_fJumpPos[1] = _vec3(30,25,10);
@@ -52,16 +54,19 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pRigid->m_bUseGrivaty = false;
 
-	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
+	m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 	return S_OK;
 }
 
-_int CBoss2::Update_GameObject(const _float & fTimeDelta)
+_int CBoss2::Update_GameObject(const _float& fTimeDelta)
 {
+
 	__super::Update_GameObject(fTimeDelta);
 
 	if (!m_bInit)
 	{
+		m_dwApperance_Timer = 9;
+		m_iAppearanceCnt = 0;
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
@@ -1985,19 +1990,23 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 		m_bInit = true;
 	}
 	
-	CheckZFloor();
-	DoFlip();
-	m_dwActionTime -= fTimeDelta;
-	m_dwRestTime -= fTimeDelta;
-	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	if (AppearanceAction(fTimeDelta))
+	{
+		CheckZFloor();
+		DoFlip();
+		m_dwActionTime -= fTimeDelta;
+		m_dwRestTime -= fTimeDelta;
+		(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	}
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-  	Check_CircleParticle();
+  	
 	return 0;
 }
 
 void CBoss2::LateUpdate_GameObject(void)
 {
 	m_pTransform->SwapYZ();
+	Check_CircleParticle();
 	__super::LateUpdate_GameObject();
 }
 
@@ -2006,20 +2015,15 @@ void CBoss2::Render_GameObject()
 	m_pCircleParticle->Update_Particle();
 	m_pJumpParticle->Update_Particle();
 	m_pScreamParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
 	__super::Render_GameObject();
-}
-
-void CBoss2::SwapTrigger()
-{
-	if (g_Is2D)
-		m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
-	else
-		m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 }
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
-	//?…ì´???¿ìœ¼ë©?ì¶©ê²© ??ì£¼ê²Ÿ??
+	TOOKEEDIE;
+	TOODEEDIE;
+	TOPDEEDIE;
 	if (dynamic_cast<CCube*>(collision->otherObj)&&collision->_dir == DIR_DOWN)
 	{
 		m_bIsOnGround = true;
@@ -2032,24 +2036,35 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
 			!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
 		{
-			// 원형파티클 옵션
 			BoundingBox box;
 			box.Offset(m_pTransform->m_vInfo[INFO_POS]);
-			box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
-			box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
-			m_pCircleParticle->Set_BoundingBox(box);
-			m_pCircleParticle->Set_Size(3.f);
-			m_pCircleParticle->Start_Particle();
+			if (g_Is2D)
+			{
+				m_pLandingParticle->Set_BoundingBox(box);
+				m_pLandingParticle->Set_Size(3.f);
+				m_pLandingParticle->Start_Particle();
+			}
+			else
+			{
+				box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+				box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+				m_pCircleParticle->Set_BoundingBox(box);
+				m_pCircleParticle->Set_Size(3.f);
+				m_pCircleParticle->Start_Particle();
+			}
 		}
 		StopSound(SOUND_EFFECT_ENEMY);
 		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
-	{
+	{	
+		
+		
+			
 		if (m_bAttackAble)
 		{
-			m_bDamage = true;
+			
 			//8
 			for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
@@ -2058,6 +2073,9 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+			int a = 0;
+			dynamic_cast<CBoss2TailBody*>(m_pTransform->GetChild(1)->GetChild(13)->m_pGameObject)->TextureBlinkStart();
+			
 			//테일 
 			{
 				CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
@@ -2067,7 +2085,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 				}
 
 				_tchar	_name[256] = {0};
-				for (int i = 0; i < 18; i++)
+				for (int i = 0; i < 19; i++)
 				{
 					wsprintf(_name,L"Boss2Tail_%d", i);
 					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
@@ -2080,20 +2098,28 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			m_iHp--;
 			m_dwRestTime = 2.0f;
 			m_bAttackAble = false;
+			if (fabsf(m_pTransform->m_vAngle.y)>D3DXToRadian(180))
+				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(180), 0);
+			else 
+				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(0), 0);
 		}
 	
 	}
-		
+
 	__super::OnCollisionEnter(collision);
 }
 
 void CBoss2::OnCollisionStay(const Collision * collision)
 {
+	if (dynamic_cast<CSpike*>(collision->otherObj))
+		m_bDamage = false;
+
 	__super::OnCollisionStay(collision);
 }
 
 void CBoss2::OnCollisionExit(const Collision * collision)
 {
+	
 	if (dynamic_cast<CCube*>(collision->otherObj))
 	{
 		m_bIsOnGround = false;
@@ -2132,6 +2158,10 @@ HRESULT CBoss2::Add_Component(void)
 	pComponent = m_pScreamParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BossScream", this));
 	NULL_CHECK_RETURN(m_pScreamParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BossScream", pComponent });
+
+	pComponent = m_pLandingParticle = dynamic_cast<CSuperLandingParticle*>(Engine::Clone_Proto(L"SuperLandingParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SuperLandingParticle", pComponent });
 
 	return S_OK;
 }
@@ -2233,7 +2263,7 @@ void CBoss2::Do_Jump_02(const _float& fTimeDelta)
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Jump");
 	dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Jump");
-
+	m_iJumpCount++;
 	CheckIsLastActionIdx();
 	m_dwRestTime = 1;
 }
@@ -2306,18 +2336,14 @@ void CBoss2::SetPartten()
 	m_ePreState = m_eCurrentState;
 	switch (m_eCurrentState)
 	{
-	case B2_THROW:
-		if (ran <4)
-			m_eCurrentState = B2_JUMPING;
-		else
-			m_eCurrentState = B2_SCREAM;
-		break;
-		break;
 	case B2_JUMPING:
-		if (ran <4)
+		if (m_iJumpCount!=2)
 			m_eCurrentState = B2_JUMPING;
 		else
+		{
 			m_eCurrentState = B2_SCREAM;
+			m_iJumpCount = 0;
+		}
 		break;
 	case B2_SCREAM:
 		if (ran <3)
@@ -2328,14 +2354,9 @@ void CBoss2::SetPartten()
 			m_eCurrentState = B2_PUNCH;
 		break;
 	case B2_PUNCH:
-		if (ran <4)
-			m_eCurrentState = B2_JUMPING;
-		else
-			m_eCurrentState = B2_SCREAM;
-		break;
+		m_eCurrentState = B2_JUMPING;
 		break;
 	case B2_STUMP:
-		//찍기후엔 무조건 점프
 		m_eCurrentState = B2_JUMPING;
 		break;
 	}
@@ -2348,18 +2369,6 @@ void CBoss2::ReadyPartten()
 	funcAction.reserve(B2_END);
 
 	BOSS2_STATE_FUNC func; //idle
-
-	func.push_back(&CBoss2::Do_Jump_Ready);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_01);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_Jump_02);
-	func.push_back(&CBoss2::Do_Rest);
-	func.push_back(&CBoss2::Do_ResetVelocity);
-	func.push_back(&CBoss2::Do_Idle);
-	func.push_back(&CBoss2::Do_Rest);
-	funcAction.push_back(func);
-	func.clear();
 
 	func.push_back(&CBoss2::Do_Jump_Ready);
 	func.push_back(&CBoss2::Do_Rest);
@@ -2507,9 +2516,9 @@ void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 void CBoss2::Do_LittleUp_Turn(const _float & fTimeDelta)
 {
 	if(g_Is2D)
-		m_pRigid->AddTorque(_vec3(0, 1, 0), 100.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddTorque(_vec3(0, 1, 0), (rand()%2==0)?110:90, IMPULSE, fTimeDelta);
 	else
-		m_pRigid->AddTorque(_vec3(1, 0, 0), 100.f, IMPULSE, fTimeDelta);
+		m_pRigid->AddTorque(_vec3(1, 0, 0), (rand() % 2 == 0) ? 110 : 90, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 }
 
@@ -2590,13 +2599,26 @@ void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 
 void CBoss2::Check_CircleParticle()
 {
+	if (!m_pLandingParticle->IsDead())
+	{
+		CGameObject* pGameObject = nullptr;
+		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+
+		if (pGameObject == nullptr)
+			return;
+		for (auto& iter : m_pLandingParticle->Get_Particles())
+		{
+			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
+			{
+				dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead();
+			}
+		}
+	}
+
 	if (!m_pCircleParticle->IsDead())
 	{
 		CGameObject* pGameObject = nullptr;
-		if (g_Is2D)
-			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		else
-			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 
 		if (pGameObject == nullptr)
 			return;
@@ -2604,11 +2626,43 @@ void CBoss2::Check_CircleParticle()
 		{
 			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
 			{
-				// 피격처리
-				int a = 1;
+				dynamic_cast<CTopdee*>(pGameObject)->SetDie();
 			}
 		}
 	}
+}
+
+_bool CBoss2::AppearanceAction(const _float& fTimeDelta)
+{
+	m_dwApperance_Timer -= fTimeDelta;
+	switch (m_iAppearanceCnt)
+	{
+	case 0:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_iAppearanceCnt++;
+			m_dwApperance_Timer = 1;
+			Do_Scream(fTimeDelta);
+		}
+		return false;
+	case 1:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_iAppearanceCnt++;
+			m_dwApperance_Timer = 1;
+			Do_ScreamEnd(fTimeDelta);
+			m_iCurrentActionIdx = 0;
+		}
+		return false;
+	case 2:
+		if (m_dwApperance_Timer <= 0)
+		{
+			m_dwRestTime = 0;
+			m_iAppearanceCnt++;
+		}
+		return false;
+	}
+	return true;
 }
 
 CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
