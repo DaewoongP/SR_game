@@ -187,7 +187,7 @@ void CGravityCube::Do_CheckRay_Down()
 	if (m_bIsStone)
 		return;
 
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS], _vec3(0, -1, 0), 1.01f), m_pCollider);
 	if (_detectedCOL.size() >= 1)
 	{
 		if (dynamic_cast<CCube*>(_detectedCOL[0].col->m_pGameObject))
