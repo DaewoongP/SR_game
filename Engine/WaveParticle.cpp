@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "CircleParticle.h"
+#include "WaveParticle.h"
 
 #include "Export_Function.h"
-CCircleParticle::CCircleParticle(LPDIRECT3DDEVICE9 pGraphicDev,
+CWaveParticle::CWaveParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 	const _tchar * pPath,
 	_int iTextureNum,
 	_float fSize,
@@ -33,21 +33,23 @@ CCircleParticle::CCircleParticle(LPDIRECT3DDEVICE9 pGraphicDev,
 		AddParticle();
 }
 
-CCircleParticle::CCircleParticle(const CCircleParticle & rhs)
+CWaveParticle::CWaveParticle(const CWaveParticle & rhs)
 	:CParticleSystem(rhs),
 	m_fLifeTime(rhs.m_fLifeTime),
-	m_vUp(rhs.m_vUp)
+	m_vUp(rhs.m_vUp),
+	m_fSin(rhs.m_fSin)
 {
 	m_fCurRad = 0;
+	m_fSin = 0;
 	for (auto& iter : rhs.m_Particles)
 		m_Particles.push_back(iter);
 }
 
-CCircleParticle::~CCircleParticle()
+CWaveParticle::~CWaveParticle()
 {
 }
 
-void CCircleParticle::ResetParticle(Particle * particle)
+void CWaveParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
@@ -68,10 +70,10 @@ void CCircleParticle::ResetParticle(Particle * particle)
 	particle->fAge = 0;
 	particle->fLifeTime = m_fLifeTime;
 	particle->fSizeoverLifetime = 1;
-	particle->vAccel = { 0,0,0 };
+	m_fSin = 0.f;
 }
 
-_int CCircleParticle::Update_Particle()
+_int CWaveParticle::Update_Particle()
 {
 	if (!m_bTrigger)
 		return 0;
@@ -86,10 +88,10 @@ _int CCircleParticle::Update_Particle()
 			if (it->fGenTime != 0 && it->fGenTime > it->fAge)
 				continue;
 
+			it->vVelocity.y = sinf(m_fSin) * 20.f;
+			m_fSin += D3DXToRadian(1.f);
 			it->vPos += it->vVelocity * fTimeDelta;
-			it->vVelocity += it->vAccel;
-			if (D3DXVec3Length(&it->vAccel) > D3DXVec3Length(&it->vVelocity))
-				it->vAccel = { 0.f, 0.f, 0.f };
+
 			m_Size *= it->fSizeoverLifetime;
 			if (m_pTexture->IsAnimationEnd(L"Idle"))
 				m_pTexture->Reset_Anim();
@@ -107,7 +109,7 @@ _int CCircleParticle::Update_Particle()
 	return -1;
 }
 
-CCircleParticle * CCircleParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
+CWaveParticle * CWaveParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	const _tchar * pPath,
 	_int iTextureNum,
 	_float fSize,
@@ -115,7 +117,7 @@ CCircleParticle * CCircleParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	_bool isWorld,
 	_float fLifeTime)
 {
-	CCircleParticle *	pInstance = new CCircleParticle(pGraphicDev,
+	CWaveParticle *	pInstance = new CWaveParticle(pGraphicDev,
 		pPath,
 		iTextureNum,
 		fSize,
@@ -132,12 +134,12 @@ CCircleParticle * CCircleParticle::Create(LPDIRECT3DDEVICE9 pGraphicDev,
 	return pInstance;
 }
 
-CComponent * CCircleParticle::Clone(void)
+CComponent * CWaveParticle::Clone(void)
 {
-	return new CCircleParticle(*this);
+	return new CWaveParticle(*this);
 }
 
-void CCircleParticle::Free(void)
+void CWaveParticle::Free(void)
 {
 	__super::Free();
 }

@@ -28,6 +28,7 @@ CMiniStage1::~CMiniStage1()
 HRESULT CMiniStage1::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_MINI1;
+	Engine::StopSound(SOUND_BGM);
 	//m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);

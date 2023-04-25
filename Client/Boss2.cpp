@@ -52,7 +52,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pRigid->m_bUseGrivaty = false;
 
-	m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
+	m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 	return S_OK;
 }
 
@@ -2006,20 +2006,12 @@ void CBoss2::Render_GameObject()
 	m_pCircleParticle->Update_Particle();
 	m_pJumpParticle->Update_Particle();
 	m_pScreamParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
 	__super::Render_GameObject();
-}
-
-void CBoss2::SwapTrigger()
-{
-	if (g_Is2D)
-		m_pCircleParticle->Set_Options({ 0,1,0 }, 20.f);
-	else
-		m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 }
 
 void CBoss2::OnCollisionEnter(const Collision * collision)
 {
-	//?…ì´???¿ìœ¼ë©?ì¶©ê²© ??ì£¼ê²Ÿ??
 	if (dynamic_cast<CCube*>(collision->otherObj)&&collision->_dir == DIR_DOWN)
 	{
 		m_bIsOnGround = true;
@@ -2032,14 +2024,22 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
 			!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
 		{
-			// 원형파티클 옵션
 			BoundingBox box;
 			box.Offset(m_pTransform->m_vInfo[INFO_POS]);
-			box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
-			box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
-			m_pCircleParticle->Set_BoundingBox(box);
-			m_pCircleParticle->Set_Size(3.f);
-			m_pCircleParticle->Start_Particle();
+			if (g_Is2D)
+			{
+				m_pLandingParticle->Set_BoundingBox(box);
+				m_pLandingParticle->Set_Size(3.f);
+				m_pLandingParticle->Start_Particle();
+			}
+			else
+			{
+				box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+				box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+				m_pCircleParticle->Set_BoundingBox(box);
+				m_pCircleParticle->Set_Size(3.f);
+				m_pCircleParticle->Start_Particle();
+			}
 		}
 		StopSound(SOUND_EFFECT_ENEMY);
 		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
@@ -2132,6 +2132,10 @@ HRESULT CBoss2::Add_Component(void)
 	pComponent = m_pScreamParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"BossScream", this));
 	NULL_CHECK_RETURN(m_pScreamParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"BossScream", pComponent });
+
+	pComponent = m_pLandingParticle = dynamic_cast<CSuperLandingParticle*>(Engine::Clone_Proto(L"SuperLandingParticle", this));
+	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"SuperLandingParticle", pComponent });
 
 	return S_OK;
 }
@@ -2593,14 +2597,28 @@ void CBoss2::Check_CircleParticle()
 	if (!m_pCircleParticle->IsDead())
 	{
 		CGameObject* pGameObject = nullptr;
-		if (g_Is2D)
-			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
-		else
-			pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 
 		if (pGameObject == nullptr)
 			return;
 		for (auto& iter : m_pCircleParticle->Get_Particles())
+		{
+			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
+			{
+				// 피격처리
+				int a = 1;
+			}
+		}
+	}
+
+	if (!m_pLandingParticle->IsDead())
+	{
+		CGameObject* pGameObject = nullptr;
+		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
+
+		if (pGameObject == nullptr)
+			return;
+		for (auto& iter : m_pLandingParticle->Get_Particles())
 		{
 			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
 			{

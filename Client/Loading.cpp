@@ -367,6 +367,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"CircleParticle", CCircleParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_1.png", 1,
 		1.f, 200, false, 10.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SuperLandingParticle", CSuperLandingParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
+		1.f, 200, false)), E_FAIL);
 	// 2보스 점프 파티클
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2JumpParticle", CJumpParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
