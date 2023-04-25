@@ -27,6 +27,7 @@ CStage1::~CStage1()
 
 HRESULT CStage1::Ready_Scene(void)
 {
+	
 	m_eLoadingID = LOADING_STAGE1;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -38,6 +39,8 @@ HRESULT CStage1::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(0, this);
 	CImguiMgr::GetInstance()->Get_BG()->LoadBG(0, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	StopSound(SOUND_BGM);
+	PlayBGM(L"19.wav", 0.35f);
 	return S_OK;
 }
 

@@ -64,6 +64,7 @@ public:
 	_bool					m_bIsCol[DIR_END] = { 0 };
 	_bool					m_bIsStone=false;
 	_bool					m_bIsFall = false;
+	_int m_iCount = 0;
 
 public:
 	static CMoveCube*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

@@ -24,6 +24,8 @@ CStage6::~CStage6()
 
 HRESULT CStage6::Ready_Scene(void)
 {
+	StopSound(SOUND_BGM);
+	PlayBGM(L"17.wav", 0.4f);
 	m_eLoadingID = LOADING_STAGE6;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -36,8 +38,7 @@ HRESULT CStage6::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_BG()->LoadBG(5, this);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	Engine::StopSound(SOUND_BGM);
-	Engine::PlayBGM(L"0.wav", 0.35f);
+
 	return S_OK;
 }
 

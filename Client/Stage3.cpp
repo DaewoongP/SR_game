@@ -25,6 +25,8 @@ CStage3::~CStage3()
 
 HRESULT CStage3::Ready_Scene(void)
 {
+	StopSound(SOUND_BGM);
+	PlayBGM(L"11.wav", 0.4f);
 	m_eLoadingID = LOADING_STAGE3;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -38,9 +40,7 @@ HRESULT CStage3::Ready_Scene(void)
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
-	Engine::StopSound(SOUND_BGM);
-	Engine::PlayBGM(L"1.wav", 0.35f);
-	
+
 	return S_OK;
 } 
 

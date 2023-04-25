@@ -37,14 +37,27 @@ void CThirdCamera::Swap_Camera(const _float& fTimeDelta)
 {
 	if (Engine::Get_DIKeyState(DIK_X) == Engine::KEYDOWN)
 	{
+		if (g_Is2D)
+		{
+			Engine::StopSound(SOUND_CAM);
+			Engine::PlaySound_Effect(L"71.wav", SOUND_CAM, 0.5f);
+		}
+		else
+		{
+			Engine::StopSound(SOUND_CAM);
+			Engine::PlaySound_Effect(L"70.wav", SOUND_CAM, 0.5f);
+		}
 		m_fs = 0.f;
 		g_Is2D = !g_Is2D;
+
 	}
 
 	if (g_Is2D)
 		Set_ToodeeCam(fTimeDelta);
+
 	else
 		Set_TopdeeCam(fTimeDelta);
+	
 
 	m_fs += fTimeDelta * m_fCamChangeSpeed;
 	if (m_fs > 1.f)

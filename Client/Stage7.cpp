@@ -26,6 +26,8 @@ CStage7::~CStage7()
 
 HRESULT CStage7::Ready_Scene(void)
 {
+	StopSound(SOUND_BGM);
+	PlayBGM(L"17.wav", 0.4f);
 	m_eLoadingID = LOADING_STAGE7;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -38,8 +40,7 @@ HRESULT CStage7::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_BG()->LoadBG(6, this);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	Engine::StopSound(SOUND_BGM);
-	Engine::PlayBGM(L"0.wav", 0.35f);
+
 	return S_OK;
 }
 
@@ -88,16 +89,16 @@ HRESULT CStage7::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 		{
 			//맨 윗줄
 			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
 			//사이 첫줄
 			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 5), E_FAIL);
 			//사이 마지막줄
 			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 5), E_FAIL);
 			//맨 아랫줄
 			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 4), E_FAIL);
 		}
 	}
 

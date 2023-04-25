@@ -23,5 +23,7 @@ public:
 
 private:
 	virtual void		Free(void);
+	_int m_iCount = 0;
+
 };
 

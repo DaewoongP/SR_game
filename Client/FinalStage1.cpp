@@ -35,12 +35,16 @@ CFinalStage1::~CFinalStage1()
 
 HRESULT CFinalStage1::Ready_Scene(void)
 {
+
 	m_eLoadingID = LOADING_FINAL1;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	Engine::StopSound(SOUND_BGM);
+	Engine::PlayBGM(L"3.wav", 0.35f);
+	
 	return S_OK;
 }
 
