@@ -1993,13 +1993,14 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 	m_dwRestTime -= fTimeDelta;
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-  	Check_CircleParticle();
+  	
 	return 0;
 }
 
 void CBoss2::LateUpdate_GameObject(void)
 {
 	m_pTransform->SwapYZ();
+	Check_CircleParticle();
 	__super::LateUpdate_GameObject();
 }
 
@@ -2585,23 +2586,6 @@ void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 
 void CBoss2::Check_CircleParticle()
 {
-	if (!m_pCircleParticle->IsDead())
-	{
-		CGameObject* pGameObject = nullptr;
-		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-
-		if (pGameObject == nullptr)
-			return;
-		for (auto& iter : m_pCircleParticle->Get_Particles())
-		{
-			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
-			{
-				// 피격처리
-				int a = 1;
-			}
-		}
-	}
-
 	if (!m_pLandingParticle->IsDead())
 	{
 		CGameObject* pGameObject = nullptr;
@@ -2613,8 +2597,23 @@ void CBoss2::Check_CircleParticle()
 		{
 			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
 			{
-				// 피격처리
-				int a = 1;
+				dynamic_cast<CToodee*>(pGameObject)->Set_AnimDead();
+			}
+		}
+	}
+
+	if (!m_pCircleParticle->IsDead())
+	{
+		CGameObject* pGameObject = nullptr;
+		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
+
+		if (pGameObject == nullptr)
+			return;
+		for (auto& iter : m_pCircleParticle->Get_Particles())
+		{
+			if (2.f > D3DXVec3Length(&(pGameObject->m_pTransform->m_vInfo[INFO_POS] - iter.vPos)))
+			{
+				dynamic_cast<CTopdee*>(pGameObject)->SetDie();
 			}
 		}
 	}

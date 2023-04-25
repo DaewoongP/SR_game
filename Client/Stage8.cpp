@@ -16,6 +16,7 @@
 #include "Spike.h"
 #include "InstallCube.h"
 #include"ImguiBG.h"
+#include "Fade.h"
 
 
 CStage8::CStage8(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -33,6 +34,7 @@ CStage8::~CStage8()
 HRESULT CStage8::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_STAGE8;
+	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);

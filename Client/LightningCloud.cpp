@@ -3,6 +3,8 @@
 
 #include"..\Engine\Export_Function.h"
 #include "AbstractFactory.h"
+#include "Toodee.h"
+#include "Topdee.h"
 CLightningCloud::CLightningCloud(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCloud(pGraphicDev),
 	m_bInit(true)
@@ -382,9 +384,7 @@ void CLightningCloud::CheckPlayerInLightning()
 		CheckRay(RayPos2, m_vLightningSize2.y) || 
 		CheckRay(RayPos3, m_vLightningSize3.y))
 	{
-		//Player In Lightning
-		// 사망처리같은거 여기서하면됨.
-		int a = 1;
+
 	}
 }
 
@@ -410,10 +410,12 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 	{
 		if (!lstrcmp(_detectedCOL[0].tag, L"Toodee") && _detectedCOL[0].dist <= fLightningSizeY)
 		{
+			dynamic_cast<CToodee*>(_detectedCOL[0].col->m_pGameObject)->Set_AnimDead();
 			return true;
 		}
 		if (!lstrcmp(_detectedCOL[0].tag, L"Topdee") && _detectedCOL[0].dist <= fLightningSizeY)
 		{
+			dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
 			return true;
 		}
 	}
