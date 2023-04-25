@@ -16,8 +16,10 @@ END
 
 class CLaserTurret : public Engine::CGameObject
 {
+public:
 	enum Laser_Dir
 	{
+		LASER_UP,
 		LASER_RIGHT,
 		LASER_LEFT,
 		LASER_END

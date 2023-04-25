@@ -30,6 +30,12 @@ HRESULT CFrame::Ready_Frame(const _float & fCallLimit)
 	return S_OK;
 }
 
+HRESULT CFrame::Reset_Frame()
+{
+	m_fAccTimeDelta = 0;
+	return S_OK;
+}
+
 CFrame * CFrame::Create(const _float& fCallLimit)
 {
 	CFrame *	pInstance = new CFrame;

@@ -60,10 +60,8 @@ _int CBoss2::Update_GameObject(const _float & fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	//?Œë ˆ?´ì–´ ê°€?¸ì˜¤ê¸?
 	if (!m_bInit)
 	{
-		//?ˆì•Œ ?ìª½ ?ì„±
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
