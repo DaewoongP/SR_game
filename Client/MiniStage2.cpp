@@ -25,6 +25,7 @@ HRESULT CMiniStage2::Ready_Scene(void)
 {
 	m_eLoadingID = LOADING_MINI2;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
+	Engine::FrameResetToZero(L"MiniFin");
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -73,7 +74,7 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(58.f, 20.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(56.f, 20.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(54.f, 20.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(3.f, 2.f, 10.f), _int(0)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pLayer, _vec3(3.f, 2.f, 10.f), _int(CLaserTurret::LASER_LEFT)), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

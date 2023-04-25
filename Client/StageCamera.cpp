@@ -36,7 +36,7 @@ _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 	_matrix matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 100.f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 50.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
 	return 0;
@@ -103,12 +103,6 @@ void CStage1Camera::Key_Input(const _float & fTimeDelta)
 		}
 		
 	}
-
-	//카메라 쉐이크 사용 예
-	if (Engine::Get_DIKeyState(DIK_F5) == Engine::KEYDOWN)
-		m_pTransform->Set_Shake(1.0f, 100.0f, SHAKE_X);
-
-
 }
 
 void CStage1Camera::Move_Camera(const _float & fTimeDelta)

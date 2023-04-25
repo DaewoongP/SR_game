@@ -32,6 +32,7 @@ public:
 	_uint				Loading_ForStage6(void);
   _uint				Loading_ForStage7(void);
 	_uint				Loading_ForStage8(void);
+	_uint				Loading_ForStage9(void);
 	_uint				Loading_ForMini2(void);
 
 	_uint				Loading_ForStage10(void);

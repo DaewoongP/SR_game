@@ -757,8 +757,7 @@ void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 		return;
 	if (pStageLayer != nullptr)
 		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, 
-			m_Player->m_vInfo[INFO_POS]
-			);
+			m_Player->m_vInfo[INFO_POS]);
 
 	dynamic_cast<CBoss1Parts*>(m_PartsVec[14]->m_pGameObject)->SetTextureIdx(5);
 

@@ -97,6 +97,8 @@ private:
   void		Check_CircleParticle();
 public:
 	_bool		Get_Flip_Y() { return m_bFlip_Y; }
+	
+
 private:	
 	BOSS2STATE m_eCurrentState;
 	BOSS2STATE m_ePreState;
@@ -120,7 +122,6 @@ private:
 	_bool		m_bInit;
 
 	_bool		m_bAttackAble;
-	_int		m_bHealth;
 
 private:
 	Engine::CCollider*			m_pCollider;

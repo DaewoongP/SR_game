@@ -50,7 +50,6 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
-
 	m_pTextureCom_Back->Update_Anim(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
@@ -62,6 +61,7 @@ _int CMiniGamePig::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
 

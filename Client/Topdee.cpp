@@ -488,7 +488,6 @@ void CTopdee::SwapTrigger()
 		m_MovetoPos.y = y - 1;
 	else
 		m_MovetoPos.y = y + 1;
-
 	if (g_Is2D)
 	{
 		Set_SlerpParticle();

@@ -98,12 +98,12 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 		}
 	}
 
-	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
+
 	for (auto& iter : m_RenderGroup[RENDER_UI])
 	{
 		iter->Render_GameObject();
@@ -113,6 +113,8 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
 		else
 			iter->Render_Top();
 	}
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	
 }
 
 void CRenderer::Free(void)

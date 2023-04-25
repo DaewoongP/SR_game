@@ -11,6 +11,8 @@
 #include "ImguiStage.h"
 #include "ImguiUnit.h"
 #include "Fade.h"
+#include"ImguiBG.h"
+
 CStage3::CStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
 {
@@ -32,6 +34,8 @@ HRESULT CStage3::Ready_Scene(void)
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(2, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(2, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(2, this);
+	CImguiMgr::GetInstance()->Get_BG()->LoadBG(2, this);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	
 	Engine::StopSound(SOUND_BGM);
@@ -62,7 +66,7 @@ HRESULT CStage3::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -79,7 +83,24 @@ HRESULT CStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(60.f, 27.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(32.f, 32.f, 11.f)), E_FAIL);
 
-	
+	for (int i = 0; i < CUBEY; i++)
+	{
+		for (int j = 0; j < CUBEX; j++)
+		{
+			//맨 윗줄
+			if (i == 0)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//사이 첫줄
+			if (i == CUBEY - 1)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//사이 마지막줄
+			if (j == 0)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+			//맨 아랫줄
+			if (j == CUBEX - 1)
+				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
+		}
+	}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
