@@ -37,7 +37,8 @@ public:
 public:
 	void				Set_Dead() { m_bDead = true; }
 	_int				Get_Hp() { return m_iHp; }
-	_bool		Get_Damage() { return m_bDamage = true; }
+	_bool		Get_Damage() { return m_bDamage; }
+	_bool		Set_Damage() { return m_bDamage = false; }
 	_bool		m_bDamage = false;
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);

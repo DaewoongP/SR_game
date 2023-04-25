@@ -19,7 +19,7 @@ private:
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 	void				PatternSet(const _float & fTimeDelta);
-	void				Player_Reset();
+	void				Player_Reset(const _float & fTimeDelta);
 
 private:
 	_int				m_iPreBossHp;
@@ -30,6 +30,8 @@ private:
 
 public:
 	static CStage8*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	_int m_iHp;
+	_bool m_bUICheck = false;
 
 private:
 	virtual void		Free(void);

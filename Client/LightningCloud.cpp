@@ -96,8 +96,8 @@ void CLightningCloud::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 	
-	// °¢°¢ ¹ø°³¿¡ ¿ùµåÇà·Ä Àû¿ë
-	// °´Ã¼ »õ·Î ¸¸µé±â ³Ê¹« ±ÍÂú¾Ò¾î¿ä
+	// ê°ê° ë²ˆê°œì— ì›”ë“œí–‰ë ¬ ì ìš©
+	// ê°ì²´ ìƒˆë¡œ ë§Œë“¤ê¸° ë„ˆë¬´ ê·€ì°®ì•˜ì–´ìš”
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, MakeLightningMatrix(1));
 	m_pLightningTex1->Set_Texture();
 	m_pLightningRc1->Render_Buffer();
@@ -342,27 +342,27 @@ _matrix* CLightningCloud::MakeLightningMatrix(size_t LightningNum)
 	switch (LightningNum)
 	{
 	case 1:
-		// x 2°íÁ¤, y ¹ø°³ »çÀÌÁî, z°ª °íÁ¤
+		// x 2ê³ ì •, y ë²ˆê°œ ì‚¬ì´ì¦ˆ, zê°’ ê³ ì •
 		D3DXMatrixScaling(&matScale, 1.f, m_vLightningSize1.y / 2.f, 1.f);
-		// x ¿ŞÂÊ -2, y ½ºÄÉÀÏ ÁÙ¾îµç ¸¸Å­ À§·Îº¸Á¤, z°ª °íÁ¤
+		// x ì™¼ìª½ -2, y ìŠ¤ì¼€ì¼ ì¤„ì–´ë“  ë§Œí¼ ìœ„ë¡œë³´ì •, zê°’ ê³ ì •
 		D3DXMatrixTranslation(&matTrans, 
 			vPos.x - 2.f, 
 			vPos.y - m_vLightningSize1.y / 2.f,
 			m_vLightningSize1.z);
 		break;
 	case 2:
-		// x 2°íÁ¤, y ¹ø°³ »çÀÌÁî, z°ª °íÁ¤
+		// x 2ê³ ì •, y ë²ˆê°œ ì‚¬ì´ì¦ˆ, zê°’ ê³ ì •
 		D3DXMatrixScaling(&matScale, 1.f, m_vLightningSize2.y / 2.f, 1.f);
-		// x = pos.x , y ½ºÄÉÀÏ ÁÙ¾îµç ¸¸Å­ À§·Îº¸Á¤, z°ª °íÁ¤
+		// x = pos.x , y ìŠ¤ì¼€ì¼ ì¤„ì–´ë“  ë§Œí¼ ìœ„ë¡œë³´ì •, zê°’ ê³ ì •
 		D3DXMatrixTranslation(&matTrans,
 			vPos.x,
 			vPos.y - m_vLightningSize2.y / 2.f,
 			m_vLightningSize2.z);
 		break;
 	case 3:
-		// x 2°íÁ¤, y ¹ø°³ »çÀÌÁî, z°ª °íÁ¤
+		// x 2ê³ ì •, y ë²ˆê°œ ì‚¬ì´ì¦ˆ, zê°’ ê³ ì •
 		D3DXMatrixScaling(&matScale, 1.f, m_vLightningSize3.y / 2.f, 1.f);
-		// x + 2.f , y ½ºÄÉÀÏ ÁÙ¾îµç ¸¸Å­ À§·Îº¸Á¤, z°ª °íÁ¤
+		// x + 2.f , y ìŠ¤ì¼€ì¼ ì¤„ì–´ë“  ë§Œí¼ ìœ„ë¡œë³´ì •, zê°’ ê³ ì •
 		D3DXMatrixTranslation(&matTrans,
 			vPos.x + 2.f,
 			vPos.y - m_vLightningSize3.y / 2.f,

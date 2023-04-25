@@ -115,10 +115,13 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
-	//Engine::PlayBGM(L"9.wav", 0.5f);
+	Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
-	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
+	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
+
+	Set_String(L"Sound/Effect Loading..........");
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Shader_Rect", CShader::Create(m_pGraphicDev, L"Rect.hlsl")), E_FAIL);
 
 	Set_String(L"Texture Loading....");
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme3BgSpr/theme3BgSpr_0.png")), E_FAIL);
@@ -219,7 +222,7 @@ _uint CLoading::Loading_ForLogo(void)
 
 	
 	//보스체력
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss_HP_Tex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bossHealthSpr/bossHealthSpr_%d.png",1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss_HP_Tex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bossHealthSpr/bossHealthSpr_%d.png",2)), E_FAIL);
 
 	//Boss2 머리털
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
@@ -235,10 +238,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Stone", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme2pigStatueSpr/theme2pigStatueSpr_0.png")), E_FAIL);
 	m_iLoadingTexImgNum = 9;
 	// 3보스 눈썹 + 눈알
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3EyeSpr/boss3EyeSpr_%d.png", 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Eye", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3EyeSpr/boss3EyeSpr_%d.png", 6)), E_FAIL);
 	// 3보스 입
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/boss3MouthSpr_%d.png", 3)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth_Shoot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/CompleteMouth/Lip%d.png", 6)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Mouth_Shoot", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3MouthSpr/CompleteMouth/Lip%d.png", 7)), E_FAIL);
 	// 3보스 사슬
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPartSpr_%d.png", 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart_Shadow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPart_ShadowSpr_%d.png", 3)), E_FAIL);

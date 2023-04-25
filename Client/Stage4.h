@@ -22,6 +22,8 @@ private:
 public:
 	static CStage4*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	_int m_iHp;
+	_float		m_fHittime;
+
 private:
 	virtual void		Free(void);
 };

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Texture.h"
+#include "Shader.h"
 
 
 
@@ -125,17 +126,15 @@ void CTexture::Set_Texture(const _uint & iIndex)
 		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
 }
 
-//void CTexture::Set_Cube(_tchar* pProtoTag)
-//{
-//	auto iter = find(m_vecTexture.begin(), m_vecTexture.end(), pProtoTag);
-//	if (iter != m_vecTexture.end())
-//	{
-//		m_pGraphicDev->SetTexture(0, m_vecTexture[pProtoTag]);
-//	}
-//	else
-//		m_pGraphicDev->SetTexture(0, m_vecTexture[m_CurIdx]);
-//
-//}
+void CTexture::Set_TextureOnShader(CShader * pShader, D3DXHANDLE hParameter, const _uint & iIndex)
+{
+	if (m_vecTexture.size() <= iIndex)
+		return;
+	if (!m_bUseFrameAnimation)
+		pShader->Set_Texture(hParameter, m_vecTexture[iIndex]);
+	else
+		pShader->Set_Texture(hParameter, m_vecTexture[m_CurIdx]);
+}
 
 _bool CTexture::IsAnimationEnd(_tchar* name)
 {

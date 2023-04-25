@@ -58,8 +58,9 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	return S_OK;
 }
 
-_int CBoss2::Update_GameObject(const _float & fTimeDelta)
+_int CBoss2::Update_GameObject(const _float& fTimeDelta)
 {
+
 	__super::Update_GameObject(fTimeDelta);
 
 	if (!m_bInit)
@@ -2052,10 +2053,13 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
-	{
+	{	
+		
+		
+			
 		if (m_bAttackAble)
 		{
-			m_bDamage = true;
+			
 			//8
 			for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
@@ -2096,17 +2100,21 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 		}
 	
 	}
-		
+
 	__super::OnCollisionEnter(collision);
 }
 
 void CBoss2::OnCollisionStay(const Collision * collision)
 {
+	if (dynamic_cast<CSpike*>(collision->otherObj))
+		m_bDamage = false;
+
 	__super::OnCollisionStay(collision);
 }
 
 void CBoss2::OnCollisionExit(const Collision * collision)
 {
+	
 	if (dynamic_cast<CCube*>(collision->otherObj))
 	{
 		m_bIsOnGround = false;
