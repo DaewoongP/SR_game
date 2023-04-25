@@ -17,8 +17,8 @@
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(25.f),
-	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f), m_fDamagedTime(0.f),
-	m_bInit(true), m_bLerpMove(false), m_bDamaged(false)
+	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f), m_fDamagedTime(0.f), m_fDelay(0.f),
+	m_bInit(true), m_bLerpMove(false), m_bDamaged(false), m_bDelay(true)
 {
 	m_pToodee = nullptr;
 	m_pTopdee = nullptr;
@@ -58,7 +58,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
-	if (nullptr == m_pToodee || m_bDamaged)
+	if (nullptr == m_pToodee || m_bDamaged || m_bDelay)
 		return 0;
 
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
@@ -108,7 +108,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3::Update_Top(const _float& fTimeDelta)
 {
-	if (nullptr == m_pTopdee || m_bDamaged)
+	if (nullptr == m_pTopdee || m_bDamaged || m_bDelay)
 		return 0;
 
 	if (m_pTransform->m_vAngle.x != D3DXToRadian(-80.f))
@@ -138,10 +138,10 @@ _int CBoss3::Update_Top(const _float& fTimeDelta)
 _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
-	{
-		Boss3PartDead();
 		return OBJ_DEAD;
-	}
+
+	if (m_bDelay)
+		Delay(fTimeDelta);
 
 	if (m_bDamaged)
 	{
@@ -499,36 +499,24 @@ void CBoss3::Chain_Spark(_float fCoolDown, const _float& fTimeDelta)
 	}
 }
 
-void CBoss3::Boss3PartDead()
+void CBoss3::Delay(const _float & fTimeDelta)
 {
-	m_pBossLeftHand->m_bDead = true;
-	m_pBossRightHand->m_bDead = true;
+	_float fFinishDelayTime = 10.f;
 
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_bDead = true;
-	m_pBoss3Mouth->m_bDead = true;
+	m_fDelay += fTimeDelta;
 
-	m_pBoss3LPart->m_bDead = true;
-	m_pBoss3RPart->m_bDead = true;
-	m_pBoss3LPart1->m_bDead = true;
-	m_pBoss3RPart1->m_bDead = true;
-	m_pBoss3LPart2->m_bDead = true;
-	m_pBoss3RPart2->m_bDead = true;
-	m_pBoss3LPart3->m_bDead = true;
-	m_pBoss3RPart3->m_bDead = true;
+	m_fShootterm = 0;
+	m_fShockDown = 0;
+	m_fTimer	 = 0;
+	m_fLerpDist  = 0;
+	m_fTooTime = 0;
+	m_iATKCount  = 0;
 
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPartShadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPartShadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1Shadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1Shadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2Shadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2Shadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3Shadow")->m_bDead = true;
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
+	if (fFinishDelayTime <= m_fDelay)
+	{
+		Do_Scream(fTimeDelta);
+		m_bDelay = false;
+	}		
 }
 
 void CBoss3::DamagedBoss3(const _float& fTimeDelta)
