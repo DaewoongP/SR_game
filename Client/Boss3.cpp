@@ -17,8 +17,8 @@
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(25.f),
-	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f),
-	m_bInit(true), m_bLerpMove(false)
+	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f), m_fDamagedTime(0.f),
+	m_bInit(true), m_bLerpMove(false), m_bDamaged(false)
 {
 	m_pToodee = nullptr;
 	m_pTopdee = nullptr;
@@ -58,7 +58,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
-	if (nullptr == m_pToodee)
+	if (nullptr == m_pToodee || m_bDamaged)
 		return 0;
 
 	m_pTransform->m_vInfo[INFO_POS].z = 7.f;
@@ -108,7 +108,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3::Update_Top(const _float& fTimeDelta)
 {
-	if (nullptr == m_pTopdee)
+	if (nullptr == m_pTopdee || m_bDamaged)
 		return 0;
 
 	if (m_pTransform->m_vAngle.x != D3DXToRadian(-80.f))
@@ -141,10 +141,15 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 	{
 		Boss3PartDead();
 		return OBJ_DEAD;
-	}		
+	}
 
-	if (m_bLerpMove)
-		Lerp_Moving(fTimeDelta);
+	if (m_bDamaged)
+	{
+		DamagedBoss3(fTimeDelta);
+
+		if (m_bLerpMove)
+			Lerp_Moving(fTimeDelta);
+	}
 
 	// Boss3 생성과 크기 조정
 	if (m_bInit)
@@ -174,25 +179,13 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	if (m_bLerpMove)
+	if (m_bDamaged)
 	{
-		if (0.f < m_fLerpDist && 0.02f > m_fLerpDist)
+		if(0 == (_int)(m_fLerpDist * 250) % 2)
 			m_pTextureCom->Set_Texture();
 
-		else if (0.02f < m_fLerpDist && 0.04f > m_fLerpDist)
+		else
 			m_pTextureCom2->Set_Texture();
-
-		else if (0.04f < m_fLerpDist && 0.06f > m_fLerpDist)
-			m_pTextureCom->Set_Texture();
-
-		else if (0.06f < m_fLerpDist && 0.08f > m_fLerpDist)
-			m_pTextureCom2->Set_Texture();
-
-		else if (0.08f < m_fLerpDist && 0.1f > m_fLerpDist)
-		{
-			m_bLerpMove = false;
-			m_fLerpDist = 0.f;
-		}
 	}
 
 	else
@@ -454,7 +447,7 @@ void CBoss3::Lerp_Moving(const _float & fTimeDelta)
 	m_pTransform->m_vInfo[INFO_POS].x = vLerp.x;
 	m_pTransform->m_vInfo[INFO_POS].y = vLerp.y;
 
-	m_fLerpDist += 0.001f;
+	m_fLerpDist += fTimeDelta * 0.01f;
 }
 
 void CBoss3::Chain_Spark(_float fCoolDown, const _float& fTimeDelta)
@@ -538,6 +531,70 @@ void CBoss3::Boss3PartDead()
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
 }
 
+void CBoss3::DamagedBoss3(const _float& fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta;
+
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 25, SHAKE_ALL);
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_pTransform->m_vScale = { 1.5f, 1.5f, 1.f };
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_pTransform->m_vScale = { 1.5f, 1.5f, 1.f };
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_pTransform->m_vScale = { -2.f, 2.f, 1.f };
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
+
+	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye"))->Set_Damaged();
+	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye"))->Set_Damaged();
+
+	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil"))->Set_Damaged();
+	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil"))->Set_Damaged();
+
+	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow"))->Set_Damaged();
+	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow"))->Set_Damaged();
+
+	m_pBoss3Mouth->Set_Damaged();
+
+	m_pBoss3LPart->Set_Damaged();
+	m_pBoss3RPart->Set_Damaged();
+	m_pBoss3LPart1->Set_Damaged();
+	m_pBoss3RPart1->Set_Damaged();
+	m_pBoss3LPart2->Set_Damaged();
+	m_pBoss3RPart2->Set_Damaged();
+	m_pBoss3LPart3->Set_Damaged();
+	m_pBoss3RPart3->Set_Damaged();
+
+	if (3.f <= m_fDamagedTime)
+	{
+		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_pTransform->m_vScale = { 0.8f, 0.8f, 1.f };
+
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_pTransform->m_vScale = { -1.2f, 1.2f, 1.f };
+		Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_pTransform->m_vScale = { 1.2f, 1.2f, 1.f };
+
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+
+		m_bLerpMove = false;
+		m_fLerpDist = 0.f;
+
+		m_fTooTime = 0.f;
+		m_fTopTime = 0.f;
+
+		m_fShootterm = 0.f;
+		m_fShockDown = 0.f;
+		m_fTimer	 = 0.f;
+		m_fPreTop	 = 0.f;
+	}
+
+	return;
+}
+
 HRESULT CBoss3::CreateParts()
 {
 	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
@@ -553,8 +610,8 @@ HRESULT CBoss3::CreateParts()
 	FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossLeftPupil", pStageLayer, _vec3{ -4.4f, 1.f, +2.5f }, 1), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss3EyePupil>::Create(L"BossRightPupil", pStageLayer, _vec3{ -4.4f, 1.f, -2.5f }, 1), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossLeftEyebrow", pStageLayer, _vec3{ -4.2f, 4.f, +2.5f }, 2), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, _vec3{ -4.2f, 4.f, -2.5f }, 2), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossLeftEyebrow", pStageLayer, _vec3{ -4.21f, 4.f, +2.5f }, 2), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3Eyebrow>::Create(L"BossRightEyebrow", pStageLayer, _vec3{ -4.21f, 4.f, -2.5f }, 2), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss3Mouth>::Create(L"Boss3Mouth", pStageLayer, _vec3{ -5.f, -1.f, 0.f }), E_FAIL);
 

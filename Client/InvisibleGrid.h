@@ -3,7 +3,6 @@
 
 BEGIN(Engine)
 
-class CCollider;
 class CRcTex;
 class CTexture;
 
@@ -25,7 +24,6 @@ private:
 	HRESULT Add_Component(void);
 
 private:
-	Engine::CCollider * m_pCollider;
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
 

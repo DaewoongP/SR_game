@@ -38,6 +38,7 @@ public:
 	_int	Get_Boss3Hp() { return m_iHp; }
 
 	void	Set_Lerp() { m_bLerpMove = true; }	
+	void	Set_Damaged() { m_bDamaged = true; }
 	void	Set_Damage() { --m_iHp; }
 
 private:
@@ -52,6 +53,7 @@ private:
 	void	Lerp_Moving(const _float& fTimeDelta);
 	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
 	void	Boss3PartDead();
+	void	DamagedBoss3(const _float& fTimeDelta);
 
 private:
 	CToodee*		m_pToodee;
@@ -88,6 +90,9 @@ private:
 	_bool	m_bSpin = true;
 	_float	m_fSoundCool;
 	_bool	m_bSound;
+
+	_bool	m_bDamaged;
+	_float	m_fDamagedTime;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;

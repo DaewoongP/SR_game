@@ -4,7 +4,10 @@
 
 CBoss3HandPart::CBoss3HandPart(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev),
-	m_bSparkON(false)
+	m_bSparkON(false),
+	m_fDamagedTime(0.f),
+	m_bDamaged(false),
+	m_bWhiteIndex(0)
 {
 	m_pBoss3 = nullptr;
 	m_pBoss3LPart = nullptr;
@@ -31,6 +34,8 @@ HRESULT CBoss3HandPart::Ready_GameObject(_vec3& vPos,_int iIndex)
 	m_pSparkAnimation->Switch_Anim(L"Spark");
 	m_pSparkAnimation->m_bUseFrameAnimation = true;
 
+	m_bWhiteIndex = m_iIndex + 1;
+
 	return S_OK;
 }
 
@@ -38,6 +43,9 @@ _int CBoss3HandPart::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	if (m_bDamaged)
+		DamagedBoss3(fTimeDelta);
 
 	m_pBoss3LPart = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left");
 	NULL_CHECK_RETURN(m_pBoss3LPart, E_FAIL);
@@ -146,12 +154,21 @@ void CBoss3HandPart::LateUpdate_GameObject(void)
 void CBoss3HandPart::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
+	
+	if (m_bDamaged)
+	{
+		if (0 == (_int)(m_fDamagedTime * 250) % 2)
+			m_pTextureCom->Set_Texture(m_iIndex);
 
-	if (m_bSparkON)
-		m_pSparkAnimation->Set_Texture(0);	
+		else
+			m_pTextureCom->Set_Texture(m_bWhiteIndex);
+	}
 
 	else
 		m_pTextureCom->Set_Texture(m_iIndex);
+
+	if (m_bSparkON)
+		m_pSparkAnimation->Set_Texture(0);	
 
 	if (!lstrcmp(m_pTag, L"Boss3LPartShadow") || !lstrcmp(m_pTag, L"Boss3RPartShadow")||
 		!lstrcmp(m_pTag, L"Boss3LPart1Shadow") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow")||
@@ -184,11 +201,18 @@ HRESULT CBoss3HandPart::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTextureCom2, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Boss3_HandPart_Shadow", pComponent });
 
-	pComponent = m_pShadowCom = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
-	NULL_CHECK_RETURN(m_pShadowCom, E_FAIL);
-	m_vecComponent[ID_DYNAMIC].push_back({ L"Shadow",pComponent });
-
 	return S_OK;
+}
+
+void CBoss3HandPart::DamagedBoss3(const _float & fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta * 0.01f;
+
+	if (3.f <= m_fDamagedTime * 100.f)
+	{
+		m_bDamaged = false;
+		m_fDamagedTime = 0.f;
+	}
 }
 
 CBoss3HandPart* CBoss3HandPart::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos,_int iIndex)
