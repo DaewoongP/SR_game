@@ -19,6 +19,7 @@ HRESULT CBoss1Hand::Ready_GameObject(_vec3 & vPos,_vec3 vToWard)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(5,5,5);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(90), D3DXToRadian(90), 0);
+	m_pCollider->Set_BoundingBox({4,4,4}, {0,0,0});
 	m_vToWard = vToWard;
 	m_fSpeed = 1.f;
 	return S_OK;
