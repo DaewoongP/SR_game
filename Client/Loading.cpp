@@ -120,6 +120,9 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
 
+	Set_String(L"Sound/Effect Loading..........");
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Shader_Rect", CShader::Create(m_pGraphicDev, L"Rect.hlsl")), E_FAIL);
+
 	Set_String(L"Texture Loading....");
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/theme3BgSpr/theme3BgSpr_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"None_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/None/Alpha0.png")), E_FAIL);

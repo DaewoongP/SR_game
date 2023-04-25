@@ -24,6 +24,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="BoxParticle.h" />
     <ClInclude Include="BulletPool.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="SuperLandingParticle.h" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoxParticle.cpp" />
     <ClCompile Include="BulletPool.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="SuperLandingParticle.cpp" />

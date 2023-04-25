@@ -119,10 +119,22 @@ void CToodee::Render_GameObject(void)
 {
 	if (m_bRender)
 	{
+		_matrix matView, matProj;
+		m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+		m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-		m_pTextureCom->Set_Texture(0);
+		m_pTextureCom->Set_TextureOnShader(m_pShader, "g_Texture", 0);
+
+		m_pShader->Set_Matrix("g_WorldMatrix", m_pTransform->Get_WorldMatrixPointer());
+		m_pShader->Set_Matrix("g_ViewMatrix", &matView);
+		m_pShader->Set_Matrix("g_ProjMatrix", &matProj);
+
+		m_pShader->Begin(0);
 		m_pShadow->Render_Shadow(m_pBufferCom);
 		m_pBufferCom->Render_Buffer();
+
+		m_pShader->End();
 		__super::Render_GameObject();
 		Render_Particle();
 	}
@@ -230,6 +242,10 @@ HRESULT CToodee::Add_Component(void)
 	pComponent = m_pShadow = dynamic_cast<CShadow*>(Engine::Clone_Proto(L"Shadow", this));
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });	
+
+	pComponent = m_pShader = dynamic_cast<CShader*>(Engine::Clone_Proto(L"Shader_Rect", this));
+	NULL_CHECK_RETURN(m_pShader, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"Shader_Rect", pComponent });
 
 	return S_OK;
 }
