@@ -54,7 +54,7 @@ _int CBoss1Hand::Update_GameObject(const _float & fTimeDelta)
 	cur.z -= m_fSpeed;
 	m_pTransform->m_vInfo[INFO_POS] = cur;
 
-	if (cur.z >= 10.f && !m_pCircularParticle->IsRendering())
+	if (cur.z >= 10.f && !m_pCircularParticle->IsRendering() && m_fSpeed < 0)
 	{
 		BoundingBox box;
 		_vec3 vInfo = cur;
