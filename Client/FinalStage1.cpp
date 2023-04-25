@@ -86,13 +86,13 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 11.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(270.f, -50.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(60.f, 23.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(250.f, 20.f , 7.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(250.1f, 20.f, 5.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(180.f, 16.f , 7.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(180.1f, 16.f, 5.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
-		for (int j = 0; j < CUBEX * 4; j++)
+		for (int j = 0; j < CUBEX * 3; j++)
 		{
 			//맨 윗줄
 			if (i == 0)
@@ -104,11 +104,8 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 			//맨 아랫줄
-			if (j == CUBEX * 4 - 1)
+			if (j == CUBEX * 3 - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-
-			/*if(i != 0 && i != CUBEY - 1 && j != 0 && j != CUBEX * 4 - 1)
-				FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InvisibleGrid", pLayer, _vec3{ (_float)j * 2,(_float)i * 2, 11.f }), E_FAIL);*/
 		}
 	}
 
