@@ -21,7 +21,6 @@
 #include "FinalPortalFloor.h"
 #include "Semicolon.h"
 #include "DynamicCamera.h"
-#include "InvisibleGrid.h"
 
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
