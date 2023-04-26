@@ -39,10 +39,17 @@ void CDirectCamera::Update_Direct(const _float& fTimeDelta)
 	}
 
 	D3DXVec4Lerp(&pOut, &m_vecXYPosAngleSpeed[m_iIndex-1], &m_vecXYPosAngleSpeed[m_iIndex], m_fTimer);
-	m_vCam[EYE].x = pOut.x;
-	m_vCam[EYE].y = pOut.y;
+	
+	_vec3 vShake = { 0.0f,0.0f,-22.0f };
+
+	m_pTransform->Update_Shake(fTimeDelta, vShake);
+
+	m_vCam[EYE].x = pOut.x+vShake.x;
+	m_vCam[EYE].y = pOut.y+vShake.y;
+	m_vCam[EYE].z = vShake.z;
 	m_vCam[AT].x = pOut.x;
 	m_vCam[AT].y = pOut.y;
+
 	m_fProj[FOV] = D3DXToRadian(pOut.z);
 
 	if (1.0f == m_fTimer)
