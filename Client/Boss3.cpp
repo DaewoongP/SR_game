@@ -16,9 +16,9 @@
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(25.f),
+	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(35.f), m_fFinalTime(0.f),
 	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f), m_fDamagedTime(0.f), m_fDelay(0.f),
-	m_bInit(true), m_bLerpMove(false), m_bDamaged(false), m_bDelay(true)
+	m_bInit(true), m_bLerpMove(false), m_bDamaged(false), m_bDelay(true), m_bFinal(false)
 {
 	m_pToodee = nullptr;
 	m_pTopdee = nullptr;
@@ -138,7 +138,16 @@ _int CBoss3::Update_Top(const _float& fTimeDelta)
 _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
+	{
+		Boss3PartDead();
 		return OBJ_DEAD;
+	}
+
+	if (0 >= m_iHp)
+	{
+		m_bFinal = true;
+		FinalDamaged(fTimeDelta);
+	}
 
 	if (m_bDelay)
 		Delay(fTimeDelta);
@@ -168,10 +177,7 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 }
 
 void CBoss3::LateUpdate_GameObject(void)
-{
-	if (0 >= m_iHp)
-		m_bDead = true;
-
+{		
 	__super::LateUpdate_GameObject();
 }
 
@@ -179,9 +185,9 @@ void CBoss3::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	if (m_bDamaged)
+	if (m_bFinal)
 	{
-		if(0 == (_int)(m_fLerpDist * 250) % 2)
+		if (0 == (_int)(m_fFinalTime * 250.f) % 2)
 			m_pTextureCom->Set_Texture();
 
 		else
@@ -189,11 +195,23 @@ void CBoss3::Render_GameObject(void)
 	}
 
 	else
-		m_pTextureCom->Set_Texture();
+	{
+		if (m_bDamaged)
+		{
+			if (0 == (_int)(m_fLerpDist * 250.f) % 2)
+				m_pTextureCom->Set_Texture();
 
-	if (!g_Is2D)
-		m_pShadowCom->Render_Shadow(m_pBufferCom);
+			else
+				m_pTextureCom2->Set_Texture();
+		}
 
+		else
+			m_pTextureCom->Set_Texture();
+
+		if (!g_Is2D)
+			m_pShadowCom->Render_Shadow(m_pBufferCom);
+	}
+	
 	m_pBufferCom->Render_Buffer();
 
 	CGameObject::Render_GameObject();
@@ -507,7 +525,6 @@ void CBoss3::Delay(const _float & fTimeDelta)
 
 	m_fShootterm = 0;
 	m_fShockDown = 0;
-	m_fTimer	 = 0;
 	m_fLerpDist  = 0;
 	m_fTooTime = 0;
 	m_iATKCount  = 0;
@@ -519,11 +536,48 @@ void CBoss3::Delay(const _float & fTimeDelta)
 	}		
 }
 
-void CBoss3::DamagedBoss3(const _float& fTimeDelta)
+void CBoss3::Boss3PartDead()
 {
-	m_fDamagedTime += fTimeDelta;
+	m_pBossLeftHand->m_bDead = true;
+	m_pBossRightHand->m_bDead = true;
 
-	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 25, SHAKE_ALL);
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_bDead = true;
+	m_pBoss3Mouth->m_bDead = true;
+
+	m_pBoss3LPart->m_bDead = true;
+	m_pBoss3RPart->m_bDead = true;
+	m_pBoss3LPart1->m_bDead = true;
+	m_pBoss3RPart1->m_bDead = true;
+	m_pBoss3LPart2->m_bDead = true;
+	m_pBoss3RPart2->m_bDead = true;
+	m_pBoss3LPart3->m_bDead = true;
+	m_pBoss3RPart3->m_bDead = true;
+
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPartShadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPartShadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart1Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart1Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart2Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart2Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LPart3Shadow")->m_bDead = true;
+	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
+}
+
+void CBoss3::WhiteTwinkl()
+{
+	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye"))->Set_Damaged();
+	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye"))->Set_Damaged();
+
+	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil"))->Set_Damaged();
+	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil"))->Set_Damaged();
+
+	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow"))->Set_Damaged();
+	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow"))->Set_Damaged();
 
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
@@ -533,15 +587,6 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 
 	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_pTransform->m_vScale = { -2.f, 2.f, 1.f };
 	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
-
-	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye"))->Set_Damaged();
-	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye"))->Set_Damaged();
-
-	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil"))->Set_Damaged();
-	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil"))->Set_Damaged();
-
-	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow"))->Set_Damaged();
-	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow"))->Set_Damaged();
 
 	m_pBoss3Mouth->Set_Damaged();
 
@@ -553,6 +598,32 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 	m_pBoss3RPart2->Set_Damaged();
 	m_pBoss3LPart3->Set_Damaged();
 	m_pBoss3RPart3->Set_Damaged();
+
+	m_pBossLeftHand->Set_Damaged();
+	m_pBossRightHand->Set_Damaged();
+}
+
+void CBoss3::FinalDamaged(const _float & fTimeDelta)
+{
+	m_fFinalTime += fTimeDelta * 0.01f;
+
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 50, SHAKE_ALL);
+
+	WhiteTwinkl();
+
+	if (3.f <= m_fFinalTime * 100.f)
+	{
+		m_bDead = true;
+	}
+}
+
+void CBoss3::DamagedBoss3(const _float& fTimeDelta)
+{
+	m_fDamagedTime += fTimeDelta;
+
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 25, SHAKE_ALL);
+
+	WhiteTwinkl();
 
 	if (3.f <= m_fDamagedTime)
 	{
