@@ -17,7 +17,7 @@ protected:
 	_int m_iIndex;
 	_float m_fTimer;
 
-private:
+protected:
 	void Update_Direct(const _float& fTimeDelta);
 	
 
