@@ -60,7 +60,13 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 {
-
+	if (m_bDeadAnim&&m_dwRestTime<=0)
+	{
+		m_pCollider->m_bIsTrigger = true;
+		m_pTransform->m_vAngle.z += D3DXToRadian(10);
+		m_pTransform->m_vInfo[INFO_POS]+=_vec3(1,2,0)*fTimeDelta*30.f;
+	}
+	
 	__super::Update_GameObject(fTimeDelta);
 
 	if (!m_bInit)
@@ -1989,7 +1995,6 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 
 		m_bInit = true;
 	}
-	
 	if (AppearanceAction(fTimeDelta))
 	{
 		CheckZFloor();
@@ -2058,10 +2063,7 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 	}
 
 	if (dynamic_cast<CSpike*>(collision->otherObj))
-	{	
-		
-		
-			
+	{		
 		if (m_bAttackAble)
 		{
 			
@@ -2104,9 +2106,13 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			else 
 				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(0), 0);
 		}
-	
-	}
 
+		if (m_iHp == 0)
+		{
+			m_dwRestTime = 1;
+			m_bDeadAnim = true;
+		}
+	}
 	__super::OnCollisionEnter(collision);
 }
 
@@ -2627,7 +2633,7 @@ void CBoss2::Check_CircleParticle()
 			}
 		}
 	}
-	if (m_pCircleParticle->IsRendering() && !g_IsInvin)
+	if (m_pCircleParticle->IsRendering() &&!g_Is2D &&!g_IsInvin)
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");

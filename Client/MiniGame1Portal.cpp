@@ -5,6 +5,7 @@
 #include "SwallowPortal.h"
 #include "Toodee.h"
 #include "Topdee.h"
+#include "MiniGamePig.h"
 
 CMiniGame1Portal::CMiniGame1Portal(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
@@ -75,6 +76,7 @@ void CMiniGame1Portal::OnCollisionEnter(const Collision * collision)
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
 		//µπ∑¡¡‹.
+		dynamic_cast<CMiniGamePig*>(collision->otherObj)->SetDoStop_Mini(m_pTransform);
 	}
 	else if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
 	{
