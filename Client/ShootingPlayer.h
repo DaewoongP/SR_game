@@ -11,6 +11,14 @@ class CShootingPlayer :
 	public CGameObject
 {
 private:
+	enum SHOOTPOS
+	{
+		INIT,
+		LEFT,
+		RIGHT,
+		POS_END
+	};
+private:
 	explicit CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CShootingPlayer();
 
@@ -20,10 +28,6 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
-	virtual void OnCollisionEnter(const class Collision* collision);
-	virtual void OnCollisionStay(const class Collision* collision);
-	virtual void OnCollisionExit(const class Collision* collision);
-
 	void		Key_Input(const _float& fTimeDelta);
 private:
 	HRESULT		Add_Component(void);
@@ -32,6 +36,8 @@ private:
 	Engine::CRcTex*				m_pBuf;
 	Engine::CTexture*			m_pTex;
 
+	_float						m_fSlerp;
+	_vec3						m_vPos[POS_END];
 	CLayer*						m_pGameLogicLayer;
 public:
 	static CShootingPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

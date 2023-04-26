@@ -19,7 +19,13 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale *= 2.f;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+
+	m_vPos[INIT] = vPos;
+	m_vPos[LEFT] = vPos + _vec3(-30.f, 0.f, -10.f);
+	m_vPos[RIGHT] = vPos + _vec3(30.f, 10.f, -10.f);
+
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
+	m_fSlerp = 0.f;
 	return S_OK;
 }
 
@@ -30,9 +36,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	if (IsPermit_Call(L"1Sec", fTimeDelta))
-	{
 		Fire_bullet();
-	}
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -53,28 +57,34 @@ void CShootingPlayer::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CShootingPlayer::OnCollisionEnter(const Collision * collision)
-{
-}
-
-void CShootingPlayer::OnCollisionStay(const Collision * collision)
-{
-}
-
-void CShootingPlayer::OnCollisionExit(const Collision * collision)
-{
-}
-
 void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
+	_vec3 vUp = { 0,1,0 };
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 	{
-		m_pTransform->m_vInfo[INFO_POS].x -= 10.f * fTimeDelta;
+		m_fSlerp += fTimeDelta;
+		if (m_fSlerp >= 1.f)
+			m_fSlerp = 1.f;
+		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[LEFT], &vUp, 10.f, m_fSlerp);
+
+		return;
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
 	{
-		m_pTransform->m_vInfo[INFO_POS].x += 10.f * fTimeDelta;
+		m_fSlerp += fTimeDelta;
+		if (m_fSlerp >= 1.f)
+			m_fSlerp = 1.f;
+		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[RIGHT], &vUp, 10.f, m_fSlerp);
+
+		return;
 	}
+	m_fSlerp -= fTimeDelta;
+	if (m_fSlerp <= 0.f)
+	{
+		m_fSlerp = 0.f;
+		return;
+	}
+	GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &vUp, 10.f, m_fSlerp);
 }
 
 HRESULT CShootingPlayer::Add_Component(void)
