@@ -220,6 +220,9 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		m_bUICheck = true;
 		m_iPreBossHp = 1;
 	}
+	if(1==iBossHp==0&&1==m_iPreBossHp)
+		m_bUICheck = true;
+
 }
 
 void CStage8::Player_Reset(const _float & fTimeDelta)

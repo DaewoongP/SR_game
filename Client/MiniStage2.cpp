@@ -25,6 +25,8 @@ CMiniStage2::~CMiniStage2()
 
 HRESULT CMiniStage2::Ready_Scene(void)
 {
+	StopSound(SOUND_BGM);
+	PlayBGM(L"Mini2.wav", 0.35f);
 	m_eLoadingID = LOADING_MINI2;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	Engine::FrameResetToZero(L"MiniFin");
