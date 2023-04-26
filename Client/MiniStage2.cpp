@@ -13,6 +13,7 @@
 #include "ImguiMgr.h"
 #include"ImguiBG.h"
 #include "MiniGame1Portal.h"
+#include "StageBG.h"
 CMiniStage2::CMiniStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -61,6 +62,7 @@ HRESULT CMiniStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -75,7 +77,7 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 26.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CMiniGame1Portal>::Create(L"MiniGame1Portal", pLayer, _vec3(50.f, 26.f, 10.f)), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CMiniGame1Portal>::Create(L"MiniGame1Portal", pLayer, _vec3(50.f, 26.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMiniTopdee>::CreateParent(L"MiniTopdee", pLayer, _vec3(3.f, 4.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(60.f, 20.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(58.f, 20.f, 10.f)), E_FAIL);
