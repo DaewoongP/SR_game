@@ -43,14 +43,11 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
-	if (Engine::IsPermit_Call(L"1Sec", fTimeDelta))
-		cout << "Toodee : " << m_pTransform->m_vInfo[INFO_POS].x << " | " << m_pTransform->m_vInfo[INFO_POS].y << " | " <<
-			m_pTransform->m_vInfo[INFO_POS].z << endl;
 	if (m_bDead)
 		return OBJ_DEAD;
+	
 	if (m_bInit)
 	{
-		
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 		
 		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
