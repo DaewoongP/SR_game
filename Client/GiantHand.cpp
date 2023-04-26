@@ -104,7 +104,7 @@ void CGiantHand::OnCollisionEnter(const Collision * collision)
 	auto iter_end = pStageLayer->GetMapObject()->end();
 	for (; iter_begin != iter_end; iter_begin++)
 	{
-		if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+		if (dynamic_cast<CCube*>(iter_begin->second) != nullptr&&dynamic_cast<CCube*>(iter_begin->second)->Get_Update())
 		{
 			float dist = D3DXVec3Length(&(m_pTransform->m_vInfo[INFO_POS] - iter_begin->second->m_pTransform->m_vInfo[INFO_POS]));
 			//거리에 비례해 힘을 주겠습니다.
