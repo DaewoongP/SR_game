@@ -28,6 +28,7 @@ HRESULT CProtoMgr::Ready_Proto(const _tchar * pProtoTag, CComponent * pComponent
 CComponent * CProtoMgr::Clone_Proto(const _tchar * pProtoTag, CGameObject* pGameObject)
 {
 	CComponent*		pPrototype = Find_Proto(pProtoTag);
+
 	NULL_CHECK_RETURN(pPrototype, nullptr);
 	
 	CComponent* pClone = pPrototype->Clone();

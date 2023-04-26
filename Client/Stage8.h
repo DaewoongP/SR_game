@@ -27,7 +27,7 @@ private:
 	_bool				m_bLerpInit;
 	_float				m_fDist;
 	_vec3				m_vPos;
-
+	_bool				m_bBLive;
 public:
 	static CStage8*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	_int m_iHp;

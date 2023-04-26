@@ -95,7 +95,7 @@ HRESULT CImguiStage::GridMenu()
 		// �ε� ���
 		ImGui::SameLine();
 		if (ImGui::Button("Grid Load"))
-			FAILED_CHECK_RETURN(LoadGrid(m_iStageNumber), E_FAIL);
+			FAILED_CHECK_RETURN(LoadGrid(m_iStageNumber, Engine::Get_Scene()), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -280,7 +280,7 @@ HRESULT CImguiStage::CubeMenu()
 		// �ε� ���
 		ImGui::SameLine();
 		if (ImGui::Button("Cube Load"))
-			FAILED_CHECK_RETURN(LoadCube(m_iStageNumber), E_FAIL);
+			FAILED_CHECK_RETURN(LoadCube(m_iStageNumber, Engine::Get_Scene()), E_FAIL);
 
 
 		ImGui::TreePop();
@@ -366,9 +366,22 @@ HRESULT CImguiStage::LoadCube(_int iStageNumber, CScene* pScene)
 	DWORD	dwByte = 0;
 	OBJINFO vCubeInfo = {};
 
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	if (pStageLayer == nullptr)
-		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+	// 1. Start누르면 PreScene 생성
+	// 2. PreScene-> Loading 생성
+	// 3. Loading -> Thread 생성하여 함수로 다음스테이지 ready_scene 호출 및 Create
+	// 4. Thread돌아가는동안 PreScene Update
+	// 4.5 그래서 여기에서 씬의 layer에 for문 ㅈㄴ돌리고있으면 management의 씬교체가 일어남.
+	// 4.6 -> LoadCube 불림 -> management에 다음씬이있음.
+	// 4.7 -> 해피해피 이마트
+	// 5. Ready_Scene -> LoadCube불림
+	// 6. 근데 현재 씬은 PreScene-> 교체하는도중임 -> Management->Get_Scene = nullptr;
+	// 7. 그래서 터짐.
+	// -> 일부러 함수에 nullptr로 잡아놓고 제가 억지로 잡아둔거임
+		// 그래서 지금까지 안터졌던거임
+		// ㅇㅋ?
+		// 원래 함수 그 뭐냐 기본으로 잡는거 그시기
+		// CScene* pScene = nullptr 이렇게 안잡고  걍 포인터를 받아오게 하는게 맞음.
+	CLayer* pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
 
 	while (true)
 	{

@@ -9,9 +9,6 @@ private:
 	HRESULT Ready_Camera();
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 
-
-
-
 	_bool m_bBossDead;
 
 public:

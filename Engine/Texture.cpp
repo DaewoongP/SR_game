@@ -40,7 +40,7 @@ CTexture::~CTexture()
 HRESULT CTexture::Ready_Texture(TEXTYPE eTextype, const _tchar * pPath, const _uint & iCnt)
 {
 	m_vecTexture.reserve(iCnt);
-
+	m_CurIdx = 0;
 	IDirect3DBaseTexture9*		pTexture = nullptr;
 
 	for (_uint i = 0; i < iCnt; ++i)

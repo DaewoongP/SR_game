@@ -15,7 +15,8 @@ HRESULT CGravityCube::Ready_GameObject(_vec3 & vPos)
 {
 	__super::Ready_GameObject(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_pRigid->m_bUseLimitVelocity = true;
+	m_pRigid->m_fLimitVelocity = 30.f;
 	m_bUseGraivty = false;
 	m_pRigid->m_bUseGrivaty = false;
 	m_pTransform->m_bIsStatic = false;

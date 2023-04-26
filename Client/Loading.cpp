@@ -305,7 +305,7 @@ _uint CLoading::Loading_ForLogo(void)
 
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ThirddeeShooting", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/BackThirddee.png")), E_FAIL);
-
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Bullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/KineticBall_%d.png", 4)), E_FAIL);
 	
 	Set_String(L"Buffer Loading.......");
 
@@ -316,7 +316,6 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Rigidbody", CRigidbody::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Shadow", CShadow::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Animation", CAnimation::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BulletPool", CBulletPool::Create(m_pGraphicDev)), E_FAIL);
 
 	m_iLoadingTexImgNum = 10;
 	Set_String(L"CubeTex Loading..........");

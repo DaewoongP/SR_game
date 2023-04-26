@@ -35,7 +35,7 @@ public:
 	virtual void SwapTrigger();
 protected:
 	HRESULT		Add_Component(void);
-	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _float osc,_float csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);
+	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _vec3 osc, _vec3 csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);
 	void		SetPattern();
 	void		Do_SummonFinger(const _float& fTimeDelta);
 	void		Do_EndFinger(const _float& fTimeDelta);

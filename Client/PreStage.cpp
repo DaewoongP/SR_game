@@ -28,6 +28,7 @@ CPreStage::~CPreStage()
 
 HRESULT CPreStage::Ready_Scene(void)
 {
+	Engine::Set_Scene(this);
 	m_pLoading = CLoading::Create(m_pGraphicDev, m_eLoadingID);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -71,10 +72,6 @@ HRESULT CPreStage::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	
-	/*pGameObject = CTitle::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Title", pGameObject), E_FAIL);*/
 
 	pGameObject = CUICamera::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

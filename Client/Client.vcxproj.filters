@@ -284,17 +284,11 @@
     <Filter Include="00. GameObject\01. Monster\EvilBat">
       <UniqueIdentifier>{472991d9-1997-4da3-9f40-54327e03de36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\99. Etc\InvisibleGrid">
-      <UniqueIdentifier>{42479730-9dac-483f-af57-c4d6f645e429}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\99. Etc\Camera\DirectCamera">
       <UniqueIdentifier>{b0d50749-fec2-4657-b1dc-17bdfc815e10}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{fd8f21a7-b7c9-4eee-9b67-38fecd18ec66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. GameObject\99. Etc\Production">
-      <UniqueIdentifier>{8512c81e-8887-4320-8c53-ae41b20af34d}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. GameObject\05. Bullet">
       <UniqueIdentifier>{92735e08-74e8-4f23-9669-5b6354863b69}</UniqueIdentifier>
@@ -879,9 +873,6 @@
     <ClInclude Include="EvilBat.h">
       <Filter>00. GameObject\01. Monster\EvilBat</Filter>
     </ClInclude>
-    <ClInclude Include="InvisibleGrid.h">
-      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
-    </ClInclude>
     <ClInclude Include="MiniGame1Portal.h">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClInclude>
@@ -919,6 +910,7 @@
     <ClInclude Include="ShootingPlayer.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="Boss3DeadCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1492,9 +1484,6 @@
     <ClCompile Include="EvilBat.cpp">
       <Filter>00. GameObject\01. Monster\EvilBat</Filter>
     </ClCompile>
-    <ClCompile Include="InvisibleGrid.cpp">
-      <Filter>00. GameObject\99. Etc\InvisibleGrid</Filter>
-    </ClCompile>
     <ClCompile Include="MiniGame1Portal.cpp">
       <Filter>00. GameObject\02. MapObject\Portal</Filter>
     </ClCompile>
@@ -1532,6 +1521,7 @@
     <ClCompile Include="ShootingPlayer.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="Boss3DeadCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

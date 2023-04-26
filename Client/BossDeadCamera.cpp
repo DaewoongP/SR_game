@@ -14,13 +14,7 @@ CBoss2DeadCamera::~CBoss2DeadCamera()
 HRESULT CBoss2DeadCamera::Ready_Camera()
 {
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,40.0f, 60.f,0.5f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,0.5f });
+	
 	return S_OK;
 }
 
@@ -39,11 +33,31 @@ _int CBoss2DeadCamera::Update_GameObject(const _float & fTimeDelta)
 
 	if (false == m_bBossDead && nullptr != CBoss && 0 == CBoss->Get_Hp())
 	{
-		m_vecXYPosAngleSpeed.push_back({ 
-			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
+		m_vecXYPosAngleSpeed.push_back({
+			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
-			70.f,
+			20.f,
+			5.0f });
+		m_vecXYPosAngleSpeed.push_back({
+			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f,
+			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
+			20.f,
+			0.55f });
+		m_vecXYPosAngleSpeed.push_back({ 
+			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f + 15.0f,
+			CBoss->m_pTransform->m_vInfo[INFO_POS].y + 30.0f,
+			40.f,
 			1.0f });
+		m_vecXYPosAngleSpeed.push_back({
+			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f + 15.0f,
+			CBoss->m_pTransform->m_vInfo[INFO_POS].y + 30.0f,
+			40.f,
+			0.5f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,0.5f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,0.5f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,0.5f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,0.5f });
+
 		m_bBossDead = true;
 	}
 

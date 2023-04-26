@@ -38,9 +38,10 @@ void CStarParticle::ResetParticle(Particle * particle)
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	GetRandomVector(&particle->vPos, &_vec3(-1, -1, -1), &_vec3(1, 1, 1));
-	particle->vPos *= 200.f; // 그냥 원점에서 200거리인 벡터 랜덤생성함.
-	particle->vVelocity = _vec3(-1.f, 0.f, 0.f);
-	particle->vVelocity *= 100.f;
+	particle->vPos *= 100.f; // 그냥 원점에서 200거리인 벡터 랜덤생성함.
+	particle->vPos.y *= 2.f;
+	particle->vVelocity = _vec3(0.f, -1.f, 0.f);
+	particle->vVelocity *= 80.f;
 }
 
 _int CStarParticle::Update_Particle()
@@ -62,7 +63,7 @@ _int CStarParticle::Update_Particle()
 			// 캠과의 거리에 따라 속도가 달라짐 -> 가까울수록 빠름
 			_float fLen = D3DXVec3Length(&(vCamPos - it->vPos)) / 100;
 			it->vPos += it->vVelocity * fTimeDelta * 1 / fLen;
-			if (it->vPos.x <= 0.f)
+			if (it->vPos.y <= 0.f)
 				it->bIsAlive = false;
 		}
 		else
