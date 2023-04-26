@@ -341,7 +341,7 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Particle Loading..........");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"PortalParticle", CPortalParticle::Create(m_pGraphicDev,
-		L"../Resource/Texture/MiniGameTex/Portal_Clear.png", 1, 1.f, 100, false, 2.f, 25.f)), E_FAIL);
+		L"../Resource/Texture/Export_Textures/Sprites/shineSpr/shineSpr_0.png", 1, 1.f, 500, false, 2.f, 25.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"StarParticle", CStarParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,
