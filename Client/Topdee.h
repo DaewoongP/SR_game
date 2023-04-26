@@ -13,6 +13,7 @@ class CCollider;
 class CSlerpParticle;
 class CShadow;
 class CAnimation;
+class CCircularParticle;
 END
 class CTopdee :
 	public CGameObject
@@ -60,6 +61,7 @@ protected:
 	Engine::CAnimation*     m_pAnimation_Arm;
 	Engine::CAnimation*     m_pAnimation_Leg;
 	Engine::CAnimation*     m_pAnimation_Head;
+	Engine::CCircularParticle*	m_pDeadParticle;
 	//      LRUD
 	// 0000 0000
 	_byte					m_byPlayerInputDir;
@@ -69,6 +71,7 @@ protected:
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_bool					m_bIsMoveKeyPress = false;
+	_bool					m_bKeyInput = true;
 
 	CGameObject*			m_pGrabObj = nullptr;
 	_bool					m_bRender;

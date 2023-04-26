@@ -403,7 +403,7 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
-	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd() && m_pDeadParticle->OverOneParticleIsDead())
 		return OBJ_DEAD;
 
 	if (!m_bDead)
@@ -451,6 +451,7 @@ void CTopdee::Render_GameObject(void)
 		m_pSlerpParticle->Update_Particle();
 		__super::Render_GameObject();
 	}
+	m_pDeadParticle->Update_Particle();
 }
 
 void CTopdee::OnCollisionEnter(const Collision * collision)
@@ -520,6 +521,10 @@ HRESULT CTopdee::Add_Component(void)
 	pComponent = m_pAnimation_Head = dynamic_cast<CAnimation*>(Engine::Clone_Proto(L"Animation", this));
 	NULL_CHECK_RETURN(m_pAnimation_Head, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Animation", pComponent });
+
+	pComponent = m_pDeadParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
+	NULL_CHECK_RETURN(m_pDeadParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
 	
 	return S_OK;
 }
@@ -544,6 +549,8 @@ void CTopdee::Free(void)
 
 void CTopdee::Key_Input(const _float & fTimeDelta)
 {
+	if (!m_bKeyInput)
+		return;
 	if ((Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS ||
 		Engine::Get_DIKeyState(DIK_UP) == Engine::KEYPRESS ||
@@ -829,9 +836,18 @@ void CTopdee::SetDie()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer != nullptr)
 	{
+		m_pTransform->m_vInfo[INFO_POS].z -= 4.f;
+		m_bKeyInput = false;
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pDeadParticle->Set_BoundingBox(box);
+		m_pDeadParticle->Set_Size(1.5f);
+		m_pDeadParticle->Set_Options(0.7f, 15.f);
+
+		m_pDeadParticle->Start_Particle();
 		FACTORY<CTopdeeParts>::Create(L"Topdee_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Topdee_Die", 0, true);
 		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee_Die");
-		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.4f, false);
+		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
 		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
 		m_DiePart->SetAnim(L"Die");
 	}

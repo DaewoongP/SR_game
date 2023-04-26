@@ -8,6 +8,7 @@ CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpable(false)
 	, m_eKeyState(DIR_END)
+	, m_bKeyInput(true)
 {
 }
 
@@ -79,6 +80,18 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
 	//텍스쳐컴의 애니가 die고 완료됐다면?
+	if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die") && !m_pDeadParticle->IsRendering())
+	{
+		m_bKeyInput = false;
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pDeadParticle->Set_BoundingBox(box);
+		m_pDeadParticle->Set_Size(1.5f);
+		m_pDeadParticle->Set_Options(0.7f, 15.f);
+		m_pDeadParticle->Start_Particle();
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity *= 0.f;
+	}
 	if (m_pTextureCom->IsAnimationEnd(L"Die"))
 		m_bDead = true;
 	
@@ -241,6 +254,11 @@ HRESULT CToodee::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shader_Rect", pComponent });
 
+	pComponent = m_pDeadParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
+	NULL_CHECK_RETURN(m_pDeadParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
+
+	
 	return S_OK;
 }
 
@@ -265,6 +283,8 @@ void CToodee::Free(void)
 
 void CToodee::Key_Input(const _float & fTimeDelta)
 {
+	if (!m_bKeyInput)
+		return;
 	m_fWalkTime += fTimeDelta;
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_LEFT;
@@ -341,6 +361,7 @@ void CToodee::Render_Particle()
 	m_pLandingParticle->Update_Particle();
 	m_pSparkParticle->Update_Particle();
 	m_pSlerpParticle->Update_Particle();
+	m_pDeadParticle->Update_Particle();
 }
 
 void CToodee::Check_IsParticleDead()
@@ -351,6 +372,8 @@ void CToodee::Check_IsParticleDead()
 		m_pLandingParticle->End_Particle();
 	if (m_pSparkParticle->IsDead())
 		m_pSparkParticle->End_Particle();
+	if (m_pDeadParticle->IsDead())
+		m_pDeadParticle->End_Particle();
 }
 
 void CToodee::Set_WalkParticle()
