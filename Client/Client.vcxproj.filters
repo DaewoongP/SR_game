@@ -297,9 +297,6 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{fd8f21a7-b7c9-4eee-9b67-38fecd18ec66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\99. Etc\Production">
-      <UniqueIdentifier>{8512c81e-8887-4320-8c53-ae41b20af34d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -889,9 +886,6 @@
     <ClInclude Include="Boss2Camera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
-    <ClInclude Include="Boss3Camera.h">
-      <Filter>00. GameObject\99. Etc\Production</Filter>
-    </ClInclude>
     <ClInclude Include="FinalStage2.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
@@ -900,6 +894,9 @@
     </ClInclude>
     <ClInclude Include="StarBox.h">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Camera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1486,9 +1483,6 @@
     <ClCompile Include="Boss2Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
-    <ClCompile Include="Boss3Camera.cpp">
-      <Filter>00. GameObject\99. Etc\Production</Filter>
-    </ClCompile>
     <ClCompile Include="FinalStage2.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
@@ -1497,6 +1491,9 @@
     </ClCompile>
     <ClCompile Include="StarBox.cpp">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Camera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

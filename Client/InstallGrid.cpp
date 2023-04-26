@@ -17,7 +17,7 @@ HRESULT CInstallGrid::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	//m_pTransform->m_vInfo[INFO_POS].z = 11.09f;
+	m_pTransform->m_vInfo[INFO_POS].z = 11.09f;
 	m_pTransform->m_vScale = { 1.f,1.f,1.f };
 	m_pCollider->m_bIsTrigger = true;
 	return S_OK;
@@ -30,7 +30,7 @@ _int CInstallGrid::Update_GameObject(const _float & fTimeDelta)
 
 	CGameObject::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
+	Engine::Add_RenderGroup(RENDER_NONE, this);
 
 	return 0;
 }
