@@ -23,8 +23,7 @@ CFinalStage3::~CFinalStage3()
 
 HRESULT CFinalStage3::Ready_Scene(void)
 {
-
-	m_eLoadingID = LOADING_FINAL1;
+	m_eLoadingID = LOADING_FINAL3;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
@@ -36,6 +35,8 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
+	// 3d 기준으로 처리할거임.
+	g_Is2D = false;
 	return __super::Update_Scene(fTimeDelta);
 }
 

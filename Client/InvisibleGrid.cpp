@@ -41,10 +41,6 @@ void CInvisibleGrid::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	m_pTextureCom->Set_Texture();
-
-	m_pBufferCom->Render_Buffer();
-
 	CGameObject::Render_GameObject();
 }
 
@@ -52,13 +48,11 @@ HRESULT CInvisibleGrid::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
-	NULL_CHECK_RETURN(m_pBufferCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
-
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"None_Texture", this));
-	NULL_CHECK_RETURN(m_pTextureCom, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"None_Texture", pComponent });
+	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+	m_pCollider->Set_BoundingBox(_vec3{ 2.f, 2.f, 2.f });
+	//m_pCollider->Set_Group();
 
 	return S_OK;
 }
