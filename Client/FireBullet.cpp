@@ -1,29 +1,29 @@
 #include "stdafx.h"
-#include "Bullet.h"
+#include "FireBullet.h"
 
-CBullet::CBullet(LPDIRECT3DDEVICE9 pGraphicDev)
+CFireBullet::CFireBullet(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
 	m_fSpeed(50.f)
 {
 }
 
-CBullet::~CBullet()
+CFireBullet::~CFireBullet()
 {
 }
 
-HRESULT CBullet::Ready_GameObject(_vec3 & vPos, _vec3& vDir)
+HRESULT CFireBullet::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pCollider->Set_Options({1.f, 1.f, 1.f}, COL_OBJ, false);
-	D3DXVec3Normalize(&m_vDir, &vDir);
-	m_pTex->Add_Anim(L"Idle", 0, 3, GetRandomFloat(1.f, 3.f), true);
+	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
+	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
+	GetRandomVectorIncircle(&m_vDir, 1.f);
 	return S_OK;
 }
 
-_int CBullet::Update_GameObject(const _float & fTimeDelta)
+_int CFireBullet::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_pTransform->m_vInfo[INFO_POS].y >= 210.f)
 		return OBJ_DEAD;
@@ -39,12 +39,12 @@ _int CBullet::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-void CBullet::LateUpdate_GameObject(void)
+void CFireBullet::LateUpdate_GameObject(void)
 {
 	__super::LateUpdate_GameObject();
 }
 
-void CBullet::Render_GameObject(void)
+void CFireBullet::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
@@ -54,11 +54,11 @@ void CBullet::Render_GameObject(void)
 	__super::Render_GameObject();
 }
 
-void CBullet::OnCollisionEnter(const Collision * collision)
+void CFireBullet::OnCollisionEnter(const Collision * collision)
 {
 }
 
-HRESULT CBullet::Add_Component(void)
+HRESULT CFireBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
@@ -77,10 +77,10 @@ HRESULT CBullet::Add_Component(void)
 	return S_OK;
 }
 
-CBullet * CBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _vec3& vDir)
+CFireBullet * CFireBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
-	CBullet* pInstance = new CBullet(pGraphicDev);
-	if (FAILED(pInstance->Ready_GameObject(vPos, vDir)))
+	CFireBullet* pInstance = new CFireBullet(pGraphicDev);
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
@@ -88,7 +88,7 @@ CBullet * CBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _vec3& vD
 	return pInstance;
 }
 
-void CBullet::Free(void)
+void CFireBullet::Free(void)
 {
 	__super::Free();
 }

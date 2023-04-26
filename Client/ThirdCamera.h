@@ -24,7 +24,7 @@ private:
 	void	Set_TopdeeCam(const _float& fTimeDelta);
 	void	Update_Matrix();
 
-	void	Set_PlayerPos();
+	void	Set_PlayerPos(const _float& fTimeDelta);
 private:
 	_vec3		m_vPlayerPos;
 	_matrix		m_matRot;
