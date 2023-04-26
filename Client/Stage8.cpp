@@ -53,6 +53,8 @@ HRESULT CStage8::Ready_Scene(void)
 
 _int CStage8::Update_Scene(const _float & fTimeDelta)
 {
+	m_bBLive = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Dead();
+
 	if (m_iPreBossHp == 2 && m_bUICheck == true)
 	{
 		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
@@ -64,10 +66,10 @@ _int CStage8::Update_Scene(const _float & fTimeDelta)
 		m_bUICheck = false;
 
 	}
-	if (m_iPreBossHp == 0 && m_bUICheck == true)
+	if (m_bBLive&&m_bUICheck==false)
 	{
 		Get_GameObject(L"Layer_UI", L"HpUI")->Set_Dead();
-		m_bUICheck = false;
+		m_bUICheck = true;
 
 	}
 
@@ -98,7 +100,7 @@ HRESULT CStage8::Ready_Layer_Environment(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss3DeadCamera>::Create(L"Boss3DeadCamera", pLayer), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
@@ -167,7 +169,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		iBossHp = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Boss3Hp();
-
+	
 	// 보스 체력이 2가 되면
 	if (2 == iBossHp && 3 == m_iPreBossHp)
 	{
@@ -223,9 +225,6 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		m_bUICheck = true;
 		m_iPreBossHp = 1;
 	}
-	if(iBossHp==0&&1==m_iPreBossHp)
-		m_bUICheck = true;
-
 }
 
 void CStage8::Player_Reset(const _float & fTimeDelta)

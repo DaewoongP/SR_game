@@ -71,25 +71,8 @@ HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(80.f, 25.f, 20.f)), E_FAIL);
 
 
-	// 대충 이정도 사이즈만 하겠다는 뜻.
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEY; j++)
-		{
-			//맨 윗줄
-			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 첫줄
-			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 마지막줄
-			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//맨 아랫줄
-			if (j == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-		}
-	}
+	// 어 포문필요없어
+
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

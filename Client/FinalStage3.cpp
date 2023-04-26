@@ -9,9 +9,9 @@
 #include "Fade.h"
 #include "DynamicCamera.h"
 #include "Boss1.h"
-#include "Thirddee.h"
 #include "StarBox.h"
 #include "ShootingCamera.h"
+#include "ShootingPlayer.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -69,9 +69,9 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 20.f, 11.f),3), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(280.f, 25.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(0.f, 200.f, 30.f)), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

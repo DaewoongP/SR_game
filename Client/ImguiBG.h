@@ -33,7 +33,7 @@ public:
 
 
 	HRESULT SaveBG(_int iStageNumber);
-	HRESULT LoadBG(_int iStageNumber, CScene* pScene = nullptr);
+	HRESULT LoadBG(_int iStageNumber, CScene* pScene);
 
 	HRESULT	Undo(_int iStageNumber);
 private:

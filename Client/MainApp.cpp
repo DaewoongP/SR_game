@@ -36,7 +36,7 @@ HRESULT CMainApp::Ready_MainApp(void)
 	m_pManagementClass->AddRef();
 	Ready_Proto();
 	CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_LOGO);
-	m_pManagementClass->Set_Scene(pScene);
+
 	m_pCImguiMgr->GetInstance()->Ready_Imgui(m_pGraphicDev);
 
 	Engine::Ready_Frame(L"1Sec", 1.f);

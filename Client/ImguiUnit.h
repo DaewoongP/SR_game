@@ -20,9 +20,9 @@ public:
 	void Release();
 
 	HRESULT SaveMonster(_int iStageNumber);
-	HRESULT LoadMonster(_int iStageNumber, CScene* pScene = nullptr);
+	HRESULT LoadMonster(_int iStageNumber, CScene* pScene);
 	HRESULT SaveMapObject(_int iStageNumber);
-	HRESULT LoadMapObject(_int iStageNumber, CScene* pScene = nullptr);
+	HRESULT LoadMapObject(_int iStageNumber, CScene* pScene);
 
 	HRESULT	Undo(_int iStageNumber);
 private:
