@@ -97,8 +97,8 @@ HRESULT CStage8::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss2DeadCamera>::Create(L"BossDeadCamera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CBoss2DeadCamera>::Create(L"BossDeadCamera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
@@ -223,7 +223,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		m_bUICheck = true;
 		m_iPreBossHp = 1;
 	}
-	if(1==iBossHp==0&&1==m_iPreBossHp)
+	if(iBossHp == 0 && 1 == m_iPreBossHp)
 		m_bUICheck = true;
 
 }
