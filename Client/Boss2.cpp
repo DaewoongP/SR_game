@@ -65,10 +65,12 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 		m_pCollider->m_bIsTrigger = true;
 		m_pTransform->m_vAngle.z += D3DXToRadian(10);
 		m_pTransform->m_vInfo[INFO_POS]+=_vec3(1,2,0)*fTimeDelta*30.f;
+		__super::Update_GameObject(fTimeDelta);
+		Engine::Add_RenderGroup(RENDER_ALPHA, this);
+		return 0;
 	}
 	
 	__super::Update_GameObject(fTimeDelta);
-
 	if (!m_bInit)
 	{
 		m_dwApperance_Timer = 9;

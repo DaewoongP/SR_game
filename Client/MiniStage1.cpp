@@ -99,14 +99,12 @@ HRESULT CMiniStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CEvilBat>::Create(L"EvilBat", pLayer, _vec3(0, 30, 10)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMiniGame1Portal>::Create(L"MiniGame1Portal", pLayer, _vec3(56, 14, 8.9f)), E_FAIL);
 	
-
 	for (int i = 0; i < 54 - 6; i += 2)
 	{
 		if ((i + 8) == 50)
 			continue;
 		FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(8+i, 14, 10)), E_FAIL);
 	}
-	
 
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(4, 10, 10), 1), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3(4, 12, 10), 1), E_FAIL);

@@ -124,7 +124,7 @@ _bool CMoveCube::IsMoveDone(const _float & fTimeDelta)
 		{
 			m_bIsFall = true;
 			m_MovetoPos = m_MovetoPos + _vec3(0, 0, 1);
-			m_pCollider->Set_BoundingBox(_vec3(0, 0, 0));
+			m_pCollider->Set_BoundingBox(_vec3(2, 2, 2), {0,0,0.1f});
 			return false;
 		}
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
