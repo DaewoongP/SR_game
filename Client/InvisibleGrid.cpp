@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "InvisibleGrid.h"
-
+#include "MoveCube.h"
 #include "Export_Function.h"
 
 CInvisibleGrid::CInvisibleGrid(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -43,7 +43,30 @@ void CInvisibleGrid::Render_GameObject(void)
 
 	CGameObject::Render_GameObject();
 }
+void CInvisibleGrid::OnCollisionStay(const Collision* collision)
+{
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MoveCube") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"GravityCube"))
+	{
+		//내 위치랑 같다면.
+		/*if (collision->otherObj->m_pTransform->m_vInfo[INFO_POS].x == m_pTransform->m_vInfo[INFO_POS].x&&
+			collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y == m_pTransform->m_vInfo[INFO_POS].y)*/
+		if (!g_Is2D &&
+			!dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsFall &&
+			D3DXVec3Length(&_vec3(collision->otherObj->m_pTransform->m_vInfo[INFO_POS] - m_pTransform->m_vInfo[INFO_POS])) < 1.4f)
+		{
+			//그 친구는 돌멩이가 되고
+			dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsStone = true;
+			for (int i = 0; i < DIR_END; i++)
+				dynamic_cast<CMoveCube*>(collision->otherObj)->m_bIsCol[i] = true;
 
+			//낙하를 트루로 바까준다.
+			dynamic_cast<CMoveCube*>(collision->otherObj)->DoFallingStart(_vec3(m_pTransform->m_vInfo[INFO_POS]));
+			//나는 죽는다.
+			m_bDead = true;
+		}
+	}
+}
 HRESULT CInvisibleGrid::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

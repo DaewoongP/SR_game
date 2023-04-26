@@ -11,7 +11,7 @@ public:
 	void	Set_StageNumber(_int _iNumber) { m_iStageNumber = _iNumber; }
 	vector<OBJINFO>* Get_GridVector() { return &m_vecInstallGrid; }
 	vector<OBJINFO>* Get_CubeVector() { return &m_vecCubeInfo; }
-
+	vector<OBJINFO>* get_InvGridVector() { return &m_vecInvGridInfo; }
 public:
 	_int Update_Imgui_Stage();
 	void Release();
@@ -20,7 +20,8 @@ public:
 	HRESULT LoadGrid(_int iStageNumber, CScene* pScene = nullptr);
 	HRESULT SaveCube(_int iStageNumber);
 	HRESULT LoadCube(_int iStageNumber, CScene* pScene = nullptr);
-
+	HRESULT SaveInvGird(_int iStageNumber);
+	HRESULT LoadInvGrid(_int iStageNumber, CScene* pScene = nullptr);
 	HRESULT	Undo(_int iStageNumber);
 private:
 	// 그리드 메뉴
@@ -48,6 +49,7 @@ private:
 	vector<OBJINFO> m_vecInstallGrid;		// 설치된 그리드 모음(저장 용도)
 	vector<CGameObject*> m_vecGameObject;	// 지우기용 오브젝트 벡터
 
+
 	bool m_bGridCreate;						// 최초 그라운드 그리드 생성
 	bool m_bDefaultGridCreate;				// 디폴트 그리드 생성
 
@@ -60,6 +62,10 @@ private:
 
 	_int m_iStageNumber;					// 스테이지 저장용 변수
 	
+	//invisiblegrid용
+	CGameObject* m_pInvGird;			// 디폴트 큐브
+	vector<OBJINFO> m_vecInvGridInfo;
+
 public:
 	static	CImguiStage* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
