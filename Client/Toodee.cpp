@@ -67,12 +67,36 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 	}
 	
+	if (m_DoStop)
+	{
+		m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTransform->m_vInfo[INFO_POS], m_vFinalLerpPos, 0.1f);
+		__super::Update_GameObject(fTimeDelta);
+	}
+
+	if (m_DoStop_Mini&&m_pPortalTrans != nullptr)
+	{
+		m_fSpinAngle += fTimeDelta*6.f;
+		_matrix matScale,matRot, matTrans, matTrans_parent;
+		m_fSpinDist -= fTimeDelta*0.2f;
+		D3DXMatrixScaling(&matScale, m_fScale, m_fScale, m_fScale);
+		D3DXMatrixTranslation(&matTrans, m_fSpinDist, m_fSpinDist, 0);
+		D3DXMatrixRotationZ(&matRot, m_fSpinAngle);
+		m_pTransform->m_matWorld = matScale*matTrans*matRot*m_pPortalTrans->m_matWorld;
+		m_fScale *= 0.995f;
+
+		if(m_fSpinDist<=0.2f)
+			return STAGE_END;
+	}
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
 	return 0;
 }
 _int CToodee::Update_Too(const _float & fTimeDelta)
 {
+	if (m_DoStop|| m_DoStop_Mini)
+		return 0;
+
 	Key_Input(fTimeDelta);
 	DoStrech();
 	__super::Update_GameObject(fTimeDelta);

@@ -35,8 +35,8 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_bIsStatic = false;
-	m_iHp = 3;
-	m_eCurrentState = B2_JUMPING;
+	m_iHp = 1;
+	m_eCurrentState = B2_STUMP;
 	m_ePreState = B2_END;
 	m_bInit = false;
 
@@ -2612,7 +2612,7 @@ void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 
 void CBoss2::Check_CircleParticle()
 {
-	if (m_pLandingParticle->IsRendering() && g_Is2D)
+	if (m_pLandingParticle->IsRendering() && g_Is2D && !g_IsInvin)
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
@@ -2627,8 +2627,7 @@ void CBoss2::Check_CircleParticle()
 			}
 		}
 	}
-
-	if (m_pCircleParticle->IsRendering())
+	if (m_pCircleParticle->IsRendering() && !g_IsInvin)
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");

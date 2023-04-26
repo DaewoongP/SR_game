@@ -389,6 +389,12 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 		
 	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
 		return OBJ_DEAD;
+
+	if (m_DoStop)
+	{
+		m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTransform->m_vInfo[INFO_POS], m_vFinalLerpPos, 0.1f);
+		__super::Update_GameObject(fTimeDelta);
+	}
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 	return 0;
 }
@@ -405,6 +411,9 @@ _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
 	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd() && m_pDeadParticle->OverOneParticleIsDead())
 		return OBJ_DEAD;
+
+	if (m_DoStop)
+		return 0;
 
 	if (!m_bDead)
 	{
