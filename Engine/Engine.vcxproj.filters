@@ -205,6 +205,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Componnent\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="StarParticle.h">
+      <Filter>Componnent\ParticleSystem\Star</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -372,6 +375,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Componnent\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="StarParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Star</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -522,6 +528,9 @@
     </Filter>
     <Filter Include="Componnent\Shader">
       <UniqueIdentifier>{5e4fff54-0fe9-4206-96e6-cd0b58bcd1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Star">
+      <UniqueIdentifier>{59a27a37-b524-42dd-98ea-fc05fee84fff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

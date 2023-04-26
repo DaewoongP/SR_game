@@ -41,6 +41,7 @@
 #include "SmokeParticle.h"
 #include "WaveParticle.h"
 #include "SuperLandingParticle.h"
+#include "StarParticle.h"
 
 BEGIN(Engine)
 

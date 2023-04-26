@@ -898,6 +898,9 @@
     <ClInclude Include="FinalStage3.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="StarBox.h">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1491,6 +1494,9 @@
     </ClCompile>
     <ClCompile Include="FinalStage3.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="StarBox.cpp">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

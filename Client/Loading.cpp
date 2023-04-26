@@ -336,6 +336,10 @@ _uint CLoading::Loading_ForLogo(void)
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"StarParticle", CStarParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,
+		1.f, 500, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BoxParticle", CBoxParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/particleSpr/particleSpr_0.png", 1,
 		2.f, 50, false)), E_FAIL);

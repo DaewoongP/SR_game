@@ -279,6 +279,7 @@
     <ClInclude Include="Pig.h" />
     <ClInclude Include="MoveCube.h" />
     <ClInclude Include="PinkCloud.h" />
+    <ClInclude Include="StarBox.h" />
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
@@ -454,6 +455,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="PinkCloud.cpp" />
+    <ClCompile Include="StarBox.cpp" />
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />

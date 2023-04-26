@@ -11,6 +11,7 @@
 #include "Boss1.h"
 #include "Thirddee.h"
 #include "SkyBox.h"
+#include "StarBox.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -69,8 +70,8 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f),3), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(80.f, 25.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(280.f, 25.f, 20.f)), E_FAIL);
 
 
 	// 슈팅게임은 이거 안깔거긴한데
