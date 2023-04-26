@@ -13,7 +13,8 @@
 #include "InstallGrid.h"
 
 bool CImguiStage::m_bGridON = false;
-
+static _vec3 vPos;
+static _vec3 m_vPos;
 CImguiStage::CImguiStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bGridCreate(true), m_bCubePlaced(false), m_bDefaultGridCreate(false),
@@ -86,7 +87,7 @@ HRESULT CImguiStage::GridMenu()
 			m_pDefaultGrid->m_bDead = true;
 			m_pDefaultGrid = nullptr;
 		}
-
+		Scale();
 		// ���� ���
 		if (ImGui::Button("Grid Save"))
 			FAILED_CHECK_RETURN(SaveGrid(m_iStageNumber), E_FAIL);
@@ -142,16 +143,43 @@ void CImguiStage::GridInstall()
 
 	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
+		if (!m_vecInstallGrid.empty())
+		{
+			m_vecInstallGrid.back().vObjPos += vPos;
+		}
+		vPos = { 0.0f,0.0f,-0.0f };
 		OBJINFO tGrid = {};
 		MakeGameObject(pStageLayer, L"InstallGrid");
 
-		tGrid.vObjPos = m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS];
+		tGrid.vObjPos = m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS];//m_pDefaultGrid->m_pTransform->m_vInfo[INFO_POS];
 		tGrid.iObjTypeNumber = 0;
 
 		m_vecInstallGrid.push_back(tGrid); // ������ ����
+
+	}
+	if (!m_vecGameObject.empty())
+	{
+		CGameObject* DynamicPos = m_vecGameObject.back();
+		m_vPos = m_vecInstallGrid.back().vObjPos;
+		if (DynamicPos != nullptr)
+		{
+			m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
+		}
 	}
 }
+void CImguiStage::Scale()
+{
+	
+	ImGui::PushItemWidth(100);
 
+	ImGui::DragFloat("X", &vPos.x);
+	ImGui::SameLine();
+	ImGui::DragFloat("Y", &vPos.y);
+	ImGui::SameLine();
+	ImGui::DragFloat("Z", &vPos.z, 0.05f, -10.0f, 10.0f);
+
+
+}
 HRESULT CImguiStage::SaveGrid(_int iStageNumber)
 {
 	TCHAR dataFile[128] = { 0 };
@@ -162,6 +190,9 @@ HRESULT CImguiStage::SaveGrid(_int iStageNumber)
 		return E_FAIL;
 
 	DWORD	dwByte = 0;
+	if (!m_vecInstallGrid.empty())
+		m_vecInstallGrid.back().vObjPos += vPos;
+
 
 	for (auto& iter : m_vecInstallGrid)
 		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
@@ -173,7 +204,7 @@ HRESULT CImguiStage::SaveGrid(_int iStageNumber)
 HRESULT CImguiStage::LoadGrid(_int iStageNumber, CScene* pScene)
 {
 	m_vecInstallGrid.clear();
-
+	m_vecGameObject.clear();
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/GridPos%d.dat"), (iStageNumber + 1));
 
@@ -241,7 +272,7 @@ HRESULT CImguiStage::CubeMenu()
 			m_pDefaultCube->m_bDead = true;
 			m_pDefaultCube = nullptr;
 		}
-
+		Scale();
 		// ���� ���
 		if (ImGui::Button("Cube Save"))
 			FAILED_CHECK_RETURN(SaveCube(m_iStageNumber), E_FAIL);
@@ -278,6 +309,8 @@ void CImguiStage::CubeInstall()
 
 	if (Engine::Get_DIKeyState(DIK_F1) == Engine::KEYDOWN)
 	{
+		if (!m_vecCubeInfo.empty())
+			m_vecCubeInfo.back().vObjPos += vPos;
 		OBJINFO tCube = {};
 
 		MakeGameObject(pStageLayer, L"InstallCube", m_iCubeTextureNumber);
@@ -286,6 +319,15 @@ void CImguiStage::CubeInstall()
 		tCube.iObjTypeNumber = m_iCubeTextureNumber;
 
 		m_vecCubeInfo.push_back(tCube); // ������ ����
+	}
+	if (!m_vecGameObject.empty())
+	{
+		CGameObject* DynamicPos = m_vecGameObject.back();
+		m_vPos = m_vecCubeInfo.back().vObjPos;
+		if (DynamicPos != nullptr)
+		{
+			m_vecGameObject.back()->m_pTransform->m_vInfo[INFO_POS] = m_vPos + vPos;
+		}
 	}
 }
 
@@ -299,7 +341,9 @@ HRESULT CImguiStage::SaveCube(_int iStageNumber)
 		return E_FAIL;
 
 	DWORD	dwByte = 0;
-
+	if (!m_vecCubeInfo.empty())
+		m_vecCubeInfo.back().vObjPos += vPos;
+	
 	for (auto& iter : m_vecCubeInfo)
 		WriteFile(hFile, &iter, sizeof(OBJINFO), &dwByte, nullptr);
 
@@ -310,7 +354,7 @@ HRESULT CImguiStage::SaveCube(_int iStageNumber)
 HRESULT CImguiStage::LoadCube(_int iStageNumber, CScene* pScene)
 {
 	m_vecCubeInfo.clear();
-
+	m_vecGameObject.clear();
 	TCHAR dataFile[128] = { 0 };
 	_stprintf_s(dataFile, _T("../Data/CubePos%d.dat"), (iStageNumber + 1));
 
