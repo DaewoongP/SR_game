@@ -65,7 +65,10 @@ void CMainApp::Render_MainApp(void)
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
 	m_pCImguiMgr->GetInstance()->Update_Imgui(m_pGraphicDev);
-
+	if (g_IsInvin)
+	{
+		Engine::Render_Font(L"Font_Default", L"Invincible", &_vec2(200.f, 20.f), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
+	}
 	Engine::Render_End();
 }
 
@@ -96,7 +99,7 @@ HRESULT CMainApp::Ready_DefaultSetting(LPDIRECT3DDEVICE9 * ppGraphicDev)
 	(*ppGraphicDev) = m_pDeviceClass->Get_GraphicDev();
 	(*ppGraphicDev)->AddRef();
 
-	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"바탕", 15, 20, FW_HEAVY), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Default", L"바탕", 30, 30, FW_HEAVY), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Font((*ppGraphicDev), L"Font_Jinji", L"궁서", 15, 20, FW_HEAVY), E_FAIL);
 
 	// dinput

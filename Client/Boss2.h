@@ -125,6 +125,7 @@ private:
 
 	_float		m_dwApperance_Timer =9;
 	_int		m_iAppearanceCnt = 0;
+	_bool		m_bDeadAnim;
 
 private:
 	Engine::CCollider*			m_pCollider;
