@@ -919,6 +919,9 @@
     <ClInclude Include="FireBullet.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="FinalCamera_1_1.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1537,6 +1540,9 @@
     </ClCompile>
     <ClCompile Include="FireBullet.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalCamera_1_1.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
