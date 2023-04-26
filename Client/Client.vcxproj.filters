@@ -909,6 +909,9 @@
     <ClInclude Include="BossDeadCamera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
+    <ClInclude Include="Stage1TutorialCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
     <ClInclude Include="Stage1TutorialCamera.h" />
     <ClInclude Include="ShootingCamera.h">
       <Filter>00. GameObject\99. Etc\Camera</Filter>
@@ -1517,6 +1520,9 @@
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
     <ClCompile Include="BossDeadCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1TutorialCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
     <ClCompile Include="Stage1TutorialCamera.cpp" />
