@@ -27,9 +27,9 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 	BoundingBox box;
 	box.Offset(vPos);
 	m_pPortalParticle->Set_BoundingBox(box);
-	m_pPortalParticle->Set_RandomGen(3.f);
+	m_pPortalParticle->Set_RandomGen(2.f);
 	m_pPortalParticle->Set_SizeLifeTime(1.f);
-	m_pPortalParticle->Set_Options(1.2f, 15.f);
+	m_pPortalParticle->Set_Options(1.2f, 20.f);
 	m_pPortalParticle->Start_Particle();
 
 	return S_OK;

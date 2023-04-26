@@ -51,7 +51,7 @@ CPortalParticle::~CPortalParticle()
 void CPortalParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
-	particle->dwColor = m_dwColor;
+	particle->dwColor = D3DXCOLOR(GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), 1.f);
 	particle->vPos = m_BoundingBox.Get_Center();
 	particle->vVelocity = { 1.f, 0.f, 0.f };
 	GetRandomVectorIncircle(&particle->vVelocity, m_fRadius);
@@ -62,6 +62,13 @@ void CPortalParticle::ResetParticle(Particle * particle)
 	particle->fSizeoverLifetime = m_fSizeoverLifetime;
 	D3DXVec3Normalize(&particle->vAccel, &particle->vVelocity);
 	particle->vAccel *= -0.5;
+
+	// 각도값 넣을거임.
+	_vec3 vDir(1,0,0);
+	_vec3 vNorm;
+	D3DXVec3Normalize(&vNorm, &particle->vVelocity);
+	_float fRad = acosf(D3DXVec3Dot(&vDir, &vNorm));
+	particle->fRandFloat = fRad;
 }
 
 _int CPortalParticle::Update_Particle()
@@ -75,6 +82,8 @@ _int CPortalParticle::Update_Particle()
 	{
 		if (it->bIsAlive)
 		{
+			_matrix mat;
+			D3DXMatrixRotationZ(&mat, it->fRandFloat);
 			it->fAge += fTimeDelta;
 			if (it->fGenTime != 0 && it->fGenTime > it->fAge)
 				continue;
