@@ -97,7 +97,7 @@ void CLaserTurret::Render_GameObject(void)
 
 	m_pRedLine->Set_Line(m_vPos, m_vEnd, D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
 	m_pRedLine->Draw_Line(matWorld, matView, matProj);
-	m_pWhiteLine->Set_Line(m_vPos, m_vEnd, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	m_pWhiteLine->Set_Line(m_vPos+_vec3(0,0,-0.01f), m_vEnd, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	m_pWhiteLine->Draw_Line(matWorld, matView, matProj);
 
 	__super::Render_GameObject();
@@ -150,13 +150,13 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"KeyCube");
 	tagName.push_back(L"Toodee");
 	tagName.push_back(L"Tookee");
-	tagName.push_back(L"Thidedee");
+	tagName.push_back(L"Thirddee");
 	tagName.push_back(L"Boss3");
 	tagName.push_back(L"Boss3Left");
 	tagName.push_back(L"Boss3Right");
 	vector<RayCollision> _detectedCOL;
 
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos, vDir[m_iIndex], 60.f), m_pCollider, tagName);
+	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos, vDir[m_iIndex], 1000.f), m_pCollider, tagName);
 	TOODEEDIE_RAY
 	TOOKEEDIE_RAY
 	THIRDDEEDIE_RAY
@@ -191,7 +191,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.clear();
 	tagName.push_back(L"Topdee");
 	tagName.push_back(L"Tookee");
-	tagName.push_back(L"Thidedee");
+	tagName.push_back(L"Thirddee");
 	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos + _vec3(0, 0, 1.f), vDir[m_iIndex], m_fColdist), m_pCollider, tagName);
 	TOOKEEDIE_RAY
 	TOPDEEDIE_RAY

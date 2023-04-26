@@ -33,7 +33,7 @@ private:
 
 	virtual void		RayDiskey() override;
 	virtual void		RayDisKey_part(COL_MOVEDIR dir) override;
-	virtual void		RayDisKey_part_1(COL_MOVEDIR dir);
+	_bool		RayDisKey_part_1(COL_MOVEDIR dir);
 
 private:
 	_float	m_fTopOffset;
@@ -41,6 +41,7 @@ private:
 	_bool					m_EndingTrigger;
 	CTopdeeParts*			m_DiePart;
 	_int					m_ThirdDee_Stage;
+	_bool					m_bStage01_Col;
 
 public:
 	static CThirddee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int stage);
