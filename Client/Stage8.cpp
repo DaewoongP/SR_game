@@ -71,7 +71,6 @@ _int CStage8::Update_Scene(const _float & fTimeDelta)
 
 	}
 
-
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))
 		PatternSet(fTimeDelta);
 	
@@ -98,7 +97,7 @@ HRESULT CStage8::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBossDeadCamera>::Create(L"BossDeadCamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss2DeadCamera>::Create(L"BossDeadCamera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
@@ -176,6 +175,7 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 		{
 			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pLayer, _vec3((2.f * i + 2.f), 2.f, 10.f)), );
 		}
+		pLayer->Delete_Tag(L"Key");
 
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(32.f, 30.f, 10.f)), );
@@ -201,6 +201,8 @@ void CStage8::PatternSet(const _float & fTimeDelta)
 	// 보스 체력이 1이 되면
 	if (1 == iBossHp && 2 == m_iPreBossHp)
 	{
+		pLayer->Delete_Tag(L"Key");
+
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(6.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(32.f, 30.f, 10.f)), );
 		FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pLayer, _vec3(58.f, 30.f, 10.f)), );

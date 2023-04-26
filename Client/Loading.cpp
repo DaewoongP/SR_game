@@ -120,11 +120,11 @@ _uint CLoading::Loading_ForLogo(void)
 {
 	m_iLoadingTexImgNum = 0;
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
-	Set_String(L"Sound/Bgm Loading..........");
+	//Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
 	//Engine::PlayBGM(L"9.wav", 0.5f);
-	Set_String(L"Sound/Effect Loading..........");
+	//Set_String(L"Sound/Effect Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
 
@@ -303,9 +303,8 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_1.png")), E_FAIL);
 
-	//요가 미사일
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Bullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bulletSpr/Bullet_%d.png",2)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Yoga", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/yogaSpr/yogaSpr_%d.png", 2)), E_FAIL);
+	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ThirddeeShooting", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/BackThirddee.png")), E_FAIL);
 
 	
 	Set_String(L"Buffer Loading.......");
@@ -341,7 +340,7 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Particle Loading..........");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"PortalParticle", CPortalParticle::Create(m_pGraphicDev,
-		L"../Resource/Texture/MiniGameTex/Portal_Clear.png", 1, 1.f, 100, false, 2.f, 25.f)), E_FAIL);
+		L"../Resource/Texture/Export_Textures/Sprites/shineSpr/shineSpr_0.png", 1, 1.f, 500, false, 2.f, 25.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"StarParticle", CStarParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,

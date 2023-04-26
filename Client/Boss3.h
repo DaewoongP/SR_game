@@ -53,6 +53,9 @@ private:
 	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
 	void	DamagedBoss3(const _float& fTimeDelta);
 	void	Delay(const _float& fTimeDelta);
+	void	Boss3PartDead();
+	void	FinalDamaged(const _float & fTimeDelta);
+	void	WhiteTwinkl();
 
 private:
 	CToodee*		m_pToodee;
@@ -95,6 +98,9 @@ private:
 
 	_bool	m_bDelay;
 	_float  m_fDelay;
+
+	_bool	m_bFinal;
+	_float  m_fFinalTime;
 
 	Engine::CShadow* m_pShadowCom;
 	Engine::CCircularParticle*	m_pLandingParticle;

@@ -40,6 +40,10 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);
@@ -90,13 +94,15 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(180.1f, 16.f, 5.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 34,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 36,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 38,8,12.1f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 34,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 36,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 38,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 40,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 42,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 44,8,12.f }), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 40,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 42,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 44,8,12.1f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3{ 44,8,10.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InstallCube", pLayer, _vec3{ 46,8,10.f }), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{

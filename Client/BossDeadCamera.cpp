@@ -1,27 +1,30 @@
 #include "stdafx.h"
 #include "BossDeadCamera.h"
 
-CBossDeadCamera::CBossDeadCamera(LPDIRECT3DDEVICE9 pGraphicDev)
+CBoss2DeadCamera::CBoss2DeadCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
-	CDirectCamera(pGraphicDev), m_bBossDead(true)
+	CDirectCamera(pGraphicDev), m_bBossDead(false)
 {
 }
 
-CBossDeadCamera::~CBossDeadCamera()
+CBoss2DeadCamera::~CBoss2DeadCamera()
 {
 }
 
-HRESULT CBossDeadCamera::Ready_Camera()
+HRESULT CBoss2DeadCamera::Ready_Camera()
 {
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 75.f,0.1f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 75.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,40.0f, 60.f,0.5f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,0.5f });
 	return S_OK;
 }
 
-_int CBossDeadCamera::Update_GameObject(const _float & fTimeDelta)
+_int CBoss2DeadCamera::Update_GameObject(const _float & fTimeDelta)
 {
 	CGameObject* CBoss = nullptr;
 
@@ -34,8 +37,13 @@ _int CBossDeadCamera::Update_GameObject(const _float & fTimeDelta)
 		CBoss = dynamic_cast<CGameObject*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"));
 	}
 
-	if (nullptr != CBoss && 0 == CBoss->Get_Hp())
+	if (false == m_bBossDead && nullptr != CBoss && 0 == CBoss->Get_Hp())
 	{
+		m_vecXYPosAngleSpeed.push_back({ 
+			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
+			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
+			70.f,
+			1.0f });
 		m_bBossDead = true;
 	}
 
@@ -54,9 +62,9 @@ _int CBossDeadCamera::Update_GameObject(const _float & fTimeDelta)
 	return 0;
 }
 
-CBossDeadCamera * CBossDeadCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CBoss2DeadCamera * CBoss2DeadCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CBossDeadCamera*		pInstance = new CBossDeadCamera(pGraphicDev);
+	CBoss2DeadCamera*		pInstance = new CBoss2DeadCamera(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Camera()))
 	{
@@ -67,7 +75,7 @@ CBossDeadCamera * CBossDeadCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CBossDeadCamera::Free()
+void CBoss2DeadCamera::Free()
 {
 	__super::Free();
 }

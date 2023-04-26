@@ -27,7 +27,7 @@ CImguiUnit::CImguiUnit(LPDIRECT3DDEVICE9 pGraphicDev)
 	:m_pGraphicDev(pGraphicDev),
 	m_bMonsterON(false), m_bMapObjectON(false),
 	m_iMonsterType(0), m_iMapObjectType(0), m_iPortalCubeCount(0), m_iLaserTurretCount(0),
-	m_tPortalCubeDir(CD_UP), m_tLaserTurretDir(CD_LEFT)
+	m_tPortalCubeDir(CD_UP), m_tLaserTurretDir(CD_UP)
 {
 	m_pDefaultMonster = nullptr;
 	m_pDefaultMapObject = nullptr;
@@ -584,6 +584,10 @@ HRESULT CImguiUnit::Undo(_int iStageNumber)
 	{
 		if (dynamic_cast<CPortalCube*>(pGameObject))
 			--m_iPortalCubeCount;
+
+		if (dynamic_cast<CLaserTurret*>(pGameObject))
+			m_vecLaserTurretDir.pop_back();
+
 		if (m_vecMapObjectInfo.empty())
 			return E_FAIL;
 		m_vecMapObjectInfo.pop_back();

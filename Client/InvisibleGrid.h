@@ -19,6 +19,10 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 
+	void OnCollisionEnter(const Collision* collision);
+	void OnCollisionStay(const Collision* collision);
+	void OnCollisionExit(const Collision* collision);
+
 private:
 	HRESULT Add_Component(void);
 
