@@ -15,7 +15,7 @@ HRESULT CBullet::Ready_GameObject(_vec3 & vPos, _vec3& vDir)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_vDir = vPos;
+	D3DXVec3Normalize(&m_vDir, &vDir);
 	m_pTex->Add_Anim(L"Idle", 0, 3, GetRandomFloat(1.f, 3.f), true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
@@ -27,7 +27,7 @@ _int CBullet::Update_GameObject(const _float & fTimeDelta)
 	if (m_pTransform->m_vInfo[INFO_POS].y >= 210.f)
 		return OBJ_DEAD;
 	Add_RenderGroup(RENDER_ALPHA, this);
-	m_pTransform->m_vInfo[INFO_POS].y += m_fSpeed * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
 	m_pTex->Update_Anim(fTimeDelta);
 
 	_matrix mat;

@@ -40,6 +40,7 @@ private:
 	_vec3						m_vPos[POS_END];
 	_vec3						m_vPrePos;
 
+	_bool						m_bKeyInput;
 	CLayer*						m_pGameLogicLayer;
 public:
 	static CShootingPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
