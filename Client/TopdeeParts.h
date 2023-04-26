@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CTexture;
 class CRcTex;
+class CShader;
 END
 
 class CTopdeeParts :
@@ -43,7 +44,7 @@ protected:
 
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CRcTex*			m_pBufferCom;
-
+	Engine::CShader*		m_pShader;
 protected:
 	HRESULT		Add_Component(void);
 

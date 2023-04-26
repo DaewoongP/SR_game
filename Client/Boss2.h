@@ -44,6 +44,8 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	virtual void OnCollisionExit(const class Collision* collision);
 
+	virtual void SwapTrigger();
+
 private:
 	HRESULT		Add_Component(void);
 	HRESULT		Find_PlayerBoth();
@@ -93,7 +95,8 @@ private:
 	void		Do_Throw(const _float& fTimeDelta);
 	//�ٽ� ����ġ
 	void		Do_ThrowEnd(const _float& fTimeDelta);
-  void		Check_CircleParticle();
+	void		Check_CircleParticle();
+	_bool		AppearanceAction(const _float& fTimeDelta);
 public:
 	_bool		Get_Flip_Y() { return m_bFlip_Y; }
 
@@ -119,6 +122,9 @@ private:
 	_bool		m_bInit;
 	_bool		m_bAttackAble;
 	_int		m_iJumpCount;
+
+	_float		m_dwApperance_Timer =9;
+	_int		m_iAppearanceCnt = 0;
 
 private:
 	Engine::CCollider*			m_pCollider;

@@ -19,12 +19,14 @@ HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pCollider->Set_BoundingBox({2,35,35});
 	m_pCollider->Set_BoundOffset(_vec3(0,-8,+0.5f));
+	vPos.z -= 100.f;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_vScale = _vec3(30, 30, 30);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 	m_vSummonPos = vPos;
 	m_fweight = 0;
 	m_eState = GH_IDLE;
+	m_pTransform->m_bIsStatic = true;
 	m_bCollision = false;
 	return S_OK;
 }

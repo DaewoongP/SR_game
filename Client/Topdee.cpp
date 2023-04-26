@@ -786,11 +786,11 @@ void CTopdee::Move(const _float& fTimeDelta)
 	if(m_pGrabObj==nullptr)
 		m_pAnimation_Arm->SetAnimation(L"Walk");
 	//만약 도달했다면?
-	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.3f)
+	if (D3DXVec3Length(&_vec3(m_pTransform->m_vInfo[INFO_POS] - m_MovetoPos)) < 0.1f)
 	{
 		m_pTransform->m_vInfo[INFO_POS] = m_MovetoPos;
 		m_bIsMoving = false;
-		if(m_Tookee!=nullptr)
+		if(m_Tookee!=nullptr&&m_byPlayerInputDir==0)
 			m_Tookee->m_moveTrue = false;
 		return;
 	}

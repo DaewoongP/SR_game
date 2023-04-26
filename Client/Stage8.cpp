@@ -15,8 +15,9 @@
 #include "KeyCube.h"
 #include "Spike.h"
 #include "InstallCube.h"
-#include"ImguiBG.h"
-#include"HpUI.h"
+#include "ImguiBG.h"
+#include "Boss3Camera.h"
+#include "HpUI.h"
 #include "Fade.h"
 
 
@@ -97,6 +98,8 @@ HRESULT CStage8::Ready_Layer_Environment(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CBoss3Camera>::Create(L"Boss3Camera", pLayer), E_FAIL);
+
 	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
@@ -111,10 +114,10 @@ HRESULT CStage8::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(4.f, 28.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(4.f, 4.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(58.f, 10.f, 11.f)), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 18.f, 10.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss3>::Create(L"Boss3", pLayer, _vec3(30.f, 16.f, 10.f)), E_FAIL);
 	m_iHp = pLayer->Get_GameObject(L"Boss3")->Get_Hp();
 
 	for (int i = 0; i < CUBEY; i++)

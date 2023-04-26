@@ -18,6 +18,8 @@
 #include "MiniStage1.h"
 #include "MiniStage2.h"
 #include "FinalStage1.h"
+#include "FinalStage2.h"
+#include "FinalStage3.h"
 #include "BackGroundToolScene.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -73,17 +75,23 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_STAGE8:
 		iFlag = pLoading->Loading_ForStage8();
 		break;
-	case LOADING_STAGE9:
-		iFlag = pLoading->Loading_ForStage9();
-    break;
-	case LOADING_STAGE10:
-		iFlag = pLoading->Loading_ForStage10();
-		break;
 	case LOADING_MINI2:
 		iFlag = pLoading->Loading_ForMini2();
 		break;
+	case LOADING_STAGE9:
+		iFlag = pLoading->Loading_ForStage9();
+		break;
+	case LOADING_STAGE10:
+		iFlag = pLoading->Loading_ForStage10();
+		break;
 	case LOADING_FINAL1:
 		iFlag = pLoading->Loading_ForFinal1();
+		break;
+	case LOADING_FINAL2:
+		iFlag = pLoading->Loading_ForFinal2();
+		break;
+	case LOADING_FINAL3:
+		iFlag = pLoading->Loading_ForFinal3();
 		break;
 	case LOADING_BGTOOL:
 		iFlag = pLoading->Loading_ForBGTool();
@@ -598,6 +606,32 @@ _uint CLoading::Loading_ForFinal1(void)
 	Set_String(L"Stage Loading..........");
 	
 	m_pScene = CFinalStage1::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading Final Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForFinal2(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CFinalStage2::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading Final Complete!!!!!!!!");
+	return 0;
+}
+
+_uint CLoading::Loading_ForFinal3(void)
+{
+	Set_String(L"Stage Loading..........");
+
+	m_pScene = CFinalStage3::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;

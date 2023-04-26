@@ -29,7 +29,7 @@ _int CBackGround::Update_GameObject(const _float& fTimeDelta)
 {
 	__super::Update_GameObject(fTimeDelta);
 
-	Engine::Add_RenderGroup(RENDER_UI, this);
+	Engine::Add_RenderGroup(RENDER_NONE, this);
 
 	return 0;
 }
