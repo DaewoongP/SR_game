@@ -166,15 +166,9 @@ void CBoss3Hand::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
-	if (m_bShock == true)
-		m_pTextureCom->Set_Texture();
-
-	else
-		m_pTextureCom2->Set_Texture(m_iIndex);
-
 	if (m_bDamaged)
 	{
-		if (0 == (_int)(m_fLerpDist * 100.f) % 2)
+		if (0 == (_int)(m_fLerpDist * 250.f) % 2)
 			m_pTextureCom2->Set_Texture(m_iIndex);
 
 		else
@@ -182,7 +176,13 @@ void CBoss3Hand::Render_GameObject(void)
 	}
 
 	else
-		m_pTextureCom2->Set_Texture(m_iIndex);
+	{
+		if (m_bShock == true)
+			m_pTextureCom->Set_Texture();
+
+		else
+			m_pTextureCom2->Set_Texture(m_iIndex);
+	}
 
 	if (!g_Is2D)
 		m_pShadowCom->Render_Shadow(m_pBufferCom);
@@ -291,7 +291,7 @@ void CBoss3Hand::FollowPlayer(const _float & fTimeDelta)
 	{
 		m_pTransform->Chase_Target(&pGameObject->m_pTransform->m_vInfo[INFO_POS], m_fSpeed, fTimeDelta);
 
-		m_pTransform->m_vInfo[INFO_POS].z -= 31.f*fTimeDelta;
+		m_pTransform->m_vInfo[INFO_POS].z -= 40.f * fTimeDelta;
 	}
 
 	else if (4.f < m_fCoolDown )
@@ -408,6 +408,7 @@ void CBoss3Hand::DamagedBoss3(const _float & fTimeDelta)
 
 		m_bLerpMove = false;
 		m_fLerpDist = 0.f;
+		m_fAttackCoolDown = 0.f;
 
 		m_fTimer = 0.f;
 	}
