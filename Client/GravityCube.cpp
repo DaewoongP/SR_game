@@ -199,8 +199,12 @@ void CGravityCube::Do_CheckRay_Down()
 			{
 				dynamic_cast<CCrackCube*>(_detectedCOL[i].col->m_pGameObject)->DoShootRay(DIR_DOWN);
 			}
-			m_pTransform->m_bIsStatic = true;
-			m_pRigid->m_bUseGrivaty = false;
+			if (lstrcmp(_detectedCOL[i].tag, L"PortalCube"))
+			{
+				m_pTransform->m_bIsStatic = true;
+				m_pRigid->m_bUseGrivaty = false;
+				m_pTransform->m_vInfo[INFO_POS].y = _detectedCOL[i].col->Get_BoundCenter().y + _detectedCOL[i].col->Get_BoundSize().y;
+			}
 			return;
 		}
 	}

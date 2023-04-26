@@ -26,8 +26,9 @@ HRESULT CCube::Ready_GameObject(_vec3& vPos)
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
 	// Dead처리 ㄴㄴ
+	m_pTransform->Update_Shake(fTimeDelta, _vec3(0, 0, 0));
 	int iExit = __super::Update_GameObject(fTimeDelta);
-	
+
   
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
 

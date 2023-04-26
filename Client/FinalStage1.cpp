@@ -20,6 +20,7 @@
 #include "FinalPortal.h"
 #include "FinalPortalFloor.h"
 #include "Semicolon.h"
+#include "LaserTurret.h"
 #include "DynamicCamera.h"
 
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -51,7 +52,7 @@ HRESULT CFinalStage1::Ready_Scene(void)
 
 _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 {
-	/*if (m_pPlayer == nullptr)
+	if (m_pPlayer == nullptr)
 		m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
 	else 
 	{
@@ -66,7 +67,7 @@ _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
 			{
 				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
-				if (fabsf(offset) > 10)
+				if (fabsf(offset) > 40)
 				{
 					iter_begin->second->Set_Render(false);
 					iter_begin->second->Set_Update(false);
@@ -86,8 +87,10 @@ _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 		{
 			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
 			{
+				if (!lstrcmp(iter_begin->second->m_pTag, L"GravityCube"))
+					continue;
 				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
-				if (fabsf(offset) > 30)
+				if (fabsf(offset) > 20)
 				{
 					iter_begin->second->Set_Render(false);
 					iter_begin->second->Set_Update(false);
@@ -98,8 +101,22 @@ _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 					iter_begin->second->Set_Update(true);
 				}
 			}
+
+			if (dynamic_cast<CLaserTurret*>(iter_begin->second) != nullptr)
+			{
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 24)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else {
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
 		}
-	}*/
+	}
 	return __super::Update_Scene(fTimeDelta);
 }
 

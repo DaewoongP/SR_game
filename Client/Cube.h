@@ -27,6 +27,11 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 
 	void Set_CubeTexNum(_int iNum) { m_iCubeTexNum = iNum; }
+	void Set_EarthQuake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL, _bool bUseWeak = true)
+	{
+		m_pTransform->m_bUseWeak = bUseWeak;
+		m_pTransform->Set_Shake(fDuration, iPower, eShake_Axis);
+	}
 protected:
 	HRESULT Add_Component(void);
 

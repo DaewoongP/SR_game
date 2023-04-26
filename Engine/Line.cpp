@@ -47,7 +47,6 @@ void CLine::Draw_Line(const _matrix& matWorld, const _matrix& matView, const _ma
 	m_pLine->Begin();
 
 	_matrix mat;
-
 	mat = matWorld * matView * matProj;
 	m_pLine->DrawTransform(m_vecLine, 2, &mat, m_Color);
 

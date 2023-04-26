@@ -37,11 +37,13 @@ _int CGiantHand::Update_GameObject(const _float & fTimeDelta)
 	{
 		return -1;
 	}
+
 	if (m_bInit)
 	{
 		//실행해주는 코드
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
+		if (pStageLayer == nullptr)
+			return 0;
 		for (int i = 0; i < 7; i++)
 		{
 			FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Boss1Parts", pStageLayer, _vec3(0, 0, i*0.4f), m_pTransform, L"Boss1_Pattern03", i, false), E_FAIL);
@@ -97,6 +99,24 @@ void CGiantHand::OnCollisionEnter(const Collision * collision)
 	}
 	dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
 
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	auto iter_begin = pStageLayer->GetMapObject()->begin();
+	auto iter_end = pStageLayer->GetMapObject()->end();
+	for (; iter_begin != iter_end; iter_begin++)
+	{
+		if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+		{
+			float dist = D3DXVec3Length(&(m_pTransform->m_vInfo[INFO_POS] - iter_begin->second->m_pTransform->m_vInfo[INFO_POS]));
+			//거리에 비례해 힘을 주겠습니다.
+			_float duration = 32.f / dist;
+			_float power = 5000.0f / dist;
+			if (duration < 0.1f)duration = 0.1f;
+			if (power < 1.f)power = 1.f;
+			dynamic_cast<CCube*>(iter_begin->second)->Set_EarthQuake(duration, power, SHAKE_Z);
+		}
+	}
+	//잠깐동안 카메라를 뒤로 뺀다.
+	
 	Set_Particle();
 }
 
@@ -117,8 +137,13 @@ void CGiantHand::Do_Stump(const _float & fTimeDelta)
 	if (m_bStop)
 		return;
 
-	if(m_fweight<1)
+	if (m_fweight < 1)
+	{
 		m_fweight += fTimeDelta * 3.f;
+		_float camoff = dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->GetOffset();
+		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetOffset(camoff + 0.1f);
+	}
+		
 	if (m_fweight >=1)
 		m_fweight = 1;
 
@@ -132,6 +157,8 @@ void CGiantHand::Do_Up(const _float & fTimeDelta)
 {
 	m_pTransform->m_vInfo[INFO_POS].z =
 		Lerp(m_pTransform->m_vInfo[INFO_POS].z, -30, fTimeDelta*0.6f);
+	_float camoff = dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->GetOffset();
+	dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetOffset(Lerp(camoff,1, fTimeDelta*0.6f));
 }
 
 void CGiantHand::Set_Particle()
