@@ -406,10 +406,17 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 		
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(
 		RAYCAST(vPos, vDir, m_fRayDist), m_pCollider, tagName);
-	if (_detectedCOL.size() >= 1&&!g_IsInvin)
+	if (_detectedCOL.size() >= 1 && !g_IsInvin)
 	{
-		TOODEEDIE_RAY
-		TOPDEEDIE_RAY
+		// 투디는 걍 뒤짐
+		TOODEEDIE_RAY;
+		// 탑디는 상자들고있으면 살수있음
+		if (_detectedCOL.size() >= 1 && !lstrcmp(_detectedCOL[0].tag, L"Topdee") && 
+			!g_Is2D && 
+			!g_IsInvin &&
+			nullptr == dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->Get_Grab())
+			dynamic_cast<CTopdee*>(_detectedCOL[0].col->m_pGameObject)->SetDie();
+
 		return true;
 	}
 	return false;
