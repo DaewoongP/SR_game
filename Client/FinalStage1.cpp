@@ -69,7 +69,7 @@ HRESULT CFinalStage1::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
-
+	
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CThirdCamera>::Create(L"Camera", pLayer), E_FAIL);
@@ -89,25 +89,11 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 8.f, 10.f),1), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(270.f, -50.f, 50.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(60.f, 23.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(180.f, 16.f , 7.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(180.1f, 16.f, 5.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(150.F, 16.f , 7.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(150.f, 16.f, 5.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 34,8,12.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 36,8,12.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 38,8,12.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 40,8,12.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 42,8,12.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 44,8,12.f }), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3{ 44,8,10.f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InstallCube", pLayer, _vec3{ 46,8,10.f }), E_FAIL);
-
 	m_uMapLayer.insert({ pLayerTag, pLayer });
-	for (int i = 0; i < 10000; i++)
-		for (int j = 0; j < 10000; j++)
-			int a = 0;
 
 	return S_OK;
 }

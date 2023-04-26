@@ -194,7 +194,7 @@ HRESULT CImguiBG::BGMenu()
 		// ·Îµå ±â´É
 		ImGui::SameLine();
 		if (ImGui::Button("BackGround Load"))
-			LoadBG(m_iStageNumber);
+			LoadBG(m_iStageNumber, Engine::Get_Scene());
 	
 		ImGui::TreePop();
 	}

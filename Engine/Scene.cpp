@@ -63,7 +63,6 @@ _int CScene::Update_Scene(const _float & fTimeDelta)
 		if (STAGE_FADEIN == iFadeFin)
 		{
 			m_pPreScene = CPreStage::Create(m_pGraphicDev, m_eLoadingID);
-			Engine::Set_Scene(m_pPreScene);
 			return 0;
 		}
 		else if (STAGE_FADEOUT == iFadeFin)
@@ -80,9 +79,7 @@ _int CScene::Update_Scene(const _float & fTimeDelta)
 			// 현재 저장된 스테이지 아이디에서 다음 스테이지로 추가
 			m_eLoadingID = LOADINGID((_int)m_eLoadingID + 1);
 			CScene*	pScene = CPreStage::Create(m_pGraphicDev, m_eLoadingID);
-			NULL_CHECK_RETURN(pScene, -1);
 
-			Engine::Set_Scene(pScene);
 			pScene->Update_Scene(fTimeDelta);
 			return 0;
 		}

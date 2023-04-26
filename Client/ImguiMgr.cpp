@@ -121,11 +121,11 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 		ImGui::SameLine();
 		if (ImGui::Button("LOAD ALL"))
 		{
-			m_pImguiStage->LoadCube(m_iStageNumber);
-			m_pImguiStage->LoadGrid(m_iStageNumber);
-			m_pImguiUnit->LoadMapObject(m_iStageNumber);
-			m_pImguiUnit->LoadMonster(m_iStageNumber);
-			m_pImguiBG->LoadBG(m_iStageNumber);
+			m_pImguiStage->LoadCube(m_iStageNumber, Engine::Get_Scene());
+			m_pImguiStage->LoadGrid(m_iStageNumber, Engine::Get_Scene());
+			m_pImguiUnit->LoadMapObject(m_iStageNumber, Engine::Get_Scene());
+			m_pImguiUnit->LoadMonster(m_iStageNumber, Engine::Get_Scene());
+			m_pImguiBG->LoadBG(m_iStageNumber, Engine::Get_Scene());
 		}
 		// 레이어의 모든 요소 지우기(맵 큐브 제외)
 		ImGui::Text("All Delete");

@@ -95,7 +95,7 @@ HRESULT CImguiUnit::MonsterMenu()
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("Monster Load"))
-			FAILED_CHECK_RETURN(LoadMonster(m_iStageNumber), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMonster(m_iStageNumber, Engine::Get_Scene()), E_FAIL);
 
 		ImGui::TreePop();
 	}
@@ -281,7 +281,7 @@ HRESULT CImguiUnit::MapObjectMenu()
 		// 로드 기능
 		ImGui::SameLine();
 		if (ImGui::Button("MapObject Load"))
-			FAILED_CHECK_RETURN(LoadMapObject(m_iStageNumber), E_FAIL);
+			FAILED_CHECK_RETURN(LoadMapObject(m_iStageNumber, Engine::Get_Scene()), E_FAIL);
 
 		ImGui::TreePop();
 	}

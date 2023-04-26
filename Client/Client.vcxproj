@@ -176,6 +176,7 @@
     <ClInclude Include="Boss2Body.h" />
     <ClInclude Include="Boss2Camera.h" />
     <ClInclude Include="Boss3Camera.h" />
+    <ClInclude Include="Boss3DeadCamera.h" />
     <ClInclude Include="BossDeadCamera.h" />
     <ClInclude Include="BulletPlayer.h" />
     <ClInclude Include="DirectCamera.h" />
@@ -360,6 +361,7 @@
     <ClCompile Include="Boss2Body.cpp" />
     <ClCompile Include="Boss2Camera.cpp" />
     <ClCompile Include="Boss3Camera.cpp" />
+    <ClCompile Include="Boss3DeadCamera.cpp" />
     <ClCompile Include="BossDeadCamera.cpp" />
     <ClCompile Include="BulletPlayer.cpp" />
     <ClCompile Include="DirectCamera.cpp" />

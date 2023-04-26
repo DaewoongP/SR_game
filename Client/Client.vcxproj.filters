@@ -919,6 +919,7 @@
     <ClInclude Include="ShootingPlayer.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="Boss3DeadCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1532,6 +1533,7 @@
     <ClCompile Include="ShootingPlayer.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="Boss3DeadCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

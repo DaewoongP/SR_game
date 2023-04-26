@@ -61,7 +61,6 @@ _int CLogo::Update_Scene(const _float & fTimeDelta)
 		CScene*	pScene = CPreStage::Create(m_pGraphicDev, LOADING_FINAL1);
 		NULL_CHECK_RETURN(pScene, -1);
 
-		FAILED_CHECK_RETURN(Engine::Set_Scene(pScene), E_FAIL);
 		pScene->Update_Scene(fTimeDelta);
 		return 0;
 	}
