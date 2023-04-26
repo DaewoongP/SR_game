@@ -49,7 +49,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
-	m_iHp = 3;
+	m_iHp = 1;
 	m_pShadowCom->m_fShadowHeight = 13.0f;
 	m_pShadowCom->m_bUseOutLine = false;
 
@@ -207,10 +207,10 @@ void CBoss3::Render_GameObject(void)
 
 		else
 			m_pTextureCom->Set_Texture();
-
-		if (!g_Is2D)
-			m_pShadowCom->Render_Shadow(m_pBufferCom);
 	}
+
+	if (!g_Is2D)
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
 	
 	m_pBufferCom->Render_Buffer();
 
@@ -622,7 +622,7 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 
 	WhiteTwinkl();
 
-	if (5.f <= m_fDamagedTime)
+	if (3.f <= m_fDamagedTime)
 	{
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
