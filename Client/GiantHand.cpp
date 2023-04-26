@@ -95,7 +95,8 @@ void CGiantHand::OnCollisionEnter(const Collision * collision)
 		dynamic_cast<CGravityCube*>(collision->otherObj)->m_bIsStone = true;
 		m_bStop = true;
 	}
-	dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetShakeValue(.12f);
+	dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+
 	Set_Particle();
 }
 

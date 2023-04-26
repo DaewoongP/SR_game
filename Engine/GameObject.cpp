@@ -7,7 +7,8 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev), m_bDead(false), m_pTag(L"")
 {	
 	m_pGraphicDev->AddRef();
-
+	m_bUseRender = true;
+	m_bUseUpdate = true;
 	m_pTransform = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Transform", this));
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Transform", m_pTransform });
 }
@@ -41,6 +42,9 @@ void CGameObject::Set_Tag(const _tchar * pTag)
 
 _int CGameObject::Update_GameObject(const _float & fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
+
 	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 		iter.second->Update_Component(fTimeDelta);
 
@@ -55,6 +59,8 @@ void CGameObject::LateUpdate_GameObject(void)
 
 void CGameObject::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	for (auto& iter : m_vecComponent[ID_DYNAMIC])
 	{
 		m_pGraphicDev->SetTexture(0, nullptr);
