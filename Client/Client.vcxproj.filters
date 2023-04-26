@@ -910,7 +910,10 @@
     <ClInclude Include="ShootingPlayer.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="Boss3DeadCamera.h" />
+    <ClInclude Include="FinalCamera_1_1.h" />
+    <ClInclude Include="Boss3DeadCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1521,7 +1524,10 @@
     <ClCompile Include="ShootingPlayer.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="Boss3DeadCamera.cpp" />
+    <ClCompile Include="FinalCamera_1_1.cpp" />
+    <ClCompile Include="Boss3DeadCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

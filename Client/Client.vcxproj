@@ -205,6 +205,7 @@
     <ClInclude Include="ChapterTex.h" />
     <ClInclude Include="DynamicCamera.h" />
     <ClInclude Include="EvilBat.h" />
+    <ClInclude Include="FinalCamera_1_1.h" />
     <ClInclude Include="FinalStage2.h" />
     <ClInclude Include="FinalStage3.h" />
     <ClInclude Include="Floor1.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="ChapterTex.cpp" />
     <ClCompile Include="DynamicCamera.cpp" />
     <ClCompile Include="EvilBat.cpp" />
+    <ClCompile Include="FinalCamera_1_1.cpp" />
     <ClCompile Include="FinalStage2.cpp" />
     <ClCompile Include="FinalStage3.cpp" />
     <ClCompile Include="Floor1.cpp" />
