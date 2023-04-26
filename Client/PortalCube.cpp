@@ -4,6 +4,8 @@
 #include "Toodee.h"
 #include "Topdee.h"
 #include "Tookee.h"
+
+static _float m_fSound=1.f;
 CPortalCube::CPortalCube(LPDIRECT3DDEVICE9 pGraphicDev) :CMoveCube(pGraphicDev)
 {
 }
@@ -53,9 +55,23 @@ _int CPortalCube::Update_Too(const _float & fTimeDelta)
 	if (m_pOtherCube == nullptr)
 	{
 		m_bInit = true;
-		return 0 ;
+		return 0;
 	}
-		
+	m_pThird = Get_GameObject(L"Layer_GameLogic", L"Thirddee");
+	if (m_pThird == nullptr)
+		return 0;
+	
+	_vec3 DisP =m_pThird->m_pTransform->m_vInfo[INFO_POS];
+	_float DistoP = D3DXVec3Length(&(m_pTransform->m_vInfo[INFO_POS] - DisP));
+	if (DistoP> 70.f)
+		m_fSound = 0.f;
+	else if(DistoP>50.f)
+		m_fSound = 0.3f;
+	else if (DistoP > 30.f)
+		m_fSound = 0.7f;
+	else if (DistoP > 10.f)
+		m_fSound = 1.f;
+
 	return 0;
 }
 
@@ -167,7 +183,7 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				IsIntersect)
 			{
 				StopSound(SOUND_EFFECT_GIMMICK);
-				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, 1.f);
+				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, m_fSound);
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos(); //들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고
 				if (collision->otherObj->Get_Component(L"Rigidbody", ID_DYNAMIC) != NULL)
 				{
@@ -198,7 +214,7 @@ void CPortalCube::OnCollisionStay(const Collision * collision)
 				IsIntersect)//들어온 각도로 막혀있음.
 			{
 				StopSound(SOUND_EFFECT_GIMMICK);
-				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, 1.f);
+				PlaySound_Effect(L"80.wav", SOUND_EFFECT_GIMMICK, m_fSound);
 				collision->otherObj->m_pTransform->m_vInfo[INFO_POS] = static_cast<CPortalCube*>(m_pOtherCube)->Get_CubeHeadPos();
 				static_cast<CPortalCube*>(m_pOtherCube)->ShootRay_Portal();
 				//들어온 물체의 위치를 다른 큐브의 헤드로 바꿔주고

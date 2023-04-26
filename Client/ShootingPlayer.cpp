@@ -2,6 +2,8 @@
 #include "ShootingPlayer.h"
 #include "..\Engine\AbstractFactory.h"
 #include "Bullet.h"
+#include "SwordBullet.h"
+#include "FireBullet.h"
 
 
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -19,7 +21,7 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vScale *= 2.f;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-
+	m_pCollider->Set_Options();
 	m_vPos[INIT] = vPos;
 	m_vPos[LEFT] = vPos + _vec3(-5.f, 0.f, -5.f);
 	m_vPos[RIGHT] = vPos + _vec3(5.f, 0.f, -5.f);
@@ -27,6 +29,7 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_bKeyInput = true;
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
 	m_fSlerp = 0.f;
+	Engine::Ready_Frame(L"2Sec", 0.5f);
 	return S_OK;
 }
 
@@ -34,10 +37,11 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 {
 	Add_RenderGroup(RENDER_ALPHA, this);
 	Key_Input(fTimeDelta);
+	Rot_Player();
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
-	if (IsPermit_Call(L"1Sec", fTimeDelta))
-		Fire_bullet();
+	
+	Quad_Bullet(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -86,7 +90,6 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
 	{
-		vUp = { 0, 1, 0 };
 		m_fSlerp = 1.f;
 		m_bKeyInput = false;
 	}
@@ -95,9 +98,86 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 	{
 		m_fSlerp = 0.f;
 		m_bKeyInput = true;
+		m_pTransform->m_vAngle.y = 0.f;
 		return;
 	}
-	GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], &vUp, 5.f, 1 - m_fSlerp);
+	// s Lerp 처리가 안먹음.
+	D3DXVec3Lerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], 1 - m_fSlerp);
+}
+
+void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
+{
+	if (IsPermit_Call(L"1Sec", fTimeDelta))
+	{
+		CBullet* pBullet = nullptr;
+		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+	}
+}
+
+void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
+{
+	if (IsPermit_Call(L"1Sec", fTimeDelta))
+	{
+		CBullet* pBullet = nullptr;
+		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(1, 10, 0));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, 1));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 10, 0));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, -1));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+	}
+}
+
+void CShootingPlayer::Sword_Bullet(const _float & fTimeDelta)
+{
+	if (IsPermit_Call(L"2Sec", fTimeDelta))
+	{
+		CSwordBullet* pBullet = nullptr;
+		pBullet = CSwordBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 0, -3));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"SwordBullet", pBullet);
+	}
+}
+
+void CShootingPlayer::Fire_Bullet(const _float& fTimeDelta)
+{
+	if (IsPermit_Call(L"2Sec", fTimeDelta))
+	{
+		CFireBullet* pBullet = nullptr;
+		pBullet = CFireBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"FireBullet", pBullet);
+	}
+}
+
+void CShootingPlayer::Rot_Player()
+{
+	_vec3 vMin = m_pTransform->m_vInfo[INFO_POS] - m_vPos[INIT];
+	_float fLen = D3DXVec3Length(&vMin);
+
+	if (0 < vMin.x)
+	{
+		m_pTransform->m_vAngle.y = D3DXToRadian(fLen * 10.f);
+	}
+	else
+	{
+		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 10.f);
+	}
 }
 
 HRESULT CShootingPlayer::Add_Component(void)
@@ -112,24 +192,11 @@ HRESULT CShootingPlayer::Add_Component(void)
 	NULL_CHECK_RETURN(m_pTex, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"ThirddeeShooting", pComponent });
 
-	return S_OK;
-}
+	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
-void CShootingPlayer::Fire_bullet()
-{
-	CBullet* pBullet = nullptr;
-	pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(1, 10, 0));
-	if (pBullet == nullptr)
-		return;
-	m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-	pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
-	if (pBullet == nullptr)
-		return;
-	m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-	pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 10, 0));
-	if (pBullet == nullptr)
-		return;
-	m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
+	return S_OK;
 }
 
 CShootingPlayer * CShootingPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

@@ -5,7 +5,7 @@ BEGIN(Engine)
 class CLayer;
 class CRcTex;
 class CTexture;
-
+class CCollider;
 END
 class CShootingPlayer :
 	public CGameObject
@@ -27,14 +27,18 @@ public:
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
-
-	void		Key_Input(const _float& fTimeDelta);
 private:
 	HRESULT		Add_Component(void);
-	void		Fire_bullet();
+	void		Key_Input(const _float& fTimeDelta);
+	void		Default_Bullet(const _float& fTimeDelta);
+	void		Quad_Bullet(const _float& fTimeDelta);
+	void		Sword_Bullet(const _float& fTimeDelta);
+	void		Fire_Bullet(const _float& fTimeDelta);
+	void		Rot_Player();
 private:
 	Engine::CRcTex*				m_pBuf;
 	Engine::CTexture*			m_pTex;
+	Engine::CCollider*			m_pCollider;
 
 	_float						m_fSlerp;
 	_vec3						m_vPos[POS_END];

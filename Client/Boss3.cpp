@@ -207,10 +207,10 @@ void CBoss3::Render_GameObject(void)
 
 		else
 			m_pTextureCom->Set_Texture();
-
-		if (!g_Is2D)
-			m_pShadowCom->Render_Shadow(m_pBufferCom);
 	}
+
+	if (!g_Is2D)
+		m_pShadowCom->Render_Shadow(m_pBufferCom);
 	
 	m_pBufferCom->Render_Buffer();
 
@@ -519,7 +519,7 @@ void CBoss3::Chain_Spark(_float fCoolDown, const _float& fTimeDelta)
 
 void CBoss3::Delay(const _float & fTimeDelta)
 {
-	_float fFinishDelayTime = 1.f;
+	_float fFinishDelayTime = 12.f;
 
 	m_fDelay += fTimeDelta;
 
@@ -622,7 +622,7 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 
 	WhiteTwinkl();
 
-	if (5.f <= m_fDamagedTime)
+	if (3.f <= m_fDamagedTime)
 	{
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };

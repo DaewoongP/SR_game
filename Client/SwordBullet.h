@@ -10,14 +10,14 @@ class CCollider;
 
 END
 
-class CBullet : public CGameObject
+class CSwordBullet : public CGameObject
 {
 private:
-	explicit CBullet(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBullet();
+	explicit CSwordBullet(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CSwordBullet();
 
 public:
-	HRESULT Ready_GameObject(_vec3& vPos, _vec3& vDir);
+	HRESULT Ready_GameObject(_vec3& vPos, _vec3& vInitPos);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
@@ -30,11 +30,11 @@ protected:
 	Engine::CRcTex*			m_pBuf;
 	Engine::CTexture*		m_pTex;
 	Engine::CCollider*		m_pCollider;
-	_vec3	m_vDir;
-	_float	m_fSpeed;
 
+	_float	m_fSpeed;
+	_bool	m_bShoot;
 public:
-	static CBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vDir);
+	static CSwordBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vInitPos);
 
 protected:
 	virtual void Free(void) override;

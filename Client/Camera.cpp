@@ -15,7 +15,7 @@ CCamera::CCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fProj[FOV] = D3DXToRadian(60.f);
 	m_fProj[ASPECT] = (_float)WINCX / WINCY;
 	m_fProj[NEAR_] = 1.f;
-	m_fProj[FAR_] = 100.f;
+	m_fProj[FAR_] = 400.f;
 
 	m_fSpeed = 10.f;
 }

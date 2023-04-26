@@ -1,5 +1,4 @@
 #pragma once
-#include "Include.h"
 #include "GameObject.h"
 
 BEGIN(Engine)
@@ -10,31 +9,32 @@ class CCollider;
 
 END
 
-class CBullet : public CGameObject
+class CItem : public CGameObject
 {
 private:
-	explicit CBullet(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBullet();
+	explicit CItem(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CItem();
 
 public:
-	HRESULT Ready_GameObject(_vec3& vPos, _vec3& vDir);
+	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
+
 	virtual void OnCollisionEnter(const class Collision* collision);
 
-protected:
-	HRESULT Add_Component(void);
+private:
+	HRESULT		Add_Component(void);
 
-protected:
-	Engine::CRcTex*			m_pBuf;
-	Engine::CTexture*		m_pTex;
+private:
+	Engine::CRcTex*			m_pBufferCom;
+	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
-	_vec3	m_vDir;
-	_float	m_fSpeed;
+
+	_int					m_iIndex;
 
 public:
-	static CBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vDir);
+	static CItem*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 
 protected:
 	virtual void Free(void) override;
