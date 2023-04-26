@@ -35,7 +35,6 @@ CFinalStage1::~CFinalStage1()
 
 HRESULT CFinalStage1::Ready_Scene(void)
 {
-
 	m_eLoadingID = LOADING_FINAL1;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);

@@ -23,8 +23,7 @@ CFinalStage2::~CFinalStage2()
 
 HRESULT CFinalStage2::Ready_Scene(void)
 {
-
-	m_eLoadingID = LOADING_FINAL1;
+	m_eLoadingID = LOADING_FINAL2;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);

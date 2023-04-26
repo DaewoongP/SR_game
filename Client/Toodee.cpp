@@ -19,19 +19,20 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_bInit = true;
-	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+	m_fInitYScale = m_pTransform->m_vScale.y;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	// 애니메이션
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Walk", 14, 25, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
-	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
+	m_pTextureCom->Add_Anim(L"Die", 68, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_bRender = true;
 
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f }, { 0.f, -0.8f, 0.f });
 
 	BoundingBox box;
 	box.Offset(vPos);
@@ -329,12 +330,12 @@ void CToodee::DoStrech()
 {
 	if (-1.f > m_pRigid->m_Velocity.y)
 	{
-		if (m_pTransform->m_vScale.y > 2.0f)
+		if (m_pTransform->m_vScale.y > m_fInitYScale * 2.f)
 			return;
 		m_pTransform->m_vScale.y *= 1.02f;
 	}
 	else
-		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
+		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, m_fInitYScale, 0.5f);
 }
 
 void CToodee::Render_Particle()

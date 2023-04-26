@@ -67,6 +67,7 @@ protected:
 	CTookee*				m_Tookee;
 	_bool					m_bRender;
 	_bool					m_bInit;
+	_float					m_fInitYScale;
 
 	_float					m_prePos;
 
