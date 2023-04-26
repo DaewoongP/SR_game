@@ -8,7 +8,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CShadow;
-
+class CPortalParticle;
 END
 
 class CSwallowPortal : public Engine::CGameObject
@@ -30,6 +30,7 @@ private:
 	Engine::CRcTex*    m_pBufferCom;
 	Engine::CTexture*  m_pTextureCom;
 	Engine::CShadow*		m_pShadow;
+	Engine::CPortalParticle*	m_pPortalParticle;
 
 public:
 	static CSwallowPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

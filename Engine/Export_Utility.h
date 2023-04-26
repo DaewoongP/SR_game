@@ -42,7 +42,7 @@
 #include "WaveParticle.h"
 #include "SuperLandingParticle.h"
 #include "StarParticle.h"
-
+#include "PortalParticle.h"
 BEGIN(Engine)
 
 inline HRESULT			Create_Management(CManagement** ppManagement);
