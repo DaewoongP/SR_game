@@ -48,7 +48,7 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	Engine::PlayBGM(L"3.wav", 0.35f);
 	
 
-	//m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
+	m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
 	return S_OK;
 }
 
