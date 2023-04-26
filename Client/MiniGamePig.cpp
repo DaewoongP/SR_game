@@ -54,6 +54,21 @@ _int CMiniGamePig::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
+
+	if (m_DoStop_Mini&&m_pPortalTrans != nullptr)
+	{
+		m_fSpinAngle += fTimeDelta*6.f;
+		_matrix matScale, matRot, matTrans, matTrans_parent;
+		m_fSpinDist -= fTimeDelta*0.2f;
+		D3DXMatrixScaling(&matScale, m_fScale, m_fScale, m_fScale);
+		D3DXMatrixTranslation(&matTrans, m_fSpinDist, m_fSpinDist, 0);
+		D3DXMatrixRotationZ(&matRot, m_fSpinAngle);
+		m_pTransform->m_matWorld = matScale*matTrans*matRot*m_pPortalTrans->m_matWorld;
+		m_fScale *= 0.995f;
+
+		if (m_fSpinDist <= 0.2f)
+			return STAGE_END;
+	}
 	return 0;
 }
 
@@ -61,6 +76,9 @@ _int CMiniGamePig::Update_Too(const _float & fTimeDelta)
 {
 	if (m_bDead)
 		return OBJ_DEAD;
+
+	if (m_DoStop_Mini)
+		return 0;
 
 	m_pRigid->m_bUseGrivaty = false;
 	m_pRigid->m_Velocity = _vec3(0, 0, 0);
