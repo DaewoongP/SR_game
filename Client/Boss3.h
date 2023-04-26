@@ -36,6 +36,7 @@ public:
 	_int	Get_ATKCount() { return m_iATKCount; }
 	_int	Get_Boss3Hp() { return m_iHp; }
 
+	_bool Get_Dead() { return m_bDead; }
 	void	Set_Lerp() { m_bLerpMove = true; }	
 	void	Set_Damaged() { m_bDamaged = true; }
 	void	Set_Damage() { --m_iHp; }
