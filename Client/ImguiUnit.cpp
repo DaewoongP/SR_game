@@ -566,6 +566,160 @@ HRESULT CImguiUnit::LoadMapObject(_int iStageNumber, CScene* pScene)
 	return S_OK;
 }
 
+HRESULT CImguiUnit::LoadMapObject_Final1(_int iStageNumber, CScene* pScene)
+{
+	m_vecMapObjectInfo.clear();
+	m_vecPortalCubeDir.clear();
+	m_vecLaserTurretDir.clear();
+
+	m_iPortalCubeCount = 0;
+	m_iLaserTurretCount = 0;
+
+	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	if (pStageLayer == nullptr)
+		pStageLayer = pScene->Get_Layer(L"Layer_GameLogic");
+
+	TCHAR dataFile[128] = { 0 };
+	_stprintf_s(dataFile, _T("../Data/MapObjectPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile = CreateFile(dataFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	DWORD    dwByte = 0;
+	OBJINFO  vMapObjectInfo = {};
+
+	while (true)
+	{
+		ReadFile(hFile, &vMapObjectInfo, sizeof(OBJINFO), &dwByte, nullptr);
+		if (dwByte == 0)
+			break;
+		m_vecMapObjectInfo.push_back(vMapObjectInfo);
+	}
+
+	CloseHandle(hFile);
+
+	TCHAR dataFile2[128] = { 0 };
+	_stprintf_s(dataFile2, _T("../Data/PortalCubeDir%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile2 = CreateFile(dataFile2, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile2)
+		return E_FAIL;
+
+	DWORD dwByte1 = 0;
+
+	int vPortalCubeInfo = {};
+
+	while (true)
+	{
+		ReadFile(hFile2, &vPortalCubeInfo, sizeof(_int), &dwByte1, nullptr);
+		if (dwByte1 == 0)
+			break;
+		m_vecPortalCubeDir.push_back(vPortalCubeInfo);
+	}
+
+	CloseHandle(hFile2);
+
+	TCHAR dataFile3[128] = { 0 };
+	_stprintf_s(dataFile3, _T("../Data/LaserTurretPos%d.dat"), (iStageNumber + 1));
+
+	HANDLE hFile3 = CreateFile(dataFile3, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == hFile3)
+		return E_FAIL;
+
+	DWORD dwByte2 = 0;
+
+	_int vLaserTurretInfo = 0;
+
+	while (true)
+	{
+		ReadFile(hFile3, &vLaserTurretInfo, sizeof(_int), &dwByte2, nullptr);
+		if (dwByte2 == 0)
+			break;
+		m_vecLaserTurretDir.push_back(vLaserTurretInfo);
+	}
+
+	CloseHandle(hFile3);
+
+	for (auto& iter : m_vecMapObjectInfo)
+	{
+		if (0 == iter.iObjTypeNumber) // 키
+		{
+			FAILED_CHECK_RETURN(FACTORY<CKey>::Create(L"Key", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (1 == iter.iObjTypeNumber) // 키 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CKeyCube>::Create(L"KeyCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (2 == iter.iObjTypeNumber) // 무브 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (3 == iter.iObjTypeNumber) // 포탈
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPortal>::Create(L"Portal", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (4 == iter.iObjTypeNumber) // 밟으면 없어지는 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (5 == iter.iObjTypeNumber) // 스파이크
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSpike>::Create(L"Spike", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (6 == iter.iObjTypeNumber) // 분홍구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPinkCloud>::Create(L"PinkCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (7 == iter.iObjTypeNumber) // 스위치
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitch>::Create(L"Switch", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (8 == iter.iObjTypeNumber) // 스위치 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CSwitchCube>::Create(L"SwitchCube", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (9 == iter.iObjTypeNumber) // 중력 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CGravityCube>::Create(L"GravityCube", pStageLayer, iter.vObjPos + _vec3(0, 0, -0.1f)), E_FAIL);
+		}
+
+		else if (10 == iter.iObjTypeNumber) // 번개 구름
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLightningCloud>::Create(L"LightningCloud", pStageLayer, iter.vObjPos), E_FAIL);
+		}
+
+		else if (11 == iter.iObjTypeNumber && 2 > m_iPortalCubeCount) // 포탈 큐브
+		{
+			FAILED_CHECK_RETURN(FACTORY<CPortalCube>::Create(L"PortalCube", pStageLayer, iter.vObjPos + _vec3(0, 0, -0.1f),
+				(_int)m_vecPortalCubeDir.at(m_iPortalCubeCount)), E_FAIL);
+			++m_iPortalCubeCount;
+		}
+
+		else if (12 == iter.iObjTypeNumber) // 레이저 터렛
+		{
+			FAILED_CHECK_RETURN(FACTORY<CLaserTurret>::Create(L"LaserTurret", pStageLayer, iter.vObjPos,
+				(_int)(m_vecLaserTurretDir.at(m_iLaserTurretCount))), E_FAIL);
+			++m_iLaserTurretCount;
+		}
+	}
+
+	return S_OK;
+}
+
+
 HRESULT CImguiUnit::Undo(_int iStageNumber)
 {
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));

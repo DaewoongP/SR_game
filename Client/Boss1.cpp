@@ -57,7 +57,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 		
-		_vec3 summonpos = _vec3(60, 23, -30);
+		_vec3 summonpos = _vec3(116, 23, -30);
 		FAILED_CHECK_RETURN(FACTORY<CGiantHand>::Create(L"GiantHand", pStageLayer, summonpos),E_FAIL);
 		m_GiantHand = Engine::Get_GameObject(L"Layer_GameLogic", L"GiantHand");
 
@@ -672,7 +672,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		m_eCurrentState = B1_HEAD;
 		m_iCurrentActionIdx = 0;
 	}
-	else if ((int)(m_Player->m_vInfo[INFO_POS].x) == 104 && (m_eCurrentState == B1_HEAD))
+	else if (((int)(m_Player->m_vInfo[INFO_POS].x) == 104 && (m_eCurrentState == B1_HEAD))|| 
+		(m_eCurrentState == B1_GIANT&&funcAction[m_eCurrentState].size()-1== m_iCurrentActionIdx)&& ((int)(m_Player->m_vInfo[INFO_POS].x))>=104)
 	{
 		m_eCurrentState = B1_GIANT;
 		m_iCurrentActionIdx = 0;
@@ -838,7 +839,7 @@ void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 void CBoss1::Do_IngGiant(const _float & fTimeDelta)
 {
 	//특정 조건 성립시.
-	if (m_Player->m_vInfo[INFO_POS].x < 30)
+	if (m_Player->m_vInfo[INFO_POS].x < 96)
 	{
 		//전부 아이들로 바꾸고 담상태로 ㄱㄱ
 		m_pAnimation_Whole->SetAnimation(L"Idle");
