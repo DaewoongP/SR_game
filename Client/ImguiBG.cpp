@@ -486,7 +486,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 		m_vecBGInfo.push_back(vMapObjectInfo);
 	}
 	CloseHandle(hFile);
-	if(m_BG_On|| iStageNumber==0 || iStageNumber == 1 || iStageNumber == 14)
+	if(m_BG_On|| iStageNumber==0 || iStageNumber == 1 )
 	for (auto& iter : m_vecBGInfo)
 	{
 		if (0 == iter.iObjTypeNumber)
@@ -600,7 +600,7 @@ HRESULT CImguiBG::LoadBG(_int iStageNumber, CScene* pScene)
 			}
 		}
 	}
-	if (m_BG_On3 || iStageNumber == 5 || iStageNumber == 6 || iStageNumber == 7)
+	if (m_BG_On3 || iStageNumber == 5 || iStageNumber == 6 || iStageNumber == 7 || iStageNumber == 14)
 	{
 		for (auto& iter : m_vecBGInfo)
 		{
