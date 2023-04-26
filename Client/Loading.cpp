@@ -201,8 +201,8 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"WaterFall_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/waterFallSpr/waterFallSpr_%d.png", 5)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Water_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/waterSpr/waterSpr_0.png")), E_FAIL);
 
-
-
+	// 아이템 관련(인디게임레전드 리소스)
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Item_Texture", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Item/Item%d.png", 4)), E_FAIL);
 	
 	//투키
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Tookee_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/tookeeSpinningHeadSpr/tookeeSpinningHeadSpr_%d.png", 12)), E_FAIL);
@@ -306,6 +306,9 @@ _uint CLoading::Loading_ForLogo(void)
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ThirddeeShooting", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/BackThirddee.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Bullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/KineticBall_%d.png", 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SwordBullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/StormSwordStuck_%d.png", 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireBullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/Firebolt_%d.png", 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireCharge ", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/FireCharge_%d.png", 4)), E_FAIL);
 	
 	Set_String(L"Buffer Loading.......");
 

@@ -930,11 +930,14 @@ void CThirddee::Set_Die()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer != nullptr)
 	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
 		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
 		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
 		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
 		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
 		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
+
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	}
