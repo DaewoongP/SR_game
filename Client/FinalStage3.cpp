@@ -10,8 +10,8 @@
 #include "DynamicCamera.h"
 #include "Boss1.h"
 #include "Thirddee.h"
-#include "SkyBox.h"
 #include "StarBox.h"
+#include "ShootingCamera.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -57,7 +57,7 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"Camera", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -69,31 +69,9 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f),3), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 20.f, 11.f),3), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(280.f, 25.f, 20.f)), E_FAIL);
-
-
-	// 슈팅게임은 이거 안깔거긴한데
-	// 쓰레기같은 구조 때문에 for문을 덜돌면 터져요 삭제하지 말아주세요ㅕ ㅜㅠㅠㅠ
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEX; j++)
-		{
-			//맨 윗줄
-			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 첫줄
-			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 마지막줄
-			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//맨 아랫줄
-			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-		}
-	}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

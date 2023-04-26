@@ -48,6 +48,7 @@ public:
 	void		SetMovePos(COL_DIR dir);
 	_bool		DoRayToDir(COL_DIR dir);
 	void		SetMovePos_zero();
+	void		SetColliderBox(_vec3 size) { m_pCollider->Set_BoundingBox(size); }
 protected:
 	Engine::CLine*			m_pLine;
 

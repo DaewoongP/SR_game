@@ -94,13 +94,15 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CSemicolon>::Create(L"SemiColon", pLayer, _vec3(180.1f, 16.f, 5.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 34,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 36,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 38,8,12.1f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 34,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 36,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 38,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 40,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 42,8,12.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 44,8,12.f }), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 40,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 42,8,12.1f }), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ 44,8,12.1f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3{ 44,8,10.f }), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InstallCube", pLayer, _vec3{ 46,8,10.f }), E_FAIL);
 
 	for (int i = 0; i < CUBEY; i++)
 	{
