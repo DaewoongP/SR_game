@@ -16,7 +16,7 @@ CBoss1Head::~CBoss1Head()
 HRESULT CBoss1Head::Ready_GameObject(_vec3 & vPos, _vec3 vToWard)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_pCollider->m_bIsTrigger = true;
 	m_fMovepos[0] = 30;
 	m_fMovepos[1] = 17;
 	m_fMovepos[2] = 4;
