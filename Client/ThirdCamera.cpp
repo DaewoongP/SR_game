@@ -24,7 +24,7 @@ HRESULT CThirdCamera::Ready_GameObject(void)
 
 _int CThirdCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	Set_PlayerPos();
+	Set_PlayerPos(fTimeDelta);
 	Update_Matrix();
 	m_pGraphicDev->SetTransform(D3DTS_VIEW, &m_matView);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
@@ -95,7 +95,7 @@ void CThirdCamera::Update_Matrix()
 	D3DXMatrixLookAtLH(&m_matView, &m_vViewInfo[EYE], &m_vViewInfo[AT], &m_vViewInfo[UP]);
 }
 
-void CThirdCamera::Set_PlayerPos()
+void CThirdCamera::Set_PlayerPos(const _float& fTimeDelta)
 {
 	CGameObject* pObj = nullptr;
 	pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee");
@@ -103,16 +103,18 @@ void CThirdCamera::Set_PlayerPos()
 		return;
 	m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-10);
 
+	_vec3 vShake = { 0.0f,0.0f,0.0f };
+
+	m_pTransform->Update_Shake(fTimeDelta, vShake);
+
+
 	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
-	m_vTooView[AT] = m_vPlayerPos+ _vec3(GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue));
+	m_vTooView[AT] = m_vPlayerPos + vShake;
 	m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);
 
 	m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f);
-	m_vTopView[AT] = m_vPlayerPos + _vec3(GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue));
+	m_vTopView[AT] = m_vPlayerPos + vShake;
 	m_vTopView[UP] = _vec3(0.f, 0.f, -1.f);
-
-	
-
 }
 
 CThirdCamera * CThirdCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
