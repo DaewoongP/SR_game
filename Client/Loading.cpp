@@ -306,6 +306,9 @@ _uint CLoading::Loading_ForLogo(void)
 	
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ThirddeeShooting", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/BackThirddee.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Bullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/KineticBall_%d.png", 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SwordBullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/StormSwordStuck_%d.png", 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireBullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/Firebolt_%d.png", 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireCharge ", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/FireCharge_%d.png", 4)), E_FAIL);
 	
 	Set_String(L"Buffer Loading.......");
 

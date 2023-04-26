@@ -178,7 +178,6 @@
     <ClInclude Include="Boss3Camera.h" />
     <ClInclude Include="Boss3DeadCamera.h" />
     <ClInclude Include="BossDeadCamera.h" />
-    <ClInclude Include="BulletPlayer.h" />
     <ClInclude Include="DirectCamera.h" />
     <ClInclude Include="Boss2Chain.h" />
     <ClInclude Include="Boss2Eye.h" />
@@ -207,6 +206,7 @@
     <ClInclude Include="EvilBat.h" />
     <ClInclude Include="FinalStage2.h" />
     <ClInclude Include="FinalStage3.h" />
+    <ClInclude Include="FireBullet.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
     <ClInclude Include="HpUI.h" />
@@ -288,6 +288,7 @@
     <ClInclude Include="SwallowPortal.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
+    <ClInclude Include="SwordBullet.h" />
     <ClInclude Include="Theme1_Cloud.h" />
     <ClInclude Include="Theme1_Cow.h" />
     <ClInclude Include="Theme1_Cube.h" />
@@ -362,7 +363,6 @@
     <ClCompile Include="Boss3Camera.cpp" />
     <ClCompile Include="Boss3DeadCamera.cpp" />
     <ClCompile Include="BossDeadCamera.cpp" />
-    <ClCompile Include="BulletPlayer.cpp" />
     <ClCompile Include="DirectCamera.cpp" />
     <ClCompile Include="Boss2Chain.cpp" />
     <ClCompile Include="Boss2Eye.cpp" />
@@ -391,6 +391,7 @@
     <ClCompile Include="EvilBat.cpp" />
     <ClCompile Include="FinalStage2.cpp" />
     <ClCompile Include="FinalStage3.cpp" />
+    <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />
     <ClCompile Include="HpUI.cpp" />
@@ -469,6 +470,7 @@
     <ClCompile Include="SwallowPortal.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
+    <ClCompile Include="SwordBullet.cpp" />
     <ClCompile Include="Theme1_Cloud.cpp" />
     <ClCompile Include="Theme1_Cow.cpp" />
     <ClCompile Include="Theme1_Cube.cpp" />

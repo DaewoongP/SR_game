@@ -10,14 +10,14 @@ class CCollider;
 
 END
 
-class CBullet : public CGameObject
+class CFireBullet : public CGameObject
 {
 private:
-	explicit CBullet(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBullet();
+	explicit CFireBullet(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFireBullet();
 
 public:
-	HRESULT Ready_GameObject(_vec3& vPos, _vec3& vDir);
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
@@ -34,7 +34,7 @@ protected:
 	_float	m_fSpeed;
 
 public:
-	static CBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vDir);
+	static CFireBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;
