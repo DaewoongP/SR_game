@@ -3,8 +3,7 @@
 
 BEGIN(Engine)
 
-class CRcTex;
-class CTexture;
+class CCollider;
 
 END
 
@@ -24,8 +23,7 @@ private:
 	HRESULT Add_Component(void);
 
 private:
-	Engine::CRcTex* m_pBufferCom;
-	Engine::CTexture* m_pTextureCom;
+	Engine::CCollider* m_pCollider;
 
 public:
 	static	CInvisibleGrid* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "FinalStage2.h"
+#include "FinalStage3.h"
 #include "AbstractFactory.h"
 #include "Export_Function.h"
 #include "Cube.h"
@@ -11,17 +11,17 @@
 #include "Boss1.h"
 #include "Thirddee.h"
 
-CFinalStage2::CFinalStage2(LPDIRECT3DDEVICE9 pGraphicDev)
+CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
 }
 
 
-CFinalStage2::~CFinalStage2()
+CFinalStage3::~CFinalStage3()
 {
 }
 
-HRESULT CFinalStage2::Ready_Scene(void)
+HRESULT CFinalStage3::Ready_Scene(void)
 {
 
 	m_eLoadingID = LOADING_FINAL1;
@@ -34,21 +34,21 @@ HRESULT CFinalStage2::Ready_Scene(void)
 	return S_OK;
 }
 
-_int CFinalStage2::Update_Scene(const _float & fTimeDelta)
+_int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
 	return __super::Update_Scene(fTimeDelta);
 }
 
-void CFinalStage2::LateUpdate_Scene(void)
+void CFinalStage3::LateUpdate_Scene(void)
 {
 	__super::LateUpdate_Scene();
 }
 
-void CFinalStage2::Render_Scene(void)
+void CFinalStage3::Render_Scene(void)
 {
 }
 
-HRESULT CFinalStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
+HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -60,7 +60,7 @@ HRESULT CFinalStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
+HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -70,10 +70,11 @@ HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(80.f, 25.f, 20.f)), E_FAIL);
 
 
-	// 대충 이정도 사이즈만 하겠다는 뜻.
+	// 슈팅게임은 이거 안깔거긴한데
+	// 쓰레기같은 구조 때문에 for문을 덜돌면 터져요 삭제하지 말아주세요ㅕ ㅜㅠㅠㅠ
 	for (int i = 0; i < CUBEY; i++)
 	{
-		for (int j = 0; j < CUBEY; j++)
+		for (int j = 0; j < CUBEX; j++)
 		{
 			//맨 윗줄
 			if (i == 0)
@@ -85,7 +86,7 @@ HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 			//맨 아랫줄
-			if (j == CUBEY - 1)
+			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
 		}
 	}
@@ -95,7 +96,7 @@ HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-HRESULT CFinalStage2::Ready_Layer_UI(const _tchar * pLayerTag)
+HRESULT CFinalStage3::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -107,9 +108,9 @@ HRESULT CFinalStage2::Ready_Layer_UI(const _tchar * pLayerTag)
 	return S_OK;
 }
 
-CFinalStage2 * CFinalStage2::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CFinalStage2 *	pInstance = new CFinalStage2(pGraphicDev);
+	CFinalStage3 *	pInstance = new CFinalStage3(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Scene()))
 	{
@@ -120,7 +121,7 @@ CFinalStage2 * CFinalStage2::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CFinalStage2::Free(void)
+void CFinalStage3::Free(void)
 {
 	__super::Free();
 }
