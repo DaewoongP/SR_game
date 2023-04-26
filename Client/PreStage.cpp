@@ -28,6 +28,7 @@ CPreStage::~CPreStage()
 
 HRESULT CPreStage::Ready_Scene(void)
 {
+	Engine::Set_Scene(this);
 	m_pLoading = CLoading::Create(m_pGraphicDev, m_eLoadingID);
 	NULL_CHECK_RETURN(m_pLoading, E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
