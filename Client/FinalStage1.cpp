@@ -40,6 +40,10 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
+	//CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
+	//CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);

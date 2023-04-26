@@ -100,7 +100,7 @@ HRESULT CImguiMgr::Update_Imgui(LPDIRECT3DDEVICE9 m_pGraphicDev)
 
 		// 스테이지 선택 콤보 박스
 		const char* items[] = { "1", "2", "3", "4(boss2)", "5", "6", "7", "8(boss3)", "9", "10", 
-								"Final1", "Final2", "99", "Mini_13", "Mini_14" };
+								"Final1(11)", "Final2(12)", "99(13)", "Mini_13(14)", "Mini_14(15)" };
 		ImGui::Combo("StageNumber", &m_iStageNumber, items, IM_ARRAYSIZE(items));
 		m_pImguiStage->Set_StageNumber(m_iStageNumber);
 		m_pImguiUnit->Set_StageNumber(m_iStageNumber);

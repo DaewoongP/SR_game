@@ -10,7 +10,7 @@
 #include "Topdee.h"
 CBoss3Hand::CBoss3Hand(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
-	m_fSpeed(27.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
+	m_fSpeed(35.f), m_fCoolDown(0.f), m_fAttackCoolDown(0.f), 
 	m_fIdleCycle(0.f), m_fIdleAngle(0.f), m_fDamagedTime(0.f),
 	m_fLerpDist(0.f),
 	m_iIndex(0), 
@@ -174,7 +174,7 @@ void CBoss3Hand::Render_GameObject(void)
 
 	if (m_bDamaged)
 	{
-		if (0 == (_int)(m_fLerpDist * 250) % 2)
+		if (0 == (_int)(m_fLerpDist * 100.f) % 2)
 			m_pTextureCom2->Set_Texture(m_iIndex);
 
 		else
