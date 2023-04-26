@@ -35,6 +35,7 @@ public:
 	void	MakeAnim(_tchar* name, _int startidx, _int lastidx, _float time, _bool loop) { m_pTextureCom->Add_Anim(name, startidx, lastidx, time, loop); }
 	void	SetAnim(_tchar* name) { m_pTextureCom->Switch_Anim(name); }
 	_bool	GetDieAnimEnd() {return m_pTextureCom->IsAnimationEnd(L"Die");}
+	_tchar*	GetAnimID() { return m_pTextureCom->Get_AnimState(); }
 
 protected:
 	_float	m_dwTimer;

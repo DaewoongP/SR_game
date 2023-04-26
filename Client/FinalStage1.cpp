@@ -40,10 +40,10 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-	//CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
-	//CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
-	//CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
-	//CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
+	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
+	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);
@@ -86,7 +86,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(34.f, 15.f, 10.f),1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 8.f, 10.f),1), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(270.f, -50.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3(60.f, 23.f, 11.f)), E_FAIL);
@@ -104,26 +104,10 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CMoveCube>::Create(L"MoveCube", pLayer, _vec3{ 44,8,10.f }), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CInvisibleGrid>::Create(L"InstallCube", pLayer, _vec3{ 46,8,10.f }), E_FAIL);
 
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEX * 3; j++)
-		{
-			//맨 윗줄
-			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 첫줄
-			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//사이 마지막줄
-			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-			//맨 아랫줄
-			if (j == CUBEX * 3 - 1)
-				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }), E_FAIL);
-		}
-	}
-
 	m_uMapLayer.insert({ pLayerTag, pLayer });
+	for (int i = 0; i < 10000; i++)
+		for (int j = 0; j < 10000; j++)
+			int a = 0;
 
 	return S_OK;
 }

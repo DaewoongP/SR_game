@@ -30,7 +30,7 @@ CBoss1::~CBoss1()
 HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_eCurrentState = B1_GIANT;
+	m_eCurrentState = B1_END;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
 	//위치잡는 친구를 넣어주세요
@@ -175,7 +175,6 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			m_PartsVec[i]->m_vScale *= BOSS1SCALE;
 			m_PartsVec[i]->m_vInfo[INFO_POS] *= BOSS1SCALE;
 		}
-			
 
 		//그냥 둥둥이임.
 		AnimClip* clip = nullptr;
@@ -195,7 +194,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0,-3,0) + _vec3(0,1,0),
 					_vec3(D3DXToRadian(0.1f),0,0),//rotation
-					_vec3(0,0,0),//scale
+					_vec3(13,13,13),//scale
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -204,7 +203,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0,-3,0) + _vec3(0,-1,0),
 					_vec3(D3DXToRadian(0.1f),0,0),//rotation
-					_vec3(0,0,0),
+					_vec3(13,13,13),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -214,7 +213,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0,12,-0.1f) + _vec3(0,1,0),
 					_vec3(D3DXToRadian(0.1f),0,0),//rotation
-					_vec3(0,0,0),
+					_vec3(1,1,1),
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -222,7 +221,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0,12,-0.1f) + _vec3(0,-2,0),
 					_vec3(D3DXToRadian(0.1f),0,0),//rotation
-					_vec3(0,0,0),
+					_vec3(1,1,1),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -230,9 +229,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[2].push_back(
 					ANIMINFO{
-					_vec3(-9, 6, 0.1f) + _vec3(0,1,0),
+					_vec3(-9, 6, 0.1f) + _vec3(0,0.5f,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(-30)),//rotation
-					_vec3(0,0,0),
+					_vec3(13,13,13),
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -240,7 +239,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(-9, 6, 0.1f) + _vec3(0,-2,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(-30)),//rotation
-					_vec3(0,0,0),
+					_vec3(13,13,13),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -248,9 +247,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[3].push_back(
 					ANIMINFO{
-					_vec3(0, -4, -0.1f) + _vec3(0,1,0),
+					_vec3(0, -4, -0.1f) + _vec3(0,0.5f,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(120)),//rotation
-					_vec3(0,0,0),
+					_vec3(13,13,13),
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -258,7 +257,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0, -4, -0.1f) + _vec3(0,-2,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(120)),//rotation
-					_vec3(0,0,0),
+					_vec3(13,13,13),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -266,9 +265,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[4].push_back(
 					ANIMINFO{
-					_vec3(9, 6, 0.1f) + _vec3(0,1,0),
+					_vec3(9, 6, 0.1f) + _vec3(0,0.5f,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(30)),//rotation
-					_vec3(0,0,0),
+					_vec3(-13,13,13),
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -276,7 +275,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(9, 6, 0.1f) + _vec3(0,-2,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(30)),//rotation
-					_vec3(0,0,0),
+					_vec3(-13,13,13),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -284,9 +283,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			{
 				clip->source[5].push_back(
 					ANIMINFO{
-					_vec3(0, -4, -0.1f) + _vec3(0,1,0),
+					_vec3(0, -4, -0.1f) + _vec3(0,0.5f,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(-120)),//rotation
-					_vec3(0,0,0),
+					_vec3(-13,13,13),
 					1.5f,//tilltime
 					0.f//actionTime
 				});
@@ -294,7 +293,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					ANIMINFO{
 					_vec3(0, -4, -0.1f) + _vec3(0,-2,0),
 					_vec3(D3DXToRadian(0.1f),0,D3DXToRadian(-120)),//rotation
-					_vec3(0,0,0),
+					_vec3(-13,13,13),
 					1.5f,//tilltime
 					1.5f//actionTime
 				});
@@ -322,7 +321,6 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Whole->AddClip(L"Idle", clip);
-
 			
 		//손가락 공격임
 		clip = new AnimClip();
@@ -337,8 +335,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[13]);//손목이
 			clip->source.resize(7);
 
-			LerpClipAdd(clip, 0, 0.2f, 12, 2, _vec3(8, -8, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 1, 0.2f, 1, 0.3f, _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
+			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(2,2,2), _vec3(8, -8, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 1, 0.2f, _vec3(1,1,1), _vec3(0.3f, 0.3f, 0.3f), _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
 
 			//들어올릴 어깨/팔 세팅
 			{
@@ -378,9 +376,9 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 				});
 			}
 
-			LerpClipAdd(clip, 6, 0.2f, 13, 4, _vec3(0, -5, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(0)), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 4, 0.2f, 13, 4, _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 5, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 6, 0.2f, _vec3(13, 13, 13), _vec3(4,4,4), _vec3(0, -5, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(0)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 4, 0.2f, _vec3(-13, 13, 13), _vec3(-4,4,4), _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 5, 0.2f, _vec3(-13, 13, 13), _vec3(-4,4,4), _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
 			SCALEADD;
 			clip->TotalTime = 0.2f*18;
 			clip->Useloop = false;
@@ -399,8 +397,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[13]);//손목이
 			clip->source.resize(7);
 
-			LerpClipAdd(clip, 0, 0.2f, 12, 0.4f, _vec3(8, -8, 0), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
-			LerpClipAdd(clip, 1, 0.2f, 1, 0.1f, _vec3(0, 12, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
+			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(0.4f, 0.4f, 0.4f), _vec3(8, -8, 0), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
+			LerpClipAdd(clip, 1, 0.2f, _vec3(1,1,1), _vec3(0.1f, 0.1f, 0.1f), _vec3(0, 12, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
 			{
 				clip->source[2].push_back(
 					ANIMINFO{
@@ -455,8 +453,8 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 					0.3f//actionTime
 				});
 			}
-			LerpClipAdd(clip, 4, 0.2f, 13, 0.4f, _vec3(9, 6, 0.1f), _vec3(0, 1, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 2);
-			LerpClipAdd(clip, 5, 0.2f, 13, 0.4f, _vec3(0, -4, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 2);
+			LerpClipAdd(clip, 4, 0.2f, _vec3(-13, 13, 13), _vec3(-0.4f, 0.4f, 0.4f), _vec3(9, 6, 0.1f), _vec3(0, 1, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 2);
+			LerpClipAdd(clip, 5, 0.2f, _vec3(-13, 13, 13), _vec3(-0.4f, 0.4f, 0.4f), _vec3(0, -4, -0.1f), _vec3(0, 1, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 2);
 			SCALEADD;
 			clip->TotalTime = 0.2f * 2;
 			clip->Useloop = true;
@@ -474,12 +472,12 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[17]);//팔도 동동
 			clip->source.resize(6);
 										//스케	//이동								//회전
-			LerpClipAdd(clip, 0, 0.2f, 12, 2, _vec3(0, -3, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 1, 0.2f, 1, 0.3f, _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
-			LerpClipAdd(clip, 2, 0.2f, 13, 4, _vec3(-9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(-30)), _vec3(0, 0, D3DXToRadian(50)), 18);
-			LerpClipAdd(clip, 3, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(120)), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 4, 0.2f, 13, 4, _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 5, 0.2f, 13, 4, _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(2,2,2), _vec3(0, -3, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 1, 0.2f, _vec3(1, 1, 1), _vec3(0.3f, 0.3f, 0.3f), _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
+			LerpClipAdd(clip, 2, 0.2f, _vec3(13,13,13), _vec3(4,4,4), _vec3(-9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(-30)), _vec3(0, 0, D3DXToRadian(50)), 18);
+			LerpClipAdd(clip, 3, 0.2f, _vec3(13,13,13), _vec3(4,4,4), _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(120)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 4, 0.2f, _vec3(-13,13,13), _vec3(-4,4,4), _vec3(9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 5, 0.2f, _vec3(-13,13,13), _vec3(-4,4,4), _vec3(0, -4, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, 0, 0), 18);
 			
 			SCALEADD;
 			clip->TotalTime = 0.2f*18;
@@ -645,24 +643,41 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->parts.push_back(m_PartsVec[8]);//눈화장
 			clip->source.resize(7);
 
-			LerpClipAdd(clip, 0, 0.2f, 13, 2, _vec3(0, 3, -0.6f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 1, 0.2f, 13, 2, _vec3(1.3f, -1.0f, -0.3f), _vec3(0, 4, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
-			LerpClipAdd(clip, 2, 0.2f, 13, 2, _vec3(-2.3f, -1.0f, -0.3f), _vec3(0, 4, 0), _vec3(0, D3DXToRadian(180), 0), _vec3(0, 0, D3DXToRadian(50)), 18);
-			LerpClipAdd(clip, 3, 0.2f, 10, 4, _vec3(-0.5f, -1.2f, -0.2f), _vec3(0, 0, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 4, 0.2f, 13, 2, _vec3(-1, 0.5f, -0.4f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 5, 0.2f, 11, 2, _vec3(-0.2f, 1, -0.2f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
-			LerpClipAdd(clip, 6, 0.2f, 11, 2, _vec3(-0.1f, 1.4f, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			
+			LerpClipAdd(clip, 0, 0.2f, _vec3(13,13,13),_vec3(2,2,2), _vec3(0, 3, -0.6f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 1, 0.2f, _vec3(13,13,13),_vec3(2,2,2), _vec3(1.3f, -1.0f, -0.3f), _vec3(0, 4, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
+			LerpClipAdd(clip, 2, 0.2f, _vec3(13,13,13),_vec3(2,2,2), _vec3(-2.3f, -1.0f, -0.3f), _vec3(0, 4, 0), _vec3(0, D3DXToRadian(180), 0), _vec3(0, 0, D3DXToRadian(50)), 18);
+			LerpClipAdd(clip, 3, 0.2f, _vec3(10,10,10), _vec3(4,4,4), _vec3(-0.5f, -1.2f, -0.2f), _vec3(0, 0, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 4, 0.2f, _vec3(13, 13, 13), _vec3(2, 2, 2), _vec3(-1, 0.5f, -0.4f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 5, 0.2f, _vec3(11, 11, 11), _vec3(2, 2, 2), _vec3(-0.2f, 1, -0.2f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
+			LerpClipAdd(clip, 6, 0.2f, _vec3(11, 11, 11), _vec3(2, 2, 2), _vec3(-0.1f, 1.4f, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			SCALEADD;
 			clip->TotalTime = 0.2f * 18 ;
 			clip->Useloop = false;
 		}
 		m_pAnimation_Face->AddClip(L"Smile", clip);
-		m_pAnimation_Face->SetAnimation(L"Smile");
+		m_pAnimation_Face->SetAnimation(L"Idle");
 	}
 
 	(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
-
+	if ((int)(m_Player->m_vInfo[INFO_POS].x) == 23 && m_eCurrentState == B1_END)
+	{
+		m_eCurrentState = B1_FINGER;
+		m_iCurrentActionIdx = 0;
+	}
+		
+	else if ((int)(m_Player->m_vInfo[INFO_POS].x) == 58 && (m_eCurrentState == B1_FINGER))
+	{
+		m_eCurrentState = B1_HEAD;
+		m_iCurrentActionIdx = 0;
+	}
+	else if ((int)(m_Player->m_vInfo[INFO_POS].x) == 104 && (m_eCurrentState == B1_HEAD))
+	{
+		m_eCurrentState = B1_GIANT;
+		m_iCurrentActionIdx = 0;
+	}
+		
 	Move(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
@@ -710,21 +725,21 @@ HRESULT CBoss1::Add_Component(void)
 	return S_OK;
 }
 
-void CBoss1::LerpClipAdd(AnimClip* clip,_int idx, _float itv,_float osc, _float csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count)
+void CBoss1::LerpClipAdd(AnimClip* clip,_int idx, _float itv, _vec3 osc, _vec3 csc, _vec3 otr, _vec3 ctr, _vec3 orot, _vec3 crot, _int count)
 {
 	_float pre = 0;
 	for (int i = 0; i < count; i++)
 	{
 		//현재 위치에서 변화량만큼 변화를 줍니다.
 		pre = (_float)(i + 1) / count;
-		csc = Lerp(csc, 0, pre);
+		csc = Lerp(csc, _vec3(0, 0, 0), pre);
 		ctr = Lerp(ctr, _vec3(0,0,0), pre);
 		crot = Lerp(crot, _vec3(0, 0, 0), pre);
 		clip->source[idx].push_back(
 			ANIMINFO{
 			(i % 2 == 0) ? (otr + ctr):(otr -ctr),
 			(i % 2 == 0) ? (orot + crot) : (orot -crot),//rotation
-			(i % 2 == 0) ? (_vec3(osc,osc,osc) + _vec3(csc,csc,csc)): (_vec3(osc,osc,osc) + _vec3(-csc,-csc,-csc)),//scale
+			(i % 2 == 0) ? (osc + csc) : (osc - csc),//scale
 			itv,//tilltime
 			itv*i//actionTime
 		});
@@ -857,7 +872,9 @@ void CBoss1::Do_Rest(const _float & fTimeDelta)
 void CBoss1::CheckIsLastActionIdx()
 {
 	if (funcAction[m_eCurrentState].size() <= (m_iCurrentActionIdx + 1))
-		SetPattern();
+	{
+		//행동의 마지막 인덱스면 그냥 암것도 안할거임.
+	}
 	else
 		m_iCurrentActionIdx++;
 }
@@ -899,17 +916,14 @@ void CBoss1::ReadyPartten()
 	func.push_back(&CBoss1::Do_Rest);
 	funcAction.push_back(func);
 	func.clear();
+
+	func.push_back(&CBoss1::Do_Rest);
+	funcAction.push_back(func);
+	func.clear();
 }
 
 void CBoss1::Move(const _float& fTimeDelta)
 {
-	/*_matrix		matCamWorld;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
-	D3DXMatrixInverse(&matCamWorld, 0, &matCamWorld);
-
-	if (matCamWorld._41<120)
-		m_pTransform->Set_Pos(matCamWorld._41 + 60, 16, 20);*/
-
 	if (m_fOffset_x>3.f)
 		m_bTurn_x = false;
 	else if(m_fOffset_x<-3.f)

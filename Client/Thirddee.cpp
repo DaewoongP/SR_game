@@ -524,8 +524,16 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		m_bInit2 = false;
 	}
 	
-	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+	if(m_bDead)
 		return OBJ_DEAD;
+	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
+	{
+	/*	for (int i = 0; i < m_partVec.size(); i++)
+			m_partVec[i]->Set_Dead();
+		m_DiePart->Set_Dead();*/
+		m_bDead = true;
+	}
+		
 
 	Spiwn_End(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_NONALPHA, this);
@@ -640,12 +648,24 @@ void CThirddee::SwapTrigger()
 	}
 	else
 	{ 
+		_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
+		//플레이어가 이동하려는 방향으로만 검출합니다
+		int cnt = 0;
+		for (int i = 0; i < MD_END; i++)
+		{
+			if (m_ThirdDee_Stage == 1)
+				if (RayDisKey_part_1((COL_MOVEDIR)i))
+					cnt++;
+		}
+		if (cnt == 0)
+			Set_Dead();
+		
 		m_pRigid->m_bUseGrivaty = false;
 		m_pTransform->m_vInfo[INFO_POS].x =
 			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
 		m_pTransform->m_vInfo[INFO_POS].y =
 			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
-		m_pCollider->Set_BoundingBox({ 1.f,1.999f,1.3f });
+		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.3f });
 		m_pCollider->m_bIsTrigger = true;
 		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(-90), D3DXToRadian(0));
 		m_pTransform->m_vInfo[INFO_POS].z = 11;
@@ -753,23 +773,25 @@ void CThirddee::OnCollisionEnter(const Collision * collision)
 		m_pAnimation_Arm->SetAnimation(L"Idle");
 		m_pAnimation_Head->SetAnimation(L"Idle");
 		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetShakeValue(.06f);
-
 	}
+	m_bStage01_Col = true;
 }
 
 void CThirddee::RayDiskey()
 {
 	_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
 	//플레이어가 이동하려는 방향으로만 검출합니다
+	int cnt=0;
 	for (int i = 0; i < MD_END; i++)
 	{
 		if (m_byPlayerInputDir == fdir[i])
 		{
 			if (m_ThirdDee_Stage == 1)
-				RayDisKey_part_1((COL_MOVEDIR)i);
+				if (RayDisKey_part_1((COL_MOVEDIR)i))
+					cnt++;
+
 			RayDisKey_part((COL_MOVEDIR)i);
 		}
-			
 	}
 }
 
@@ -839,14 +861,18 @@ void CThirddee::RayDisKey_part(COL_MOVEDIR dir)
 	}
 }
 
-void CThirddee::RayDisKey_part_1(COL_MOVEDIR dir)
+_bool CThirddee::RayDisKey_part_1(COL_MOVEDIR dir)
 {
 	//뭐가 안걸리면 해당방향 꺼줘야함.
 	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{ 1,1,0 },{ -1,1,0 },{ 1,-1,0 },{ -1,-1,0 } };
 	_int fdir[MD_END] = { 13,14,7,11,9,5,10,6 };
-	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(-vdir[dir].x*2,-vdir[dir].y*2, -1.f), vdir[dir], 2.125f), m_pCollider);
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(-vdir[dir].x*2.f,-vdir[dir].y*2.0f, -1.f), vdir[dir], 2.125f), m_pCollider);
 	if (_detectedCOL.size() == 0)
+	{
 		m_byPlayerInputDir &= fdir[dir];
+		return false;
+	}
+	return true;
 }
 
 
@@ -884,11 +910,13 @@ void CThirddee::OnCollisionStay(const Collision * collision)
 void CThirddee::OnCollisionExit(const Collision * collision)
 {
 	m_bJumpable = false;
+	m_bStage01_Col = false;
 }
 
 void CThirddee::Set_Die()
 {
-	m_bDead = true;
+	if (m_DiePart != nullptr)
+		return;
 	function<void(CTransform*)> func = [&](CTransform* parent) -> void {
 		for (int i = 0; i < parent->GetChildCount(); i++)
 		{
@@ -901,15 +929,14 @@ void CThirddee::Set_Die()
 	func(m_pTransform);
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer != nullptr)
-		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
-	CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
-	m_DiePart = dynamic_cast<CTopdeeParts*>(die);
-	m_pRigid->m_bUseGrivaty = false;
-	m_pRigid->m_Velocity = _vec3(0, 0, 0);
-	if (die != nullptr)
 	{
-		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.4f, false);
+		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
+		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
+		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
 		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
+		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	}
 }
 
