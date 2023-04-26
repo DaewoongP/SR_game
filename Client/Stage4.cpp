@@ -16,6 +16,7 @@
 #include"UICamera.h"
 #include"ImguiBG.h"
 #include "Boss2Camera.h"
+#include "BossDeadCamera.h"
 
 CStage4::CStage4(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CScene(pGraphicDev)
@@ -82,6 +83,7 @@ HRESULT CStage4::Ready_Layer_Environment(const _tchar * pLayerTag)
 	
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss2Camera>::Create(L"Boss2Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBossDeadCamera>::Create(L"BossDeadCamera", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

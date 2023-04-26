@@ -27,6 +27,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SkyParticle.h" />
     <ClInclude Include="SmokeParticle.h" />
+    <ClInclude Include="StarParticle.h" />
     <ClInclude Include="SuperLandingParticle.h" />
     <ClInclude Include="TexParticle.h" />
     <ClInclude Include="CircleParticle.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SkyParticle.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
+    <ClCompile Include="StarParticle.cpp" />
     <ClCompile Include="SuperLandingParticle.cpp" />
     <ClCompile Include="TexParticle.cpp" />
     <ClCompile Include="CircleParticle.cpp" />

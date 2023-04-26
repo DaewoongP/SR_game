@@ -8,6 +8,7 @@ CToodee::CToodee(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev)
 	, m_bJumpable(false)
 	, m_eKeyState(DIR_END)
+	, m_bKeyInput(true)
 {
 }
 
@@ -19,19 +20,20 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_bInit = true;
-	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
+	m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
+	m_fInitYScale = m_pTransform->m_vScale.y;
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
 	// 애니메이션
 	m_pTextureCom->Add_Anim(L"Idle", 0, 5, 1.f, true);
-	m_pTextureCom->Add_Anim(L"Walk", 6, 13, 1.f, true);
+	m_pTextureCom->Add_Anim(L"Walk", 14, 25, 1.f, true);
 	m_pTextureCom->Add_Anim(L"Jump", 26, 30, 1.f, false);
-	m_pTextureCom->Add_Anim(L"Die", 67, 72, 0.6f, false);
+	m_pTextureCom->Add_Anim(L"Die", 68, 72, 0.6f, false);
 	m_pTextureCom->Switch_Anim(L"Idle");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 	m_bRender = true;
 
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f }, { 0.f, -0.8f, 0.f });
 
 	BoundingBox box;
 	box.Offset(vPos);
@@ -42,14 +44,11 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
-	if (Engine::IsPermit_Call(L"1Sec", fTimeDelta))
-		cout << "Toodee : " << m_pTransform->m_vInfo[INFO_POS].x << " | " << m_pTransform->m_vInfo[INFO_POS].y << " | " <<
-			m_pTransform->m_vInfo[INFO_POS].z << endl;
 	if (m_bDead)
 		return OBJ_DEAD;
+	
 	if (m_bInit)
 	{
-		
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 		
 		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
@@ -68,12 +67,36 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 		m_prePos = m_pTransform->m_vInfo[INFO_POS].x;
 	}
 	
+	if (m_DoStop)
+	{
+		m_pTransform->m_vInfo[INFO_POS] = Lerp(m_pTransform->m_vInfo[INFO_POS], m_vFinalLerpPos, 0.1f);
+		__super::Update_GameObject(fTimeDelta);
+	}
+
+	if (m_DoStop_Mini&&m_pPortalTrans != nullptr)
+	{
+		m_fSpinAngle += fTimeDelta*6.f;
+		_matrix matScale,matRot, matTrans, matTrans_parent;
+		m_fSpinDist -= fTimeDelta*0.2f;
+		D3DXMatrixScaling(&matScale, m_fScale, m_fScale, m_fScale);
+		D3DXMatrixTranslation(&matTrans, m_fSpinDist, m_fSpinDist, 0);
+		D3DXMatrixRotationZ(&matRot, m_fSpinAngle);
+		m_pTransform->m_matWorld = matScale*matTrans*matRot*m_pPortalTrans->m_matWorld;
+		m_fScale *= 0.995f;
+
+		if(m_fSpinDist<=0.2f)
+			return STAGE_END;
+	}
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	
 	return 0;
 }
 _int CToodee::Update_Too(const _float & fTimeDelta)
 {
+	if (m_DoStop|| m_DoStop_Mini)
+		return 0;
+
 	Key_Input(fTimeDelta);
 	DoStrech();
 	__super::Update_GameObject(fTimeDelta);
@@ -81,6 +104,18 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
 	//텍스쳐컴의 애니가 die고 완료됐다면?
+	if (!lstrcmp(m_pTextureCom->Get_AnimState(), L"Die") && !m_pDeadParticle->IsRendering())
+	{
+		m_bKeyInput = false;
+		BoundingBox box;
+		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+		m_pDeadParticle->Set_BoundingBox(box);
+		m_pDeadParticle->Set_Size(1.5f);
+		m_pDeadParticle->Set_Options(0.7f, 15.f);
+		m_pDeadParticle->Start_Particle();
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity *= 0.f;
+	}
 	if (m_pTextureCom->IsAnimationEnd(L"Die"))
 		m_bDead = true;
 	
@@ -243,6 +278,11 @@ HRESULT CToodee::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shader_Rect", pComponent });
 
+	pComponent = m_pDeadParticle = dynamic_cast<CCircularParticle*>(Engine::Clone_Proto(L"CircularParticle", this));
+	NULL_CHECK_RETURN(m_pDeadParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", pComponent });
+
+	
 	return S_OK;
 }
 
@@ -267,6 +307,8 @@ void CToodee::Free(void)
 
 void CToodee::Key_Input(const _float & fTimeDelta)
 {
+	if (!m_bKeyInput)
+		return;
 	m_fWalkTime += fTimeDelta;
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYDOWN)
 		m_eKeyState = DIR_LEFT;
@@ -329,12 +371,12 @@ void CToodee::DoStrech()
 {
 	if (-1.f > m_pRigid->m_Velocity.y)
 	{
-		if (m_pTransform->m_vScale.y > 2.0f)
+		if (m_pTransform->m_vScale.y > m_fInitYScale * 2.f)
 			return;
 		m_pTransform->m_vScale.y *= 1.02f;
 	}
 	else
-		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, 1.f, 0.5f);
+		m_pTransform->m_vScale.y = Lerp(m_pTransform->m_vScale.y, m_fInitYScale, 0.5f);
 }
 
 void CToodee::Render_Particle()
@@ -343,6 +385,7 @@ void CToodee::Render_Particle()
 	m_pLandingParticle->Update_Particle();
 	m_pSparkParticle->Update_Particle();
 	m_pSlerpParticle->Update_Particle();
+	m_pDeadParticle->Update_Particle();
 }
 
 void CToodee::Check_IsParticleDead()
@@ -353,6 +396,8 @@ void CToodee::Check_IsParticleDead()
 		m_pLandingParticle->End_Particle();
 	if (m_pSparkParticle->IsDead())
 		m_pSparkParticle->End_Particle();
+	if (m_pDeadParticle->IsDead())
+		m_pDeadParticle->End_Particle();
 }
 
 void CToodee::Set_WalkParticle()

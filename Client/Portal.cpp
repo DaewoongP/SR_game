@@ -19,7 +19,7 @@ CPortal::~CPortal()
 HRESULT CPortal::Ready_GameObject(_vec3& vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_dwPortalTimer = 1;
 	m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
@@ -39,11 +39,27 @@ _int CPortal::Update_GameObject(const _float & fTimeDelta)
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 	m_pTextureCom->Update_Anim(fTimeDelta);
 
+	if (!m_bCreateSwallowPortal)
+		m_dwPortalTimer -= fTimeDelta;
+
+	if (m_dwPortalTimer <= 0)
+	{
+		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+		if (pStageLayer == nullptr) return 0;
+
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
+		FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]+_vec3(0,0,-2.1f));
+		dynamic_cast<CToodee*>(m_pPlayer1)->SetRenderONOFF(false);
+		dynamic_cast<CTopdee*>(m_pPlayer2)->SetRenderONOFF(false);
+		m_dwPortalTimer = 1000;
+	}
+
 	//debug
 	if (Engine::Get_DIKeyState(DIK_F7) == Engine::KEYDOWN)
 	{
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-		FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]);
+		FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -2.1f));
 	}
 		
 	return 0;
@@ -73,9 +89,6 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 	m_pPlayer2 = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
 	FAILED_CHECK_RETURN(m_pPlayer2, );
 
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
-	NULL_CHECK_RETURN(pStageLayer, );
-
 	if (m_pPlayer1 == collision->otherObj)
 		m_bTooCol = true;
 
@@ -84,11 +97,8 @@ void CPortal::OnCollisionEnter(const Collision * collision)
 
 	if (m_bTooCol && m_bTopCol && m_bCreateSwallowPortal)
 	{
-		StopSound(SOUND_EFFECT_GIMMICK);
-		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
-		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );
-		dynamic_cast<CToodee*>(m_pPlayer1)->SetRenderONOFF(false);
-		dynamic_cast<CTopdee*>(m_pPlayer2)->SetRenderONOFF(false);
+		dynamic_cast<CToodee*>(m_pPlayer1)->SetDoStop(m_pTransform->m_vInfo[INFO_POS] + _vec3(-4, 0, -2.1f));
+		dynamic_cast<CTopdee*>(m_pPlayer2)->SetDoStop(m_pTransform->m_vInfo[INFO_POS] + _vec3(4, 0, -2.1f));
 		m_bCreateSwallowPortal = false;
 	}
 }

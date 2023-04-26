@@ -920,7 +920,6 @@ void CBoss1::Move(const _float& fTimeDelta)
 	else if (m_fOffset_y<-3.f)
 		m_bTurn_y = true;
 
-	cout << m_fOffset_y << endl;
 	m_fOffset_x += (m_bTurn_x) ? (fTimeDelta) : (-fTimeDelta);
 	m_fOffset_y += (m_bTurn_y) ? (fTimeDelta) : (-fTimeDelta);
 
