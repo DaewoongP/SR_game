@@ -17,9 +17,9 @@ public:
 	void Release();
 	
 	HRESULT SaveGrid(_int iStageNumber);
-	HRESULT LoadGrid(_int iStageNumber, CScene* pScene = nullptr);
+	HRESULT LoadGrid(_int iStageNumber, CScene* pScene);
 	HRESULT SaveCube(_int iStageNumber);
-	HRESULT LoadCube(_int iStageNumber, CScene* pScene = nullptr);
+	HRESULT LoadCube(_int iStageNumber, CScene* pScene);
 
 	HRESULT	Undo(_int iStageNumber);
 private:

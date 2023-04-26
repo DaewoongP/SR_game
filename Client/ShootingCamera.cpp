@@ -26,16 +26,12 @@ HRESULT CShootingCamera::Ready_Camera()
 
 _int CShootingCamera::Update_GameObject(const _float & fTimeDelta)
 {
-	
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
 
 void CShootingCamera::Render_GameObject()
 {
-
-
-
 	__super::Render_GameObject();
 }
 

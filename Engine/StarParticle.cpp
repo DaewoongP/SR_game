@@ -39,8 +39,9 @@ void CStarParticle::ResetParticle(Particle * particle)
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	GetRandomVector(&particle->vPos, &_vec3(-1, -1, -1), &_vec3(1, 1, 1));
 	particle->vPos *= 100.f; // 그냥 원점에서 200거리인 벡터 랜덤생성함.
+	particle->vPos.y *= 2.f;
 	particle->vVelocity = _vec3(0.f, -1.f, 0.f);
-	particle->vVelocity *= 70.f;
+	particle->vVelocity *= 80.f;
 }
 
 _int CStarParticle::Update_Particle()
