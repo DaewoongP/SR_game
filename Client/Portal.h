@@ -46,6 +46,8 @@ private:
 	bool m_bTopCol;
 	bool m_bCreateSwallowPortal;
 
+	_float m_dwPortalTimer;
+
 public:
 	static CPortal* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

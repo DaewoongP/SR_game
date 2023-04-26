@@ -79,7 +79,11 @@ protected:
 	_bool					m_bWalkingAnim;
 	CTookee*				m_Tookee;
 	CTopdeeParts*			m_DiePart;
+
+	_bool					m_DoStop;
+	_vec3					m_vFinalLerpPos;
 public:
+	void SetDoStop(_vec3 pos) { m_DoStop = true; m_vFinalLerpPos = pos; }
 	void TopdeeStateChange(TOPDEESTATE state) { m_eState = state; }
 public:
 	static CTopdee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

@@ -221,7 +221,7 @@ BoundingBox CLightningCloud::Check_BoundingBox(size_t ParticleNum)
 	_vec3 centerpos = m_pTransform->m_vInfo[INFO_POS];
 	_vec3 vDir = _vec3(0.f, -1.f, 0.f);
 	_float len = centerpos.y + 2.f;
-	_float fDist = len;
+	m_fRayDist = len;
 	_vec3 colmin, colmax;
 	m_pCollider->Get_Point(&colmin, &colmax);
 	switch (ParticleNum)
@@ -253,7 +253,7 @@ BoundingBox CLightningCloud::Check_BoundingBox(size_t ParticleNum)
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(
 		RAYCAST(centerpos, vDir, len), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1)
-		fDist = _detectedCOL[0].dist;
+		m_fRayDist = _detectedCOL[0].dist;
 	else
 	{
 		switch (ParticleNum)
@@ -268,22 +268,22 @@ BoundingBox CLightningCloud::Check_BoundingBox(size_t ParticleNum)
 	}
 
 	box._min = colmin;
-	box._min.y -= fDist ;
+	box._min.y -= m_fRayDist;
 	box._min.z = 10.f;
 	box._max = _vec3(colmax.x, colmin.y, colmax.z);
 	switch (ParticleNum)
 	{
 	case 1:
 		m_vLightningSize1.y = box._max.y - box._min.y;
-		m_pRainParticle1->Set_Offset(fDist);
+		m_pRainParticle1->Set_Offset(m_fRayDist);
 		break;
 	case 2:
 		m_vLightningSize2.y = box._max.y - box._min.y;
-		m_pRainParticle2->Set_Offset(fDist);
+		m_pRainParticle2->Set_Offset(m_fRayDist);
 		break;
 	case 3:
 		m_vLightningSize3.y = box._max.y - box._min.y;
-		m_pRainParticle3->Set_Offset(fDist);
+		m_pRainParticle3->Set_Offset(m_fRayDist);
 		break;
 	}
 	
@@ -405,7 +405,7 @@ _bool CLightningCloud::CheckRay(_vec3 vPos, _float fLightningSizeY)
 	}
 		
 	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(
-		RAYCAST(vPos, vDir, len), m_pCollider, tagName);
+		RAYCAST(vPos, vDir, m_fRayDist), m_pCollider, tagName);
 	if (_detectedCOL.size() >= 1&&!g_IsInvin)
 	{
 		TOODEEDIE_RAY

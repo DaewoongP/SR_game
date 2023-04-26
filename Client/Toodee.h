@@ -43,7 +43,6 @@ public:
 protected:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
-	_float		Lerp(_float v0, _float v1, _float t) { return v0 + t*(v1 - v0); }
 	void		DoFlip();
 	void		DoStrech();
 
@@ -77,6 +76,35 @@ protected:
 
 	//콜리젼 아님. 어떤 키 눌렀는지 확인용임.
 	COL_DIR					m_eKeyState;
+
+	//포탈 연출용들임
+	_bool					m_DoStop;
+	_bool					m_DoStop_Mini;
+	_vec3					m_vFinalLerpPos;
+	CTransform*				m_pPortalTrans;
+	_float					m_fSpinAngle;
+	_float					m_fSpinDist;
+	_float					m_fScale;
+public:
+	void SetDoStop_Mini(CTransform* portalTrans) {
+		m_fSpinDist = 1.f;
+		m_fScale = 1.f;
+		m_DoStop_Mini = true;
+		m_vFinalLerpPos = portalTrans->m_vInfo[INFO_POS];
+		m_pPortalTrans = portalTrans;
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity = _vec3(0, 0, 0);
+		m_pTransform->m_vScale.y = 1.8f;
+		m_pTextureCom->Switch_Anim(L"Idle");
+	}
+	void SetDoStop(_vec3 pos) { 
+		m_DoStop = true; 
+		m_vFinalLerpPos = pos;
+		m_pRigid->m_bUseGrivaty = false; 
+		m_pRigid->m_Velocity = _vec3(0, 0, 0); 
+		m_pTransform->m_vScale.y = 1.8f;
+		m_pTextureCom->Switch_Anim(L"Idle");
+	}
 public:
 	static CToodee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
