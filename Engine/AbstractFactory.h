@@ -24,7 +24,7 @@ public:
 		return  S_OK;
 	}
 
-	static HRESULT	Create(const _tchar * pObjTag , CLayer* pLayer, _vec3& vPos)
+	static HRESULT	Create(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos)
 	{
 		// �ʱ�ȭ
 		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
