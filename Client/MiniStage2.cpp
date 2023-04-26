@@ -12,6 +12,8 @@
 #include "LaserTurret.h"
 #include "ImguiMgr.h"
 #include"ImguiBG.h"
+#include "MiniGame1Portal.h"
+#include "StageBG.h"
 CMiniStage2::CMiniStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -60,6 +62,7 @@ HRESULT CMiniStage2::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1BG>::Create(L"StageBG", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -85,16 +88,16 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//∏« ¿≠¡Ÿ
+			//Îß® ÏúóÏ§Ñ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ªÁ¿Ã √π¡Ÿ
+			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
+			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//∏« æ∆∑ß¡Ÿ
+			//Îß® ÏïÑÎû´Ï§Ñ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}

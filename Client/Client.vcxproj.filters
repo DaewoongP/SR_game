@@ -248,10 +248,6 @@
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_2">
       <UniqueIdentifier>{3020cbd9-702c-449f-b969-700068fceefc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\03. BackGroudObj\Logo">
-      <UniqueIdentifier>{d821616b-0430-4360-8132-1cb2ca52d0db}</UniqueIdentifier>
-      <UniqueIdentifier>{6ea08435-cdb1-4a13-b15e-b04fb689ba83}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\03. BackGroudObj\Theme_3">
       <UniqueIdentifier>{4ef3c90c-94a7-4b28-b5de-5f523ba7ad8c}</UniqueIdentifier>
     </Filter>
@@ -300,11 +296,11 @@
     <Filter Include="00. GameObject\99. Etc\Production">
       <UniqueIdentifier>{8512c81e-8887-4320-8c53-ae41b20af34d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\00. Player\ShotingPlayer">
-      <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\05. Bullet">
       <UniqueIdentifier>{92735e08-74e8-4f23-9669-5b6354863b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\ShootingPlayer">
+      <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -901,9 +897,6 @@
     <ClInclude Include="FinalStage3.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="ShotingPlayer.h">
-      <Filter>00. GameObject\00. Player\ShotingPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="BulletPlayer.h">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClInclude>
@@ -915,6 +908,16 @@
     </ClInclude>
     <ClInclude Include="BossDeadCamera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1TutorialCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1TutorialCamera.h" />
+    <ClInclude Include="ShootingCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingPlayer.h">
+      <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1507,9 +1510,6 @@
     <ClCompile Include="FinalStage3.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="ShotingPlayer.cpp">
-      <Filter>00. GameObject\00. Player\ShotingPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="BulletPlayer.cpp">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClCompile>
@@ -1521,6 +1521,16 @@
     </ClCompile>
     <ClCompile Include="BossDeadCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1TutorialCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1TutorialCamera.cpp" />
+    <ClCompile Include="ShootingCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootingPlayer.cpp">
+      <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
