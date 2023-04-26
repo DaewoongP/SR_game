@@ -296,6 +296,9 @@
     <Filter Include="00. GameObject\00. Player\ShootingPlayer">
       <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\99. Etc\Item">
+      <UniqueIdentifier>{77c6f6f3-073f-46ba-a262-6671f75613ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -913,6 +916,9 @@
     <ClInclude Include="Boss3DeadCamera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>00. GameObject\99. Etc\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1525,6 +1531,9 @@
     </ClCompile>
     <ClCompile Include="Boss3DeadCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>00. GameObject\99. Etc\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
