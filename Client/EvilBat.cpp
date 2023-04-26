@@ -51,6 +51,9 @@ HRESULT CEvilBat::Ready_GameObject(_vec3& vPos)
 	m_vecCol.push_back(L"KeyCube");
 	m_dwDropTimer = 2;
 	m_bInit = true;
+
+	m_pShadowCom->m_fShadowHeight = 10.9f;
+
 	return S_OK;
 }
 

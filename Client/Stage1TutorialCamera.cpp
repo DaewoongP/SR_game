@@ -15,8 +15,10 @@ HRESULT CStage1TutorialCamera::Ready_Camera()
 {
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 4.0f ,31.0f, 20.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 4.0f ,31.0f, 20.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 4.0f ,30.0f, 20.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 4.0f ,30.0f, 20.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 56.f ,28.0f, 20.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 56.f ,28.0f, 20.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 14.0f ,6.0f, 30.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 14.0f ,6.0f, 30.f,0.5f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,5.0f });
