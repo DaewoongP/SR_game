@@ -246,7 +246,8 @@
     <ClInclude Include="Semicolon.h" />
     <ClInclude Include="ShiningStar.h" />
     <ClInclude Include="Boss3.h" />
-    <ClInclude Include="ShotingPlayer.h" />
+    <ClInclude Include="ShootingCamera.h" />
+    <ClInclude Include="ShootingPlayer.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Stage10.h" />
     <ClInclude Include="Stage1TutorialCamera.h" />
@@ -428,7 +429,8 @@
     <ClCompile Include="Semicolon.cpp" />
     <ClCompile Include="ShiningStar.cpp" />
     <ClCompile Include="Boss3.cpp" />
-    <ClCompile Include="ShotingPlayer.cpp" />
+    <ClCompile Include="ShootingCamera.cpp" />
+    <ClCompile Include="ShootingPlayer.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Stage10.cpp" />
     <ClCompile Include="Stage1TutorialCamera.cpp" />

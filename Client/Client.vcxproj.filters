@@ -296,11 +296,11 @@
     <Filter Include="00. GameObject\99. Etc\Production">
       <UniqueIdentifier>{8512c81e-8887-4320-8c53-ae41b20af34d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\00. Player\ShotingPlayer">
-      <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\05. Bullet">
       <UniqueIdentifier>{92735e08-74e8-4f23-9669-5b6354863b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\00. Player\ShootingPlayer">
+      <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -897,9 +897,6 @@
     <ClInclude Include="FinalStage3.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="ShotingPlayer.h">
-      <Filter>00. GameObject\00. Player\ShotingPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="BulletPlayer.h">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClInclude>
@@ -913,6 +910,12 @@
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
     <ClInclude Include="Stage1TutorialCamera.h" />
+    <ClInclude Include="ShootingCamera.h">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingPlayer.h">
+      <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1504,9 +1507,6 @@
     <ClCompile Include="FinalStage3.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="ShotingPlayer.cpp">
-      <Filter>00. GameObject\00. Player\ShotingPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="BulletPlayer.cpp">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClCompile>
@@ -1520,6 +1520,12 @@
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
     <ClCompile Include="Stage1TutorialCamera.cpp" />
+    <ClCompile Include="ShootingCamera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootingPlayer.cpp">
+      <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

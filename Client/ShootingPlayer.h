@@ -7,12 +7,12 @@ class CRcTex;
 class CTexture;
 
 END
-class CShotingPlayer :
+class CShootingPlayer :
 	public CGameObject
 {
 private:
-	explicit CShotingPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CShotingPlayer();
+	explicit CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CShootingPlayer();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
@@ -37,7 +37,7 @@ private:
 	Engine::CTexture*		m_pTextureCom;
 
 public:
-	static CShotingPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+	static CShootingPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 protected:
 	virtual void Free(void) override;
