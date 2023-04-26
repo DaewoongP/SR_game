@@ -3,7 +3,7 @@
 
 CBossDeadCamera::CBossDeadCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
-	CDirectCamera(pGraphicDev), m_bBossDead(false)
+	CDirectCamera(pGraphicDev), m_bBossDead(true)
 {
 }
 
@@ -13,9 +13,10 @@ CBossDeadCamera::~CBossDeadCamera()
 
 HRESULT CBossDeadCamera::Ready_Camera()
 {
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,0.1f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 70.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 75.f,0.1f });
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 75.f,1.0f });
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });
 	return S_OK;
 }
