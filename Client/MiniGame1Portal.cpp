@@ -5,6 +5,7 @@
 #include "SwallowPortal.h"
 #include "Toodee.h"
 #include "Topdee.h"
+#include "MiniGamePig.h"
 
 CMiniGame1Portal::CMiniGame1Portal(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
@@ -67,19 +68,23 @@ void CMiniGame1Portal::Render_GameObject(void)
 
 void CMiniGame1Portal::OnCollisionEnter(const Collision * collision)
 {
-	m_pPig = Engine::Get_GameObject(L"Layer_GameLogic", L"MiniGamePig");
-	FAILED_CHECK_RETURN(m_pPig, );
-
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, );
 
-	if (m_pPig)
+	if (!lstrcmp(collision->otherObj->m_pTag, L"MiniGamePig"))
 	{
-		if (m_pPig != collision->otherObj)
-			return;
 		StopSound(SOUND_EFFECT_GIMMICK);
 		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
-		FAILED_CHECK_RETURN(FACTORY<CSwallowPortal>::Create(L"SwallowPortal", pStageLayer, m_pTransform->m_vInfo[INFO_POS]), );
+		//µπ∑¡¡‹.
+		dynamic_cast<CMiniGamePig*>(collision->otherObj)->SetDoStop_Mini(m_pTransform);
+	}
+	else if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee"))
+	{
+		//≈ıµ ∆˜≈ªø¨√‚∏∏
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"75.wav", SOUND_EFFECT_GIMMICK, 1.f);
+		//µπ∑¡¡‹.
+		dynamic_cast<CToodee*>(collision->otherObj)->SetDoStop_Mini(m_pTransform);
 	}
 }
 

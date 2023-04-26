@@ -46,7 +46,24 @@ private:
 	list<CCollider*> m_colvec;
 	_bool m_IsOnGround;
 	_float m_dwDieTimer;
-
+	_bool					m_DoStop_Mini;
+	_vec3					m_vFinalLerpPos;
+	CTransform*				m_pPortalTrans;
+	_float					m_fSpinAngle;
+	_float					m_fSpinDist;
+	_float					m_fScale;
+public:
+	void SetDoStop_Mini(CTransform* portalTrans) {
+		m_fSpinDist = 1.f;
+		m_fScale = 0.5f;
+		m_DoStop_Mini = true;
+		m_vFinalLerpPos = portalTrans->m_vInfo[INFO_POS];
+		m_pPortalTrans = portalTrans;
+		m_pRigid->m_bUseGrivaty = false;
+		m_pRigid->m_Velocity = _vec3(0, 0, 0);
+		m_pTransform->m_vScale.y = 1.8f;
+		m_pTextureCom->Switch_Anim(L"Idle");
+	}
 private:
 	Engine::CTexture* m_pTextureCom_Back;
 	Engine::CShadow* m_pShadowCom;

@@ -12,7 +12,6 @@
 #include "LaserTurret.h"
 #include "ImguiMgr.h"
 #include"ImguiBG.h"
-
 CMiniStage2::CMiniStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {

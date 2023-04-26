@@ -57,4 +57,6 @@ private:
 	_vec3					m_vLightningSize1;
 	_vec3					m_vLightningSize2;
 	_vec3					m_vLightningSize3;
+
+	_float					m_fRayDist;
 };
