@@ -208,6 +208,9 @@
     <ClInclude Include="StarParticle.h">
       <Filter>Componnent\ParticleSystem\Star</Filter>
     </ClInclude>
+    <ClInclude Include="PortalParticle.h">
+      <Filter>Componnent\ParticleSystem\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -378,6 +381,9 @@
     <ClCompile Include="StarParticle.cpp">
       <Filter>Componnent\ParticleSystem\Star</Filter>
     </ClCompile>
+    <ClCompile Include="PortalParticle.cpp">
+      <Filter>Componnent\ParticleSystem\Portal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Base.inl">
@@ -531,6 +537,9 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Star">
       <UniqueIdentifier>{59a27a37-b524-42dd-98ea-fc05fee84fff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Componnent\ParticleSystem\Portal">
+      <UniqueIdentifier>{55fbf054-192a-45d4-ac3e-5f51343f062d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

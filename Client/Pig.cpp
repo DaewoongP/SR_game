@@ -63,6 +63,7 @@ _int CPig::Update_Too(const _float & fTimeDelta)
 	{
 		if (-5.0f > m_pRigid->m_Velocity.y)
 		{
+			
 			_float m_fFallingScale = (fabsf(m_pRigid->m_Velocity.y + 4.0f));
 
 			if (-9.0f > m_pRigid->m_Velocity.y)

@@ -123,7 +123,7 @@ _uint CLoading::Loading_ForLogo(void)
 	Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
-	Engine::PlayBGM(L"9.wav", 0.5f);
+	//Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
@@ -339,6 +339,9 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"PortalParticle", CPortalParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/MiniGameTex/Portal_Clear.png", 1, 1.f, 100, false, 2.f, 25.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"StarParticle", CStarParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,

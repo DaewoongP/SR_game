@@ -77,7 +77,6 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 26.f, 10.f)), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CMiniGame1Portal>::Create(L"MiniGame1Portal", pLayer, _vec3(50.f, 26.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CMiniTopdee>::CreateParent(L"MiniTopdee", pLayer, _vec3(3.f, 4.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(60.f, 20.f, 10.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CCrackCube>::Create(L"CrackCube", pLayer, _vec3(58.f, 20.f, 10.f)), E_FAIL);
@@ -89,16 +88,16 @@ HRESULT CMiniStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	{
 		for (int j = 0; j < CUBEX; j++)
 		{
-			//∏« ¿≠¡Ÿ
+			//Îß® ÏúóÏ§Ñ
 			if (i == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ªÁ¿Ã √π¡Ÿ
+			//ÏÇ¨Ïù¥ Ï≤´Ï§Ñ
 			if (i == CUBEY - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//ªÁ¿Ã ∏∂¡ˆ∏∑¡Ÿ
+			//ÏÇ¨Ïù¥ ÎßàÏßÄÎßâÏ§Ñ
 			if (j == 0)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-			//∏« æ∆∑ß¡Ÿ
+			//Îß® ÏïÑÎû´Ï§Ñ
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}

@@ -9,7 +9,7 @@
 #include "LaserTurret.h"
 #include "KeyCube.h"
 #include "PinkCloud.h"
-#include "Portal.h"
+#include "MiniGame1Portal.h"
 
 CMiniTopdee::CMiniTopdee(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_fSpeed(5.f), m_pLayer(nullptr), m_fCubeSpeed(10.f), m_iChkPortalCube(0)
@@ -42,9 +42,9 @@ _int CMiniTopdee::Update_GameObject(const _float & fTimeDelta)
 
 	if (IsPermit_Call(L"MiniFin", fTimeDelta) && m_bIsPortal)
 	{
-		CGameObject* pGameObject = CPortal::Create(m_pGraphicDev, _vec3(30.f, 26.f, 10.f));
+		CGameObject* pGameObject = CMiniGame1Portal::Create(m_pGraphicDev, _vec3(30.f, 26.f, 10.f));
 		pGameObject->Sort_Component();
-		m_pLayer->Add_GameObject(L"Portal", pGameObject);
+		m_pLayer->Add_GameObject(L"MiniGame1Portal", pGameObject);
 		m_bIsPortal = false;
 	}
 

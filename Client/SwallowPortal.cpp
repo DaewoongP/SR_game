@@ -24,6 +24,14 @@ HRESULT CSwallowPortal::Ready_GameObject(_vec3 & vPos)
 	m_pTextureCom->Switch_Anim(L"Idle_Swallow");
 	m_pTextureCom->m_bUseFrameAnimation = true;
 
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pPortalParticle->Set_BoundingBox(box);
+	m_pPortalParticle->Set_RandomGen(3.f);
+	m_pPortalParticle->Set_SizeLifeTime(1.f);
+	m_pPortalParticle->Set_Options(1.2f, 15.f);
+	m_pPortalParticle->Start_Particle();
+
 	return S_OK;
 }
 
@@ -59,6 +67,7 @@ void CSwallowPortal::Render_GameObject(void)
 	m_pBufferCom->Render_Buffer();
 
 	__super::Render_GameObject();
+	m_pPortalParticle->Update_Particle();
 }
 
 HRESULT CSwallowPortal::Add_Component(void)
@@ -77,6 +86,9 @@ HRESULT CSwallowPortal::Add_Component(void)
 	NULL_CHECK_RETURN(m_pShadow, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Shadow", pComponent });
 
+	pComponent = m_pPortalParticle = dynamic_cast<CPortalParticle*>(Engine::Clone_Proto(L"PortalParticle", this));
+	NULL_CHECK_RETURN(m_pPortalParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"PortalParticle", pComponent });	
 
 	return S_OK;
 }
