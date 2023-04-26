@@ -21,8 +21,9 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 
 	m_vPos[INIT] = vPos;
-	m_vPos[LEFT] = vPos + _vec3(-30.f, 0.f, -10.f);
-	m_vPos[RIGHT] = vPos + _vec3(30.f, 10.f, -10.f);
+	m_vPos[LEFT] = vPos + _vec3(-5.f, 0.f, -5.f);
+	m_vPos[RIGHT] = vPos + _vec3(5.f, 0.f, -5.f);
+	m_vPrePos = vPos;
 
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
 	m_fSlerp = 0.f;
@@ -60,13 +61,16 @@ void CShootingPlayer::Render_GameObject(void)
 void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
+
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS)
 	{
 		m_fSlerp += fTimeDelta;
 		if (m_fSlerp >= 1.f)
 			m_fSlerp = 1.f;
+		vUp = { 0, -1, 0 };
 		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[LEFT], &vUp, 10.f, m_fSlerp);
 
+		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 		return;
 	}
 	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS)
@@ -76,7 +80,15 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 			m_fSlerp = 1.f;
 		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[RIGHT], &vUp, 10.f, m_fSlerp);
 
+		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
+
 		return;
+	}
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP ||
+		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
+	{
+		vUp = { 0, 1, 0 };
+		m_fSlerp = 1.f;
 	}
 	m_fSlerp -= fTimeDelta;
 	if (m_fSlerp <= 0.f)
@@ -84,7 +96,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_fSlerp = 0.f;
 		return;
 	}
-	GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &vUp, 10.f, m_fSlerp);
+	GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], &vUp, 10.f, 1 - m_fSlerp);
 }
 
 HRESULT CShootingPlayer::Add_Component(void)
@@ -104,7 +116,8 @@ HRESULT CShootingPlayer::Add_Component(void)
 
 void CShootingPlayer::Fire_bullet()
 {
-	FACTORY<CBullet>::Create(L"Bullet", m_pGameLogicLayer, m_pTransform->m_vInfo[INFO_POS]);
+	CBullet* pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
+	m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 }
 
 CShootingPlayer * CShootingPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

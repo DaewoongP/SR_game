@@ -38,6 +38,8 @@ private:
 
 	_float						m_fSlerp;
 	_vec3						m_vPos[POS_END];
+	_vec3						m_vPrePos;
+
 	CLayer*						m_pGameLogicLayer;
 public:
 	static CShootingPlayer*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
