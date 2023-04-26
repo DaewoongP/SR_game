@@ -341,8 +341,8 @@ _uint CLoading::Loading_ForLogo(void)
 		2.f, 50, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SkyParticle", CSkyParticle::Create(m_pGraphicDev,
-		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_%d.png", 10,
-		1.f, 200, false)), E_FAIL);
+		L"../Resource/Texture/Export_Textures/Sprites/sparkSpr/SparkSpr_0%d.png", 10,
+		1.f, 400, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SmokeParticle", CSmokeParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/theme4SmokeSpr/theme4SmokeSpr_0.png", 1,
