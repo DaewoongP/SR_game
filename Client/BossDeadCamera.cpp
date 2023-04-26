@@ -33,7 +33,7 @@ _int CBossDeadCamera::Update_GameObject(const _float & fTimeDelta)
 		CBoss = dynamic_cast<CGameObject*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"));
 	}
 
-	if (CBoss && !CBoss->Get_Hp())
+	if (nullptr != CBoss && 0 == CBoss->Get_Hp())
 	{
 		m_bBossDead = true;
 	}

@@ -2612,7 +2612,7 @@ void CBoss2::Do_ThrowEnd(const _float& fTimeDelta)
 
 void CBoss2::Check_CircleParticle()
 {
-	if (!m_pLandingParticle->IsDead() && g_Is2D)
+	if (m_pLandingParticle->IsRendering() && g_Is2D)
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee");
@@ -2628,7 +2628,7 @@ void CBoss2::Check_CircleParticle()
 		}
 	}
 
-	if (!m_pCircleParticle->IsDead())
+	if (m_pCircleParticle->IsRendering())
 	{
 		CGameObject* pGameObject = nullptr;
 		pGameObject = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");

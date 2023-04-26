@@ -907,12 +907,13 @@
     <ClInclude Include="BulletPlayer.h">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="BossDeadCamera.h" />
-    </ClInclude>
     <ClInclude Include="StarBox.h">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="Boss3Camera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="BossDeadCamera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1512,12 +1513,13 @@
     <ClCompile Include="BulletPlayer.cpp">
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="BossDeadCamera.cpp" />
-    </ClCompile>
     <ClCompile Include="StarBox.cpp">
       <Filter>00. GameObject\99. Etc\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="Boss3Camera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="BossDeadCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
   </ItemGroup>
