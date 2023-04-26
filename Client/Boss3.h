@@ -55,6 +55,7 @@ private:
 	void	Delay(const _float& fTimeDelta);
 	void	Boss3PartDead();
 	void	FinalDamaged(const _float & fTimeDelta);
+	void	WhiteTwinkl();
 
 private:
 	CToodee*		m_pToodee;

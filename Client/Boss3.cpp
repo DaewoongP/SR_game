@@ -49,7 +49,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
-	m_iHp = 1;
+	m_iHp = 3;
 	m_pShadowCom->m_fShadowHeight = 13.0f;
 	m_pShadowCom->m_bUseOutLine = false;
 
@@ -99,7 +99,7 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 		}
 	}
 
-	//ShootBullet(fTimeDelta);
+	ShootBullet(fTimeDelta);
 
 	CGameObject::Update_Too(fTimeDelta);
 
@@ -568,12 +568,8 @@ void CBoss3::Boss3PartDead()
 	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RPart3Shadow")->m_bDead = true;
 }
 
-void CBoss3::FinalDamaged(const _float & fTimeDelta)
+void CBoss3::WhiteTwinkl()
 {
-	m_fFinalTime += fTimeDelta * 0.01f;
-
-	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(5.f, 50, SHAKE_ALL);
-
 	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye"))->Set_Damaged();
 	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye"))->Set_Damaged();
 
@@ -605,6 +601,15 @@ void CBoss3::FinalDamaged(const _float & fTimeDelta)
 
 	m_pBossLeftHand->Set_Damaged();
 	m_pBossRightHand->Set_Damaged();
+}
+
+void CBoss3::FinalDamaged(const _float & fTimeDelta)
+{
+	m_fFinalTime += fTimeDelta * 0.01f;
+
+	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 50, SHAKE_ALL);
+
+	WhiteTwinkl();
 
 	if (3.f <= m_fFinalTime * 100.f)
 	{
@@ -618,34 +623,7 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 
 	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(3.f, 25, SHAKE_ALL);
 
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
-	Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 3.f, 3.f, 1.f };
-
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil")->m_pTransform->m_vScale = { 1.5f, 1.5f, 1.f };
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil")->m_pTransform->m_vScale = { 1.5f, 1.5f, 1.f };
-
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow")->m_pTransform->m_vScale = { -2.f, 2.f, 1.f };
-	Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow")->m_pTransform->m_vScale = { 2.f, 2.f, 1.f };
-
-	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye"))->Set_Damaged();
-	dynamic_cast<CBoss3Eye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye"))->Set_Damaged();
-
-	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftPupil"))->Set_Damaged();
-	dynamic_cast<CBoss3EyePupil*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightPupil"))->Set_Damaged();
-
-	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossLeftEyebrow"))->Set_Damaged();
-	dynamic_cast<CBoss3Eyebrow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"BossRightEyebrow"))->Set_Damaged();
-
-	m_pBoss3Mouth->Set_Damaged();
-
-	m_pBoss3LPart->Set_Damaged();
-	m_pBoss3RPart->Set_Damaged();
-	m_pBoss3LPart1->Set_Damaged();
-	m_pBoss3RPart1->Set_Damaged();
-	m_pBoss3LPart2->Set_Damaged();
-	m_pBoss3RPart2->Set_Damaged();
-	m_pBoss3LPart3->Set_Damaged();
-	m_pBoss3RPart3->Set_Damaged();
+	WhiteTwinkl();
 
 	if (3.f <= m_fDamagedTime)
 	{
