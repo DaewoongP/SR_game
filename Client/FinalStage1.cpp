@@ -41,12 +41,14 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject_Final1(10, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);
 	
+
+	m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
 	return S_OK;
 }
 
@@ -85,7 +87,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 8.f, 10.f),1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(6.f, 16.f, 10.f),1), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(270.f, -50.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(150.F, 16.f , 7.f)), E_FAIL);

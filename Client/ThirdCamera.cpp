@@ -109,7 +109,8 @@ void CThirdCamera::Set_PlayerPos(const _float& fTimeDelta)
 
 
 	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
-	m_vTooView[AT] = m_vPlayerPos + vShake;
+	m_fShakeValue = Lerp(m_fShakeValue, 0, 0.1f);
+	m_vTooView[AT] = m_vPlayerPos+ _vec3(GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue));
 	m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);
 
 	m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f);
