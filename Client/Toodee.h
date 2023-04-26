@@ -15,6 +15,7 @@ class CJumpParticle;
 class CLandingParticle;
 class CSparkParticle;
 class CSlerpParticle;
+class CCircularParticle;
 class CShadow;
 class CShader;
 END
@@ -62,12 +63,14 @@ protected:
 	Engine::CLandingParticle*	m_pLandingParticle;
 	Engine::CSparkParticle*		m_pSparkParticle;
 	Engine::CSlerpParticle*		m_pSlerpParticle;
+	Engine::CCircularParticle*	m_pDeadParticle;
 	Engine::CShadow*		m_pShadow;
 	Engine::CShader*		m_pShader;
 	CTookee*				m_Tookee;
 	_bool					m_bRender;
 	_bool					m_bInit;
-
+	_float					m_fInitYScale;
+	_bool					m_bKeyInput;
 	_float					m_prePos;
 
 	_float					m_fSpeed = 10.f;

@@ -10,6 +10,8 @@
 #include "DynamicCamera.h"
 #include "Boss1.h"
 #include "Thirddee.h"
+#include "SkyBox.h"
+#include "StarBox.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -23,8 +25,7 @@ CFinalStage3::~CFinalStage3()
 
 HRESULT CFinalStage3::Ready_Scene(void)
 {
-
-	m_eLoadingID = LOADING_FINAL1;
+	m_eLoadingID = LOADING_FINAL3;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
@@ -36,6 +37,8 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
+	// 3d 기준으로 처리할거임.
+	g_Is2D = false;
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -66,8 +69,9 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(80.f, 25.f, 20.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f),3), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(280.f, 25.f, 20.f)), E_FAIL);
 
 
 	// 슈팅게임은 이거 안깔거긴한데

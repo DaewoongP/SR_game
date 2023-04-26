@@ -28,7 +28,7 @@ public:
 		m_fTimer = 0;
 		m_CurIdx = 0; 
 	}
-
+	void			Set_CurIdx(_int iIdx) { m_CurIdx = iIdx; }
 	size_t			Get_TextureSize() { return m_vecTexture.size(); }
 public:
 	_bool			m_bUseFrameAnimation;

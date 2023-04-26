@@ -16,9 +16,10 @@ CThirddee::~CThirddee()
 {
 }
 
-HRESULT CThirddee::Ready_GameObject(_vec3 & vPos)
+HRESULT CThirddee::Ready_GameObject(_vec3 & vPos, _int stage)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_ThirdDee_Stage = stage;
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_LookVec = _vec3(0, 0, 0);
 	m_EndingTrigger = false;
@@ -590,8 +591,8 @@ _int CThirddee::Update_Top(const _float & fTimedDelte)
 			m_pAnimation_Head->SetAnimation(L"Idle");
 		else
 			m_pAnimation_Head->SetAnimation(L"Walk");
-
 		RayDiskey();
+
 		if (m_bIsMoving)
 			Move(fTimedDelte);
 		PlayerState(fTimedDelte);
@@ -644,7 +645,7 @@ void CThirddee::SwapTrigger()
 			((int)m_pTransform->m_vInfo[INFO_POS].x % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].x) : ((int)m_pTransform->m_vInfo[INFO_POS].x + 1);
 		m_pTransform->m_vInfo[INFO_POS].y =
 			((int)m_pTransform->m_vInfo[INFO_POS].y % 2 == 0) ? ((int)m_pTransform->m_vInfo[INFO_POS].y) : ((int)m_pTransform->m_vInfo[INFO_POS].y + 1);
-		m_pCollider->Set_BoundingBox({ 0.999f,1.999f,1.0f });
+		m_pCollider->Set_BoundingBox({ 1.f,1.999f,1.3f });
 		m_pCollider->m_bIsTrigger = true;
 		m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(-90), D3DXToRadian(0));
 		m_pTransform->m_vInfo[INFO_POS].z = 11;
@@ -669,6 +670,7 @@ void CThirddee::SwapTrigger()
 	m_pTransform->m_vScale = _vec3(1, 1, 1);
 	SetRenderONOFF(true);
 }
+
 
 void CThirddee::Key_Input2(const _float & fTimeDelta)
 {
@@ -754,6 +756,99 @@ void CThirddee::OnCollisionEnter(const Collision * collision)
 
 	}
 }
+
+void CThirddee::RayDiskey()
+{
+	_int fdir[MD_END] = { 2,1,8,4,6,10,5,9 };
+	//플레이어가 이동하려는 방향으로만 검출합니다
+	for (int i = 0; i < MD_END; i++)
+	{
+		if (m_byPlayerInputDir == fdir[i])
+		{
+			if (m_ThirdDee_Stage == 1)
+				RayDisKey_part_1((COL_MOVEDIR)i);
+			RayDisKey_part((COL_MOVEDIR)i);
+		}
+			
+	}
+}
+
+void CThirddee::RayDisKey_part(COL_MOVEDIR dir)
+{
+	//벽이 있으면 움직일수 없고, 
+	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{ 1,1,0 },{ -1,1,0 },{ 1,-1,0 },{ -1,-1,0 } };
+	_int fdir[MD_END] = { 13,14,7,11,9,5,10,6 };
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(0, 0, 0.2f), vdir[dir], 2.125f), m_pCollider);
+	for (int i = 0; i < _detectedCOL.size(); i++)
+	{
+		if (!lstrcmp(_detectedCOL[i].tag, L"MapCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"InstallGrid") ||
+			!lstrcmp(_detectedCOL[i].tag, L"CrackCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"InstallCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"SwitchCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
+			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right") ||
+			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
+			) m_byPlayerInputDir &= fdir[dir];
+		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
+			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))
+		{
+
+			if (dir < 4)
+			{
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
+
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[i].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
+		}
+		if (!lstrcmp(_detectedCOL[0].tag, L"PortalCube"))
+		{
+			COL_DIR destdir = (COL_DIR)dynamic_cast<CPortalCube*>(_detectedCOL[i].col->m_pGameObject)->Get_CubeDir();
+			if (dir % 2 != 0)
+				destdir = (COL_DIR)(destdir + 1);
+			else
+				destdir = (COL_DIR)(destdir - 1);
+			_bool isBlocked = dynamic_cast<CMoveCube*>(_detectedCOL[i].col->m_pGameObject)->m_bIsCol[dir];
+
+			//만약 플레이어가 이동하려는 방향이 입구가 아니고
+			//그쪽방향으로 막혀있다면?
+			if (destdir == dir&& !isBlocked)
+			{
+
+			}
+			else
+			{
+				//이동 막아주는 로직
+				COL_DIR destdir;
+				if (dir % 2 == 0)
+					destdir = (COL_DIR)(dir + 1);
+				else
+					destdir = (COL_DIR)(dir - 1);
+
+				if (dynamic_cast<CMoveCube*>(_detectedCOL[i].col->m_pGameObject)->m_bIsCol[destdir])
+					m_byPlayerInputDir &= fdir[dir];
+			}
+
+		}
+	}
+}
+
+void CThirddee::RayDisKey_part_1(COL_MOVEDIR dir)
+{
+	//뭐가 안걸리면 해당방향 꺼줘야함.
+	_vec3 vdir[MD_END] = { { 0,1,0 },{ 0,-1,0 },{ -1,0,0 },{ 1,0,0 },{ 1,1,0 },{ -1,1,0 },{ 1,-1,0 },{ -1,-1,0 } };
+	_int fdir[MD_END] = { 13,14,7,11,9,5,10,6 };
+	vector<RayCollision> _detectedCOL = Engine::Check_Collision_Ray(RAYCAST(m_pTransform->m_vInfo[INFO_POS] - _vec3(-vdir[dir].x*2,-vdir[dir].y*2, -1.f), vdir[dir], 2.125f), m_pCollider);
+	if (_detectedCOL.size() == 0)
+		m_byPlayerInputDir &= fdir[dir];
+}
+
 
 void CThirddee::OnCollisionStay(const Collision * collision)
 {
@@ -909,11 +1004,11 @@ HRESULT CThirddee::Add_Component(void)
 	return S_OK;
 }
 
-CThirddee * CThirddee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
+CThirddee * CThirddee::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos,_int stage)
 {
 	CThirddee*		pInstance = new CThirddee(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	if (FAILED(pInstance->Ready_GameObject(vPos, stage)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

@@ -29,6 +29,8 @@ private:
 	void	CreateDefaultGrid();
 	void	GridInstall();
 
+	void Scale();
+
 	// 큐브 메뉴
 	HRESULT CubeMenu();
 	void	CreateDefaultCube();

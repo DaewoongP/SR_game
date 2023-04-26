@@ -895,9 +895,6 @@
     <ClInclude Include="Boss2Camera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
-    <ClInclude Include="Boss3Camera.h">
-      <Filter>00. GameObject\99. Etc\Production</Filter>
-    </ClInclude>
     <ClInclude Include="FinalStage2.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
@@ -911,6 +908,13 @@
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClInclude>
     <ClInclude Include="BossDeadCamera.h" />
+    </ClInclude>
+    <ClInclude Include="StarBox.h">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Camera.h">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1496,9 +1500,6 @@
     <ClCompile Include="Boss2Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
-    <ClCompile Include="Boss3Camera.cpp">
-      <Filter>00. GameObject\99. Etc\Production</Filter>
-    </ClCompile>
     <ClCompile Include="FinalStage2.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
@@ -1512,6 +1513,13 @@
       <Filter>00. GameObject\05. Bullet</Filter>
     </ClCompile>
     <ClCompile Include="BossDeadCamera.cpp" />
+    </ClCompile>
+    <ClCompile Include="StarBox.cpp">
+      <Filter>00. GameObject\99. Etc\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Camera.cpp">
+      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

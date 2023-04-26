@@ -13,13 +13,10 @@ CSkyParticle::CSkyParticle(LPDIRECT3DDEVICE9 pGraphicDev, const _tchar * pPath, 
 	// 객체의 Ready에서도 변경 가능
 	m_Size = fSize;
 	// 적절하게 크기값 조절하면됨.
-	m_VBSize = 8;
+	m_VBSize = 128;
 	m_VBOffset = 0;
 	m_VBBatchSize = 8;
 
-	m_pTexture->Add_Anim(L"Idle", 2, 8, 20.f, true);
-	m_pTexture->Switch_Anim(L"Idle");
-	m_pTexture->m_bUseFrameAnimation = true;
 	m_Size = 5.f;
 	for (int i = 0; i < iParticleNum; i++)
 		AddParticle();
@@ -40,11 +37,10 @@ void CSkyParticle::ResetParticle(Particle * particle)
 {
 	particle->bIsAlive = true;
 	particle->dwColor = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	particle->vPos = { 300.f, 20.f, 10.f };
-	GetRandomVectorIncircle(&particle->vVelocity, GetRandomFloat(10.f, 300.f));
-	particle->vVelocity.z = particle->vVelocity.x;
-	particle->vVelocity.x = 0.f;
-	particle->vPos += particle->vVelocity;
+	GetRandomVector(&particle->vPos, &_vec3(-1, -1, -1), &_vec3(1, 1, 1));
+	particle->vPos *= 200.f; // 그냥 원점에서 200거리인 벡터 랜덤생성함.
+	GetRandomVector(&particle->vVelocity, &_vec3(-1, -1, -1), &_vec3(1, 1, 1));
+	particle->vVelocity *= 0.3f;
 }
 
 _int CSkyParticle::Update_Particle()
@@ -53,7 +49,10 @@ _int CSkyParticle::Update_Particle()
 		return 0;
 	__super::Update_Particle();
 	_float fTimeDelta = Engine::Get_Timer(L"Timer_FPS60");
-	
+	for (auto& it = m_Particles.begin(); it != m_Particles.end(); it++)
+	{
+		it->vPos += it->vVelocity * fTimeDelta;
+	}
 	__super::Render_Particle();
 	return -1;
 }

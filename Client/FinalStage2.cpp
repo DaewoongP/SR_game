@@ -10,6 +10,7 @@
 #include "DynamicCamera.h"
 #include "Boss1.h"
 #include "Thirddee.h"
+#include "SkyBox.h"
 
 CFinalStage2::CFinalStage2(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -23,8 +24,7 @@ CFinalStage2::~CFinalStage2()
 
 HRESULT CFinalStage2::Ready_Scene(void)
 {
-
-	m_eLoadingID = LOADING_FINAL1;
+	m_eLoadingID = LOADING_FINAL2;
 	m_pFade = CFade::Create(m_pGraphicDev, false);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
@@ -66,7 +66,8 @@ HRESULT CFinalStage2::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(20.f, 15.f, 11.f),2), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CSkyBox>::Create(L"SkyBox", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(80.f, 25.f, 20.f)), E_FAIL);
 
 
