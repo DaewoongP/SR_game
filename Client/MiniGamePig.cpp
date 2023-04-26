@@ -20,6 +20,7 @@ CMiniGamePig::~CMiniGamePig()
 
 HRESULT CMiniGamePig::Ready_GameObject(_vec3& vPos)
 {
+	
 	m_dwDieTimer = 1;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 5.0f;
@@ -86,17 +87,25 @@ _int CMiniGamePig::Update_Too(const _float & fTimeDelta)
 	m_dwDieTimer -= fTimeDelta;
 	if (m_dwDieTimer < 0)
 	{
-		m_pTransform->m_vInfo[INFO_POS].z += fTimeDelta;
-		m_pTransform->m_vAngle.z += D3DXToRadian(10);
-
+		
+		if (m_bSoundStack)
+		{
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"Falling.wav", SOUND_EFFECT_ENEMY, 0.5f);
+			m_bSoundStack = false;
+		}
 		if (m_pTransform->m_vInfo[INFO_POS].z > 11)
 		{
+			StopSound(SOUND_EFFECT_ENEMY);
 			m_bDead = true;
 			//자신 새로 생성
 			CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 			NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 			FACTORY<CMiniGamePig>::Create(L"MiniGamePig", pStageLayer, _vec3(5.f, 14.f, 8.9f));
 		}
+		
+		m_pTransform->m_vInfo[INFO_POS].z += fTimeDelta;
+		m_pTransform->m_vAngle.z += D3DXToRadian(10);
 	}
 	m_pTransform->m_vScale.y = MINIPIGSCALE;
 
@@ -214,7 +223,7 @@ void CMiniGamePig::OnCollisionStay(const Collision * collision)
 {
 	if (dynamic_cast<CCube*>(collision->otherCol->m_pGameObject))
 	{
-		m_dwDieTimer = 1;
+		m_dwDieTimer = 1.1;
 		m_pTransform->m_vInfo[INFO_POS].z = 8.9f;
 		m_pTransform->m_vAngle.z = 0;
 		m_IsOnGround = true;
@@ -269,6 +278,7 @@ HRESULT CMiniGamePig::Add_Component(void)
 
 CMiniGamePig * CMiniGamePig::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos)
 {
+	StopSound(SOUND_EFFECT_ENEMY);
 	CMiniGamePig*		pInstance = new CMiniGamePig(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_GameObject(vPos)))

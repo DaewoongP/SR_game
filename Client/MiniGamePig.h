@@ -69,8 +69,7 @@ private:
 	Engine::CShadow* m_pShadowCom;
 
 	_bool m_bMoveLeft;
-
+	_bool m_bSoundStack=true;
 	_bool m_bBackSprite;
-
 };
 
