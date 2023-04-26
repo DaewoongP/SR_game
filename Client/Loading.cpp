@@ -303,6 +303,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_0", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_0.png")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T4Smoke_1", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme4/Smoke_1.png")), E_FAIL);
 
+	//요가 미사일
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Bullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bulletSpr/Bullet_%d.png",2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Yoga", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/yogaSpr/yogaSpr_%d.png", 2)), E_FAIL);
+
 	
 	Set_String(L"Buffer Loading.......");
 
