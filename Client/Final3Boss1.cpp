@@ -844,6 +844,11 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 
 	if (m_bThrow)
 		Throw_Cube(fTimeDelta);
+	else
+	{
+		for (auto& iter : m_vecCube)
+			iter->Set_Dead();
+	}
 
 	__super::Update_GameObject(fTimeDelta);
 
