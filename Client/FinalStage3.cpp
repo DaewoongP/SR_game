@@ -83,7 +83,7 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	
-	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -99,7 +99,8 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(31.f, 14.f, -13.f)), E_FAIL);
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-  // ì´ê±° ë¯¸ë¦¬ ìƒì„±í•´ë‘ê¸°ë•Œë¬¸ì— ìŠ¤í…Œì´ì§€ ë‚˜ì˜¤ê¸°ì „ì— escëˆ„ë¥´ë©´ ì‚­ì œê°€ ì•ˆë˜ë¯€ë¡œ, __Freeì—ì„œ ë¶ˆëŸ¬ì£¼ëŠ”ë° ë¬¸ì œìˆìœ¼ë©´ ìƒì„±ì‹œì  ë³€ê²½
+	// ¿©±â¼­ »ı¼ºÇÑ°Å º¤ÅÍ¿¡ ³Ö¾î³õ´Âµ¥, ¿ø¼şÀÌ ³ª¿À±âÀü¿¡ esc ´©¸¦°æ¿ì ´©¼ö³¯¼öµµÀÖÀ½
+	// ±×°É ÀÌÁ¦ Free ¿¡¼­ »èÁ¦ÇÏ´Â ÄÚµå·Î ÇØ°áÇÔ.
 	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
@@ -119,7 +120,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
 		}
-	}*/
+	}
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
