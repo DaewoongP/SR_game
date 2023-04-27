@@ -83,7 +83,10 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 
 	
-	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"DynamicCamera", pLayer), E_FAIL);
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -96,30 +99,30 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Topdee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(31.f, 14.f, -13.f)), E_FAIL);
 
-	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
+	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(8.f, 15.f, 160.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-	for (int i = 0; i < CUBEX; i++)
-	{
-		if (i % 10 < 4)
-			continue;
-		FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)i * 2,10.f,10.f }, m_MokeyCube, 2), E_FAIL);
-	}
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEX; j++)
-		{
-			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-		}
-	}
+	//for (int i = 0; i < CUBEX; i++)
+	//{
+	//	if (i % 10 < 4)
+	//		continue;
+	//	FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)i * 2,10.f,10.f }, m_MokeyCube, 2), E_FAIL);
+	//}
+	//for (int i = 0; i < CUBEY; i++)
+	//{
+	//	for (int j = 0; j < CUBEX; j++)
+	//	{
+	//		if (i == 0)
+	//			FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
+	//		if (i == CUBEY - 1)
+	//			FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
+	//		if (j == 0)
+	//			FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
+	//		if (j == CUBEX - 1)
+	//			FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
+	//	}
+	//}
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;

@@ -87,10 +87,10 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
 
-	/*if (GetAsyncKeyState('F'))
+	if (GetAsyncKeyState('K'))
 	{
 		m_iBulletIndex = 4;
-	}*/
+	}
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bLKey)
 	{
 		m_bRKey = false;
@@ -137,7 +137,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 
 void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
 {
-	switch (m_iBulletIndex)
+	switch (4)
 	{
 	case 0:
 		Default_Bullet(fTimeDelta);

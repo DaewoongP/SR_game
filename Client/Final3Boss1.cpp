@@ -37,7 +37,7 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	//위치잡는 친구를 넣어주세요
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_vOriginPos = vPos;
-	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(0), 0);
+	m_pTransform->m_vAngle = _vec3(D3DXToRadian(0), D3DXToRadian(0), 0);
 	m_bTurn_x=false;
 	m_bTurn_y=false;
 	m_fOffset_x = 0;
