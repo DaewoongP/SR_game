@@ -38,6 +38,7 @@ HRESULT CThirddee::Ready_GameObject(_vec3 & vPos, _int stage)
 	m_pLandingParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_LifeTime();
 	m_fTopOffset = 0;
+	m_fEndingTimer = 5.0f;
 	return S_OK;
 }
 
@@ -524,6 +525,12 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 	
 	if(m_bDead)
 		return OBJ_DEAD;
+
+	if (-2.0f >= m_fEndingTimer)
+	{
+		return STAGE_END;
+	}
+
 	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
 	{
 		m_bDead = true;
@@ -571,10 +578,24 @@ void CThirddee::SetRenderONOFF(_bool value)
 }
 void CThirddee::Spiwn_End(const _float& fTimeDelta)
 {
-	if (m_EndingTrigger)
+	if (m_EndingTrigger && m_fEndingTimer >= 0.0f)
 	{
-		m_pRigid->AddTorque(_vec3(0, 1, 0), fTimeDelta*600);
+		m_fEndingTimer -= fTimeDelta;
+		m_pRigid->AddTorque(_vec3(0, 1, 0), fTimeDelta * 600);
 		m_pTransform->m_vInfo[INFO_POS].z -= 3.f*fTimeDelta;
+		if (m_fEndingTimer <= 0.0f)
+		{
+			StopSound(SOUND_EFFECT_GIMMICK);
+			PlaySound(L"100.wav", SOUND_EFFECT_GIMMICK, 1.0f);
+		}
+	}
+
+	if (m_EndingTrigger && m_fEndingTimer <= 0.0f)
+	{
+		m_fEndingTimer -= fTimeDelta;
+		_vec3 vDir = _vec3(270.f, -50.f, 50.f) - _vec3(150.f, 16.f, 5.f);
+		D3DXVec3Normalize(&vDir, &vDir);
+		m_pTransform->m_vInfo[INFO_POS] += vDir*30.0f*fTimeDelta;
 	}
 }
 
@@ -764,6 +785,9 @@ void CThirddee::OnCollisionEnter(const Collision * collision)
 	if (!lstrcmp(collision->otherObj->m_pTag, L"SemiColon"))
 	{
 		m_EndingTrigger = true;
+		StopSound(SOUND_EFFECT_GIMMICK);
+		StopSound(SOUND_EFFECT);
+		PlaySound(L"52.wav", SOUND_EFFECT_GIMMICK, 0.1f);
 		m_pAnimation_Leg->SetAnimation(L"Idle");
 		m_pAnimation_Arm->SetAnimation(L"Idle");
 		m_pAnimation_Head->SetAnimation(L"Idle");

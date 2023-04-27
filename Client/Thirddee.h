@@ -47,7 +47,7 @@ private:
 
 public:
 	static CThirddee*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int stage);
-
+	_float					m_fEndingTimer;
 protected:
 	virtual void Free(void) override;
 };
