@@ -96,9 +96,7 @@ _int CBoss3DeadCamera::Update_GameObject(const _float & fTimeDelta)
 
 		Update_Direct(fTimeDelta);
 
-		__super::Update_GameObject(fTimeDelta);
-		//렌더러에 넣어주기
-		Engine::Add_RenderGroup(RENDER_ALPHABLEND, this);
+		CCamera::Update_GameObject(fTimeDelta);
 	}
 
 	return 0;

@@ -50,7 +50,8 @@ private:
 	_vec3						m_vPos[POS_END];
 	_vec3						m_vPrePos;
 
-	_bool						m_bKeyInput;
+	_bool						m_bLKey;
+	_bool						m_bRKey;
 	CLayer*						m_pGameLogicLayer;
 
 	_int						m_iBulletIndex;

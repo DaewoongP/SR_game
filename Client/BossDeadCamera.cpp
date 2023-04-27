@@ -36,27 +36,27 @@ _int CBoss2DeadCamera::Update_GameObject(const _float & fTimeDelta)
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
-			20.f,
-			5.0f });
+			30.f,
+			10.0f });
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
-			20.f,
-			0.55f });
+			30.f,
+			1.1f });
 		m_vecXYPosAngleSpeed.push_back({ 
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f + 15.0f,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y + 30.0f,
 			40.f,
-			1.0f });
+			2.0f });
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x - 2.0f + 15.0f,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y + 30.0f,
 			40.f,
-			0.5f });
-		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,0.5f });
-		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,0.5f });
-		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,0.5f });
-		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,0.5f });
+			1.0f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,1.0f });
+		m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.0f,1.0f });
 
 		m_bBossDead = true;
 	}
@@ -68,9 +68,7 @@ _int CBoss2DeadCamera::Update_GameObject(const _float & fTimeDelta)
 
 		Update_Direct(fTimeDelta);
 
-		__super::Update_GameObject(fTimeDelta);
-		//렌더러에 넣어주기
-		Engine::Add_RenderGroup(RENDER_ALPHABLEND, this);
+		CCamera::Update_GameObject(fTimeDelta);
 	}
 
 	return 0;

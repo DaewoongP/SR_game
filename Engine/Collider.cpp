@@ -13,7 +13,6 @@ CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev) :
 	, m_pRedTex(nullptr)
 	, m_pGreenTex(nullptr)
 	, m_eColor(GREEN)
-	, m_bRender(true)
 {
 }
 
@@ -26,7 +25,6 @@ CCollider::CCollider(const CCollider & rhs) :
 	, m_pRedTex(rhs.m_pRedTex)
 	, m_pGreenTex(rhs.m_pGreenTex)
 	, m_eColor(rhs.m_eColor)
-	, m_bRender(rhs.m_bRender)
 {
 }
 
@@ -62,15 +60,11 @@ _int CCollider::Update_Component(const _float& fTimeDelta)
 
 void CCollider::LateUpdate_Component()
 {
-	if (Engine::Get_DIKeyState(DIK_F8) == Engine::KEYDOWN)
-	{
-		m_bRender = !m_bRender;
-	}
 }
 
 void CCollider::Render_Component()
 {
-	if (!m_bRender)
+	if (!g_ColliderRendering)
 		return;
 	m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);

@@ -2,8 +2,7 @@
 #include "SwordBullet.h"
 
 CSwordBullet::CSwordBullet(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev),
-	m_fSpeed(80.f)
+	:CBullet(pGraphicDev)
 {
 }
 
@@ -11,13 +10,13 @@ CSwordBullet::~CSwordBullet()
 {
 }
 
-HRESULT CSwordBullet::Ready_GameObject(_vec3 & vPos, _vec3& vInitPos)
+HRESULT CSwordBullet::Ready(_vec3 & vPos, _vec3& vInitPos)
 {
+	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+	m_fSpeed = 80.f;
 	m_pTransform->m_vScale *= 10.f;
 	m_pTransform->m_vInfo[INFO_POS] = vPos + vInitPos;
-	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
-	
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
@@ -28,19 +27,11 @@ HRESULT CSwordBullet::Ready_GameObject(_vec3 & vPos, _vec3& vInitPos)
 
 _int CSwordBullet::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_pTransform->m_vInfo[INFO_POS].y >= 210.f)
-		return OBJ_DEAD;
 	m_pTransform->m_vAngle.y -= D3DXToRadian(10.f);
-	Add_RenderGroup(RENDER_ALPHA, this);
 	if (Engine::IsPermit_Call(L"Sword1Sec", fTimeDelta) && false == m_bShoot)
-	{
 		m_bShoot = true;
-	}
-
 	if (m_bShoot)
-	{
 		m_pTransform->m_vInfo[INFO_POS] += _vec3(0, 1, 0) * m_fSpeed * fTimeDelta;
-	}
 		
 	m_pTex->Update_Anim(fTimeDelta);
 
@@ -70,18 +61,9 @@ void CSwordBullet::OnCollisionEnter(const Collision * collision)
 HRESULT CSwordBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
-
-	pComponent = m_pBuf = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
-	NULL_CHECK_RETURN(m_pBuf, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
-
 	pComponent = m_pTex = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"SwordBullet", this));
 	NULL_CHECK_RETURN(m_pTex, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"SwordBullet", pComponent });
-
-	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
-	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }
@@ -89,7 +71,7 @@ HRESULT CSwordBullet::Add_Component(void)
 CSwordBullet * CSwordBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _vec3& vInitPos)
 {
 	CSwordBullet* pInstance = new CSwordBullet(pGraphicDev);
-	if (FAILED(pInstance->Ready_GameObject(vPos, vInitPos)))
+	if (FAILED(pInstance->Ready(vPos, vInitPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

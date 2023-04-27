@@ -928,6 +928,9 @@
     <ClInclude Include="Final3Boss1.h">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
     </ClInclude>
+    <ClInclude Include="DefaultBullet.h">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1552,6 +1555,9 @@
     </ClCompile>
     <ClCompile Include="Final3Boss1.cpp">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultBullet.cpp">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

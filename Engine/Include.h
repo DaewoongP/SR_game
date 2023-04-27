@@ -36,6 +36,6 @@ extern HWND		 g_hWnd;
 extern HINSTANCE g_hInst;
 extern	_bool	g_Is2D;
 extern	_bool	g_IsInvin;
-
+extern  _bool	g_ColliderRendering;
 using namespace std;
 using namespace Engine;

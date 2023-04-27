@@ -74,7 +74,6 @@ private:
 	LPDIRECT3DBASETEXTURE9		m_pGreenTex;
 	_matrix						m_matWorld;
 	COLOR						m_eColor;
-	_bool						m_bRender;
 private:
 	virtual void Free(void) override;
 };

@@ -57,6 +57,8 @@ int CMainApp::Update_MainApp(const _float & fTimeDelta)
 void CMainApp::LateUpdate_MainApp(void)
 {
 	m_pManagementClass->LateUpdate_Management();
+	if (Engine::Get_DIKeyState(DIK_F8) == Engine::KEYDOWN)
+		g_ColliderRendering = !g_ColliderRendering;
 }
 
 void CMainApp::Render_MainApp(void)
