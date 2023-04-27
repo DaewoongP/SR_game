@@ -878,11 +878,11 @@ void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 	}
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-		m_iHp -= 0.00005f;
+		m_iHp -= 1.f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
 		{
-			m_iHp -= 1.f;
+			m_iHp -= 3.f;
 		}
 	}
 }
@@ -890,11 +890,11 @@ void CFinal3Boss1::OnCollisionStay(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-		m_iHp -= 0.00005f;
+		m_iHp -= 1.5f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
 		{
-			m_iHp -= 1.f;
+			m_iHp -= 3.f;
 		}
 	}
 }
