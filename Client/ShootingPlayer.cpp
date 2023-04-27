@@ -25,6 +25,7 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_vPos[LEFT] = vPos + _vec3(-5.f, 0.f, -5.f);
 	m_vPos[RIGHT] = vPos + _vec3(5.f, 0.f, -5.f);
 	m_vPrePos = vPos;
+	m_bPossibleShoot = true;
 	m_bLKey = true;
 	m_bRKey = true;
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
@@ -36,6 +37,8 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 
 _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	CGameObject* pLaser = nullptr;
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -62,7 +65,8 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	}
 
 
-	Shoot_Bullet(fTimeDelta);
+	if(m_bPossibleShoot)
+		Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
 	
 	return OBJ_NOEVENT;
@@ -70,11 +74,15 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 
 void CShootingPlayer::LateUpdate_GameObject(void)
 {
+	if (!m_bUseUpdate)
+		return;
 	__super::LateUpdate_GameObject();
 }
 
 void CShootingPlayer::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTex->Set_Texture(0);

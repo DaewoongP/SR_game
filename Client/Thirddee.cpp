@@ -38,8 +38,6 @@ HRESULT CThirddee::Ready_GameObject(_vec3 & vPos, _int stage)
 	m_pLandingParticle->Set_BoundingBox(box);
 	m_pSparkParticle->Set_LifeTime();
 	m_fTopOffset = 0;
-	//옾셋만큼 팔다리 몸통을 내리면 될듯요.
-
 	return S_OK;
 }
 

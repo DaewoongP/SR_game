@@ -22,6 +22,7 @@
 #include "FinalStoneCube.h"
 #include "Boss3.h"
 #include "Topdee.h"
+#include "Thirddee.h"
 #include "Toodee.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -37,6 +38,8 @@ CFinalStage3::~CFinalStage3()
 HRESULT CFinalStage3::Ready_Scene(void)
 {
 	m_SpwanCube = false;
+	m_ShootingPlayerLerpTrigger = false;
+	m_SwapTop_ShootingTirgger = false;
 	m_eLoadingID = LOADING_FINAL3;
 	m_pBoss = nullptr;
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -60,8 +63,11 @@ _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 		FACTORY<CStage1Camera>::Create(L"Camera", pLayer);
 		m_StageState = F3_SpawnCube;
 		m_bMonkeySpawnTrigger = false;
+		m_ShootingPlayerLerpTrigger = true;
+		dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(false);
 	}
-
+	Do_SwapPlayer(fTimeDelta);
+	DoLerpShootingPlayer(fTimeDelta);
 	(this->*funcAction[m_StageState])(fTimeDelta);
 	return __super::Update_Scene(fTimeDelta);
 }
@@ -73,6 +79,24 @@ void CFinalStage3::LateUpdate_Scene(void)
 
 void CFinalStage3::Render_Scene(void)
 {
+}
+
+void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
+{
+	if (m_SwapTop_ShootingTirgger)
+	{
+		//탑디가 중앙으로 올라감.
+		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
+		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
+		{
+			m_TooTop->Set_Render(false);
+			m_TooTop->Set_Update(false);
+			m_ShootingPlayer->Set_Render(true);
+			m_ShootingPlayer->Set_Update(true);
+			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = _vec3(CUBEX, CUBEY, 10);
+		}
+		
+	}
 }
 
 HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
@@ -96,7 +120,9 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Topdee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
+
+	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(0.f, 0.f, 15.f));
+	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
 
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
@@ -192,7 +218,12 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 		m_StageState = F3_NONE;
 
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-		FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(1058.f, 6.f, 10.f));
+		_vec3 pos = m_TooTop->m_pTransform->m_vInfo[INFO_POS];
+		m_TooTop->Set_Render(false);
+		m_TooTop->Set_Update(false); 
+		m_TooTop = nullptr;
+		m_TooTop = CTopdee::Create(m_pGraphicDev, pos);
+		pLayer->Add_GameObject(L"Topdee", m_TooTop);
 
 		FACTORY<CFinalStoneCube>::CreateParent(L"StoneCube", pLayer, _vec3(0, 0, 0));
 	}
@@ -200,6 +231,24 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 
 void CFinalStage3::ActionNone(const _float & fTimeDelta)
 {
+}
+
+void CFinalStage3::DoLerpShootingPlayer(const _float & fTimeDelta)
+{
+	if (m_ShootingPlayerLerpTrigger)
+	{
+		m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS], _vec3(10.f, 14.f, 10.f), fTimeDelta*1);
+		m_ShootingPlayer->m_pTransform->m_vAngle = Lerp(m_ShootingPlayer->m_pTransform->m_vAngle, _vec3(0, 0, 0), fTimeDelta);
+		if (D3DXVec3Length(&(m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] - _vec3(10.f, 14.f, 10.f)))<0.1f)
+		{
+			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+			m_TooTop = CToodee::Create(m_pGraphicDev, _vec3(10.f, 14.f, 10.f));
+			pLayer->Add_GameObject(L"Topdee", m_TooTop);
+			m_ShootingPlayer->Set_Render(false);
+			m_ShootingPlayer->Set_Update(false);
+			m_ShootingPlayerLerpTrigger = false;
+		}
+	}
 }
 
 CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)

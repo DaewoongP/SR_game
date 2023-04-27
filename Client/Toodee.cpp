@@ -44,6 +44,8 @@ HRESULT CToodee::Ready_GameObject(_vec3& vPos)
 }
 _int CToodee::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	if (m_bDead)
 		return OBJ_DEAD;
 	
@@ -94,6 +96,8 @@ _int CToodee::Update_GameObject(const _float& fTimeDelta)
 }
 _int CToodee::Update_Too(const _float & fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	if (m_DoStop|| m_DoStop_Mini)
 		return 0;
 
@@ -124,6 +128,8 @@ _int CToodee::Update_Too(const _float & fTimeDelta)
 }
 _int CToodee::Update_Top(const _float & fTimedDelte)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC);
 	if (otherTrans == nullptr)
 		return 0;
@@ -147,11 +153,15 @@ void CToodee::SwapTrigger()
 
 void CToodee::LateUpdate_GameObject(void)
 {
+	if (!m_bUseUpdate)
+		return;
 	Check_IsParticleDead();
 	__super::LateUpdate_GameObject();
 }
 void CToodee::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	if (m_bRender)
 	{
 		_matrix matView, matProj;

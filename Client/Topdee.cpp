@@ -34,6 +34,8 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 }
 _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	if (m_bInit)
 	{
 		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Tookee", L"Transform", ID_DYNAMIC);
@@ -400,6 +402,8 @@ _int CTopdee::Update_GameObject(const _float& fTimeDelta)
 }
 _int CTopdee::Update_Too(const _float & fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC);
 	if (nullptr == otherTrans)
 		return 0;
@@ -409,6 +413,8 @@ _int CTopdee::Update_Too(const _float & fTimeDelta)
 }
 _int CTopdee::Update_Top(const _float & fTimeDelta)
 {
+	if (!m_bUseUpdate)
+		return 0;
 	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd() && m_pDeadParticle->OverOneParticleIsDead())
 		return OBJ_DEAD;
 
@@ -450,11 +456,15 @@ _int CTopdee::Update_Top(const _float & fTimeDelta)
 }
 void CTopdee::LateUpdate_GameObject(void)
 {
+	if (!m_bUseUpdate)
+		return;
 	__super::LateUpdate_GameObject();
 }
 
 void CTopdee::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	if (m_bRender)
 	{
 		m_pSlerpParticle->Update_Particle();
