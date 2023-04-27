@@ -34,7 +34,7 @@ _int CItem::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
+	m_pTransform->m_vInfo[INFO_POS].y -= 10.f * fTimeDelta;
 
 	CGameObject::Update_GameObject(fTimeDelta);
 
