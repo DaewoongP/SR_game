@@ -30,7 +30,7 @@ CBoss2::~CBoss2()
 {
 }
 
-HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
+HRESULT CBoss2::Ready_GameObject(_vec3 & vPos, _int trigger)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -39,6 +39,8 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B2_STUMP;
 	m_ePreState = B2_END;
 	m_bInit = false;
+	m_JumpCnt = 0;
+	m_iSpecialActionTrigger = trigger;
 
 	m_bIsOnGround = false;
 	m_fJumpPos[0] = _vec3(10,25,10);
@@ -54,23 +56,264 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pRigid->m_bUseGrivaty = false;
 
+	if (trigger==1)
+	{
+		m_pRigid->m_fMass = 10;
+		m_pRigid->m_fGravity.y = -26;
+		m_pRigid->m_bUseGrivaty = true;
+		m_pCollider->m_bIsTrigger = true;
+	}
+
 	m_pCircleParticle->Set_Options({ 0, 0, 1 }, 20.f);
 	return S_OK;
 }
-
-_int CBoss2::Update_GameObject(const _float& fTimeDelta)
+_int CBoss2::Update_GameObject_A0(const _float & fTimeDelta)
 {
-	if (m_bDeadAnim&&m_dwRestTime<=0)
+	Initialize_Update();
+	if (m_bDeadAnim&&m_dwRestTime <= 0)
 	{
 		m_pCollider->m_bIsTrigger = true;
 		m_pTransform->m_vAngle.z += D3DXToRadian(10);
-		m_pTransform->m_vInfo[INFO_POS]+=_vec3(1,2,0)*fTimeDelta*30.f;
+		m_pTransform->m_vInfo[INFO_POS] += _vec3(1, 2, 0)*fTimeDelta*30.f;
 		__super::Update_GameObject(fTimeDelta);
 		Engine::Add_RenderGroup(RENDER_ALPHA, this);
 		return 0;
 	}
-	
 	__super::Update_GameObject(fTimeDelta);
+	if (AppearanceAction(fTimeDelta))
+	{
+		CheckZFloor();
+		DoFlip();
+		m_dwActionTime -= fTimeDelta;
+		m_dwRestTime -= fTimeDelta;
+		(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
+	}
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	return 0;
+}
+void CBoss2::LateUpdate_GameObject_A0(void)
+{
+	m_pTransform->SwapYZ();
+	Check_CircleParticle();
+	__super::LateUpdate_GameObject();
+}
+void CBoss2::Render_GameObject_A0()
+{
+	m_pCircleParticle->Update_Particle();
+	m_pJumpParticle->Update_Particle();
+	m_pScreamParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
+	__super::Render_GameObject();
+}
+_int CBoss2::Update_GameObject_A1(const _float & fTimeDelta)
+{
+	Initialize_Update();
+	__super::Update_GameObject(fTimeDelta);
+	m_dwRestTime -= fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].x -= fTimeDelta * 12;
+	m_pTransform->m_vAngle.z += D3DXToRadian(180)*fTimeDelta;
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
+	return 0;
+}
+void CBoss2::LateUpdate_GameObject_A1(void)
+{
+	Check_CircleParticle();
+	__super::LateUpdate_GameObject();
+}
+void CBoss2::Render_GameObject_A1()
+{
+	m_pCircleParticle->Update_Particle();
+	m_pJumpParticle->Update_Particle();
+	m_pScreamParticle->Update_Particle();
+	m_pLandingParticle->Update_Particle();
+	__super::Render_GameObject();
+}
+_int CBoss2::Update_GameObject(const _float& fTimeDelta)
+{
+	if (m_iSpecialActionTrigger == 0)
+		return Update_GameObject_A0(fTimeDelta);
+
+	if (m_iSpecialActionTrigger == 1)
+		return Update_GameObject_A1(fTimeDelta);
+
+	return 0;
+}
+
+void CBoss2::LateUpdate_GameObject(void)
+{
+	if (m_iSpecialActionTrigger == 0)
+		LateUpdate_GameObject_A0();
+	if (m_iSpecialActionTrigger == 1)
+		LateUpdate_GameObject_A1();
+}
+
+void CBoss2::Render_GameObject()
+{
+	if (m_iSpecialActionTrigger == 0)
+		return Render_GameObject_A0();
+
+	if (m_iSpecialActionTrigger == 1)
+		return Render_GameObject_A1();
+}
+
+void CBoss2::OnCollisionEnter(const Collision * collision)
+{
+	if (m_iSpecialActionTrigger == 0)
+	{
+		TOOKEEDIE;
+		TOODEEDIE;
+		TOPDEEDIE;
+		if (dynamic_cast<CCube*>(collision->otherObj) && collision->_dir == DIR_DOWN)
+		{
+			m_bIsOnGround = true;
+			m_pAnimation_Body->SetAnimation(L"Idle");
+			dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Idle");
+			dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Idle");
+			dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
+			dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+			if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
+				!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
+			{
+				BoundingBox box;
+				box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+				if (g_Is2D)
+				{
+					m_pLandingParticle->Set_BoundingBox(box);
+					m_pLandingParticle->Set_Size(3.f);
+					m_pLandingParticle->Start_Particle();
+				}
+				else
+				{
+					box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+					box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+					m_pCircleParticle->Set_BoundingBox(box);
+					m_pCircleParticle->Set_Size(3.f);
+					m_pCircleParticle->Start_Particle();
+				}
+			}
+			StopSound(SOUND_EFFECT_ENEMY);
+			PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
+		}
+
+		if (dynamic_cast<CSpike*>(collision->otherObj))
+		{
+			if (m_bAttackAble)
+			{
+				//8
+				for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
+					if (dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
+						dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+				//13
+				for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
+					if (dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
+						dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
+				int a = 0;
+				dynamic_cast<CBoss2TailBody*>(m_pTransform->GetChild(1)->GetChild(13)->m_pGameObject)->TextureBlinkStart();
+
+				//테일 
+				{
+					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
+					if (tr != nullptr)
+					{
+						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+					}
+
+					_tchar	_name[256] = { 0 };
+					for (int i = 0; i < 19; i++)
+					{
+						wsprintf(_name, L"Boss2Tail_%d", i);
+						CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
+						if (tr != nullptr)
+						{
+							dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+						}
+					}
+				}
+				m_iHp--;
+				m_bDamage = true;
+				m_dwRestTime = 2.0f;
+				m_bAttackAble = false;
+				if (fabsf(m_pTransform->m_vAngle.y)>D3DXToRadian(180))
+					m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(180), 0);
+				else
+					m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(0), 0);
+			}
+
+			if (m_iHp == 0)
+			{
+				m_dwRestTime = 1;
+				m_bDeadAnim = true;
+			}
+		}
+		__super::OnCollisionEnter(collision);
+	}
+
+	if (m_iSpecialActionTrigger == 1 && collision->_dir == DIR_DOWN&&m_pRigid->m_Velocity.y < 0&& m_JumpCnt<3&&m_dwRestTime<0)
+	{
+		m_JumpCnt++;
+		m_pRigid->m_Velocity.y = 0;
+		m_pRigid->AddForce(_vec3(0, 1, 0), 170, IMPULSE, Engine::Get_Timer(L"Timer_FPS60"));
+		m_dwRestTime = 0.2f;
+		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
+		if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
+			!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
+		{
+			BoundingBox box;
+			box.Offset(m_pTransform->m_vInfo[INFO_POS]);
+			if (g_Is2D)
+			{
+				m_pLandingParticle->Set_BoundingBox(box);
+				m_pLandingParticle->Set_Size(3.f);
+				m_pLandingParticle->Start_Particle();
+			}
+			else
+			{
+				box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
+				box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
+				m_pCircleParticle->Set_BoundingBox(box);
+				m_pCircleParticle->Set_Size(3.f);
+				m_pCircleParticle->Start_Particle();
+			}
+		}
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
+		m_bIsOnGround = true;
+		
+	}
+		
+}
+
+void CBoss2::OnCollisionStay(const Collision * collision)
+{
+	if (m_iSpecialActionTrigger == 0)
+	{
+		if (dynamic_cast<CSpike*>(collision->otherObj))
+			m_bDamage = false;
+		__super::OnCollisionStay(collision);
+	}
+}
+
+void CBoss2::OnCollisionExit(const Collision * collision)
+{
+	if (m_iSpecialActionTrigger == 0)
+	{
+		if (dynamic_cast<CCube*>(collision->otherObj))
+			m_bIsOnGround = false;
+		__super::OnCollisionExit(collision);
+	}
+}
+
+void CBoss2::SwapTrigger()
+{
+	if (g_Is2D)
+		m_pCircleParticle->End_Particle();
+	else
+		m_pLandingParticle->End_Particle();
+}
+
+_bool CBoss2::Initialize_Update()
+{
 	if (!m_bInit)
 	{
 		m_dwApperance_Timer = 9;
@@ -95,7 +338,7 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 			m_pTransform->GetChild(0)->GetChild(7)->m_vScale = _vec3(3.8f, 3.8f, 3.8f);
 			dynamic_cast<CBoss2Body*>(m_pTransform->GetChild(0)->GetChild(7)->m_pGameObject)->SetRotAngle(30, 60);
 		}//8
-		//Body Joint (1)
+		 //Body Joint (1)
 		FAILED_CHECK_RETURN(FACTORY<CBoss2JointSpot>::Create(L"Boss2JointSpot", pStageLayer, _vec3(3.f, 0.3f, 0.1f), m_pTransform), E_FAIL);
 		//Body Children
 		{
@@ -124,2028 +367,1886 @@ _int CBoss2::Update_GameObject(const _float& fTimeDelta)
 			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(10)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(1), m_pTransform->GetChild(1)->GetChild(6));
 			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(11)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(2), m_pTransform->GetChild(1)->GetChild(7));
 			dynamic_cast<CBoss2Chain*>(m_pTransform->GetChild(1)->GetChild(12)->m_pGameObject)->Set_Joint(m_pTransform->GetChild(1)->GetChild(3), m_pTransform->GetChild(1)->GetChild(8));
-		
+
 			FAILED_CHECK_RETURN(FACTORY<CBoss2TailBody>::Create(L"Boss2TailBody", pStageLayer, _vec3(0.0f, 0.0f, 0.2f), m_pTransform->GetChild(1)), E_FAIL);
 			m_pTransform->GetChild(1)->GetChild(13)->m_vScale = _vec3(4.0f, 4.0f, 0.0f);
 			m_pTransform->GetChild(1)->GetChild(13)->m_vAngle = _vec3(0, 0, D3DXToRadian(0.f));
 		}//13
 
-		//애니메이션
+		 //애니메이션
 		{
-		//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
-		AnimClip* clip = new AnimClip();
-		{
-			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
-			clip->source.resize(7);
+			//idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
+			AnimClip* clip = new AnimClip();
+			{
+				//Face
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
+				clip->source.resize(7);
 
-			// Face
-			{
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(0,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			
-			//Jaw
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0,-1,-0.1f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-2,-1,-0.1f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//Eye_L
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-1.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-3.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			
-			//Eye_R
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(0.7f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-0.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-1.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-0.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			
-			//Nose
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-0.6f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-1.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-2.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-1.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//EyeBrow_L
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-1.1f,1.4f,-0.21f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,1.8f,-0.21f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-3.1f,1.8f,-0.21f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,1.4f,-0.21f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//EyeBrow_R
-			{
-				clip->source[6].push_back(
-				ANIMINFO{
-				_vec3(0.7f,1.4f,-0.21f),//trans
-				_vec3(0,0,0),//rotation
-				_vec3(0.7f,0.7f,0.7f),//scale
-				0.5f,//tilltime
-				0.f//actionTime
-			});
-			clip->source[6].push_back(
-				ANIMINFO{
-				_vec3(-0.3f,1.9f,-0.21f),//trans
-				_vec3(0,0,0),//rotation
-				_vec3(0.7f,0.7f,0.7f),//scale
-				0.5f,//tilltime
-				0.5f//actionTime
-			});
-			clip->source[6].push_back(
-				ANIMINFO{
-				_vec3(-1.3f,1.9f,-0.21f),//trans
-				_vec3(0,0,0),//rotation
-				_vec3(0.7f,0.7f,0.7f),//scale
-				0.5f,//tilltime
-				1.f//actionTime
-			});
-			clip->source[6].push_back(
-				ANIMINFO{
-				_vec3(-0.3f,1.4f,-0.21f),//trans
-				_vec3(0,0,0),//rotation
-				_vec3(0.7f,0.7f,0.7f),//scale
-				0.5f,//tilltime
-				1.5f//actionTime
-			});
-			}
-
-			clip->TotalTime = 2;
-			clip->Useloop = true;
-		}
-		m_pAnimation_Face->AddClip(L"Idle", clip);
-
-		//Scream ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
-		clip = new AnimClip();
-		{
-			//Face
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
-			clip->source.resize(7);
-
-			// Face
-			{
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f) + _vec3(1,0,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f)*1.3f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f)*1.2f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f) + _vec3(-1,0,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f)*1.3f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-1,0,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(2.0f,1.5f,2.0f)*1.2f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//Jaw
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.2f,//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.3f,//scale
-					0.2f,//tilltime
-					0.2f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.2f,//scale
-					0.2f,//tilltime
-					0.4f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.3f,//scale
-					0.2f,//tilltime
-					0.6f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.2f,//scale
-					0.2f,//tilltime
-					0.8f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.3f,//scale
-					0.2f,//tilltime
-					1.0f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.2f,//scale
-					0.2f,//tilltime
-					1.2f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.3f,//scale
-					0.2f,//tilltime
-					1.4f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.2f,//scale
-					0.2f,//tilltime
-					1.6f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.5f,2.f,2.f)*1.3f,//scale
-					0.2f,//tilltime
-					1.8f//actionTime
-				});
-			}
-
-			//Eye_L
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f) + _vec3(1,0,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f)*1.2f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f) + _vec3(-1,0,0),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f)*1.3f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,0.6f,-0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//Eye_R
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(0.7f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-0.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f)*1.3f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-1.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(1.0f,1.0f,1.0f)*1.2f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(-0.3f, 0.6f, -0.3f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//Nose
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-0.6f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f)*1.2f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-1.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f)*1.3f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-2.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f)*1.2f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(-1.0f,0.2f,-0.7f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.5f,0.5f,0.5f)*1.3f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//EyeBrow_L
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-1.1f,1.4f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,1.8f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-3.1f,1.8f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(-2.1f,1.4f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//EyeBrow_R
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(0.7f,1.4f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-0.3f,1.9f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-1.3f,1.9f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-0.3f,1.4f,-0.2f),//trans
-					_vec3(0,0,0),//rotation
-					_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			clip->TotalTime = 2;
-			clip->Useloop = true;
-		}
-		m_pAnimation_Face->AddClip(L"Scream", clip);
-		m_pAnimation_Face->SetAnimation(L"Idle");
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7)); //팔 조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8)); //팔 조인트
-			clip->source.resize(10);
-			clip->TotalTime = 2.0f;
-			clip->Useloop = true;
-			//LeftFront
-			{
-				//0번항목?
-				clip->source[0].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
-					//원래 회전값		추가될 회전값
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					//스케일
-					_vec3(0.f,0.f,0.f),//scale
-					//애니메이션 재생 총시간
-					0.2f,//tilltime
-					//시작 시간
-					0.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.3f,//tilltime
-					0.2f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-
-			//Rightfront
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.3f,//tilltime
-					0.2f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f)+_vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.0f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			//LeftBack
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.0f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			//RightBack
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					1.5f//actionTime
-				});
-			}
-			//BackBody
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
-					_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
-					1.f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.f,//tilltime
-					1.0f//actionTime
-				});
-			}
-			//FrontBody
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
-					1.0f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(0,-0.5f,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.f,//tilltime
-					1.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[8].push_back(
-					ANIMINFO{
-					_vec3(1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[9].push_back(
-					ANIMINFO{
-					_vec3(1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-		}
-		m_pAnimation_Body->AddClip(L"Idle", clip);
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
-			clip->source.resize(8);
-			clip->TotalTime = 2.9f;
-			clip->Useloop = true;
-			//LeftFront
-			{
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-5,3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-4,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.f//actionTime
-				});
-			}
-			//Rightfront
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(-5,3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-4,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.0f//actionTime
-				});
-			}
-			//LeftBack
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-2,-6,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.3f,//tilltime
-					0.2f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(3,5,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.0f//actionTime
-				});
-			}
-			//RightBack
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(2,-6,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.3f,//tilltime
-					0.2f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f,- 0.2f) + _vec3(3,5,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.0f//actionTime
-				});
-			}
-			//FrontBody
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(0,2,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.5f,//tilltime
-					0.5f//actionTime
-				});
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(0,-2,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					2.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-
-		}
-		m_pAnimation_Body->AddClip(L"Jump", clip);
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0)); //손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1)); //손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2)); //발
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3)); //발
-			clip->parts.push_back(m_pTransform->GetChild(1)); //몸통
-			clip->parts.push_back(m_pTransform->GetChild(0)); //머리
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5)); //팔 조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6)); //팔 조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7)); //팔 조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8)); //팔 조인트
-			clip->source.resize(10);
-			clip->TotalTime = 0.5f;
-			clip->Useloop = true;
-			//LeftFront
-			{
-				//위에서 입력한 0번 항목
-				clip->source[0].push_back(
-					ANIMINFO{
-						// 원래 포지션			+ 추가될 포지션
-					_vec3(0,0,0) + _vec3(-2,0,-0.4f),//trans
-						//원래 회전값	+ 추가될 회전값
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-						//원래 스케일(0,0,0)일시 미적용
-					_vec3(0.f,0.f,0.f) + _vec3(0,0,0),//scale
-					0.5f,//tilltime 애니메이션 재생 시간(0.5초동안 재생해라.)
-					0.f//actionTime 애니메이션 시작 시간(0.0초면 재생을 시작해라.)
-				});
-			}
-
-			//Rightfront
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0,0,0) + _vec3(2,0,-0.4f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//LeftBack
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(0,0,0) + _vec3(-2,-3,-0.1f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//RightBack
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(0,0,0) + _vec3(2,-3,-0.1f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(0,0,0) + _vec3(0,0.01f,+0.2f),//trans
-					_vec3(0,0,0),
-					_vec3(0,0,0),
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//FrontBody
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(0,3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0,0,0),
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(-1,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(1,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[8].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(-1,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[9].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(1,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-
-		}
-		m_pAnimation_Body->AddClip(L"Stump", clip);
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->source.resize(1);
-			clip->TotalTime = 0.7f;
-			clip->Useloop = true;
-			{
-				for (int i = 0; i < 10; i++)
+				// Face
 				{
-					_float angle = GetRandomFloat(-30, 30);
-					_float scale = GetRandomFloat(1.2f, 1.6f);
 					clip->source[0].push_back(
 						ANIMINFO{
-						_vec3(0.f, 0.f, 0.0f) + _vec3(GetRandomFloat(-1,1),GetRandomFloat(-1,1),GetRandomFloat(-1,0)),//trans
-						_vec3(0,0,0) + _vec3(0,0,D3DXToRadian(angle)),//rotation
-						_vec3(scale,scale,scale),//scale
-						0.1f,//tilltime
-						0.1f * i//actionTime
+						_vec3(0,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Jaw
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0,-1,-0.1f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-2,-1,-0.1f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Eye_L
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-1.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-3.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Eye_R
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(0.7f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-0.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-1.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-0.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Nose
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-0.6f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-1.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-2.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-1.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//EyeBrow_L
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-1.1f,1.4f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,1.8f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-3.1f,1.8f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,1.4f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//EyeBrow_R
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(0.7f,1.4f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-0.3f,1.9f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.3f,1.9f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-0.3f,1.4f,-0.21f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				clip->TotalTime = 2;
+				clip->Useloop = true;
+			}
+			m_pAnimation_Face->AddClip(L"Idle", clip);
+
+			//Scream ¾Ö´Ï¸ÞÀÌ¼ÇÀ» ¸¸µé¾îº¸ÀÚ.
+			clip = new AnimClip();
+			{
+				//Face
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(2));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(3));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(4));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(5));
+				clip->parts.push_back(m_pTransform->GetChild(0)->GetChild(6));
+				clip->source.resize(7);
+
+				// Face
+				{
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f) + _vec3(1,0,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f)*1.3f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f)*1.2f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f) + _vec3(-1,0,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f)*1.3f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-1,0,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(2.0f,1.5f,2.0f)*1.2f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Jaw
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.2f,//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.3f,//scale
+						0.2f,//tilltime
+						0.2f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.2f,//scale
+						0.2f,//tilltime
+						0.4f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.3f,//scale
+						0.2f,//tilltime
+						0.6f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.2f,//scale
+						0.2f,//tilltime
+						0.8f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.3f,//scale
+						0.2f,//tilltime
+						1.0f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.2f,//scale
+						0.2f,//tilltime
+						1.2f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.3f,//scale
+						0.2f,//tilltime
+						1.4f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.2f,//scale
+						0.2f,//tilltime
+						1.6f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(-1,-1,-0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.5f,2.f,2.f)*1.3f,//scale
+						0.2f,//tilltime
+						1.8f//actionTime
+					});
+				}
+
+				//Eye_L
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f) + _vec3(1,0,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f)*1.2f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f) + _vec3(-1,0,0),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f)*1.3f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,0.6f,-0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Eye_R
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(0.7f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-0.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f)*1.3f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-1.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(1.0f,1.0f,1.0f)*1.2f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(-0.3f, 0.6f, -0.3f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Nose
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-0.6f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f)*1.2f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-1.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f)*1.3f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-2.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f)*1.2f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(-1.0f,0.2f,-0.7f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.5f,0.5f,0.5f)*1.3f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//EyeBrow_L
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-1.1f,1.4f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,1.8f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-3.1f,1.8f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(-2.1f,1.4f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//EyeBrow_R
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(0.7f,1.4f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-0.3f,1.9f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.3f,1.9f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.2f,//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-0.3f,1.4f,-0.2f),//trans
+						_vec3(0,0,0),//rotation
+						_vec3(0.7f,0.7f,0.7f)*1.3f,//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				clip->TotalTime = 2;
+				clip->Useloop = true;
+			}
+			m_pAnimation_Face->AddClip(L"Scream", clip);
+			m_pAnimation_Face->SetAnimation(L"Idle");
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+				clip->parts.push_back(m_pTransform->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7)); //팔 조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8)); //팔 조인트
+				clip->source.resize(10);
+				clip->TotalTime = 2.0f;
+				clip->Useloop = true;
+				//LeftFront
+				{
+					//0번항목?
+					clip->source[0].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
+																   //원래 회전값		추가될 회전값
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+													//스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.2f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.3f,//tilltime
+						0.2f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+
+				//Rightfront
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.3f,//tilltime
+						0.2f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.0f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+				//LeftBack
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.0f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+				//RightBack
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f) + _vec3(-1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f,-0.2f) + _vec3(1,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f,-0.2f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						1.5f//actionTime
+					});
+				}
+				//BackBody
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
+						_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
+						_vec3(1.f,1.f,1.f),//scale
+						1.f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.f,//tilltime
+						1.0f//actionTime
+					});
+				}
+				//FrontBody
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(D3DXToRadian(1),0,0),//rotation
+						_vec3(1.f,1.f,1.f),//scale
+						1.0f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(0,-0.5f,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.f,//tilltime
+						1.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[8].push_back(
+						ANIMINFO{
+						_vec3(1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[9].push_back(
+						ANIMINFO{
+						_vec3(1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
 					});
 				}
 			}
-			StopSound(SOUND_EFFECT_ENEMY);
-			PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
-		}
-		m_pAnimation_Body->AddClip(L"Scream", clip);
+			m_pAnimation_Body->AddClip(L"Idle", clip);
 
-		clip = new AnimClip();
-		{	
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
-			clip->parts.push_back(m_pTransform->GetChild(1));
-			clip->parts.push_back(m_pTransform->GetChild(0));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
-			clip->source.resize(8);
-			clip->TotalTime = 2.0f;
-			clip->Useloop = false;
-			//LeftFront
+			clip = new AnimClip();
 			{
-				clip->source[0].push_back(
-					ANIMINFO{
-					_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-4,70,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-
-			//Rightfront
-			{
-				clip->source[1].push_back(
-					ANIMINFO{
-					_vec3(0.f, -3.4f, -0.5f) + _vec3(4,70,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//LeftBack
-			{
-				clip->source[2].push_back(
-					ANIMINFO{
-					_vec3(2.1f, -2.8f, 0.2f) + _vec3(-4,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//RightBack
-			{
-				clip->source[3].push_back(
-					ANIMINFO{
-					_vec3(4.1f, -2.8f, -0.2f) + _vec3(-2,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
-					0.5f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				clip->source[4].push_back(
-					ANIMINFO{
-					_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//FrontBody
-			{
-				clip->source[5].push_back(
-					ANIMINFO{
-					_vec3(0.f, 0.f, 0.f) + _vec3(3,4,-0.5f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(1.f,1.f,1.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, 0.3f) + _vec3(-4,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, -0.5f) + _vec3(4,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					2.f,//tilltime
-					0.f//actionTime
-				});
-			}
-
-		}
-		m_pAnimation_Body->AddClip(L"Punch", clip);
-		m_pAnimation_Body->SetAnimation(L"Idle");
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
-			clip->parts.push_back(m_pTransform->GetChild(1));//몸통
-			clip->parts.push_back(m_pTransform->GetChild(0));//머리
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
-			clip->source.resize(10);
-			clip->TotalTime = 2.0f;
-			clip->Useloop = false;
-
-			//LeftFront
-			{
-				//0번항목?
-				clip->source[0].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-2.1f,10.2f,0.0f),//trans
-											//원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
-																		 //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightFront
-			{
-				//0번항목?
-				clip->source[1].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(6.3f,10.2f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
-																		 //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//LeftBack
-			{
-				//0번항목?
-				clip->source[2].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-6.3f,-3.4f,0.0f),//trans
-											//원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightBack
-			{
-				//0번항목?
-				clip->source[3].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,-3.4f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				//0번항목?
-				clip->source[4].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(3.0f,0.0f,0.0f) + _vec3(-3.0f,0.0f,0.0f),//trans
-																   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//frontHead
-			{
-				//0번항목?
-				clip->source[5].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(5.0f,8.0f,0.0f),//trans
-										  //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					1.0f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-3.0f, 2.0f, 0.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.0f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(3.0f, 2.0f, -1.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.0f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[8].push_back(
-					ANIMINFO{
-					_vec3(-3.0f, -2.0f, 0.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.0f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[9].push_back(
-					ANIMINFO{
-					_vec3(3.0f, -2.0f, -1.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					1.0f,//tilltime
-					0.f//actionTime
-				});
-			}
-		}
-		m_pAnimation_Body->AddClip(L"HandsUp", clip);
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
-			clip->parts.push_back(m_pTransform->GetChild(1));//몸통
-			clip->parts.push_back(m_pTransform->GetChild(0));//머리
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
-			clip->source.resize(10);
-			clip->TotalTime = 2.0f;
-			clip->Useloop = false;
-
-			//LeftFront
-			{
-				//0번항목?
-				clip->source[0].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-6.3f,0.0f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
-																		 //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightFront
-			{
-				//0번항목?
-				clip->source[1].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-4.2f,0.0f,-1.0f),//trans
-											//원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
-																		 //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
-			//LeftBack
-			{
-				//0번항목?
-				clip->source[2].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,0.0f,0.0f),//trans
-										  //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightBack
-			{
-				//0번항목?
-				clip->source[3].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					/*_vec3(4.2f,-3.2f,0.5f) + */_vec3(0.0f,0.0f,0.0f),//trans
-																	   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				//0번항목?
-				clip->source[4].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0.0f,0.0f,0.0f),//trans
-																  //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//frontHead
-			{
-				//0번항목?
-				clip->source[5].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,0.0f,0.0f),//trans
-										  //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.1f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[8].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[9].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.2f,//tilltime
-					0.f//actionTime
-				});
-			}
-		}
-		m_pAnimation_Body->AddClip(L"Throwing", clip);
-
-		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
-			clip->parts.push_back(m_pTransform->GetChild(1));//몸통
-			clip->parts.push_back(m_pTransform->GetChild(0));//머리
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
-			clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
-			clip->source.resize(10);
-			clip->TotalTime = 2.0f;
-			clip->Useloop = false;
-
-			//LeftFront
-			{
-				//0번항목?
-				clip->source[0].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(-2.1f,-3.4f,0.0f),//trans
-											//원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightFront
-			{
-				//0번항목?
-				clip->source[1].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,-3.4f,1.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
-			//LeftBack
-			{
-				//0번항목?
-				clip->source[2].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(2.1f,-2.8f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//RightBack
-			{
-				//0번항목?
-				clip->source[3].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(4.1f,-2.8f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//BackBody
-			{
-				//0번항목?
-				clip->source[4].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(3.0f,-0.7f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-
-			//frontHead
-			{
-				//0번항목?
-				clip->source[5].push_back(
-					ANIMINFO{
-					//원래 위치					추가될 윛
-					_vec3(0.0f,-0.5f,0.0f),//trans
-										   //원래 회전값		추가될 회전값
-					_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
-																	   //스케일
-					_vec3(0.f,0.f,0.f),//scale
-									   //애니메이션 재생 총시간
-					0.6f,//tilltime
-						 //시작 시간
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[6].push_back(
-					ANIMINFO{
-					_vec3(-1.0f,0.0f,0.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.6f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//joint
-			{
-				clip->source[7].push_back(
-					ANIMINFO{
-					_vec3(-1.0f, 0.0f, 1.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.6f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[8].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 0.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.6f,//tilltime
-					0.f//actionTime
-				});
-			}
-			//발joint
-			{
-				clip->source[9].push_back(
-					ANIMINFO{
-					_vec3(0.0f, 0.0f, 1.0f),//trans
-					_vec3(0,0,0) + _vec3(0,0,0),//rotation
-					_vec3(0.f,0.f,0.f),//scale
-					0.6f,//tilltime
-					0.f//actionTime
-				});
-			}
-		}
-		m_pAnimation_Body->AddClip(L"ThrowEnd", clip);
-		}
-
-		FAILED_CHECK_RETURN(Find_PlayerBoth(), -1);
-
-		m_bInit = true;
-	}
-	if (AppearanceAction(fTimeDelta))
-	{
-		CheckZFloor();
-		DoFlip();
-		m_dwActionTime -= fTimeDelta;
-		m_dwRestTime -= fTimeDelta;
-		(this->*funcAction[m_eCurrentState][m_iCurrentActionIdx])(fTimeDelta);
-	}
-	Engine::Add_RenderGroup(RENDER_ALPHA, this);
-  	
-	return 0;
-}
-
-void CBoss2::LateUpdate_GameObject(void)
-{
-	m_pTransform->SwapYZ();
-	Check_CircleParticle();
-	__super::LateUpdate_GameObject();
-}
-
-void CBoss2::Render_GameObject()
-{
-	m_pCircleParticle->Update_Particle();
-	m_pJumpParticle->Update_Particle();
-	m_pScreamParticle->Update_Particle();
-	m_pLandingParticle->Update_Particle();
-	__super::Render_GameObject();
-}
-
-void CBoss2::OnCollisionEnter(const Collision * collision)
-{
-	TOOKEEDIE;
-	TOODEEDIE;
-	TOPDEEDIE;
-	if (dynamic_cast<CCube*>(collision->otherObj)&&collision->_dir == DIR_DOWN)
-	{
-		m_bIsOnGround = true;
-		m_pAnimation_Body->SetAnimation(L"Idle");
-		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(0)->m_pGameObject)->SetAnim(L"Idle");
-		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(1)->m_pGameObject)->SetAnim(L"Idle");
-		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(2)->m_pGameObject)->SetAnim(L"Idle");
-		dynamic_cast<CBoss2Foot*>(m_pTransform->GetChild(1)->GetChild(3)->m_pGameObject)->SetAnim(L"Idle");
-		dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(0.4f, 40.0f, SHAKE_ALL);
-		if (!lstrcmp(collision->otherObj->m_pTag, L"MapCube") ||
-			!lstrcmp(collision->otherObj->m_pTag, L"InstallCube"))
-		{
-			BoundingBox box;
-			box.Offset(m_pTransform->m_vInfo[INFO_POS]);
-			if (g_Is2D)
-			{
-				m_pLandingParticle->Set_BoundingBox(box);
-				m_pLandingParticle->Set_Size(3.f);
-				m_pLandingParticle->Start_Particle();
-			}
-			else
-			{
-				box._offsetMin = { -CUBEX * 1.5f, -CUBEY * 1.5f, -5.f };
-				box._offsetMax = { CUBEX * 1.5f, CUBEY * 1.5f, 5.f };
-				m_pCircleParticle->Set_BoundingBox(box);
-				m_pCircleParticle->Set_Size(3.f);
-				m_pCircleParticle->Start_Particle();
-			}
-		}
-		StopSound(SOUND_EFFECT_ENEMY);
-		PlaySound_Effect(L"77.wav", SOUND_EFFECT_ENEMY, 1.f);
-	}
-
-	if (dynamic_cast<CSpike*>(collision->otherObj))
-	{		
-		if (m_bAttackAble)
-		{
-			
-			//8
-			for (int i = 0; i < m_pTransform->GetChild(0)->GetChildCount(); i++)
-				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject))
-					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(0)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
-			//13
-			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
-				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
-					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
-			int a = 0;
-			dynamic_cast<CBoss2TailBody*>(m_pTransform->GetChild(1)->GetChild(13)->m_pGameObject)->TextureBlinkStart();
-			
-			//테일 
-			{
-				CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", L"Boss2Tail", L"Transform", ID_DYNAMIC);
-				if (tr != nullptr)
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+				clip->parts.push_back(m_pTransform->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+				clip->source.resize(8);
+				clip->TotalTime = 2.9f;
+				clip->Useloop = true;
+				//LeftFront
 				{
-					dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-5,3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(1,-4,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.f//actionTime
+					});
+				}
+				//Rightfront
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(-5,3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(1,-4,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.0f//actionTime
+					});
+				}
+				//LeftBack
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(-2,-6,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.3f,//tilltime
+						0.2f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(3,5,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.0f//actionTime
+					});
+				}
+				//RightBack
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f) + _vec3(2,-6,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.3f,//tilltime
+						0.2f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f,-0.2f) + _vec3(3,5,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f) + _vec3(0,1,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.0f//actionTime
+					});
+				}
+				//FrontBody
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(0,2,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.5f,//tilltime
+						0.5f//actionTime
+					});
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(0,-2,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						2.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, 0.3f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, -0.5f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
 				}
 
-				_tchar	_name[256] = {0};
-				for (int i = 0; i < 19; i++)
+			}
+			m_pAnimation_Body->AddClip(L"Jump", clip);
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0)); //손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1)); //손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2)); //발
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3)); //발
+				clip->parts.push_back(m_pTransform->GetChild(1)); //몸통
+				clip->parts.push_back(m_pTransform->GetChild(0)); //머리
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5)); //팔 조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6)); //팔 조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7)); //팔 조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8)); //팔 조인트
+				clip->source.resize(10);
+				clip->TotalTime = 0.5f;
+				clip->Useloop = true;
+				//LeftFront
 				{
-					wsprintf(_name,L"Boss2Tail_%d", i);
-					CComponent* tr = Engine::Get_Component(L"Layer_GameLogic", _name, L"Transform", ID_DYNAMIC);
-					if (tr != nullptr)
+					//위에서 입력한 0번 항목
+					clip->source[0].push_back(
+						ANIMINFO{
+						// 원래 포지션			+ 추가될 포지션
+						_vec3(0,0,0) + _vec3(-2,0,-0.4f),//trans
+														 //원래 회전값	+ 추가될 회전값
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+													//원래 스케일(0,0,0)일시 미적용
+						_vec3(0.f,0.f,0.f) + _vec3(0,0,0),//scale
+						0.5f,//tilltime 애니메이션 재생 시간(0.5초동안 재생해라.)
+						0.f//actionTime 애니메이션 시작 시간(0.0초면 재생을 시작해라.)
+					});
+				}
+
+				//Rightfront
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0,0,0) + _vec3(2,0,-0.4f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//LeftBack
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(0,0,0) + _vec3(-2,-3,-0.1f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//RightBack
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(0,0,0) + _vec3(2,-3,-0.1f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(0,0,0) + _vec3(0,0.01f,+0.2f),//trans
+						_vec3(0,0,0),
+						_vec3(0,0,0),
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//FrontBody
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(0,3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0,0,0),
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(-1,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(1,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[8].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(-1,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[9].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(1,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+
+			}
+			m_pAnimation_Body->AddClip(L"Stump", clip);
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(0));
+				clip->source.resize(1);
+				clip->TotalTime = 0.7f;
+				clip->Useloop = true;
+				{
+					for (int i = 0; i < 10; i++)
 					{
-						dynamic_cast<CBoss2Parts*>(tr->m_pGameObject)->TextureBlinkStart();
+						_float angle = GetRandomFloat(-30, 30);
+						_float scale = GetRandomFloat(1.2f, 1.6f);
+						clip->source[0].push_back(
+							ANIMINFO{
+							_vec3(0.f, 0.f, 0.0f) + _vec3(GetRandomFloat(-1,1),GetRandomFloat(-1,1),GetRandomFloat(-1,0)),//trans
+							_vec3(0,0,0) + _vec3(0,0,D3DXToRadian(angle)),//rotation
+							_vec3(scale,scale,scale),//scale
+							0.1f,//tilltime
+							0.1f * i//actionTime
+						});
 					}
 				}
+				StopSound(SOUND_EFFECT_ENEMY);
+				PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 			}
-			m_iHp--;
-			m_bDamage = true;
-			m_dwRestTime = 2.0f;
-			m_bAttackAble = false;
-			if (fabsf(m_pTransform->m_vAngle.y)>D3DXToRadian(180))
-				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(180), 0);
-			else 
-				m_pTransform->m_vAngle = _vec3(0, D3DXToRadian(0), 0);
+			m_pAnimation_Body->AddClip(L"Scream", clip);
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));
+				clip->parts.push_back(m_pTransform->GetChild(1));
+				clip->parts.push_back(m_pTransform->GetChild(0));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));
+				clip->source.resize(8);
+				clip->TotalTime = 2.0f;
+				clip->Useloop = false;
+				//LeftFront
+				{
+					clip->source[0].push_back(
+						ANIMINFO{
+						_vec3(-2.1f, -3.4f, 0.3f) + _vec3(-4,70,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+
+				//Rightfront
+				{
+					clip->source[1].push_back(
+						ANIMINFO{
+						_vec3(0.f, -3.4f, -0.5f) + _vec3(4,70,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//LeftBack
+				{
+					clip->source[2].push_back(
+						ANIMINFO{
+						_vec3(2.1f, -2.8f, 0.2f) + _vec3(-4,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//RightBack
+				{
+					clip->source[3].push_back(
+						ANIMINFO{
+						_vec3(4.1f, -2.8f, -0.2f) + _vec3(-2,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(1.f,1.f,1.f),//scale
+						0.5f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					clip->source[4].push_back(
+						ANIMINFO{
+						_vec3(3.f, 0.3f, 0.1f) + _vec3(0,-3,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(1.f,1.f,1.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//FrontBody
+				{
+					clip->source[5].push_back(
+						ANIMINFO{
+						_vec3(0.f, 0.f, 0.f) + _vec3(3,4,-0.5f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(1.f,1.f,1.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, 0.3f) + _vec3(-4,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, -0.5f) + _vec3(4,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						2.f,//tilltime
+						0.f//actionTime
+					});
+				}
+
+			}
+			m_pAnimation_Body->AddClip(L"Punch", clip);
+			m_pAnimation_Body->SetAnimation(L"Idle");
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
+				clip->parts.push_back(m_pTransform->GetChild(1));//몸통
+				clip->parts.push_back(m_pTransform->GetChild(0));//머리
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
+				clip->source.resize(10);
+				clip->TotalTime = 2.0f;
+				clip->Useloop = false;
+
+				//LeftFront
+				{
+					//0번항목?
+					clip->source[0].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-2.1f,10.2f,0.0f),//trans
+												//원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
+																			 //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightFront
+				{
+					//0번항목?
+					clip->source[1].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(6.3f,10.2f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(180)),//rotation
+																			 //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//LeftBack
+				{
+					//0번항목?
+					clip->source[2].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-6.3f,-3.4f,0.0f),//trans
+												//원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightBack
+				{
+					//0번항목?
+					clip->source[3].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,-3.4f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					//0번항목?
+					clip->source[4].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(3.0f,0.0f,0.0f) + _vec3(-3.0f,0.0f,0.0f),//trans
+																	   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//frontHead
+				{
+					//0번항목?
+					clip->source[5].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(5.0f,8.0f,0.0f),//trans
+											  //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						1.0f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-3.0f, 2.0f, 0.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.0f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(3.0f, 2.0f, -1.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.0f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[8].push_back(
+						ANIMINFO{
+						_vec3(-3.0f, -2.0f, 0.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.0f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[9].push_back(
+						ANIMINFO{
+						_vec3(3.0f, -2.0f, -1.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						1.0f,//tilltime
+						0.f//actionTime
+					});
+				}
+			}
+			m_pAnimation_Body->AddClip(L"HandsUp", clip);
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
+				clip->parts.push_back(m_pTransform->GetChild(1));//몸통
+				clip->parts.push_back(m_pTransform->GetChild(0));//머리
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
+				clip->source.resize(10);
+				clip->TotalTime = 2.0f;
+				clip->Useloop = false;
+
+				//LeftFront
+				{
+					//0번항목?
+					clip->source[0].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-6.3f,0.0f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
+																			 //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightFront
+				{
+					//0번항목?
+					clip->source[1].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-4.2f,0.0f,-1.0f),//trans
+												//원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(-90)),//rotation
+																			 //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
+				//LeftBack
+				{
+					//0번항목?
+					clip->source[2].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,0.0f,0.0f),//trans
+											  //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightBack
+				{
+					//0번항목?
+					clip->source[3].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						/*_vec3(4.2f,-3.2f,0.5f) + */_vec3(0.0f,0.0f,0.0f),//trans
+																		   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					//0번항목?
+					clip->source[4].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0.0f,0.0f,0.0f),//trans
+																	  //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//frontHead
+				{
+					//0번항목?
+					clip->source[5].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,0.0f,0.0f),//trans
+											  //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.1f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[8].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[9].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 0.0f) + _vec3(0,0,0),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.2f,//tilltime
+						0.f//actionTime
+					});
+				}
+			}
+			m_pAnimation_Body->AddClip(L"Throwing", clip);
+
+			clip = new AnimClip();
+			{
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(0));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(1));//손
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(2));//발
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(3));//발
+				clip->parts.push_back(m_pTransform->GetChild(1));//몸통
+				clip->parts.push_back(m_pTransform->GetChild(0));//머리
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(5));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(6));//팔조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(7));//발조인트
+				clip->parts.push_back(m_pTransform->GetChild(1)->GetChild(8));//발조인트
+				clip->source.resize(10);
+				clip->TotalTime = 2.0f;
+				clip->Useloop = false;
+
+				//LeftFront
+				{
+					//0번항목?
+					clip->source[0].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(-2.1f,-3.4f,0.0f),//trans
+												//원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightFront
+				{
+					//0번항목?
+					clip->source[1].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,-3.4f,1.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//_vec3(2.1f,-2.8f,0.5f) + _vec3(-6.3f,-0.4f,0.0f),//trans
+				//LeftBack
+				{
+					//0번항목?
+					clip->source[2].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(2.1f,-2.8f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//RightBack
+				{
+					//0번항목?
+					clip->source[3].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(4.1f,-2.8f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//BackBody
+				{
+					//0번항목?
+					clip->source[4].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(3.0f,-0.7f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+
+				//frontHead
+				{
+					//0번항목?
+					clip->source[5].push_back(
+						ANIMINFO{
+						//원래 위치					추가될 윛
+						_vec3(0.0f,-0.5f,0.0f),//trans
+											   //원래 회전값		추가될 회전값
+						_vec3(0.0f,0.0f,0.0f) + _vec3(0,0,D3DXToRadian(0)),//rotation
+																		   //스케일
+						_vec3(0.f,0.f,0.f),//scale
+										   //애니메이션 재생 총시간
+						0.6f,//tilltime
+							 //시작 시간
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[6].push_back(
+						ANIMINFO{
+						_vec3(-1.0f,0.0f,0.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.6f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//joint
+				{
+					clip->source[7].push_back(
+						ANIMINFO{
+						_vec3(-1.0f, 0.0f, 1.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.6f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[8].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 0.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.6f,//tilltime
+						0.f//actionTime
+					});
+				}
+				//발joint
+				{
+					clip->source[9].push_back(
+						ANIMINFO{
+						_vec3(0.0f, 0.0f, 1.0f),//trans
+						_vec3(0,0,0) + _vec3(0,0,0),//rotation
+						_vec3(0.f,0.f,0.f),//scale
+						0.6f,//tilltime
+						0.f//actionTime
+					});
+				}
+			}
+			m_pAnimation_Body->AddClip(L"ThrowEnd", clip);
 		}
 
-		if (m_iHp == 0)
-		{
-			m_dwRestTime = 1;
-			m_bDeadAnim = true;
-		}
+		Find_PlayerBoth();
+		m_bInit = true;
 	}
-	__super::OnCollisionEnter(collision);
-}
 
-void CBoss2::OnCollisionStay(const Collision * collision)
-{
-	if (dynamic_cast<CSpike*>(collision->otherObj))
-		m_bDamage = false;
-
-	__super::OnCollisionStay(collision);
-}
-
-void CBoss2::OnCollisionExit(const Collision * collision)
-{
-	
-	if (dynamic_cast<CCube*>(collision->otherObj))
+	if (m_iSpecialActionTrigger == 1)
 	{
-		m_bIsOnGround = false;
+		m_pAnimation_Face->SetAnimation(L"Scream");
+		m_pAnimation_Body->SetAnimation(L"Stump");
 	}
-	__super::OnCollisionExit(collision);
-}
-
-void CBoss2::SwapTrigger()
-{
-	if (g_Is2D)
-	{
-		m_pCircleParticle->End_Particle();
-	}
-	else
-	{
-		m_pLandingParticle->End_Particle();
-	}
+		
+	return true;
 }
 
 HRESULT CBoss2::Add_Component(void)
@@ -2190,9 +2291,9 @@ HRESULT CBoss2::Add_Component(void)
 HRESULT CBoss2::Find_PlayerBoth()
 {
 	m_pPlayer01_trans = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Toodee", L"Transform", ID_DYNAMIC));
-	NULL_CHECK_RETURN(m_pPlayer01_trans, -1);
+	if (m_pPlayer01_trans == nullptr) return E_FAIL;
 	m_pPlayer02_trans = dynamic_cast<CTransform*>(Engine::Get_Component(L"Layer_GameLogic", L"Topdee", L"Transform", ID_DYNAMIC));
-	NULL_CHECK_RETURN(m_pPlayer02_trans, -1);
+	if (m_pPlayer02_trans == nullptr) return E_FAIL;
 	return S_OK;
 }
 
@@ -2511,6 +2612,9 @@ void CBoss2::Do_Stump_Ready(const _float & fTimeDelta)
 
 void CBoss2::Do_Chase_Player(const _float & fTimeDelta)
 {
+	if (m_pPlayer01_trans == nullptr || m_pPlayer02_trans == nullptr)
+		return;
+
 	if (g_Is2D)
 	{
 		float _x =Lerp(m_pTransform->m_vInfo[INFO_POS].x, m_pPlayer01_trans->m_vInfo[INFO_POS].x, 0.1f);
@@ -2552,6 +2656,7 @@ void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 	else 
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
+	m_bAttackAble = true;
 	m_dwRestTime = 3;
 }
 
@@ -2575,8 +2680,6 @@ void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity.y = 0;
 	}
-	m_bAttackAble = true;
-
 }
 
 void CBoss2::CheckIsLastActionIdx()
@@ -2689,12 +2792,24 @@ CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
 	CBoss2*		pInstance = new CBoss2(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	if (FAILED(pInstance->Ready_GameObject(vPos,0)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;
 	}
 
+	return pInstance;
+}
+
+CBoss2 * CBoss2::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _int trigger)
+{
+	CBoss2*		pInstance = new CBoss2(pGraphicDev);
+
+	if (FAILED(pInstance->Ready_GameObject(vPos, trigger)))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
 	return pInstance;
 }
 

@@ -305,6 +305,12 @@
     <Filter Include="00. GameObject\04. Boss\Boss1\Final3Boss1">
       <UniqueIdentifier>{a9d3d615-44bf-4186-ab1e-84905b3976e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\FinalMonkeyCube">
+      <UniqueIdentifier>{8a023e07-aa90-4bbb-af15-c85c3011e337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\02. MapObject\FinalCube">
+      <UniqueIdentifier>{dc541e3e-9b69-465d-ba5f-4ca4d00098b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -888,9 +894,6 @@
     <ClInclude Include="Boss2Camera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
-    <ClInclude Include="FinalStage2.h">
-      <Filter>01. Scene\Stages\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="FinalStage3.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
@@ -952,6 +955,12 @@
     </ClInclude>
     <ClInclude Include="Laser.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalMonkeyCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\FinalMonkeyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalStoneCube.h">
+      <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1532,9 +1541,6 @@
     <ClCompile Include="Boss2Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
-    <ClCompile Include="FinalStage2.cpp">
-      <Filter>01. Scene\Stages\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="FinalStage3.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
@@ -1596,6 +1602,12 @@
     </ClCompile>
     <ClCompile Include="Laser.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalMonkeyCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\FinalMonkeyCube</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalStoneCube.cpp">
+      <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
