@@ -124,5 +124,5 @@ HRESULT CPDBackCode::Add_Component()
 
 void CPDBackCode::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }

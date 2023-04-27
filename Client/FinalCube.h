@@ -7,7 +7,7 @@ BEGIN(Engine)
 class CCubeTex;
 class CTexture;
 class CCollider;
-
+class CTexParticle;
 END
 
 class CFinalCube :
@@ -32,7 +32,7 @@ private:
 	Engine::CCubeTex*	m_pBufferCom;
 	Engine::CTexture*	m_pTextureCom;
 	Engine::CCollider*  m_pCollider;
-
+	Engine::CTexParticle* m_pExpParticle;
 	_int		m_iCubeIndex;
 
 	_bool		m_bCreateItem;

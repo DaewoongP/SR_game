@@ -103,5 +103,5 @@ HRESULT CPDErroe::Add_Component()
 
 void CPDErroe::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }

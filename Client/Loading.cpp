@@ -389,6 +389,10 @@ _uint CLoading::Loading_ForLogo(void)
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
 		9, 0.8f, 1, false)), E_FAIL);
 
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ItemExp", CTexParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/MiniGameTex/Explosion1x1_%d.png", 12,
+		1.f, 1, false)), E_FAIL);
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ShineParticle", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/shineBiggerSpr/shineBiggerSpr_0.png", 1,
 		10.f, 1, false)), E_FAIL);

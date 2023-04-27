@@ -53,7 +53,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
 		pLayer->Delete_Tag(L"ShootingCamera");

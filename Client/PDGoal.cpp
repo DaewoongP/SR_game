@@ -83,5 +83,5 @@ HRESULT CPDGoal::Add_Component()
 
 void CPDGoal::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }

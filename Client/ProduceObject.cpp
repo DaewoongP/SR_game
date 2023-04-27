@@ -54,5 +54,5 @@ void CProduceObject::On_Next(int iIndex)
 
 void CProduceObject::Free(void)
 {
-	CGameObject::Free();
+	__super::Free();
 }

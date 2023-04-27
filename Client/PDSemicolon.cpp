@@ -118,5 +118,5 @@ HRESULT CPDSemicolon::Add_Component()
 
 void CPDSemicolon::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }

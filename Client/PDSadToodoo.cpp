@@ -91,5 +91,5 @@ HRESULT CPDSadToodoo::Add_Component()
 
 void CPDSadToodoo::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }
