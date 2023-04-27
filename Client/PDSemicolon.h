@@ -14,6 +14,7 @@ public:
 private:
 	_int iTextureIndex;
 	_bool m_bPlaySound;
+	_bool m_bPlaySound2;
 public:
 	static CPDSemicolon* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	HRESULT Add_Component();

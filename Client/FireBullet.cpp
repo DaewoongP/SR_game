@@ -15,8 +15,8 @@ HRESULT CFireBullet::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 50.f;
-	m_pTransform->m_vAngle.y = D3DXToRadian(90);
-	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
+	m_pTransform->m_vAngle.z = D3DXToRadian(90);
+	m_pTex->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	vDir = { GetRandomFloat(-1.f, 1.f), 20.f, GetRandomFloat(-1.f, 1.f) };
@@ -28,7 +28,7 @@ void CFireBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 {
 	__super::Ready_Pool(vPos);
 	m_fSpeed = 50.f;
-	m_pTransform->m_vAngle.y = D3DXToRadian(90);
+	m_pTransform->m_vAngle.z = D3DXToRadian(90);
 	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
@@ -39,7 +39,7 @@ void CFireBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 _int CFireBullet::Update_GameObject(const _float & fTimeDelta)
 {
 	_int iResult = 0;
-	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].z +=  m_fSpeed * fTimeDelta;
 	m_pTex->Update_Anim(fTimeDelta);
 
 	_matrix mat;

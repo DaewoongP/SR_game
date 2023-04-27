@@ -51,7 +51,12 @@ _int CPDErroe::Update_GameObject(const _float & fTimeDelta)
 		{
 			m_bDead = true;
 		}
-
+		if (!m_bPlaySound && m_iIndex == 4)
+		{
+			m_bPlaySound = true;
+			StopAll();
+			PlayBGM(L"52.wav", 0.1f);
+		}
 
 	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_UI, this);
@@ -98,5 +103,5 @@ HRESULT CPDErroe::Add_Component()
 
 void CPDErroe::Free()
 {
-	CGameObject::Free();
+	__super::Free();
 }

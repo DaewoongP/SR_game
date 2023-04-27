@@ -35,8 +35,7 @@ HRESULT CFinalPD::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	StopSound(SOUND_BGM);
-	PlayBGM(L"52.wav", 0.1f);
+	
 	return S_OK;
 
 }
