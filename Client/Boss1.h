@@ -61,7 +61,7 @@ protected:
 	CTransform*				m_Player;
 	vector<CTransform*>		m_PartsVec;
 	_bool					m_bInit;
-
+	_bool					m_bLaugh=true;
 	_bool					m_bTurn_x;
 	_bool					m_bTurn_y;
 	_float					m_fOffset_x;

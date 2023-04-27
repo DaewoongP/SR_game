@@ -1,30 +1,24 @@
 #pragma once
-#include "Component.h"
-
+#include "Include.h"
+#include "..\Client\Bullet.h"
 BEGIN(Engine)
 
-class CBulletPool : public CComponent
+class CBulletPool
 {
+	DECLARE_SINGLETON(CBulletPool)
 private:
-	explicit CBulletPool(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CBulletPool();
+	explicit CBulletPool() {}
+	~CBulletPool();
 
 public:
-	HRESULT			Ready_BulletPool();
+	CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, BULLETTYPE eType, _vec3& vDir = _vec3(0, 1, 0));
+	void			Release_Bullet(CBullet* pBullet);
 
-	CGameObject*	Use_Bullet(_vec3& vPos, _int eDir);
-	void			UnUse_Bullet();
-
+	void			Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eType);
 private:
-	vector<pair<CGameObject*, _bool>>	m_vecBulletPool;
-	_bool	m_bCreate;
-
-public:
-	static  CBulletPool* Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual CComponent * Clone(void);
-
+	_bool			IsEmpty(BULLETTYPE eType);
 private:
-	virtual void Free() override;
+	list<CBullet*>	m_PoolList[BULLET_END];
 };
 
 END

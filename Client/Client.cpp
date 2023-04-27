@@ -17,7 +17,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 HWND		g_hWnd;
 _bool		g_Is2D = true;
 _bool		g_IsInvin = false;
-
+_bool		g_ColliderRendering = false;
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);

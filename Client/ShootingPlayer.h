@@ -34,12 +34,12 @@ public:
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
+	void		Shoot_Bullet(const _float & fTimeDelta);
 	void		Default_Bullet(const _float& fTimeDelta);
 	void		Quad_Bullet(const _float& fTimeDelta);
 	void		Sword_Bullet(const _float& fTimeDelta);
 	void		Fire_Bullet(const _float& fTimeDelta);
 	void		Rot_Player();
-	void		Switch_Bullet(const _float & fTimeDelta);
 
 private:
 	Engine::CRcTex*				m_pBuf;
@@ -50,7 +50,8 @@ private:
 	_vec3						m_vPos[POS_END];
 	_vec3						m_vPrePos;
 
-	_bool						m_bKeyInput;
+	_bool						m_bLKey;
+	_bool						m_bRKey;
 	CLayer*						m_pGameLogicLayer;
 
 	_int						m_iBulletIndex;

@@ -1,42 +1,30 @@
 #pragma once
 #include "Include.h"
-#include "GameObject.h"
+#include "Bullet.h"
 
-BEGIN(Engine)
-
-class CRcTex;
-class CTexture;
-class CCollider;
-
-END
-
-class CSwordBullet : public CGameObject
+class CSwordBullet : public CBullet
 {
 private:
 	explicit CSwordBullet(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CSwordBullet();
 
 public:
-	HRESULT Ready_GameObject(_vec3& vPos, _vec3& vInitPos);
+	virtual HRESULT Ready_Bullet(_vec3& vPos, _vec3& vDir = _vec3(0.f, 1.f, 0.f)) override;
+	virtual void	Ready_Pool(_vec3& vPos, _vec3& vDir = _vec3(0.f, 1.f, 0.f)) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 
-protected:
+private:
 	HRESULT Add_Component(void);
 
-protected:
-	Engine::CRcTex*			m_pBuf;
-	Engine::CTexture*		m_pTex;
-	Engine::CCollider*		m_pCollider;
-
-	_float	m_fSpeed;
+private:
 	_bool	m_bShoot;
 public:
-	static CSwordBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vInitPos);
+	static CSwordBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
-protected:
+private:
 	virtual void Free(void) override;
 };
 
