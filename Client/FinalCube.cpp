@@ -84,7 +84,10 @@ void CFinalCube::OnCollisionEnter(const Collision * collision)
 		!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet") ||
 		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
 
+	{
+		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		m_bCreateItem = true;
+	}		
 }
 
 HRESULT CFinalCube::Add_Component(void)
