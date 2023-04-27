@@ -30,6 +30,8 @@ public:
 		else
 			return;
 	}
+	void				Set_SwapTrigger() { m_SwapTop_ShootingTirgger = true; };
+	
 private:
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
@@ -41,7 +43,8 @@ private:
 	void				MonkeyAppear(const _float& fTimeDelta);
 	void				MonkeyDisAppear(const _float& fTimeDelta);
 	void				ActionNone(const _float& fTimeDelta);
-
+	void				DoLerpShootingPlayer(const _float & fTimeDelta);
+	void				Do_SwapPlayer(const _float & fTimeDelta);
 private:
 	Final_STATE_FUNC funcAction;
 	vector<CGameObject*> m_MokeyCube;
@@ -49,9 +52,14 @@ private:
 	CGameObject*		 m_pMonkey;
 	Final3_MonkeyState	 m_StageState;
 
+	CGameObject*	m_ShootingPlayer;
+	CGameObject*	m_TooTop;
+	
 	class CFinal3Boss1*			m_pBoss;
 	_bool				m_bMonkeySpawnTrigger;
 	_bool				m_bStoneSpawnTrigger;
+	_bool				m_ShootingPlayerLerpTrigger;
+	_bool				m_SwapTop_ShootingTirgger;
 public:
 	static CFinalStage3*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 

@@ -4,6 +4,7 @@
 #include "Cube.h"
 #include "Boss3.h"
 #include "StageCamera.h"
+#include "FinalStage3.h"
 
 CFinalStoneCube::CFinalStoneCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_bTrigger(false), m_iBossSpawn(0), m_bStart(false), m_bEnd(false)
@@ -42,7 +43,10 @@ _int CFinalStoneCube::Update_GameObject(const _float & fTimeDelta)
 	Add_RenderGroup(RENDER_ALPHA, this);
 	if (m_bEnd)
 		if (End_Pattern(fTimeDelta))
+		{
+			dynamic_cast<CFinalStage3*>(Engine::Get_Scene())->Set_SwapTrigger();
 			return OBJ_DEAD;
+		}
 		else
 			return 0;
 	g_Is2D = false;

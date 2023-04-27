@@ -30,7 +30,7 @@ public:
 	virtual void Render_GameObject(void) override;
 
 	void	Set_Bullet(_int iIndex) { m_iBulletIndex = iIndex; }
-
+	void	Set_Shoot(_bool value) { m_bPossibleShoot = value; }
 private:
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
@@ -56,6 +56,8 @@ private:
 	CLayer*						m_pGameLogicLayer;
 	_bool						m_bLaser=true;
 	_float						m_fLaserTime = 0.f;
+
+	_bool						m_bPossibleShoot;
 
 	_int						m_iBulletIndex;
 
