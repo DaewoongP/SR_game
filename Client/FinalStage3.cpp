@@ -89,11 +89,18 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
-			m_TooTop->Set_Render(false);
-			m_TooTop->Set_Update(false);
+			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+			m_TooTop->m_pTransform->m_vInfo[INFO_POS] = _vec3(10000, 10000, 10000);
+
+			pLayer->Get_GameObject(L"Topdee")->Set_Dead();
+			pLayer->Get_GameObject(L"Boss3")->Set_Dead();
 			m_ShootingPlayer->Set_Render(true);
 			m_ShootingPlayer->Set_Update(true);
 			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = _vec3(CUBEX, CUBEY, 10);
+			m_SwapTop_ShootingTirgger = false;
+			dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(true);
+			//전환되고 위치 회전이 이상함.
+			g_Is2D = true;
 		}
 		
 	}
@@ -121,7 +128,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(31.f, 14.f, -13.f));
-	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
+	pLayer->Add_GameObject(L"ShootingPlayer", m_ShootingPlayer);
 
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
@@ -221,6 +228,7 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 		_vec3 pos = m_TooTop->m_pTransform->m_vInfo[INFO_POS];
 		m_TooTop->Set_Render(false);
 		m_TooTop->Set_Update(false);
+		pLayer->Delete_Tag(L"Toodee");
 		m_TooTop = nullptr;
 		m_TooTop = CTopdee::Create(m_pGraphicDev, pos);
 		pLayer->Add_GameObject(L"Topdee", m_TooTop);
@@ -243,7 +251,7 @@ void CFinalStage3::DoLerpShootingPlayer(const _float & fTimeDelta)
 		{
 			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 			m_TooTop = CToodee::Create(m_pGraphicDev, _vec3(10.f, 14.f, 10.f));
-			pLayer->Add_GameObject(L"Topdee", m_TooTop);
+			pLayer->Add_GameObject(L"Toodee", m_TooTop);
 			m_ShootingPlayer->Set_Render(false);
 			m_ShootingPlayer->Set_Update(false);
 			m_ShootingPlayerLerpTrigger = false;

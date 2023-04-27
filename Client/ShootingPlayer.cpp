@@ -43,7 +43,9 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
 	Key_Input(fTimeDelta);
-	Rot_Player();
+	if (m_bPossibleShoot)
+		Rot_Player();
+	
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	if (m_iBulletIndex == 4)
