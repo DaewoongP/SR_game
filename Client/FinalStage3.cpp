@@ -217,5 +217,6 @@ CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CFinalStage3::Free(void)
 {
+	for_each(m_MokeyCube.begin(), m_MokeyCube.end(), CDeleteObj());
 	__super::Free();
 }
