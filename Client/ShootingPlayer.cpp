@@ -204,37 +204,6 @@ void CShootingPlayer::Rot_Player()
 	}
 }
 
-void CShootingPlayer::Switch_Bullet(const _float & fTimeDelta)
-{
-	switch (m_iBulletIndex)
-	{
-	//Default Bullet
-	case 0 :
-		Default_Bullet(fTimeDelta);
-		break;
-
-	// Quad Bullet
-	case 1:
-		Quad_Bullet(fTimeDelta);
-		break;
-
-	// Sword Bullet
-	case 2:
-		Sword_Bullet(fTimeDelta);
-		break;
-
-	// Fire Bullet
-	case 3:
-		Fire_Bullet(fTimeDelta);
-		break;
-
-	// Default
-	default:
-		Default_Bullet(fTimeDelta);
-		break;
-	}
-}
-
 HRESULT CShootingPlayer::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

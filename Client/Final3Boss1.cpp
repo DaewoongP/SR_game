@@ -949,9 +949,6 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 		case 3:
 			MakeCube<CSwitchCube>(L"SwitchCube");
 			break;
-		case 4:
-			MakeCube<CFoodCube>(L"FoodCube");
-			break;
 		}
 
 		iRandValue = rand() % 5;
@@ -969,9 +966,6 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 			break;
 		case 3:
 			MakeCube<CSwitchCube>(L"SwitchCube");
-			break;
-		case 4:
-			MakeCube<CFoodCube>(L"FoodCube");
 			break;
 		}
 
