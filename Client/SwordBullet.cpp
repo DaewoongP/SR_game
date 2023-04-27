@@ -22,6 +22,8 @@ HRESULT CSwordBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 	m_bShoot = false;
 	Engine::Ready_Frame(L"Sword1Sec", 2.f);
 
+	m_pTransform->m_vAngle.x = D3DXToRadian(90.f);
+
 	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
 
 	return S_OK;
@@ -37,6 +39,8 @@ void CSwordBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
 
+	m_pTransform->m_vAngle.x = D3DXToRadian(90.f);
+
 	Engine::Ready_Frame(L"Sword1Sec", 2.f);
 
 	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
@@ -49,7 +53,7 @@ _int CSwordBullet::Update_GameObject(const _float & fTimeDelta)
 	if (Engine::IsPermit_Call(L"Sword1Sec", fTimeDelta) && false == m_bShoot)
 		m_bShoot = true;
 	if (m_bShoot)
-		m_pTransform->m_vInfo[INFO_POS] += _vec3(0, 1, 0) * m_fSpeed * fTimeDelta;
+		m_pTransform->m_vInfo[INFO_POS] += _vec3(0, 0, 1) * m_fSpeed * fTimeDelta;
 		
 	m_pTex->Update_Anim(fTimeDelta);
 

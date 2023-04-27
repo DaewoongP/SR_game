@@ -17,7 +17,7 @@ private:
 	HRESULT Add_Component(void);
 
 public:
-	static CDefaultBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vDir = _vec3(0, 1, 0));
+	static CDefaultBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vDir = _vec3(0, 0, 1));
 private:
 	virtual void Free(void) override;
 };

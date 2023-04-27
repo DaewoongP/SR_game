@@ -93,9 +93,9 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(31.f, 14.f, -13.f)), E_FAIL);
 
-	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
+	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
 	///////////////////////// 1¹ø ////////////////////////////////////
 	/*
@@ -104,7 +104,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	FAILED_CHECK_RETURN(FACTORY<CFinalStoneCube>::CreateParent(L"StoneCube", pLayer, _vec3(0,0,0)), E_FAIL);*/
 	///////////////////////// 2¹ø ////////////////////////////////////
-	for (int i = 0; i < CUBEX; i++)
+	/*for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
 			continue;
@@ -123,7 +123,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 			if (j == CUBEX - 1)
 				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
 		}
-	}
+	}*/
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;

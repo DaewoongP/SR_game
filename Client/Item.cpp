@@ -22,7 +22,7 @@ HRESULT CItem::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = false;
 
-	m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
+	//m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
 
 	m_pCollider->Set_Options({ 4.f, 1.f, 4.f }, COL_OBJ, false);
 
@@ -36,7 +36,7 @@ _int CItem::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	m_pTransform->m_vInfo[INFO_POS].y -= 50.f * fTimeDelta;
+	m_pTransform->m_vInfo[INFO_POS].z -= 50.f * fTimeDelta;
 
 	__super::Update_GameObject(fTimeDelta);
 

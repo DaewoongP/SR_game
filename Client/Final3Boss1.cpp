@@ -37,7 +37,6 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	//위치잡는 친구를 넣어주세요
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_vOriginPos = vPos;
-	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(0), 0);
 	m_bTurn_x=false;
 	m_bTurn_y=false;
 	m_fOffset_x = 0;
@@ -979,14 +978,14 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 	{
 		if (lstrcmp((*iter)->m_pTag, L"FinalCube"))
 			iter = m_vecCube.erase(iter);
-		else if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].y)
+		else if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].z)
 		{
 			(*iter)->m_bDead = true;
 			iter = m_vecCube.erase(iter);
 		}
 		else
 		{
-			(*iter)->m_pTransform->m_vInfo[INFO_POS].y -= 10.f * fTimeDelta;
+			(*iter)->m_pTransform->m_vInfo[INFO_POS].z -= 50.f * fTimeDelta;
 			++iter;
 		}
 	}
@@ -999,25 +998,26 @@ void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 	_int iRandValue = rand() % 5;
 	_vec3 vPos;
 
+	//_vec3(32.f, 15.f, -15.f)
 	switch (iRandValue)
 	{
 	case 0:
-		vPos = _vec3{ -6.f, 200.f, 10.f };
+		vPos = _vec3{ 25.f, 20.f, 200.f };
 		break;
 	case 1:
-		vPos = _vec3{ -3.f, 200.f, 15.f };
+		vPos = _vec3{ 37.f, 20.f, 200.f };
 		break;
 	case 2:
-		vPos = _vec3{ 3.f, 200.f, 15.f };
+		vPos = _vec3{ 28.f, 17.f, 200.f };
 		break;
 	case 3:
-		vPos = _vec3{ 6.f, 200.f, 10.f };
+		vPos = _vec3{ 34.f, 17.f, 200.f };
 		break;
 	case 4:
-		vPos = _vec3{ 0.f, 200.f, 15.f };
+		vPos = _vec3{ 31.f, 14.f, 200.f };
 		break;
 	default:
-		vPos = _vec3{ 0.f, 200.f, 15.f };
+		vPos = _vec3{ 31.f, 14.f, 200.f };
 		break;
 	}
 
