@@ -864,12 +864,17 @@ void CFinal3Boss1::Render_GameObject(void)
 void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet") ||
 		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
 	{
 		--m_iHp;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 	}		
+
+	if (!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet"))
+	{
+		m_iHp -= 2;
+		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+	}
 }
 
 void CFinal3Boss1::SwapTrigger()
