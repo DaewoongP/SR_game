@@ -53,7 +53,8 @@ private:
 	Engine::CTexture*				m_pLightningTex1;
 	Engine::CTexture*				m_pLightningTex2;
 	Engine::CTexture*				m_pLightningTex3;
-
+	class CGameObject* m_pPlayer;
+	class CGameObject* m_pPlayer2;
 	_vec3					m_vLightningSize1;
 	_vec3					m_vLightningSize2;
 	_vec3					m_vLightningSize3;

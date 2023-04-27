@@ -37,6 +37,8 @@ CFinalStage3::~CFinalStage3()
 
 HRESULT CFinalStage3::Ready_Scene(void)
 {
+	StopSound(SOUND_BGM);
+	PlayBGM(L"Final3.wav", 0.35f);
 	m_SpwanCube = false;
 	m_ShootingPlayerLerpTrigger = false;
 	m_SwapTop_ShootingTirgger = false;
