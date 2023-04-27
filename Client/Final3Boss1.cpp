@@ -12,7 +12,7 @@
 #include "GravityCube.h"
 #include "CrackCube.h"
 #include "SwitchCube.h"
-#include "Spike.h"
+#include "FoodCube.h"
 
 #define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
@@ -839,6 +839,7 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
+	Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -853,6 +854,7 @@ void CFinal3Boss1::Render_GameObject(void)
 {
 	__super::Render_GameObject();
 }
+
 void CFinal3Boss1::SwapTrigger()
 {
 }
@@ -929,23 +931,103 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 {
 	m_dwThrowCubeTime += fTimeDelta;
 
-	if (3.f < m_dwThrowCubeTime)
+	if (1.f < m_dwThrowCubeTime)
 	{
-		int iRandvalue = rand() % 5;
+		int iRandValue = rand() % 5;
 
+		switch (iRandValue)
+		{
+		case 0 :
+			MakeCube<CMoveCube>(L"MoveCube");
+			break;
+		case 1:
+			MakeCube<CGravityCube>(L"GravityCube");
+			break;
+		case 2:
+			MakeCube<CCrackCube>(L"CrackCube");
+			break;
+		case 3:
+			MakeCube<CSwitchCube>(L"SwitchCube");
+			break;
+		case 4:
+			MakeCube<CFoodCube>(L"FoodCube");
+			break;
+		}
 
+		iRandValue = rand() % 5;
+
+		switch (iRandValue)
+		{
+		case 0:
+			MakeCube<CMoveCube>(L"MoveCube");
+			break;
+		case 1:
+			MakeCube<CGravityCube>(L"GravityCube");
+			break;
+		case 2:
+			MakeCube<CCrackCube>(L"CrackCube");
+			break;
+		case 3:
+			MakeCube<CSwitchCube>(L"SwitchCube");
+			break;
+		case 4:
+			MakeCube<CFoodCube>(L"FoodCube");
+			break;
+		}
 
 		m_dwThrowCubeTime = 0;
+	}
+
+	for (auto iter = m_vecCube.begin(); iter != m_vecCube.end();)
+	{
+		if ((*iter)->m_bDead)
+		{
+			iter = m_vecCube.erase(iter);
+			continue;
+		}
+
+		(*iter)->m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
+
+		if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].y)
+			(*iter)->m_bDead = true;
+
+		++iter;
 	}
 }
 
 template<typename T>
 inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
 {
-	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
-	CGameObject pGameObject = T::Create(m_pGraphicDev, vPos);
+	CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+
+	_int iRandValue = rand() % 5;
+	_vec3 vPos;
+
+	switch (iRandValue)
+	{
+	case 0:
+		vPos = _vec3{ -6.f, 200.f, 10.f };
+		break;
+	case 1:
+		vPos = _vec3{ -3.f, 200.f, 15.f };
+		break;
+	case 2:
+		vPos = _vec3{ 3.f, 200.f, 15.f };
+		break;
+	case 3:
+		vPos = _vec3{ 6.f, 200.f, 10.f };
+		break;
+	case 4:
+		vPos = _vec3{ 0.f, 200.f, 15.f };
+		break;
+	default:
+		vPos = _vec3{ 0.f, 200.f, 15.f };
+		break;
+	}
+
+	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos);
 	pGameObject->Sort_Component();
-	m_pLayer->Add_GameObject(pTag, pGameObject);
+	pLayer->Add_GameObject(pTag, pGameObject);
 	m_vecCube.push_back(pGameObject);
 }
 
