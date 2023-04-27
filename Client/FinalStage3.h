@@ -23,6 +23,13 @@ public:
 	virtual void		LateUpdate_Scene(void)override;
 	virtual void		Render_Scene(void) override;
 
+	void				Set_State(Final3_MonkeyState eState) 
+	{ 
+		if (m_StageState != eState)
+			m_StageState = eState;
+		else
+			return;
+	}
 private:
 	HRESULT				Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
@@ -41,6 +48,9 @@ private:
 	_bool			 	 m_SpwanCube;
 	CGameObject*		 m_pMonkey;
 	Final3_MonkeyState	 m_StageState;
+
+	class CFinal3Boss1*			m_pBoss;
+	_bool				m_bMonkeySpwanTrigger;
 public:
 	static CFinalStage3*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 

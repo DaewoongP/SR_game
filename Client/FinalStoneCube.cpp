@@ -32,7 +32,6 @@ HRESULT CFinalStoneCube::Ready_GameObject(_vec3 & vPos, CLayer* pLayer)
 	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", m_pLandingParticle });
 
-	Engine::Ready_Frame(L"0.1Sec", 10.f);
 	return S_OK;
 }
 

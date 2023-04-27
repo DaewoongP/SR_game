@@ -47,21 +47,7 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 
 	return S_OK;
 }
-void CFinal3Boss1::OnCollisionEnter(const Collision* collision)
-{
-	collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
-	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
-	{
-			m_iHp-=15.f;
-		if(Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage()==true)
-		{
-			m_iHp -= 150.f;
-		}
-			
-	}
-	
-	
-}
+
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
@@ -886,11 +872,19 @@ void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 		--m_iHp;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 	}		
-
 	if (!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet"))
 	{
 		m_iHp -= 2;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+	}
+	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
+	{
+		m_iHp -= 15.f;
+		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
+		{
+			m_iHp -= 150.f;
+		}
 	}
 }
 
@@ -976,30 +970,29 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 
 	if (1.f < m_dwThrowCubeTime)
 	{
-		MakeCube<CFinalCube>(L"FinalCube", iRandValue);
+		MakeCube(L"FinalCube", iRandValue);
 
 		m_dwThrowCubeTime = 0;
 	}
 
-	for (auto iter = m_vecCube.begin(); iter != m_vecCube.end();)
+	for (auto& iter = m_vecCube.begin(); iter != m_vecCube.end();)
 	{
-		if ((*iter)->m_bDead)
-		{
+		if (lstrcmp((*iter)->m_pTag, L"FinalCube"))
 			iter = m_vecCube.erase(iter);
-			continue;
-		}
-
-		(*iter)->m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
-
-		if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].y)
+		else if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].y)
+		{
 			(*iter)->m_bDead = true;
-
-		++iter;
+			iter = m_vecCube.erase(iter);
+		}
+		else
+		{
+			(*iter)->m_pTransform->m_vInfo[INFO_POS].y -= 10.f * fTimeDelta;
+			++iter;
+		}
 	}
 }
 
-template<typename T>
-inline void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
+void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 {
 	CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 
@@ -1028,7 +1021,7 @@ inline void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 		break;
 	}
 
-	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos, iIndex);
+	CGameObject* pGameObject = CFinalCube::Create(m_pGraphicDev, vPos, iIndex);
 	pGameObject->Sort_Component();
 	pLayer->Add_GameObject(pTag, pGameObject);
 	m_vecCube.push_back(pGameObject);

@@ -946,7 +946,6 @@
     <ClInclude Include="ProduceObject.h">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
-    <ClInclude Include="Produce1BackCode.h" />
     <ClInclude Include="FinalUI.h">
       <Filter>01. Scene\Stages\UI</Filter>
     </ClInclude>
@@ -968,6 +967,7 @@
     <ClInclude Include="FinalStoneCube.h">
       <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClInclude>
+    <ClInclude Include="Produce1BackCode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1596,7 +1596,6 @@
     <ClCompile Include="ProduceObject.cpp">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
-    <ClCompile Include="Produce1BackCode.cpp" />
     <ClCompile Include="FinalUI.cpp">
       <Filter>01. Scene\Stages\UI</Filter>
     </ClCompile>
@@ -1618,6 +1617,7 @@
     <ClCompile Include="FinalStoneCube.cpp">
       <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClCompile>
+    <ClCompile Include="Produce1BackCode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">

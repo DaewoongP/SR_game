@@ -27,9 +27,10 @@ CBullet* CBulletPool::Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, 
 			break;
 		case FIRE:
 			pBullet = CFireBullet::Create(pGraphicDev, vPos);
+			break;
 		case LASER:
 			pBullet = CLaser::Create(pGraphicDev, vPos);
-	
+			break;
 		}
 		return pBullet;
 	}
@@ -54,7 +55,7 @@ void CBulletPool::Release_Bullet(CBullet* pBullet)
 		m_PoolList[SWORD].push_back(pBullet);
 	else if (dynamic_cast<CFireBullet*>(pBullet))
 		m_PoolList[FIRE].push_back(pBullet);
-	else if (dynamic_cast<CFireBullet*>(pBullet))
+	else if (dynamic_cast<CLaser*>(pBullet))
 		m_PoolList[LASER].push_back(pBullet);
 }
 

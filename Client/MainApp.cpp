@@ -41,6 +41,8 @@ HRESULT CMainApp::Ready_MainApp(void)
 
 	Engine::Ready_Frame(L"1Sec", 1.f);
 	Engine::Ready_Frame(L"0.001Sec", 1000.f);
+	Engine::Ready_Frame(L"0.1Sec", 10.f);
+	Engine::Ready_Frame(L"0.5Sec", 2.f);
 	return S_OK;
 }
 

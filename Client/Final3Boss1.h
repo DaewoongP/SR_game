@@ -32,7 +32,6 @@ protected:
 	void		Move(const _float& fTimeDelta);
 	void		Throw_Cube(const _float& fTimeDelta);
 
-	template<typename T>
 	void		MakeCube(const _tchar* pTag, _int iIndex);
 
 protected:

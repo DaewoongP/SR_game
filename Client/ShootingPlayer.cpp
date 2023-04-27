@@ -30,7 +30,7 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
 	m_fSlerp = 0.f;
 	Engine::Ready_Frame(L"2Sec", 0.5f);
-
+	
 	return S_OK;
 }
 
@@ -87,10 +87,10 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
 
-	if (GetAsyncKeyState('F'))
+	/*if (GetAsyncKeyState('F'))
 	{
 		m_iBulletIndex = 4;
-	}
+	}*/
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bLKey)
 	{
 		m_bRKey = false;
@@ -151,7 +151,8 @@ void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
 	case 3:
 		Fire_Bullet(fTimeDelta);
 		break;
-	case 4:Laser(fTimeDelta);
+	case 4:
+		Laser(fTimeDelta);
 		break;
 	default:
 		Default_Bullet(fTimeDelta);
@@ -161,7 +162,7 @@ void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
 
 void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
 {
-	if (IsPermit_Call(L"1Sec", fTimeDelta))
+	if (IsPermit_Call(L"0.5Sec", fTimeDelta))
 	{
 		CBullet* pBullet = nullptr;
 		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT);
@@ -173,7 +174,7 @@ void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
 
 void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
 {
-	if (IsPermit_Call(L"1Sec", fTimeDelta))
+	if (IsPermit_Call(L"0.5Sec", fTimeDelta))
 	{
 		CBullet* pBullet = nullptr;
 
@@ -197,7 +198,7 @@ void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
 
 void CShootingPlayer::Sword_Bullet(const _float & fTimeDelta)
 {
-	if (IsPermit_Call(L"2Sec", fTimeDelta))
+	if (IsPermit_Call(L"1Sec", fTimeDelta))
 	{
 		CBullet* pBullet = nullptr;
 		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], SWORD);
@@ -223,17 +224,14 @@ void CShootingPlayer::Laser(const _float& fTimeDelta)
 {
 	if (m_bLaser)
 	{
-		CBullet* pBullet = nullptr;
+		CLaser* pBullet = nullptr;
 
-		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], LASER, _vec3(1, 0, 0));
+		pBullet = CLaser::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"ShootingLaser", pBullet);
 		m_bLaser = false;
 	}
-
-		
-	
 }
 void CShootingPlayer::Rot_Player()
 {
