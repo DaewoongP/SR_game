@@ -17,7 +17,7 @@ HRESULT CSkyBox::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	/* ÀÌÄÚµå Æ®·£½ºÆû ÄÄÆ÷³ÍÆ® ¾È½èÀ½.*/
-	m_pTransform->m_vScale = { 200.f, 200.f, 200.f };
+	m_pTransform->m_vScale = { 200.f, 250.f, 200.f };
 
 	m_pSkyParticle->Start_Particle();
 

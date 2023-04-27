@@ -608,7 +608,7 @@ void CBoss3::FinalDamaged(const _float & fTimeDelta)
 
 	WhiteTwinkl();
 
-	if (5.f <= m_fFinalTime * 100.f)
+	if (5.2f <= m_fFinalTime * 100.f)
 	{
 		m_bDead = true;
 	}
@@ -622,7 +622,7 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 
 	WhiteTwinkl();
 
-	if (3.f <= m_fDamagedTime)
+	if (5.5f <= m_fDamagedTime)
 	{
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3LeftEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };
 		Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3RightEye")->m_pTransform->m_vScale = { 1.8f, 1.8f, 1.f };

@@ -11,6 +11,8 @@ private:
 
 	_bool m_bBossDead;
 
+	_bool m_bSmash;
+
 public:
 	void Set_BossDead(_bool bDead) { m_bBossDead = bDead; }
 public:

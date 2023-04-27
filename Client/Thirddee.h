@@ -21,6 +21,8 @@ public:
 	virtual void OnCollisionExit(const class Collision* collision);
 
 	void	Set_Die();
+
+	_bool Get_EndingTrigger() { return m_EndingTrigger; }
 private:
 	virtual void		SetRenderONOFF(_bool value) override;
 	virtual void		Key_Input(const _float& fTimeDelta) override;

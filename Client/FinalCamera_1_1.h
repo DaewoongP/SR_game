@@ -12,6 +12,7 @@ public:
 
 private:
 	void Update_Direct_X(const _float& fTimeDelta);
+	virtual void Update_Direct(const _float& fTimeDelta) override;
 
 public:
 	static CFinalCamera_1_1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

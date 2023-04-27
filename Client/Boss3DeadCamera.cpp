@@ -4,7 +4,7 @@
 
 CBoss3DeadCamera::CBoss3DeadCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
-	CDirectCamera(pGraphicDev), m_bBossDead(false)
+	CDirectCamera(pGraphicDev), m_bBossDead(false), m_bSmash(false)
 {
 }
 
@@ -34,22 +34,22 @@ _int CBoss3DeadCamera::Update_GameObject(const _float & fTimeDelta)
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
 			40.f,
-			1.f });//갖다대고 1 0.5
+			2.f });//갖다대고 1 0.5
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
 			40.f,
-			0.2f });//잠시대기 2 5.0
+			0.25f });//잠시대기 2 4.0
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
 			60.f,
-			0.5f });//준비 3 0.5
+			2.f });//준비 3 0.5
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
 			20.f,
-			5.0f });//펀치 4 0.2
+			10.0f });//펀치 4 0.2
 		m_vecXYPosAngleSpeed.push_back({
 			CBoss->m_pTransform->m_vInfo[INFO_POS].x,
 			CBoss->m_pTransform->m_vInfo[INFO_POS].y,
@@ -88,7 +88,11 @@ _int CBoss3DeadCamera::Update_GameObject(const _float & fTimeDelta)
 			
 			break;
 		case 5:
-			m_pTransform->Set_Shake(0.1f, 200, SHAKE_ALL);
+			if (!m_bSmash)
+			{
+				m_pTransform->Set_Shake(0.5f, 100, SHAKE_ALL);
+				m_bSmash = true;
+			}
 			break;
 		default:
 			break;

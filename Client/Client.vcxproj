@@ -248,6 +248,9 @@
     <ClInclude Include="PatternParts.h" />
     <ClInclude Include="PortalCube.h" />
     <ClInclude Include="PreStage.h" />
+    <ClInclude Include="Produce1BackCode.h" />
+    <ClInclude Include="ProduceObject.h" />
+    <ClInclude Include="ProduceScene.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Semicolon.h" />
     <ClInclude Include="ShiningStar.h" />
@@ -438,6 +441,9 @@
     <ClCompile Include="PatternParts.cpp" />
     <ClCompile Include="PortalCube.cpp" />
     <ClCompile Include="PreStage.cpp" />
+    <ClCompile Include="Produce1BackCode.cpp" />
+    <ClCompile Include="ProduceObject.cpp" />
+    <ClCompile Include="ProduceScene.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Semicolon.cpp" />
     <ClCompile Include="ShiningStar.cpp" />

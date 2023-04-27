@@ -18,7 +18,7 @@ protected:
 	_float m_fTimer;
 
 protected:
-	void Update_Direct(const _float& fTimeDelta);
+	virtual void Update_Direct(const _float& fTimeDelta);
 	
 
 protected:

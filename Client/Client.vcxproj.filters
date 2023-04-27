@@ -296,6 +296,11 @@
     <Filter Include="00. GameObject\04. Boss\Boss1\Final3Boss1">
       <UniqueIdentifier>{a9d3d615-44bf-4186-ab1e-84905b3976e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\ProduceScene">
+      <UniqueIdentifier>{e30f3478-4f1b-4f45-95f6-8cd629a4ad84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc\ProduceObj">
+      <UniqueIdentifier>{ce7344bf-8874-4085-a962-2ab06b47642b}</UniqueIdentifier>
     <Filter Include="00. GameObject\02. MapObject\Item">
       <UniqueIdentifier>{77c6f6f3-073f-46ba-a262-6671f75613ef}</UniqueIdentifier>
     </Filter>
@@ -928,6 +933,13 @@
     <ClInclude Include="Final3Boss1.h">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
     </ClInclude>
+    <ClInclude Include="ProduceScene.h">
+      <Filter>01. Scene\ProduceScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ProduceObject.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Produce1BackCode.h" />
     <ClInclude Include="FinalUI.h">
       <Filter>01. Scene\Stages\UI</Filter>
     </ClInclude>
@@ -1562,6 +1574,13 @@
     <ClCompile Include="Final3Boss1.cpp">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
     </ClCompile>
+    <ClCompile Include="ProduceScene.cpp">
+      <Filter>01. Scene\ProduceScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ProduceObject.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Produce1BackCode.cpp" />
     <ClCompile Include="FinalUI.cpp">
       <Filter>01. Scene\Stages\UI</Filter>
     </ClCompile>
