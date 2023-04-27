@@ -986,11 +986,21 @@
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
     <ClInclude Include="FinalPD.h" />
-    <ClInclude Include="PDSemicolon.h" />
-    <ClInclude Include="PDSadToodoo.h" />
-    <ClInclude Include="PDGoal.h" />
-    <ClInclude Include="PDBackCode.h" />
-    <ClInclude Include="PDErroe.h" />
+    <ClInclude Include="PDBackCode.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="PDErroe.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="PDGoal.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="PDSadToodoo.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="PDSemicolon.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1653,11 +1663,21 @@
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
     <ClCompile Include="FinalPD.cpp" />
-    <ClCompile Include="PDSemicolon.cpp" />
-    <ClCompile Include="PDSadToodoo.cpp" />
-    <ClCompile Include="PDGoal.cpp" />
-    <ClCompile Include="PDBackCode.cpp" />
-    <ClCompile Include="PDErroe.cpp" />
+    <ClCompile Include="PDBackCode.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="PDErroe.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="PDGoal.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="PDSadToodoo.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="PDSemicolon.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">
