@@ -22,12 +22,12 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pCollider->Set_Options();
 	m_vPos[INIT] = vPos;
-	m_vPos[LEFT] = vPos + _vec3(-5.f, 0.f, -5.f);
-	m_vPos[RIGHT] = vPos + _vec3(5.f, 0.f, -5.f);
+	m_vPos[LEFT] = vPos + _vec3(-6.5f, 5.f, 0.f);
+	m_vPos[RIGHT] = vPos + _vec3(6.5f, 5.f, 0.f);
 	m_vPrePos = vPos;
 	m_bLKey = true;
 	m_bRKey = true;
-	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
+	m_pTransform->m_vAngle.x = D3DXToRadian(+30);
 	m_fSlerp = 0.f;
 	Engine::Ready_Frame(L"2Sec", 0.5f);
 	
@@ -97,7 +97,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_fSlerp += fTimeDelta;
 		if (m_fSlerp >= 1.f)
 			m_fSlerp = 1.f;
-		vUp = { 0, -1, 0 };
+		vUp = { 0, 0, -1 };
 		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[LEFT], &vUp, 5.f, m_fSlerp);
 
 		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
@@ -109,6 +109,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_fSlerp += fTimeDelta;
 		if (m_fSlerp >= 1.f)
 			m_fSlerp = 1.f;
+		vUp = { 0, 0, +1 };
 		GetVectorSlerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPos[INIT], &m_vPos[RIGHT], &vUp, 5.f, m_fSlerp);
 
 		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
@@ -178,19 +179,21 @@ void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
 	{
 		CBullet* pBullet = nullptr;
 
-		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(1, 10, 0));
+		_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, _vec3{ vPos.x + 3.f, vPos.y, vPos.z }, DEFAULT);
 		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 
-		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(0, 30, 1));
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, _vec3{ vPos.x - 3.f, vPos.y, vPos.z }, DEFAULT);
 		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 
-		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(-1, 10, 0));
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, _vec3{ vPos.x, vPos.y + 1.5f, vPos.z }, DEFAULT);
 		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 
-		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(0, 30, -1));
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, _vec3{ vPos.x, vPos.y - 1.5f, vPos.z }, DEFAULT);
 		if (pBullet == nullptr)	return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 	}
@@ -240,11 +243,13 @@ void CShootingPlayer::Rot_Player()
 
 	if (0 < vMin.x)
 	{
-		m_pTransform->m_vAngle.y = D3DXToRadian(fLen * 10.f);
+		m_pTransform->m_vAngle.z = D3DXToRadian(fLen * 3.f);
+		m_pTransform->m_vAngle.y = D3DXToRadian(fLen * 4.f);
 	}
 	else
 	{
-		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 10.f);
+		m_pTransform->m_vAngle.z = D3DXToRadian(-fLen * 3.f);
+		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 4.f);
 	}
 }
 
