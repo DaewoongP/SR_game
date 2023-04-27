@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ThirdCamera.h"
+#include "Thirddee.h"
 
 CThirdCamera::CThirdCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
@@ -102,20 +103,31 @@ void CThirdCamera::Set_PlayerPos(const _float& fTimeDelta)
 	pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee");
 	if (pObj == nullptr)
 		return;
-	//z축으로 -10위치
-	m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-10);
 
-	_vec3 vShake = { 0.0f,0.0f,0.0f };
-	m_pTransform->Update_Shake(fTimeDelta, vShake);
+	if (dynamic_cast<CThirddee*>(pObj)->m_fEndingTimer > 0.0f)
+	{
+		//z축으로 -10위치
+		m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS] + _vec3(0, 0, -10);
 
-	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
-	m_vTooView[AT] = m_vPlayerPos + vShake;
-	m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);
-	
-	m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f);
-	m_vTopView[AT] = m_vPlayerPos + vShake;
-	m_vTopView[UP] = _vec3(0.f, 0.f, -1.f);
-	//플레이어 위치 + (-15.f, 0.f, -18.f)
+		_vec3 vShake = { 0.0f,0.0f,0.0f };
+		m_pTransform->Update_Shake(fTimeDelta, vShake);
+
+		m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
+		m_vTooView[AT] = m_vPlayerPos + vShake;
+		m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);
+
+		m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f);
+		m_vTopView[AT] = m_vPlayerPos + vShake;
+		m_vTopView[UP] = _vec3(0.f, 0.f, -1.f);
+		//플레이어 위치 + (-15.f, 0.f, -18.f)
+	}
+	else
+	{
+		m_vTopView[EYE].x -= 5.0f*fTimeDelta;
+		m_vTopView[EYE].y -= 5.0f*fTimeDelta;
+		m_vTopView[AT].x -= 5.0f*fTimeDelta;
+		m_vTopView[AT].y -= 5.0f*fTimeDelta;
+	}
 }
 
 CThirdCamera * CThirdCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev)
