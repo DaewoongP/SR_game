@@ -31,7 +31,10 @@ public:
 
 	void	Set_Bullet(_int iIndex) { m_iBulletIndex = iIndex; }
 	void	Set_Shoot(_bool value) { m_bPossibleShoot = value; }
-private:
+	void	Set_Pos_Rot(_vec3 pos, _vec3 rot) { m_OriginPos = pos; m_OriginRot = rot; }
+	_vec3	Get_OriginPos() {	return m_OriginPos;}
+	_vec3	Get_OriginRot() { return m_OriginRot; }
+private:						
 	HRESULT		Add_Component(void);
 	void		Key_Input(const _float& fTimeDelta);
 	void		Shoot_Bullet(const _float & fTimeDelta);
@@ -39,7 +42,7 @@ private:
 	void		Quad_Bullet(const _float& fTimeDelta);
 	void		Sword_Bullet(const _float& fTimeDelta);
 	void		Fire_Bullet(const _float& fTimeDelta);
-	void Laser(const _float& fTimeDelta);
+	void		Laser(const _float& fTimeDelta);
 	void		Rot_Player();
 
 private:
@@ -58,6 +61,8 @@ private:
 	_float						m_fLaserTime = 0.f;
 
 	_bool						m_bPossibleShoot;
+	_vec3						m_OriginPos;
+	_vec3						m_OriginRot;
 
 	_int						m_iBulletIndex;
 
