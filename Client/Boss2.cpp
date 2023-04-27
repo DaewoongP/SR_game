@@ -35,7 +35,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransform->m_bIsStatic = false;
-	m_iHp = 1;
+	m_iHp = 3;
 	m_eCurrentState = B2_STUMP;
 	m_ePreState = B2_END;
 	m_bInit = false;

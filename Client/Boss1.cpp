@@ -33,7 +33,7 @@ HRESULT CBoss1::Ready_GameObject(_vec3 & vPos)
 	m_eCurrentState = B1_END;
 	m_iCurrentActionIdx = 0;
 	ReadyPartten();
-	//À§Ä¡Àâ´Â Ä£±¸¸¦ ³Ö¾îÁÖ¼¼¿ä
+	//ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ Ä£ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_vOriginPos = vPos;
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
@@ -48,12 +48,12 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bInit)
 	{
-		//»ïµð¸¦ °¡Áö°íÀÖ¾î¾ßÇÔ.
+		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½.
 		CComponent* otherTrans = Engine::Get_Component(L"Layer_GameLogic", L"Thirddee", L"Transform", ID_DYNAMIC);
 		if (otherTrans != nullptr)
 			m_Player = dynamic_cast<CTransform*>(otherTrans);
 
-		//½ÇÇàÇØÁÖ´Â ÄÚµå
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Úµï¿½
 		CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 		NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 		
@@ -61,53 +61,53 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		FAILED_CHECK_RETURN(FACTORY<CGiantHand>::Create(L"GiantHand", pStageLayer, summonpos),E_FAIL);
 		m_GiantHand = Engine::Get_GameObject(L"Layer_GameLogic", L"GiantHand");
 
-		//¸ö¶Ë 0
+		//ï¿½ï¿½ï¿½ï¿½ 0
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Body", pStageLayer, _vec3(0,0,0), m_pTransform), E_FAIL);
-		//¸Ó¸®Åë 0-0
+		//ï¿½Ó¸ï¿½ï¿½ï¿½ 0-0
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Head", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0), L"Boss1_Parts", 6, false), E_FAIL);
-		//´«¼· 0-0-0
+		//ï¿½ï¿½ï¿½ï¿½ 0-0-0
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_EyeBrow", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 8, false), E_FAIL);
-		//¼ö¿° 0-0-1~2
+		//ï¿½ï¿½ï¿½ï¿½ 0-0-1~2
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Beard", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 9, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Beard", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 9, false), E_FAIL);
-		//ÀÔ 0 0 3
+		//ï¿½ï¿½ 0 0 3
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Mouse", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 4, false), E_FAIL);
-		//ÄÚ 0-0-4
+		//ï¿½ï¿½ 0-0-4
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Nose", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 10, false), E_FAIL);
-		//´« 0 0 5
+		//ï¿½ï¿½ 0 0 5
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Eye", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss1_Parts", 7, false), E_FAIL);
-		//´«È­Àå 0 0 6
+		//ï¿½ï¿½È­ï¿½ï¿½ 0 0 6
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_MakeUp", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(0), L"Boss2_MakeUp", 8, true), E_FAIL);
 
-		//Àß ¸¸µé¾îÁø Å¾µðÀÇ Á¶ÀÎÆ®¸¦ ÈÉÃÄ¾¹´Ï´Ù.
-		//¾îƒÆ 0 1~2
+		//ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½Ï´ï¿½.
+		//ï¿½ï¿½ï¿½ 0 1~2
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Shoulder", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Shoulder", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)), E_FAIL);
 		
-		//¾î±úÀÇ ÀÚ½Ä »ïµÎ																										
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½																										
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Samdoo", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1), L"Boss1_Parts", 1, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Samdoo", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2), L"Boss1_Parts", 1, false), E_FAIL);
 		
-		//»ïµÎÀÇ ÀÚ½Ä ÆÈ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Arm", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1)->GetChild(0)), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_Arm", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2)->GetChild(0)), E_FAIL);
 		
-		//ÆÈÀÇ ÀÚ½Ä ¿Ï±ÙÀÌ								
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½Ï±ï¿½ï¿½ï¿½								
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Wan", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1)->GetChild(0)->GetChild(0), L"Boss1_Parts", 2, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Wan", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2)->GetChild(0)->GetChild(0), L"Boss1_Parts", 2, false), E_FAIL);
 		
-		//¿Ï±ÙÀÌÀÇ ÀÚ½Ä ¼Õ¸ñ
+		//ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½Õ¸ï¿½
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_HandNeck", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CTopdeeJoint>::Create(L"Toodo_HandNeck", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2)->GetChild(0)->GetChild(0)->GetChild(0)), E_FAIL);
 		
-		//¼Õ¸ñÀÌÀÇ ÀÚ½Ä ¼Õ																									
+		//ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½																									
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Hand", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(1)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0), L"Boss1_Parts", 3, false), E_FAIL);
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Hand", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0)->GetChild(2)->GetChild(0)->GetChild(0)->GetChild(0)->GetChild(0), L"Boss1_Parts", 3, false), E_FAIL);
 
 		FAILED_CHECK_RETURN(FACTORY<CBoss1Parts>::Create(L"Toodo_Body", pStageLayer, _vec3(0, 0, 0), m_pTransform->GetChild(0), L"Boss1_Parts", 0, false), E_FAIL);
 		m_PartsVec.push_back(m_pTransform->GetChild(0));
 		
-		//Àç±Í¶÷´Ù¶÷´Ù
+		//ï¿½ï¿½Í¶ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½
 		function<void(CTransform*, vector<CTransform*>&)> func = [&](CTransform* parent,vector<CTransform*>& vec) -> void{
 			for (int i = 0; i < parent->GetChildCount(); i++)
 			{
@@ -117,53 +117,53 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		};
 		func(m_pTransform->GetChild(0), m_PartsVec);
 
-		//¸ö
+		//ï¿½ï¿½
 		m_PartsVec[0]->Set_SRT(_vec3(12,12,12), _vec3(0,0,0), _vec3(0,-3,0));
-		//¸Ó¸®
+		//ï¿½Ó¸ï¿½
 		m_PartsVec[1]->Set_SRT(_vec3(1.f,1.f,1.f), _vec3(0,0,0), _vec3(0,12,-0.1f));
-		//´«¼·
+		//ï¿½ï¿½ï¿½ï¿½
 		m_PartsVec[2]->Set_SRT(_vec3(13,13,13), _vec3(0,0,0), _vec3(0,3,-0.2f));
-		//¼ö¿°
+		//ï¿½ï¿½ï¿½ï¿½
 		m_PartsVec[3]->Set_SRT(_vec3(13, 13, 13), _vec3(0, 0, 0), _vec3(1.3f, -1.0f, -0.2f));
 		m_PartsVec[4]->Set_SRT(_vec3(13, 13, 13), _vec3(0, D3DXToRadian(180), 0), _vec3(-2.3f, -1.0f, -0.2f));
-		//ÀÔ
+		//ï¿½ï¿½
 		m_PartsVec[5]->Set_SRT(_vec3(10, 10, 10), _vec3(0, D3DXToRadian(180), 0), _vec3(-0.5f, -1.2f, -0.1f));
-		//ÄÚ
+		//ï¿½ï¿½
 		m_PartsVec[6]->Set_SRT(_vec3(13,13,13), _vec3(0, 0, 0), _vec3(-1, 0.5f, -0.3f));
-		//´«
+		//ï¿½ï¿½
 		m_PartsVec[7]->Set_SRT(_vec3(11, 11, 11), _vec3(0, 0, 0), _vec3(-0.2f, 1, -0.2f));
-		//´«È­Àå
+		//ï¿½ï¿½È­ï¿½ï¿½
 		m_PartsVec[8]->Set_SRT(_vec3(11, 11, 11), _vec3(0,0,0), _vec3(-0.1f,1.4f,-0.1f));
 
 		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->MakeAnim(L"Attack",0,8,0.6f,true);
 		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->MakeAnim(L"Idle", 0, 0, 1, false);
 		dynamic_cast<CBoss1Parts*>(m_PartsVec[8]->m_pGameObject)->SetAnim(L"Idle");
-		//¿À¸¥
-		//¾î±úÁ¶ÀÎÆ®
+		//ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		m_PartsVec[9]->Set_SRT(_vec3(13,13,13), _vec3(0,D3DXToRadian(0), D3DXToRadian(-30)), _vec3(-9,6,0.1f));
-		//»ïµÎ
+		//ï¿½ï¿½ï¿½
 		m_PartsVec[10]->Set_SRT(_vec3(1,1,1), _vec3(0,0,0), _vec3(0,-3,0));
-		//²ÞÄ¡
+		//ï¿½ï¿½Ä¡
 		m_PartsVec[11]->Set_SRT(_vec3(13, 13, 13), _vec3(0, 0, D3DXToRadian(120)), _vec3(0, -4, -0.1f));
-		//¿Ï±ÙÀÌ
+		//ï¿½Ï±ï¿½ï¿½ï¿½
 		m_PartsVec[12]->Set_SRT(_vec3(1,1,1), _vec3(0,0,0), _vec3(0,-2,0));
-		//¼Õ¸ñÀÌ
+		//ï¿½Õ¸ï¿½ï¿½ï¿½
 		m_PartsVec[13]->Set_SRT(_vec3(13, 13, 13), _vec3(0,0, D3DXToRadian(0)), _vec3(0,-3, -0.1f));
-		//¼Õ
+		//ï¿½ï¿½
 		m_PartsVec[14]->Set_SRT(_vec3(1,1,1), _vec3(0,0,0), _vec3(0,-1,0));
 
-		//¿Þ
-		//¾î±úÁ¶ÀÎÆ®
+		//ï¿½ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		m_PartsVec[15]->Set_SRT(_vec3(-13, 13, 13), _vec3(0, D3DXToRadian(0), D3DXToRadian(30)), _vec3(9, 6, 0.1f));
-		//»ïµÎ
+		//ï¿½ï¿½ï¿½
 		m_PartsVec[16]->Set_SRT(_vec3(1, 1, 1), _vec3(0, 0, 0), _vec3(0, -3, 0));
-		//²ÞÄ¡
+		//ï¿½ï¿½Ä¡
 		m_PartsVec[17]->Set_SRT(_vec3(-13, 13, 13), _vec3(0, 0, D3DXToRadian(-120)), _vec3(0, -4, -0.1f));
-		//¿Ï±ÙÀÌ
+		//ï¿½Ï±ï¿½ï¿½ï¿½
 		m_PartsVec[18]->Set_SRT(_vec3(1, 1, 1), _vec3(0, 0, 0), _vec3(0, -2, 0));
-		//¼Õ¸ñÀÌ
+		//ï¿½Õ¸ï¿½ï¿½ï¿½
 		m_PartsVec[19]->Set_SRT(_vec3(13, 13, 13), _vec3(0, 0, D3DXToRadian(0)), _vec3(0, -3, -0.1f));
-		//¼Õ
+		//ï¿½ï¿½
 		m_PartsVec[20]->Set_SRT(_vec3(-1, 1, 1), _vec3(0, 0, 0), _vec3(0, -1, 0));
 
 		m_bInit = false;
@@ -176,17 +176,17 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			m_PartsVec[i]->m_vInfo[INFO_POS] *= BOSS1SCALE;
 		}
 
-		//±×³É µÕµÕÀÌÀÓ.
+		//ï¿½×³ï¿½ ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½.
 		AnimClip* clip = nullptr;
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_PartsVec[0]); //¸öÅë
-			clip->parts.push_back(m_PartsVec[1]); //¸Ó¸®Åë
-			clip->parts.push_back(m_PartsVec[9]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[11]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[15]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[17]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[13]);//¼Õ¸ñÀÌ
+			clip->parts.push_back(m_PartsVec[0]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[1]); //ï¿½Ó¸ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[9]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[11]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[15]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[17]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[13]);//ï¿½Õ¸ï¿½ï¿½ï¿½
 			clip->source.resize(7);
 
 			{
@@ -321,24 +321,26 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Whole->AddClip(L"Idle", clip);
-			
-		//¼Õ°¡¶ô °ø°ÝÀÓ
+		_float _fLaugh=0.f;
+		_fLaugh+= fTimeDelta;
+		//ï¿½Õ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		clip = new AnimClip();
-		{ PlaySound_Effect(L"34", SOUND_EFFECT_ENEMY, 1.f);
-			clip->parts.push_back(m_PartsVec[0]); //¸öÅë
-			clip->parts.push_back(m_PartsVec[1]); //¸Ó¸®Åë
-			clip->parts.push_back(m_PartsVec[9]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[11]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[15]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[17]);//ÆÈµµ µ¿µ¿
-			//¼Õ¸ñ
-			clip->parts.push_back(m_PartsVec[13]);//¼Õ¸ñÀÌ
+		{	
+			
+			clip->parts.push_back(m_PartsVec[0]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[1]); //ï¿½Ó¸ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[9]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[11]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[15]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[17]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			//ï¿½Õ¸ï¿½
+			clip->parts.push_back(m_PartsVec[13]);//ï¿½Õ¸ï¿½ï¿½ï¿½
 			clip->source.resize(7);
 
 			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(2,2,2), _vec3(8, -8, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 1, 0.2f, _vec3(1,1,1), _vec3(0.3f, 0.3f, 0.3f), _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
 
-			//µé¾î¿Ã¸± ¾î±ú/ÆÈ ¼¼ÆÃ
+			//ï¿½ï¿½ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½/ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			{
 				clip->source[2].push_back(
 					ANIMINFO{
@@ -385,16 +387,16 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		}
 		m_pAnimation_Whole->AddClip(L"Finger_Ready", clip);
 
-		//¼Õ°¡¶ô °ø°ÝÀÓ
+		//ï¿½Õ°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		clip = new AnimClip();
-		{
-			clip->parts.push_back(m_PartsVec[0]); //¸öÅë
-			clip->parts.push_back(m_PartsVec[1]); //¸Ó¸®Åë
-			clip->parts.push_back(m_PartsVec[9]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[11]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[15]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[17]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[13]);//¼Õ¸ñÀÌ
+		{	
+			clip->parts.push_back(m_PartsVec[0]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[1]); //ï¿½Ó¸ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[9]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[11]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[15]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[17]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[13]);//ï¿½Õ¸ï¿½ï¿½ï¿½
 			clip->source.resize(7);
 
 			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(0.4f, 0.4f, 0.4f), _vec3(8, -8, 0), _vec3(0, 1, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 2);
@@ -461,17 +463,17 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		}
 		m_pAnimation_Whole->AddClip(L"Finger_Shoot", clip);
 
-		//¹ß°ø°ÝÀÓ
+		//ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_PartsVec[0]); //¸öÅë
-			clip->parts.push_back(m_PartsVec[1]); //¸Ó¸®Åë
-			clip->parts.push_back(m_PartsVec[9]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[11]);//ÆÈµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[15]);//¾î±úµµ µ¿µ¿
-			clip->parts.push_back(m_PartsVec[17]);//ÆÈµµ µ¿µ¿
+			clip->parts.push_back(m_PartsVec[0]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[1]); //ï¿½Ó¸ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[9]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[11]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[15]);//ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[17]);//ï¿½Èµï¿½ ï¿½ï¿½ï¿½ï¿½
 			clip->source.resize(6);
-										//½ºÄÉ	//ÀÌµ¿								//È¸Àü
+										//ï¿½ï¿½ï¿½ï¿½	//ï¿½Ìµï¿½								//È¸ï¿½ï¿½
 			LerpClipAdd(clip, 0, 0.2f, _vec3(12,12,12), _vec3(2,2,2), _vec3(0, -3, 0), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, 0), 18);
 			LerpClipAdd(clip, 1, 0.2f, _vec3(1, 1, 1), _vec3(0.3f, 0.3f, 0.3f), _vec3(0, 12, -0.1f), _vec3(0, 2, 0), _vec3(0, 0, 0), _vec3(0, 0, D3DXToRadian(-50)), 18);
 			LerpClipAdd(clip, 2, 0.2f, _vec3(13,13,13), _vec3(4,4,4), _vec3(-9, 6, 0.1f), _vec3(0, 2, 0), _vec3(0, D3DXToRadian(0), D3DXToRadian(-30)), _vec3(0, 0, D3DXToRadian(50)), 18);
@@ -486,16 +488,16 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 		m_pAnimation_Whole->AddClip(L"Foot", clip);
 		m_pAnimation_Whole->SetAnimation(L"Idle");
 
-		//±×³É °ú¹¬ÀÌ
+		//ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_PartsVec[2]); //´«¼·
-			clip->parts.push_back(m_PartsVec[3]); //¼ö¿°
-			clip->parts.push_back(m_PartsVec[4]);//¼ö¿°
-			clip->parts.push_back(m_PartsVec[5]);//ÀÔ
-			clip->parts.push_back(m_PartsVec[6]);//ÄÚ
-			clip->parts.push_back(m_PartsVec[7]);//´«
-			clip->parts.push_back(m_PartsVec[8]);//´«È­Àå
+			clip->parts.push_back(m_PartsVec[2]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[3]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[4]);//ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[5]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[6]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[7]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[8]);//ï¿½ï¿½È­ï¿½ï¿½
 			clip->source.resize(7);
 
 			{
@@ -631,16 +633,16 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Face->AddClip(L"Idle", clip);
-		//½º¸¶ÀÏ~
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~
 		clip = new AnimClip();
 		{
-			clip->parts.push_back(m_PartsVec[2]); //´«¼·
-			clip->parts.push_back(m_PartsVec[3]); //¼ö¿°
-			clip->parts.push_back(m_PartsVec[4]);//¼ö¿°
-			clip->parts.push_back(m_PartsVec[5]);//ÀÔ
-			clip->parts.push_back(m_PartsVec[6]);//ÄÚ
-			clip->parts.push_back(m_PartsVec[7]);//´«
-			clip->parts.push_back(m_PartsVec[8]);//´«È­Àå
+			clip->parts.push_back(m_PartsVec[2]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[3]); //ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[4]);//ï¿½ï¿½ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[5]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[6]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[7]);//ï¿½ï¿½
+			clip->parts.push_back(m_PartsVec[8]);//ï¿½ï¿½È­ï¿½ï¿½
 			clip->source.resize(7);
 
 			
@@ -731,7 +733,7 @@ void CBoss1::LerpClipAdd(AnimClip* clip,_int idx, _float itv, _vec3 osc, _vec3 c
 	_float pre = 0;
 	for (int i = 0; i < count; i++)
 	{
-		//ÇöÀç À§Ä¡¿¡¼­ º¯È­·®¸¸Å­ º¯È­¸¦ ÁÝ´Ï´Ù.
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ý´Ï´ï¿½.
 		pre = (_float)(i + 1) / count;
 		csc = Lerp(csc, _vec3(0, 0, 0), pre);
 		ctr = Lerp(ctr, _vec3(0,0,0), pre);
@@ -765,11 +767,19 @@ void CBoss1::SetPattern()
 
 void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 {
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	_vec3 summonpos = _vec3(m_PartsVec[14]->Get_WorldMatrixPointer()->_41,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_42,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_43);
 	if (summonpos.x <= 1.f)
+
 		return;
 	if (pStageLayer != nullptr)
 		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, 
@@ -798,7 +808,14 @@ void CBoss1::Do_EndFinger(const _float & fTimeDelta)
 
 void CBoss1::Do_SummonHead(const _float & fTimeDelta)
 {
-	//ÇÃ·¹ÀÌ¾î À§Ä¡ ±âÁØ x °ª +n À§Ä¡¿¡ ÁöÁ¤µÈ y°ªÀ¸·Î ÀÌµ¿ÇÏ´Â 
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
+	//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ x ï¿½ï¿½ +n ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï´ï¿½ 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	_vec3 summonpos = _vec3(
 		m_Player->m_vInfo[INFO_POS].x +30,
@@ -806,7 +823,7 @@ void CBoss1::Do_SummonHead(const _float & fTimeDelta)
 		m_Player->m_vInfo[INFO_POS].z-4);
 	if (pStageLayer != nullptr)
 		FACTORY<CBoss1Head>::Create(L"Boss1Head", pStageLayer, summonpos, _vec3(34.f, 15.f, 11.f));
-	//°¡»óÀÇ ¸Ó¸® »ý¼º
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	m_pAnimation_Whole->SetAnimation(L"Foot");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
@@ -826,6 +843,13 @@ void CBoss1::Do_EndHead(const _float & fTimeDelta)
 
 void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 {
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 	m_pAnimation_Whole->SetAnimation(L"Finger_Ready");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
@@ -838,10 +862,11 @@ void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 
 void CBoss1::Do_IngGiant(const _float & fTimeDelta)
 {
-	//Æ¯Á¤ Á¶°Ç ¼º¸³½Ã.
-	if (m_Player->m_vInfo[INFO_POS].x < 96)
+	//Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+
+	if (m_Player->m_vInfo[INFO_POS].x < 30)
 	{
-		//ÀüºÎ ¾ÆÀÌµé·Î ¹Ù²Ù°í ´ã»óÅÂ·Î ¤¡¤¡
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½Ù²Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
 		m_pAnimation_Whole->SetAnimation(L"Idle");
 		m_pAnimation_Face->SetAnimation(L"Idle");
 		CheckIsLastActionIdx();
@@ -874,7 +899,7 @@ void CBoss1::CheckIsLastActionIdx()
 {
 	if (funcAction[m_eCurrentState].size() <= (m_iCurrentActionIdx + 1))
 	{
-		//Çàµ¿ÀÇ ¸¶Áö¸· ÀÎµ¦½º¸é ±×³É ¾Ï°Íµµ ¾ÈÇÒ°ÅÀÓ.
+		//ï¿½àµ¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½Ï°Íµï¿½ ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ï¿½.
 	}
 	else
 		m_iCurrentActionIdx++;
@@ -885,7 +910,7 @@ void CBoss1::ReadyPartten()
 	funcAction.reserve(B1_END);
 	BOSS1_STATE_FUNC func; //idle
 
-	//¼Õ°¡¶ô
+	//ï¿½Õ°ï¿½ï¿½ï¿½
 	func.push_back(&CBoss1::Do_SummonFinger);
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_SummonFinger);
@@ -896,18 +921,20 @@ void CBoss1::ReadyPartten()
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_EndFinger);
 	func.push_back(&CBoss1::Do_Rest);
+	m_bLaugh = true;
 	funcAction.push_back(func);
 	func.clear();
 
-	//¸Ó¸®
+	//ï¿½Ó¸ï¿½
 	func.push_back(&CBoss1::Do_SummonHead);
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_EndHead);
 	func.push_back(&CBoss1::Do_Rest);
+	m_bLaugh = true;
 	funcAction.push_back(func);
 	func.clear();
 
-	//Âï±â
+	//ï¿½ï¿½ï¿½
 	func.push_back(&CBoss1::Do_SummonGiant);
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_IngGiant);
