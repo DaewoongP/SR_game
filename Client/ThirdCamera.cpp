@@ -13,11 +13,11 @@ CThirdCamera::~CThirdCamera()
 
 HRESULT CThirdCamera::Ready_GameObject(void)
 {
-	m_fShakeValue = 0;
 	D3DXMatrixIdentity(&m_matRot);
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matProj);
 	m_fs = 0.f;
+	m_fOffsetScale = 1;
 	m_fCamChangeSpeed = 1.5f;
 	return S_OK;
 }
@@ -104,10 +104,7 @@ void CThirdCamera::Set_PlayerPos(const _float& fTimeDelta)
 	m_vPlayerPos = pObj->m_pTransform->m_vInfo[INFO_POS] + _vec3(0,0,-10);
 
 	_vec3 vShake = { 0.0f,0.0f,0.0f };
-
 	m_pTransform->Update_Shake(fTimeDelta, vShake);
-
-
 	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
 	m_vTooView[AT] = m_vPlayerPos + vShake;
 	m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);

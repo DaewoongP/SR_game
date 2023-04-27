@@ -47,6 +47,7 @@ private:
 	_float					m_dwCool;
 	CUBE_DIR				m_eDir;
 	class CGameObject*		m_pOtherCube;
+	class CGameObject	* m_pThird;
 	_bool					m_bInit;
 	_vec3					m_DirVec;
 	Engine::CJumpParticle*	m_pPortalParticle;

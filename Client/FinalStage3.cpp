@@ -8,7 +8,7 @@
 #include "ImguiUnit.h"
 #include "Fade.h"
 #include "DynamicCamera.h"
-#include "Boss1.h"
+#include "Final3Boss1.h"
 #include "StarBox.h"
 #include "ShootingCamera.h"
 #include "ShootingPlayer.h"
@@ -71,7 +71,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(0.f, 200.f, 30.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(0.f, 200.f, 30.f)), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

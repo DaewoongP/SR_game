@@ -20,6 +20,7 @@
 #include "FinalPortal.h"
 #include "FinalPortalFloor.h"
 #include "Semicolon.h"
+#include "LaserTurret.h"
 #include "DynamicCamera.h"
 #include "FinalCamera_1_1.h"
 
@@ -43,17 +44,81 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadCube(10, this);
 	CImguiMgr::GetInstance()->Get_Stage()->LoadGrid(10, this);
-	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject(10, this);
+	CImguiMgr::GetInstance()->Get_Unit()->LoadMapObject_Final1(10, this);
 	CImguiMgr::GetInstance()->Get_Unit()->LoadMonster(10, this);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);
-	
 	return S_OK;
 }
 
 _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 {
+	if (m_pPlayer == nullptr)
+		m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
+	else 
+	{
+		if (m_pPlayer->Get_Dead())
+			return __super::Update_Scene(fTimeDelta);
+
+		auto _layer = m_uMapLayer.find(L"Layer_Environment");
+		auto iter_begin = _layer->second->GetMapObject()->begin();
+		auto iter_end = _layer->second->GetMapObject()->end();
+		for (; iter_begin != iter_end; iter_begin++)
+		{
+			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+			{
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 40)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else
+				{
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+		}
+
+		_layer = m_uMapLayer.find(L"Layer_GameLogic");
+		iter_begin = _layer->second->GetMapObject()->begin();
+		iter_end = _layer->second->GetMapObject()->end();
+		for (; iter_begin != iter_end; iter_begin++)
+		{
+			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+			{
+				if (!lstrcmp(iter_begin->second->m_pTag, L"GravityCube"))
+					continue;
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 20)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else
+				{
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+
+			if (dynamic_cast<CLaserTurret*>(iter_begin->second) != nullptr)
+			{
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 24)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else {
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+		}
+	}
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -88,7 +153,7 @@ HRESULT CFinalStage1::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(10.f, 8.f, 10.f),1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CThirddee>::Create(L"Thirddee", pLayer, _vec3(6.f, 16.f, 10.f),1), E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss1>::Create(L"Boss1", pLayer, _vec3(270.f, -50.f, 50.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CFinalPortal>::CreateParent(L"FinalPortal", pLayer, _vec3(150.F, 16.f , 7.f)), E_FAIL);

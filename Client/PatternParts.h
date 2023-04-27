@@ -39,7 +39,6 @@ protected:
 	HRESULT		Add_Component(void);
 
 public:
-	//개꿀 ㅋㅋ 이거 써도 될듯
 	static CPatternParts*		Create(LPDIRECT3DDEVICE9 pGraphicDev,
 		_vec3& vPos, //생성 위치
 		CTransform* trans, //부모

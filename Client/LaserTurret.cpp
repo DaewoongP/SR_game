@@ -83,6 +83,8 @@ void CLaserTurret::LateUpdate_GameObject(void)
 
 void CLaserTurret::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(m_iIndex);
@@ -156,7 +158,7 @@ void CLaserTurret::Shoot_Laser(const _float & fTimeDelta)
 	tagName.push_back(L"Boss3Right");
 	vector<RayCollision> _detectedCOL;
 
-	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos, vDir[m_iIndex], 1000.f), m_pCollider, tagName);
+	_detectedCOL = Engine::Check_Collision_Ray(RAYCAST(vPos, vDir[m_iIndex], 60.f), m_pCollider, tagName);
 	TOODEEDIE_RAY
 	TOOKEEDIE_RAY
 	THIRDDEEDIE_RAY

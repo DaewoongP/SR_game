@@ -13,14 +13,14 @@ CFinalCamera_1_1::~CFinalCamera_1_1()
 
 HRESULT CFinalCamera_1_1::Ready_Camera()
 {
-	//¸Ê
+	//ë§µ
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });//0
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });//1
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });//2
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });//3
 	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,0.1f });//4
 	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,1.0f });//5
-	//º¸½º
+	//ë³´ìŠ¤
 	m_vecXYPosAngleSpeed.push_back({ 200.f ,-50.f, 60.f,60.0f });//6
 	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,1.0f });//7
 	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,0.2f });//8
@@ -51,7 +51,6 @@ _int CFinalCamera_1_1::Update_GameObject(const _float & fTimeDelta)
 	}
 
 	CCamera::Update_GameObject(fTimeDelta);
-
 	return 0;
 }
 
@@ -67,7 +66,6 @@ void CFinalCamera_1_1::Update_Direct_X(const _float & fTimeDelta)
 	}
 
 	D3DXVec4Lerp(&pOut, &m_vecXYPosAngleSpeed[m_iIndex - 1], &m_vecXYPosAngleSpeed[m_iIndex], m_fTimer);
-
 	_vec3 vShake = { 0.0f,0.0f, 50.f };
 
 	m_pTransform->Update_Shake(fTimeDelta, vShake);

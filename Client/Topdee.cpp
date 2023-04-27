@@ -858,6 +858,8 @@ void CTopdee::SetDie()
 		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee_Die");
 		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
 		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
 		m_DiePart->SetAnim(L"Die");
 	}
 
