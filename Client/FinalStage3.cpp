@@ -123,7 +123,7 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(31.f, 14.f, -13.f));
 	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
 
-	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
+	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
 
 	for (int i = 0; i < CUBEX; i++)
