@@ -891,9 +891,6 @@
     <ClInclude Include="Boss2Camera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
-    <ClInclude Include="FinalStage2.h">
-      <Filter>01. Scene\Stages\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="FinalStage3.h">
       <Filter>01. Scene\Stages\Stage</Filter>
     </ClInclude>
@@ -1534,9 +1531,6 @@
     </ClCompile>
     <ClCompile Include="Boss2Camera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="FinalStage2.cpp">
-      <Filter>01. Scene\Stages\Stage</Filter>
     </ClCompile>
     <ClCompile Include="FinalStage3.cpp">
       <Filter>01. Scene\Stages\Stage</Filter>
