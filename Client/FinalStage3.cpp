@@ -58,7 +58,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 80.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
 		m_pBoss->Set_Throw(false);
 		m_StageState = F3_SpawnCube;

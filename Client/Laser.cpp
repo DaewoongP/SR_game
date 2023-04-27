@@ -13,7 +13,7 @@ CLaser::~CLaser()
 
 HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 {
-	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
+	m_vPos = Get_GameObject(L"Layer_GameLogic", L"ShootingPlayer")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget= Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
@@ -33,7 +33,7 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 
 void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 {
-	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
+	m_vPos = Get_GameObject(L"Layer_GameLogic", L"ShootingPlayer")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
@@ -54,8 +54,8 @@ void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 _int CLaser::Update_GameObject(const _float& fTimeDelta)
 {
 	m_fEndTime += fTimeDelta;
-	if (Get_GameObject(L"Layer_GameLogic", L"Topdee") != nullptr)
-		m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
+	if (Get_GameObject(L"Layer_GameLogic", L"ShootingPlayer") != nullptr)
+		m_vPos = Get_GameObject(L"Layer_GameLogic", L"ShootingPlayer")->m_pTransform->m_vInfo[INFO_POS];
 	if (Get_GameObject(L"Layer_GameLogic", L"Final3Boss1") != nullptr)
 		m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y - 5.f, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f) - 10.f };
