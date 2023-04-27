@@ -46,6 +46,8 @@ public:
 	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
 	void	SpeedUp_TopTime(_float fTime) { m_fTopTime += fTime; }
 	_bool	IsPatternEnd() { return m_bPatternEnd; }
+	void	Off_Shadow() { m_pShadowCom->Off(); }
+	void	Move_Hands(_vec3 vDir, _float fSpeed);
 private:
 	HRESULT Add_Component(void);
 	

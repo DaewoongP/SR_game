@@ -284,6 +284,14 @@ void CBoss3::SwapTrigger()
 	m_fPreTop = 0.f;
 }
 
+void CBoss3::Move_Hands(_vec3 vDir, _float fSpeed)
+{
+	m_pBossLeftHand->Off_Shadow();
+	m_pBossRightHand->Off_Shadow();
+	m_pBossLeftHand->m_pTransform->m_vInfo[INFO_POS] += vDir * fSpeed;
+	m_pBossRightHand->m_pTransform->m_vInfo[INFO_POS] += vDir * fSpeed;
+}
+
 HRESULT CBoss3::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

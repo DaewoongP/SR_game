@@ -6,7 +6,7 @@
 #include "StageCamera.h"
 
 CFinalStoneCube::CFinalStoneCube(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev), m_bTrigger(false), m_iBossSpawn(0), m_bStart(false)
+	:CGameObject(pGraphicDev), m_bTrigger(false), m_iBossSpawn(0), m_bStart(false), m_bEnd(false)
 {
 }
 
@@ -32,6 +32,7 @@ HRESULT CFinalStoneCube::Ready_GameObject(_vec3 & vPos, CLayer* pLayer)
 	NULL_CHECK_RETURN(m_pLandingParticle, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"CircularParticle", m_pLandingParticle });
 
+	Engine::Ready_Frame(L"0.1Sec", 10.f);
 	return S_OK;
 }
 
@@ -40,6 +41,11 @@ _int CFinalStoneCube::Update_GameObject(const _float & fTimeDelta)
 	if (m_bTrigger)
 		return 0;
 	Add_RenderGroup(RENDER_ALPHA, this);
+	if (m_bEnd)
+		if (End_Pattern(fTimeDelta))
+			return OBJ_DEAD;
+		else
+			return 0;
 	g_Is2D = false;
 	for (size_t i = 0; i < m_vecCube.size(); ++i)
 	{
@@ -64,10 +70,14 @@ _int CFinalStoneCube::Update_GameObject(const _float & fTimeDelta)
 		D3DXVec3Lerp(&m_pBoss->m_pTransform->m_vInfo[INFO_POS], &_vec3(30.f, 16.f, -20.f), &_vec3(30.f, 16.f, 8.f), m_fLerp);
 	}
 	
-	if (m_bStart)
+	if (m_bStart && false == m_bEnd)
 	{
-		if (Start_BossParttern(fTimeDelta))
-			return OBJ_DEAD;
+		if (Start_BossPattern(fTimeDelta))
+		{
+			for (size_t i = 0; i < m_vecCube.size(); ++i)
+				m_vecLerp[i] = GetRandomFloat(2.5f, 5.f);
+			m_bEnd = true;
+		}			
 	}
 	
 	__super::Update_GameObject(fTimeDelta);
@@ -177,12 +187,35 @@ void CFinalStoneCube::Make_Boss3()
 	}
 }
 
-_bool CFinalStoneCube::Start_BossParttern(const _float& fTimeDelta)
+_bool CFinalStoneCube::Start_BossPattern(const _float& fTimeDelta)
 {
+	if (m_pBoss->IsPatternEnd())
+		return true;
 	m_pBoss->SpeedUp_TopTime(fTimeDelta);
 	m_pBoss->FollowPlayer(fTimeDelta);
-	// 패턴종료 여기서 다음 처리
-	if (m_pBoss->IsPatternEnd())
+	return false;
+}
+
+_bool CFinalStoneCube::End_Pattern(const _float & fTimeDelta)
+{
+	_vec3 vDir = _vec3(0,0,1);
+	m_fTime += fTimeDelta;
+	for (size_t i = 0; i < m_vecCube.size(); ++i)
+	{
+		if (m_fTime > m_vecLerp[i])
+		{
+			dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(1.f, 40.0f, SHAKE_ALL);
+			m_vecCube[i].first->m_pTransform->m_vInfo[INFO_POS] += vDir * fTimeDelta * 50.f;
+		}
+	}
+	if (m_pBoss != nullptr && m_fTime > 5.f)
+	{
+		m_pBoss->Off_Shadow();
+		m_pBoss->m_pTransform->m_vInfo[INFO_POS] += vDir * fTimeDelta * 50.f;
+		m_pBoss->Move_Hands(vDir, fTimeDelta * 50.f);
+	}
+
+	if (m_pBoss != nullptr && m_pBoss->m_pTransform->m_vInfo[INFO_POS].z >= 200.f)
 		return true;
 	return false;
 }

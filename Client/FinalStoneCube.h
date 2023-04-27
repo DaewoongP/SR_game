@@ -20,20 +20,21 @@ private:
 
 	void			Cube_Lerp(const _float& fTimeDelta, _int iIndex);
 	void			Make_Boss3();
-	_bool			Start_BossParttern(const _float& fTimeDelta);
+	_bool			Start_BossPattern(const _float& fTimeDelta);
+	_bool			End_Pattern(const _float& fTimeDelta);
 	void			Make_Particle();
 private:
 	vector<pair<CGameObject*, _vec3>>	m_vecCube;
 
 	_vec3						m_vInitPos;
-	_float						m_fFallTime;
-	_float						m_fGenTime;
 	vector<_float>				m_vecLerp;
 	_float						m_fLerp;
 	_float						m_fSpeed;
 	_bool						m_bStart;
 	_bool						m_bTrigger;
+	_bool						m_bEnd;
 	_int						m_iBossSpawn;
+	_float						m_fTime;
 	CLayer*						m_pGameLogicLayer = nullptr;
 	CBoss3*						m_pBoss;
 
