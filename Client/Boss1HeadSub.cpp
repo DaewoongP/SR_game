@@ -66,6 +66,11 @@ void CBoss1HeadSub::OnCollisionEnter(const Collision * collision)
 	THIRDDEEDIE;
 }
 
+void CBoss1HeadSub::OnCollisionStay(const Collision * collision)
+{
+
+}
+
 HRESULT CBoss1HeadSub::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;

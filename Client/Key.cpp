@@ -78,6 +78,8 @@ void CKey::Render_GameObject(void)
 
 void CKey::OnCollisionEnter(const Collision* collision)
 {	
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Boss1Head"))
+		return;
 	if (iKeyCnt > 0)
 	{
 		StopSound(SOUND_EFFECT_GIMMICK);
