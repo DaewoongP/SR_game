@@ -28,6 +28,9 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
 	m_fEndTime = 0.f;
+	StopSound(SOUND_EFFECT);
+	PlaySound_Effect(L"Laser.wav", SOUND_EFFECT, 0.35f);
+
 	return S_OK;
 }
 
@@ -62,14 +65,14 @@ _int CLaser::Update_GameObject(const _float& fTimeDelta)
 	m_pTex->Update_Anim(fTimeDelta);
 	_vec3 vec = m_pTransform->m_vScale;
 
-	m_pCollider->Set_BoundingBox({ vec.y,vec.x,30.f });
+	m_pCollider->Set_BoundingBox({ 100.f,100.f,500.f });
+
 	if (m_fEndTime > 3.5f)
 	{
 		m_pTransform->m_vScale.y -= 1.f;
 		if (m_pTransform->m_vScale.y <= 0)
 			m_pTransform->m_vScale.y = 0.f;
 	}
-
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }

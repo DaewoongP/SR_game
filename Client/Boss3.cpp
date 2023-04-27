@@ -501,7 +501,6 @@ void CBoss3::Do_Scream(const _float & fTimeDelta)
 
 void CBoss3::End_Scream(const _float & fTimeDelta)
 {
-
 }
 
 void CBoss3::Lerp_Moving(const _float & fTimeDelta)
