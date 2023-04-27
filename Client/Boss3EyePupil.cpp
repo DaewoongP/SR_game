@@ -119,7 +119,8 @@ void CBoss3EyePupil::LookAtPlayer()
 	else
 	{
 		pTopdee = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-		NULL_CHECK_RETURN(pTopdee, );
+		if (pTopdee == nullptr)
+			return;
 		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
 	}
 	

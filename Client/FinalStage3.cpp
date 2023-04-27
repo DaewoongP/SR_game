@@ -14,7 +14,15 @@
 #include "ShootingPlayer.h"
 #include"FinalUI.h"
 #include"FinalUI_B.h"
+#include "FinalMonkeyCube.h"
+#include "Item.h"
 #include "StageCamera.h"
+#include "Boss2.h"
+#include "Item.h"
+#include "FinalStoneCube.h"
+#include "Boss3.h"
+#include "Topdee.h"
+#include "Toodee.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -28,18 +36,26 @@ CFinalStage3::~CFinalStage3()
 
 HRESULT CFinalStage3::Ready_Scene(void)
 {
+	m_SpwanCube = false;
 	m_eLoadingID = LOADING_FINAL3;
-	m_pFade = CFade::Create(m_pGraphicDev, false);
+	
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
+	funcAction.push_back(&CFinalStage3::SpawnCube_Monkey);
+	funcAction.push_back(&CFinalStage3::Check_Cube_Place);
+	funcAction.push_back(&CFinalStage3::MonkeyDisAppear);
+	funcAction.push_back(&CFinalStage3::ActionNone);
+	m_StageState = F3_NONE;
 	return S_OK;
 }
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
+	if (Engine::Get_DIKeyState(DIK_H) == Engine::KEYDOWN&&!m_SpwanCube)
+		m_StageState = F3_SpawnCube;
+	(this->*funcAction[m_StageState])(fTimeDelta);
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -58,8 +74,7 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	//FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -71,30 +86,6 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(0.f, 200.f, 30.f)), E_FAIL);
-
-	//// 카메라 확인용, 큐브 위치 확인용 나중에 삭제합시다 이건
-	//for (int i = 0; i < CUBEY; i++)
-	//{
-	//	for (int j = 0; j < CUBEX; j++)
-	//	{
-	//		//맨 윗줄
-	//		if (i == 0)
-	//			FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-	//		//사이 첫줄
-	//		if (i == CUBEY - 1)
-	//			FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-	//		//사이 마지막줄
-	//		if (j == 0)
-	//			FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-	//		//맨 아랫줄
-	//		if (j == CUBEX - 1)
-	//			FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
-	//	}
-	//}
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -105,15 +96,69 @@ HRESULT CFinalStage3::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
-	_int pHp = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->Get_Hp();
-	FAILED_CHECK_RETURN(FACTORY<CFinalUI_B>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CFinalUI>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
 
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
+}
+
+void CFinalStage3::SpawnCube_Monkey(const _float& fTimeDelta)
+{
+	auto pStageLayer = m_uMapLayer.find(L"Layer_Environment");
+	if (pStageLayer == m_uMapLayer.end())
+		return;
+
+	for (int i = 0; i < m_MokeyCube.size(); i++)
+		pStageLayer->second->Add_GameObject(m_MokeyCube[i]->m_pTag, m_MokeyCube[i]);
+	m_StageState = F3_MonkeyAppear;
+	m_SpwanCube = true;
+}
+
+void CFinalStage3::Check_Cube_Place(const _float& fTimeDelta)
+{
+	if (m_SpwanCube)
+	{
+		int _cnt = 0;
+		CFinalMonkeyCube* cube = nullptr;
+		for (int i = 0; i< m_MokeyCube.size(); i++)
+		{
+			cube = dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i]);
+			if (cube)
+				if (cube->Get_MoveDone())_cnt = _cnt; else _cnt++;
+		}
+		if (_cnt == 0)
+			MonkeyAppear(fTimeDelta);
+	}
+}
+
+void CFinalStage3::MonkeyAppear(const _float& fTimeDelta)
+{
+	if (m_pMonkey != nullptr)
+		return;
+	auto pStageLayer = m_uMapLayer.find(L"Layer_GameLogic");
+	if (pStageLayer != m_uMapLayer.end())
+		FACTORY<CBoss2>::Create(L"Boss2", pStageLayer->second, _vec3(54.f, 18.f, 10.f), 1);
+	m_pMonkey = pStageLayer->second->Get_GameObject(L"Boss2");
+	m_StageState = F3_Destroy;
+}
+
+void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
+{
+	if (m_pMonkey == nullptr)
+		return;
+	if (m_pMonkey->m_pTransform->m_vInfo[INFO_POS].x < 0)
+	{
+		for (int i = 0; i < m_MokeyCube.size(); i++)
+			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f),true);
+		m_pMonkey = nullptr;
+		m_StageState = F3_NONE;
+	}
+}
+
+void CFinalStage3::ActionNone(const _float & fTimeDelta)
+{
 }
 
 CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)

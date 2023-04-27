@@ -39,6 +39,7 @@ private:
 	void		Quad_Bullet(const _float& fTimeDelta);
 	void		Sword_Bullet(const _float& fTimeDelta);
 	void		Fire_Bullet(const _float& fTimeDelta);
+	void Laser(const _float& fTimeDelta);
 	void		Rot_Player();
 
 private:
@@ -53,6 +54,8 @@ private:
 	_bool						m_bLKey;
 	_bool						m_bRKey;
 	CLayer*						m_pGameLogicLayer;
+	_bool						m_bLaser=true;
+	_float						m_fLaserTime = 0.f;
 
 	_int						m_iBulletIndex;
 

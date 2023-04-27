@@ -5,6 +5,7 @@
 #include "..\Client\DefaultBullet.h"
 #include "..\Client\SwordBullet.h"
 #include "..\Client\FireBullet.h"
+#include"..\Client\Laser.h"
 IMPLEMENT_SINGLETON(CBulletPool)
 CBulletPool::~CBulletPool()
 {
@@ -26,7 +27,9 @@ CBullet* CBulletPool::Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, 
 			break;
 		case FIRE:
 			pBullet = CFireBullet::Create(pGraphicDev, vPos);
-			break;
+		case LASER:
+			pBullet = CLaser::Create(pGraphicDev, vPos);
+	
 		}
 		return pBullet;
 	}
@@ -51,6 +54,8 @@ void CBulletPool::Release_Bullet(CBullet* pBullet)
 		m_PoolList[SWORD].push_back(pBullet);
 	else if (dynamic_cast<CFireBullet*>(pBullet))
 		m_PoolList[FIRE].push_back(pBullet);
+	else if (dynamic_cast<CFireBullet*>(pBullet))
+		m_PoolList[LASER].push_back(pBullet);
 }
 
 void CBulletPool::Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eType)
@@ -66,6 +71,9 @@ void CBulletPool::Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eTyp
 		break;
 	case FIRE:
 		pBullet = CFireBullet::Create(pGraphicDev, _vec3(0, 0, 0));
+		break;
+	case LASER:
+		pBullet = CLaser::Create(pGraphicDev, _vec3(0, 0, 0));
 		break;
 	}
 	Release_Bullet(pBullet);

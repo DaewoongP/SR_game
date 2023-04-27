@@ -10,6 +10,7 @@
 
 #include"FinalCube.h"
 
+
 #define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
 for (int j = 0; j < clip->source[i].size(); j++)\
@@ -42,9 +43,25 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	m_fOffset_x = 0;
 	m_fOffset_y = 0;
 	m_iHp = 100.f;
+	m_pCollider->Set_BoundingBox({50.f,50.f,50.f});
+
 	return S_OK;
 }
-
+void CFinal3Boss1::OnCollisionEnter(const Collision* collision)
+{
+	collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
+	{
+			m_iHp-=15.f;
+		if(Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage()==true)
+		{
+			m_iHp -= 150.f;
+		}
+			
+	}
+	
+	
+}
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
@@ -880,6 +897,7 @@ void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 void CFinal3Boss1::SwapTrigger()
 {
 }
+
 
 HRESULT CFinal3Boss1::Add_Component(void)
 {

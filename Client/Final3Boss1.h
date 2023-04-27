@@ -52,7 +52,7 @@ protected:
 	_float					m_fOffset_y;
 	_vec3					m_vOriginPos;
 
-	//°ø°İ »ç¿ë ÁÖ±â(º¸½º°¡ °ø°İÀ» ±×¸® ÀÚÁÖ¾²Áø ¾ÊÀ½.)
+	//ê³µê²© ì‚¬ìš© ì£¼ê¸°(ë³´ìŠ¤ê°€ ê³µê²©ì„ ê·¸ë¦¬ ìì£¼ì“°ì§„ ì•ŠìŒ.)
 	_float					m_dwRestTime;
 
 	_float					m_dwThrowCubeTime;
