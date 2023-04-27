@@ -19,6 +19,11 @@ public:
 	void		Render_Shadow(CVIBuffer* VIBuffer);
 	void		Render_Shadow(CVIBuffer* VIBuffer,_float x,_float y,_float z);
 
+	void		Off() 
+	{
+		m_bUseOutLine = false;
+		m_bUseShadow = false;
+	}
 public:
 	static CShadow*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual CComponent * Clone(void) override;

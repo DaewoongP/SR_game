@@ -25,6 +25,5 @@ public:
 
 private:
 	virtual void		Free(void);
-
 };
 

@@ -17,7 +17,6 @@ private:
 public:
 	void	Set_SparkOn(_bool tf) { m_bSparkON = tf; }
 	void	Set_Damaged() { m_bDamaged = true; }
-
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos,_int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;

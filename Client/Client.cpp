@@ -104,8 +104,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			// 60프레임 제한을 걸고싶다.
 			if (Engine::IsPermit_Call(L"Frame60", fTimer_Immediate))
 			{
-				// 60분의 1초 에 들어오겠죠
-
 				Engine::Set_Timer(L"Timer_FPS60");
 				_float fTimer_FPS60 = Engine::Get_Timer(L"Timer_FPS60");
 

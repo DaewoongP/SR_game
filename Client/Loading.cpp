@@ -18,7 +18,6 @@
 #include "MiniStage1.h"
 #include "MiniStage2.h"
 #include "FinalStage1.h"
-#include "FinalStage2.h"
 #include "FinalStage3.h"
 #include "BackGroundToolScene.h"
 #include "ProduceScene.h"
@@ -92,9 +91,6 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_FINAL1:
 		iFlag = pLoading->Loading_ForFinal1();
 		break;
-	case LOADING_FINAL2:
-		iFlag = pLoading->Loading_ForFinal2();
-		break;
 	case LOADING_FINAL3:
 		iFlag = pLoading->Loading_ForFinal3();
 		break;
@@ -128,8 +124,8 @@ _uint CLoading::Loading_ForLogo(void)
 {
 	m_iLoadingTexImgNum = 0;
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
-	//Set_String(L"Sound/Bgm Loading..........");
-	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
+	Set_String(L"Sound/Bgm Loading..........");
+	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
 	//Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
@@ -239,6 +235,8 @@ _uint CLoading::Loading_ForLogo(void)
 	
 	//보스체력
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss_HP_Tex", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/bossHealthSpr/bossHealthSpr_%d.png",2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalBoss_HP", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Finalboss/HealthSpr_0.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FinalBoss_HP_B", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Finalboss/HealthSpr_1.png")), E_FAIL);
 
 	//Boss2 머리털
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss2_Head", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss2HeadSpr/boss2HeadSpr_%d.png", 6)), E_FAIL);
@@ -262,9 +260,11 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPartSpr_%d.png", 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_HandPart_Shadow", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3HandPartSpr/boss3HandPart_ShadowSpr_%d.png", 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Boss3_Spark_Animation", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/boss3ElectrictySpr/boss3ElectrictySpr_%d.png", 5)), E_FAIL);
-
+	
 	// 레이저 터렛
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Laser_Turret", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/turretFireSpr/turretFireSpr_%d.png", 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ShootingLaser", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/ShootingLaser/Laser/shootingLaserSpr_%d.png", 6)), E_FAIL);
+	
 
 	//테마 1 구름
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"T1Cloud", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Theme1/Cloud.png")), E_FAIL);
@@ -357,6 +357,8 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Stage3Boss.dds")), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/Boss3Hand%d.dds", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Stage3_Boss_Hand_Blank_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/None.dds")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Final_Cube", CTexture::Create(m_pGraphicDev, TEX_CUBE, L"../Resource/Texture/SkyBox/FinalChapter/Final%d.dds", 18)), E_FAIL);
+
 	m_iLoadingTexImgNum = 11;
 	Set_String(L"Particle Loading..........");
 
@@ -648,19 +650,6 @@ _uint CLoading::Loading_ForFinal1(void)
 	Set_String(L"Stage Loading..........");
 	
 	m_pScene = CFinalStage1::Create(m_pGraphicDev);
-	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
-
-	m_bFinish = true;
-	m_iLoadingTexImgNum = 12;
-	Set_String(L"Loading Final Complete!!!!!!!!");
-	return 0;
-}
-
-_uint CLoading::Loading_ForFinal2(void)
-{
-	Set_String(L"Stage Loading..........");
-
-	m_pScene = CFinalStage2::Create(m_pGraphicDev);
 	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
 
 	m_bFinish = true;

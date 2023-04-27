@@ -48,7 +48,8 @@ _int CBoss3EyePupil::Update_GameObject(const _float & fTimeDelta)
 	__super::Update_GameObject(fTimeDelta);
 
 	m_pTransform->Set_ParentTransform(m_pBoss3);
-
+	if (nullptr == m_pTopdee || nullptr == m_pToodee)
+		return 0;
 	if (m_pTopdee->m_bDead || m_pToodee->m_bDead)
 		return 0;
 
@@ -119,7 +120,8 @@ void CBoss3EyePupil::LookAtPlayer()
 	else
 	{
 		pTopdee = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee");
-		NULL_CHECK_RETURN(pTopdee, );
+		if (pTopdee == nullptr)
+			return;
 		vPos = pTopdee->m_pTransform->m_vInfo[INFO_POS];
 	}
 	

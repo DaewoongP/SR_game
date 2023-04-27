@@ -41,17 +41,24 @@ public:
 	void	Set_Damaged() { m_bDamaged = true; }
 	void	Set_Damage() { --m_iHp; }
 
+	void	FollowPlayer(const _float & fTimeDelta);// 추격 후 내려찍기를 시작할 함수
+	HRESULT	CreateParts(CLayer* pStageLayer = nullptr);
+	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
+	void	SpeedUp_TopTime(_float fTime) { m_fTopTime += fTime; }
+	_bool	IsPatternEnd() { return m_bPatternEnd; }
+	void	Off_Shadow() { m_pShadowCom->Off(); }
+	void	Move_Hands(_vec3 vDir, _float fSpeed);
 private:
 	HRESULT Add_Component(void);
-	HRESULT	CreateParts();
+	
 	void	LookAtPlayer();								// 플레이어 방향으로 몸을 돌림
-	void	FollowPlayer(const _float & fTimeDelta);	// 추격 후 내려찍기를 시작할 함수
+		
 	void	BossAttack(const _float & fTimeDelta);		// 내려찍는 공격
 	void	ShootBullet(const _float & fTimeDelta);		// 총알 쏘는 공격
 	void	Do_Scream(const _float& fTimeDelta);
 	void	End_Scream(const _float& fTimeDelta);
 	void	Lerp_Moving(const _float& fTimeDelta);
-	void	Chain_Spark(_float fCoolDown, const _float& fTimeDelta);
+	
 	void	DamagedBoss3(const _float& fTimeDelta);
 	void	Delay(const _float& fTimeDelta);
 	void	Boss3PartDead();
@@ -60,7 +67,7 @@ private:
 
 private:
 	CToodee*		m_pToodee;
-	CTopdee*		m_pTopdee;
+	CGameObject*		m_pTopdee;
 
 	CBoss3Mouth*	m_pBoss3Mouth;
 	CBoss3Hand*		m_pBossLeftHand;
@@ -107,9 +114,11 @@ private:
 	Engine::CCircularParticle*	m_pLandingParticle;
 	Engine::CTexParticle*		m_pScreamParticle;
 
+	_bool	m_bFinalStageTrigger;
+	_bool	m_bPatternEnd = false;
 public:
 	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
-
+	static CBoss3*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _bool FinalStageTrigger);
 protected:
 	virtual void Free(void) override;
 };

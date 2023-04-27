@@ -178,6 +178,7 @@
     <ClInclude Include="Boss3Camera.h" />
     <ClInclude Include="Boss3DeadCamera.h" />
     <ClInclude Include="BossDeadCamera.h" />
+    <ClInclude Include="DefaultBullet.h" />
     <ClInclude Include="DirectCamera.h" />
     <ClInclude Include="Boss2Chain.h" />
     <ClInclude Include="Boss2Eye.h" />
@@ -206,9 +207,12 @@
     <ClInclude Include="EvilBat.h" />
     <ClInclude Include="Final3Boss1.h" />
     <ClInclude Include="FinalCamera_1_1.h" />
+    <ClInclude Include="FinalCube.h" />
+    <ClInclude Include="FinalMonkeyCube.h" />
     <ClInclude Include="FinalPD.h" />
-    <ClInclude Include="FinalStage2.h" />
     <ClInclude Include="FinalStage3.h" />
+    <ClInclude Include="FinalUI.h" />
+    <ClInclude Include="FinalUI_B.h" />
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
@@ -229,7 +233,9 @@
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
+    <ClInclude Include="FinalStoneCube.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LoadingTex.h" />
     <ClInclude Include="LogoCamera.h" />
@@ -378,6 +384,7 @@
     <ClCompile Include="Boss3Camera.cpp" />
     <ClCompile Include="Boss3DeadCamera.cpp" />
     <ClCompile Include="BossDeadCamera.cpp" />
+    <ClCompile Include="DefaultBullet.cpp" />
     <ClCompile Include="DirectCamera.cpp" />
     <ClCompile Include="Boss2Chain.cpp" />
     <ClCompile Include="Boss2Eye.cpp" />
@@ -406,9 +413,12 @@
     <ClCompile Include="EvilBat.cpp" />
     <ClCompile Include="Final3Boss1.cpp" />
     <ClCompile Include="FinalCamera_1_1.cpp" />
+    <ClCompile Include="FinalCube.cpp" />
+    <ClCompile Include="FinalMonkeyCube.cpp" />
     <ClCompile Include="FinalPD.cpp" />
-    <ClCompile Include="FinalStage2.cpp" />
     <ClCompile Include="FinalStage3.cpp" />
+    <ClCompile Include="FinalUI.cpp" />
+    <ClCompile Include="FinalUI_B.cpp" />
     <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />
@@ -428,7 +438,9 @@
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
+    <ClCompile Include="FinalStoneCube.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LoadingTex.cpp" />
     <ClCompile Include="LogoCamera.cpp" />

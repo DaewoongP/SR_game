@@ -864,7 +864,7 @@ void CBoss1::Do_IngGiant(const _float & fTimeDelta)
 {
 	//Ư�� ���� ������.
 
-	if (m_Player->m_vInfo[INFO_POS].x < 30)
+	if (m_Player->m_vInfo[INFO_POS].x < 94)
 	{
 		//���� ���̵�� �ٲٰ� ����·� ����
 		m_pAnimation_Whole->SetAnimation(L"Idle");

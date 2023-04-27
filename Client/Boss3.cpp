@@ -13,12 +13,15 @@
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
 #include "Boss3Mouth.h"
+#include "Thirddee.h"
+#include "ShootingPlayer.h"
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
 	m_fTooTime(0.f), m_fTopTime(0.f), m_fSpeed(35.f), m_fFinalTime(0.f),
 	m_fPreTop(0.f), m_fShockDown(0.f), m_fLerpDist(0.f), m_fDamagedTime(0.f), m_fDelay(0.f),
-	m_bInit(true), m_bLerpMove(false), m_bDamaged(false), m_bDelay(true), m_bFinal(false)
+	m_bInit(true), m_bLerpMove(false), m_bDamaged(false), m_bDelay(true), m_bFinal(false),
+	m_bFinalStageTrigger(false)
 {
 	m_pToodee = nullptr;
 	m_pTopdee = nullptr;
@@ -58,6 +61,8 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 
 _int CBoss3::Update_Too(const _float & fTimeDelta)
 {
+	if (m_bFinalStageTrigger)
+		return 0;
 	if (nullptr == m_pToodee || m_bDamaged || m_bDelay)
 		return 0;
 
@@ -108,6 +113,27 @@ _int CBoss3::Update_Too(const _float & fTimeDelta)
 
 _int CBoss3::Update_Top(const _float& fTimeDelta)
 {
+	if (m_bFinalStageTrigger)
+	{
+		if (m_pTransform->m_vAngle.x != D3DXToRadian(-80.f))
+		{
+			m_fTimer += fTimeDelta * 4.0f;
+
+			if (1.0f <= m_fTimer)
+			{
+				m_fTimer = 1.0f;
+			}
+
+			m_pTransform->m_vAngle.x = Lerp(D3DXToRadian(0.f), D3DXToRadian(-80.f), m_fTimer);
+
+			if (1.0f == m_fTimer)
+			{
+				m_fTimer = 0.0f;
+			}
+		}
+		return 0;
+	}
+		
 	if (nullptr == m_pTopdee || m_bDamaged || m_bDelay)
 		return 0;
 
@@ -137,6 +163,13 @@ _int CBoss3::Update_Top(const _float& fTimeDelta)
 
 _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bFinalStageTrigger)
+	{
+		Engine::Add_RenderGroup(RENDER_ALPHA, this);
+		CGameObject::Update_GameObject(fTimeDelta);
+		return 0;
+	}
+		
 	if (m_bDead)
 	{
 		Boss3PartDead();
@@ -178,6 +211,8 @@ _int CBoss3::Update_GameObject(const _float & fTimeDelta)
 
 void CBoss3::LateUpdate_GameObject(void)
 {		
+	if (m_bFinalStageTrigger)
+		return;
 	__super::LateUpdate_GameObject();
 }
 
@@ -249,6 +284,14 @@ void CBoss3::SwapTrigger()
 		m_pTransform->m_vAngle.y = D3DXToRadian(-75.f);
 
 	m_fPreTop = 0.f;
+}
+
+void CBoss3::Move_Hands(_vec3 vDir, _float fSpeed)
+{
+	m_pBossLeftHand->Off_Shadow();
+	m_pBossRightHand->Off_Shadow();
+	m_pBossLeftHand->m_pTransform->m_vInfo[INFO_POS] += vDir * fSpeed;
+	m_pBossRightHand->m_pTransform->m_vInfo[INFO_POS] += vDir * fSpeed;
 }
 
 HRESULT CBoss3::Add_Component(void)
@@ -400,12 +443,14 @@ void CBoss3::BossAttack(const _float & fTimeDelta)
 	else if (1 != m_iHp && 14.f < m_fTopTime)
 	{
 		m_fTopTime = 0.f;
+		m_bPatternEnd = true;
 		m_bSpin = true;
 	}
 
 	// 체력 여부에 따른 패턴 마무리(1)
 	else if (1 == m_iHp && 14.f < m_fTopTime)
 	{
+		m_bPatternEnd = true;
 		m_fShockDown += fTimeDelta;
 
 		// 탑디일 때 스파크 타고 흐르는 애니메이션
@@ -643,10 +688,11 @@ void CBoss3::DamagedBoss3(const _float& fTimeDelta)
 	return;
 }
 
-HRESULT CBoss3::CreateParts()
+HRESULT CBoss3::CreateParts(CLayer* pStageLayer)
 {
 	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
-	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
+	if (pStageLayer == nullptr)
+		pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	NULL_CHECK_RETURN(pStageLayer, E_FAIL);
 
 	FAILED_CHECK_RETURN(FACTORY<CBoss3Hand>::Create(L"Boss3Left", pStageLayer, _vec3{ vPos.x - 15.f, vPos.y, vPos.z }, 0), E_FAIL);
@@ -687,7 +733,18 @@ HRESULT CBoss3::CreateParts()
 	FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart3Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z }, 2), E_FAIL);
 
 	m_pToodee = dynamic_cast<CToodee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee"));
-	m_pTopdee = dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	if (dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
+	else if (dynamic_cast<CShootingPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CShootingPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
+	else if (dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
 	m_pBoss3Mouth = dynamic_cast<CBoss3Mouth*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Mouth"));
 	m_pBossLeftHand = dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"));
 	m_pBossRightHand = dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"));
@@ -721,6 +778,19 @@ CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
 	CBoss3* pInstance = new CBoss3(pGraphicDev);
 
+	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	{
+		Safe_Release(pInstance);
+		return nullptr;
+	}
+
+	return pInstance;
+}
+
+CBoss3 * CBoss3::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _bool FinalStageTrigger)
+{
+	CBoss3* pInstance = new CBoss3(pGraphicDev);
+	pInstance->m_bFinalStageTrigger = FinalStageTrigger;
 	if (FAILED(pInstance->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pInstance);
