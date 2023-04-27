@@ -38,6 +38,10 @@ _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 	{
 		return OBJ_DEAD;
 	}
+
+	if (-20.f >= m_pTransform->m_vInfo[INFO_POS].z)
+		m_bDead = true;
+
 	if (m_bDead)
 		m_pExpParticle->Start_Particle();
 
@@ -53,17 +57,11 @@ _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 			_int iRandItem = rand() % 4;
 
 			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, m_pTransform->m_vInfo[INFO_POS], iRandItem), );
+			FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, m_pTransform->m_vInfo[INFO_POS], iRandItem), E_FAIL);
 		}
 
 		m_bCreateItem = false;
 		m_bDead = true;
-	}
-
-	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
-	if (-13.f >= vPos.z)
-	{
-		int i = 0;
 	}
 
 	__super::Update_GameObject(fTimeDelta);
