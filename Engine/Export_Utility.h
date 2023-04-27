@@ -11,6 +11,7 @@
 #include "TerrainTex.h"
 #include "Collider.h"
 #include "Collision.h"
+#include "BulletPool.h"
 
 #include "GameObject.h"
 #include "Shader.h"
@@ -71,6 +72,9 @@ inline void		Clear_Collision();
 inline void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);
 inline void		Delete_Collider(CGameObject* pGameObject);
 inline vector<RayCollision>		Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, vector<_tchar*> tagname = {});
+
+inline CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, BULLETTYPE eType);
+inline void			Release_Bullet(CBullet* pBullet);
 
 inline void						Release_Utility(void);
 

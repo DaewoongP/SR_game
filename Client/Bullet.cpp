@@ -2,8 +2,7 @@
 #include "Bullet.h"
 
 CBullet::CBullet(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev),
-	m_fSpeed(50.f)
+	:CGameObject(pGraphicDev)
 {
 }
 

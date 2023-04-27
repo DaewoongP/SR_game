@@ -10,13 +10,12 @@ CSwordBullet::~CSwordBullet()
 {
 }
 
-HRESULT CSwordBullet::Ready(_vec3 & vPos, _vec3& vInitPos)
+HRESULT CSwordBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 {
 	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 80.f;
 	m_pTransform->m_vScale *= 10.f;
-	m_pTransform->m_vInfo[INFO_POS] = vPos + vInitPos;
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
@@ -68,10 +67,10 @@ HRESULT CSwordBullet::Add_Component(void)
 	return S_OK;
 }
 
-CSwordBullet * CSwordBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos, _vec3& vInitPos)
+CSwordBullet * CSwordBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
 	CSwordBullet* pInstance = new CSwordBullet(pGraphicDev);
-	if (FAILED(pInstance->Ready(vPos, vInitPos)))
+	if (FAILED(pInstance->Ready_Bullet(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

@@ -17,6 +17,7 @@ HRESULT CDefaultBullet::Ready_Bullet(_vec3 & vPos, _vec3 & vDir)
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
+	m_fSpeed = 50.f;
 	return S_OK;
 }
 

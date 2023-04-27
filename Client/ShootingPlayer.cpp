@@ -5,11 +5,13 @@
 #include "FireBullet.h"
 #include "DefaultBullet.h"
 
+#include "Export_Function.h"
+
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr),
-	m_iBulletIndex(0)
+	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr)
 {
 }
+
 
 CShootingPlayer::~CShootingPlayer()
 {
@@ -40,9 +42,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	Rot_Player();
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
-	
-	Switch_Bullet(fTimeDelta);
-
+	Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
 }
@@ -105,8 +105,30 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransform->m_vAngle.y = 0.f;
 		return;
 	}
-	// s Lerp ÃƒÂ³Â¸Â®Â°Â¡ Â¾ÃˆÂ¸Ã”Ã€Â½.
+	// s Lerp Ã³¸®°¡ ¾È¸ÔÀ½.
 	D3DXVec3Lerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], 1 - m_fSlerp);
+}
+
+void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
+{
+	switch (0)
+	{
+	case 0:
+		Default_Bullet(fTimeDelta);
+		break;
+	case 1:
+		Quad_Bullet(fTimeDelta);
+		break;
+	case 2:
+		Sword_Bullet(fTimeDelta);
+		break;
+	case 3:
+		Fire_Bullet(fTimeDelta);
+		break;
+	default:
+		Default_Bullet(fTimeDelta);
+		break;
+	}
 }
 
 void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
@@ -114,7 +136,7 @@ void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
 	if (IsPermit_Call(L"1Sec", fTimeDelta))
 	{
 		CBullet* pBullet = nullptr;
-		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT);
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
@@ -150,7 +172,7 @@ void CShootingPlayer::Sword_Bullet(const _float & fTimeDelta)
 	if (IsPermit_Call(L"2Sec", fTimeDelta))
 	{
 		CSwordBullet* pBullet = nullptr;
-		pBullet = CSwordBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 0, -3));
+		pBullet = CSwordBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"SwordBullet", pBullet);
@@ -184,37 +206,6 @@ void CShootingPlayer::Rot_Player()
 	else
 	{
 		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 10.f);
-	}
-}
-
-void CShootingPlayer::Switch_Bullet(const _float & fTimeDelta)
-{
-	switch (m_iBulletIndex)
-	{
-	//Default Bullet
-	case 0 :
-		Default_Bullet(fTimeDelta);
-		break;
-
-	// Quad Bullet
-	case 1:
-		Quad_Bullet(fTimeDelta);
-		break;
-
-	// Sword Bullet
-	case 2:
-		Sword_Bullet(fTimeDelta);
-		break;
-
-	// Fire Bullet
-	case 3:
-		Fire_Bullet(fTimeDelta);
-		break;
-
-	// Default
-	default:
-		Default_Bullet(fTimeDelta);
-		break;
 	}
 }
 

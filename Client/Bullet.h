@@ -8,7 +8,13 @@ class CRcTex;
 class CCollider;
 class CTexture;
 END
-
+enum BULLETTYPE
+{
+	DEFAULT,
+	SWORD,
+	FIRE,
+	BULLET_END
+};
 class CBullet : public CGameObject
 {
 protected:

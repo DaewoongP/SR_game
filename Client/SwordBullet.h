@@ -9,7 +9,7 @@ private:
 	virtual ~CSwordBullet();
 
 public:
-	HRESULT Ready(_vec3& vPos, _vec3& vInitPos);
+	virtual HRESULT Ready_Bullet(_vec3& vPos, _vec3& vDir = _vec3(0.f, 1.f, 0.f)) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
@@ -21,7 +21,7 @@ private:
 private:
 	_bool	m_bShoot;
 public:
-	static CSwordBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _vec3& vInitPos);
+	static CSwordBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
 private:
 	virtual void Free(void) override;

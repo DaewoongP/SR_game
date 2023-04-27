@@ -10,7 +10,7 @@ CFireBullet::~CFireBullet()
 {
 }
 
-HRESULT CFireBullet::Ready_GameObject(_vec3 & vPos)
+HRESULT CFireBullet::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 {
 	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
@@ -19,7 +19,6 @@ HRESULT CFireBullet::Ready_GameObject(_vec3 & vPos)
 	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
-	_vec3 vDir;
 	vDir = { GetRandomFloat(-1.f, 1.f), 20.f, GetRandomFloat(-1.f, 1.f) };
 	D3DXVec3Normalize(&m_vDir, &vDir);
 	return S_OK;
