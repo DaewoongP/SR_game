@@ -18,6 +18,7 @@ private:
 		RIGHT,
 		POS_END
 	};
+
 private:
 	explicit CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CShootingPlayer();

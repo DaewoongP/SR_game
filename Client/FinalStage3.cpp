@@ -18,6 +18,8 @@
 #include "Item.h"
 #include "StageCamera.h"
 
+#include "Item.h"
+
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -96,6 +98,11 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 				FAILED_CHECK_RETURN(FACTORY<CCube>::Create(L"MapCube", pLayer, _vec3{ (_float)j * 2,(_float)i * 2,10.f }, 1), E_FAIL);
 		}
 	}
+
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-6.f, 200.f, 10.f), 0), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-3.f, 250.f, 15.f), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(3.f, 300.f, 15.f), 2), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(6.f, 350.f, 10.f), 3), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
