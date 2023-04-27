@@ -60,6 +60,19 @@ public:
 		return S_OK;
 	}
 
+	static HRESULT	Create(const _tchar * pObjTag, _vec3& vPos, vector<CGameObject*>& vec,int iIndex)
+	{
+		// �ʱ�ȭ
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		// ����
+		CGameObject* pGameObject = T::Create(pGraphicDev, vPos, vec,iIndex );
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		lstrcpy(pGameObject->m_pTag, pObjTag);
+		pGameObject->Sort_Component();
+		vec.push_back(pGameObject);
+		return S_OK;
+	}
+
 	static HRESULT	CreateParent(const _tchar * pObjTag, CLayer* pLayer, _vec3& vPos)
 	{
 		// �ʱ�ȭ

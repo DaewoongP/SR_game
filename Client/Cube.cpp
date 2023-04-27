@@ -21,7 +21,6 @@ HRESULT CCube::Ready_GameObject(_vec3& vPos)
 	m_pCollider->Set_Group(COL_ENV);
 	return S_OK;
 }
-
 _int CCube::Update_GameObject(const _float & fTimeDelta)
 {
 	// Dead처리 ㄴㄴ
