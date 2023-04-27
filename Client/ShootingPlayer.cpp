@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "ShootingPlayer.h"
 #include "..\Engine\AbstractFactory.h"
-#include "SwordBullet.h"
-#include "FireBullet.h"
-#include "DefaultBullet.h"
-
 #include "Export_Function.h"
 
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -32,6 +28,7 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
 	m_fSlerp = 0.f;
 	Engine::Ready_Frame(L"2Sec", 0.5f);
+
 	return S_OK;
 }
 
@@ -111,7 +108,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 
 void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
 {
-	switch (0)
+	switch (m_iBulletIndex)
 	{
 	case 0:
 		Default_Bullet(fTimeDelta);
@@ -147,22 +144,22 @@ void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
 {
 	if (IsPermit_Call(L"1Sec", fTimeDelta))
 	{
-		CDefaultBullet* pBullet = nullptr;
-		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(1, 10, 0));
-		if (pBullet == nullptr)
-			return;
+		CBullet* pBullet = nullptr;
+
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(1, 10, 0));
+		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, 1));
-		if (pBullet == nullptr)
-			return;
+
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(0, 30, 1));
+		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 10, 0));
-		if (pBullet == nullptr)
-			return;
+
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(-1, 10, 0));
+		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, -1));
-		if (pBullet == nullptr)
-			return;
+
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], DEFAULT, _vec3(0, 30, -1));
+		if (pBullet == nullptr)	return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
 	}
 }
@@ -171,10 +168,9 @@ void CShootingPlayer::Sword_Bullet(const _float & fTimeDelta)
 {
 	if (IsPermit_Call(L"2Sec", fTimeDelta))
 	{
-		CSwordBullet* pBullet = nullptr;
-		pBullet = CSwordBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
-		if (pBullet == nullptr)
-			return;
+		CBullet* pBullet = nullptr;
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], SWORD);
+		if (pBullet == nullptr) return;
 		m_pGameLogicLayer->Add_GameObject(L"SwordBullet", pBullet);
 	}
 }
@@ -185,10 +181,9 @@ void CShootingPlayer::Fire_Bullet(const _float& fTimeDelta)
 	{
 		if (IsPermit_Call(L"2Sec", fTimeDelta))
 		{
-			CFireBullet* pBullet = nullptr;
-			pBullet = CFireBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
-			if (pBullet == nullptr)
-				return;
+			CBullet* pBullet = nullptr;
+			pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], FIRE);
+			if (pBullet == nullptr) return;
 			m_pGameLogicLayer->Add_GameObject(L"FireBullet", pBullet);
 		}
 	}

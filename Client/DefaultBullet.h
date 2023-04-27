@@ -9,6 +9,7 @@ private:
 
 public:
 	virtual HRESULT Ready_Bullet(_vec3& vPos, _vec3& vDir) override;
+	virtual void	Ready_Pool(_vec3& vPos, _vec3& vDir) override;
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;

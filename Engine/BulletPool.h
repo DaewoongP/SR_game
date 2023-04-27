@@ -8,11 +8,13 @@ class CBulletPool
 	DECLARE_SINGLETON(CBulletPool)
 private:
 	explicit CBulletPool() {}
-	virtual ~CBulletPool() {}
+	~CBulletPool();
 
 public:
-	CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, BULLETTYPE eType);
+	CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, BULLETTYPE eType, _vec3& vDir = _vec3(0, 1, 0));
 	void			Release_Bullet(CBullet* pBullet);
+
+	void			Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eType);
 private:
 	_bool			IsEmpty(BULLETTYPE eType);
 private:

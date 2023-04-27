@@ -12,8 +12,8 @@ CDefaultBullet::~CDefaultBullet()
 
 HRESULT CDefaultBullet::Ready_Bullet(_vec3 & vPos, _vec3 & vDir)
 {
-	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	__super::Ready_Bullet(vPos, vDir);
+	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
@@ -21,15 +21,25 @@ HRESULT CDefaultBullet::Ready_Bullet(_vec3 & vPos, _vec3 & vDir)
 	return S_OK;
 }
 
+void CDefaultBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
+{
+	__super::Ready_Pool(vPos, vDir);
+	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
+	m_pTex->Switch_Anim(L"Idle");
+	m_pTex->m_bUseFrameAnimation = true;
+	m_fSpeed = 50.f;
+}
+
 _int CDefaultBullet::Update_GameObject(const _float & fTimeDelta)
 {
+	_int iResult = 0;
 	_matrix mat;
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &mat);
 	m_pTransform->Set_BillboardX(&mat);
 	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
 	m_pTex->Update_Anim(fTimeDelta);
-	__super::Update_GameObject(fTimeDelta);
-	return 0;
+	iResult = __super::Update_GameObject(fTimeDelta);
+	return iResult;
 }
 
 void CDefaultBullet::LateUpdate_GameObject(void)

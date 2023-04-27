@@ -24,11 +24,21 @@ HRESULT CFireBullet::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	return S_OK;
 }
 
+void CFireBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
+{
+	__super::Ready_Pool(vPos);
+	m_fSpeed = 50.f;
+	m_pTransform->m_vAngle.y = D3DXToRadian(90);
+	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
+	m_pTex->Switch_Anim(L"Idle");
+	m_pTex->m_bUseFrameAnimation = true;
+	vDir = { GetRandomFloat(-1.f, 1.f), 20.f, GetRandomFloat(-1.f, 1.f) };
+	D3DXVec3Normalize(&m_vDir, &vDir);
+}
+
 _int CFireBullet::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_pTransform->m_vInfo[INFO_POS].y >= 210.f)
-		return OBJ_DEAD;
-	Add_RenderGroup(RENDER_ALPHA, this);
+	_int iResult = 0;
 	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
 	m_pTex->Update_Anim(fTimeDelta);
 
@@ -36,8 +46,8 @@ _int CFireBullet::Update_GameObject(const _float & fTimeDelta)
 	m_pGraphicDev->GetTransform(D3DTS_VIEW, &mat);
 	m_pTransform->Set_BillboardX(&mat);
 
-	__super::Update_GameObject(fTimeDelta);
-	return 0;
+	iResult = __super::Update_GameObject(fTimeDelta);
+	return iResult;
 }
 
 void CFireBullet::LateUpdate_GameObject(void)
@@ -73,7 +83,7 @@ HRESULT CFireBullet::Add_Component(void)
 CFireBullet * CFireBullet::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
 {
 	CFireBullet* pInstance = new CFireBullet(pGraphicDev);
-	if (FAILED(pInstance->Ready_GameObject(vPos)))
+	if (FAILED(pInstance->Ready_Bullet(vPos)))
 	{
 		Safe_Release(pInstance);
 		return nullptr;

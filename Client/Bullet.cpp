@@ -2,7 +2,7 @@
 #include "Bullet.h"
 
 CBullet::CBullet(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev)
+	:CGameObject(pGraphicDev), m_pBuf(nullptr), m_pTex(nullptr), m_pCollider(nullptr)
 {
 }
 
@@ -17,6 +17,13 @@ HRESULT CBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
 	D3DXVec3Normalize(&m_vDir, &vDir);
 	return S_OK;
+}
+
+void CBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
+{
+	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
+	D3DXVec3Normalize(&m_vDir, &vDir);
 }
 
 _int CBullet::Update_GameObject(const _float & fTimeDelta)

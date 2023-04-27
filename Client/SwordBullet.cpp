@@ -24,8 +24,21 @@ HRESULT CSwordBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 	return S_OK;
 }
 
+void CSwordBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
+{
+	__super::Ready_Pool(vPos);
+	m_fSpeed = 80.f;
+	m_pTransform->m_vScale *= 10.f;
+	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
+	m_pTex->Switch_Anim(L"Idle");
+	m_pTex->m_bUseFrameAnimation = true;
+	m_bShoot = false;
+	Engine::Ready_Frame(L"Sword1Sec", 1.f);
+}
+
 _int CSwordBullet::Update_GameObject(const _float & fTimeDelta)
 {
+	_int iResult = 0;
 	m_pTransform->m_vAngle.y -= D3DXToRadian(10.f);
 	if (Engine::IsPermit_Call(L"Sword1Sec", fTimeDelta) && false == m_bShoot)
 		m_bShoot = true;
@@ -34,8 +47,8 @@ _int CSwordBullet::Update_GameObject(const _float & fTimeDelta)
 		
 	m_pTex->Update_Anim(fTimeDelta);
 
-	__super::Update_GameObject(fTimeDelta);
-	return 0;
+	iResult = __super::Update_GameObject(fTimeDelta);
+	return iResult;
 }
 
 void CSwordBullet::LateUpdate_GameObject(void)

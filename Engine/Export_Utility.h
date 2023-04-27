@@ -73,8 +73,9 @@ inline void		Set_Collider(COLGROUP eGroup, CCollider* pCollider);
 inline void		Delete_Collider(CGameObject* pGameObject);
 inline vector<RayCollision>		Check_Collision_Ray(RAYCAST ray, CCollider* shootObj, vector<_tchar*> tagname = {});
 
-inline CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, BULLETTYPE eType);
+inline CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, BULLETTYPE eType, _vec3& vDir = _vec3(0,1,0));
 inline void			Release_Bullet(CBullet* pBullet);
+inline void			Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eType);
 
 inline void						Release_Utility(void);
 
