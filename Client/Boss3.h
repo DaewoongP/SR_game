@@ -67,7 +67,7 @@ private:
 
 private:
 	CToodee*		m_pToodee;
-	CTopdee*		m_pTopdee;
+	CGameObject*		m_pTopdee;
 
 	CBoss3Mouth*	m_pBoss3Mouth;
 	CBoss3Hand*		m_pBossLeftHand;

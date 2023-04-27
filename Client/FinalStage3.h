@@ -50,7 +50,8 @@ private:
 	Final3_MonkeyState	 m_StageState;
 
 	class CFinal3Boss1*			m_pBoss;
-	_bool				m_bMonkeySpwanTrigger;
+	_bool				m_bMonkeySpawnTrigger;
+	_bool				m_bStoneSpawnTrigger;
 public:
 	static CFinalStage3*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
