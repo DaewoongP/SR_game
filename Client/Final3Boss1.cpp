@@ -991,7 +991,7 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 	{
 		if (lstrcmp((*iter)->m_pTag, L"FinalCube"))
 			iter = m_vecCube.erase(iter);
-		else if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].z)
+		else if (-20.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].z)
 		{
 			(*iter)->m_bDead = true;
 			iter = m_vecCube.erase(iter);

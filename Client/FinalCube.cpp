@@ -39,9 +39,6 @@ _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	}
 
-	if (-20.f >= m_pTransform->m_vInfo[INFO_POS].z)
-		m_bDead = true;
-
 	if (m_bDead)
 		m_pExpParticle->Start_Particle();
 
