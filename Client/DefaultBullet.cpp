@@ -18,6 +18,9 @@ HRESULT CDefaultBullet::Ready_Bullet(_vec3 & vPos, _vec3 & vDir)
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_fSpeed = 50.f;
+
+	m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
+
 	return S_OK;
 }
 
@@ -34,8 +37,8 @@ _int CDefaultBullet::Update_GameObject(const _float & fTimeDelta)
 {
 	_int iResult = 0;
 	_matrix mat;
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &mat);
-	m_pTransform->Set_BillboardX(&mat);
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &mat);
+	//m_pTransform->Set_BillboardY(&mat);
 	m_pTransform->m_vInfo[INFO_POS] += m_vDir * m_fSpeed * fTimeDelta;
 	m_pTex->Update_Anim(fTimeDelta);
 	iResult = __super::Update_GameObject(fTimeDelta);

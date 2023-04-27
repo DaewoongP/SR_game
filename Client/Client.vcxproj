@@ -207,6 +207,7 @@
     <ClInclude Include="EvilBat.h" />
     <ClInclude Include="Final3Boss1.h" />
     <ClInclude Include="FinalCamera_1_1.h" />
+    <ClInclude Include="FinalCube.h" />
     <ClInclude Include="FinalMonkeyCube.h" />
     <ClInclude Include="FinalStage2.h" />
     <ClInclude Include="FinalStage3.h" />
@@ -404,6 +405,7 @@
     <ClCompile Include="EvilBat.cpp" />
     <ClCompile Include="Final3Boss1.cpp" />
     <ClCompile Include="FinalCamera_1_1.cpp" />
+    <ClCompile Include="FinalCube.cpp" />
     <ClCompile Include="FinalMonkeyCube.cpp" />
     <ClCompile Include="FinalStage2.cpp" />
     <ClCompile Include="FinalStage3.cpp" />

@@ -8,11 +8,7 @@
 #include "Boss1Head.h"
 #include <functional>
 
-#include "MoveCube.h"
-#include "GravityCube.h"
-#include "CrackCube.h"
-#include "SwitchCube.h"
-#include "Spike.h"
+#include"FinalCube.h"
 
 
 #define	BOSS1SCALE 2.f
@@ -68,6 +64,9 @@ void CFinal3Boss1::OnCollisionEnter(const Collision* collision)
 }
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	if (m_bInit)
 	{
 		//삼디를 가지고있어야함.
@@ -857,19 +856,42 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
+	Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
+
+	Engine::Add_RenderGroup(RENDER_NONE, this);
+
 	return 0;
 }
 
 void CFinal3Boss1::LateUpdate_GameObject(void)
 {
+	if (0.f >= m_iHp)
+		m_bDead = true;
+
 	__super::LateUpdate_GameObject();
 }
 
 void CFinal3Boss1::Render_GameObject(void)
 {
 	__super::Render_GameObject();
+}
+
+void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
+{
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
+	{
+		--m_iHp;
+		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+	}		
+
+	if (!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet"))
+	{
+		m_iHp -= 2;
+		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
+	}
 }
 
 void CFinal3Boss1::SwapTrigger()
@@ -886,6 +908,7 @@ HRESULT CFinal3Boss1::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+	m_pCollider->Set_Options({ 100.f, 100.f, 100.f }, COL_OBJ, false);
 
 	pComponent = m_pSlerpParticle = dynamic_cast<CSlerpParticle*>(Engine::Clone_Proto(L"SlerpParticle", this));
 	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
@@ -949,43 +972,11 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 {
 	m_dwThrowCubeTime += fTimeDelta;
 
+	int iRandValue = rand() % 18;
+
 	if (1.f < m_dwThrowCubeTime)
 	{
-		int iRandValue = rand() % 5;
-
-		switch (iRandValue)
-		{
-		case 0 :
-			MakeCube<CMoveCube>(L"MoveCube");
-			break;
-		case 1:
-			MakeCube<CGravityCube>(L"GravityCube");
-			break;
-		case 2:
-			MakeCube<CCrackCube>(L"CrackCube");
-			break;
-		case 3:
-			MakeCube<CSwitchCube>(L"SwitchCube");
-			break;
-		}
-
-		iRandValue = rand() % 5;
-
-		switch (iRandValue)
-		{
-		case 0:
-			MakeCube<CMoveCube>(L"MoveCube");
-			break;
-		case 1:
-			MakeCube<CGravityCube>(L"GravityCube");
-			break;
-		case 2:
-			MakeCube<CCrackCube>(L"CrackCube");
-			break;
-		case 3:
-			MakeCube<CSwitchCube>(L"SwitchCube");
-			break;
-		}
+		MakeCube<CFinalCube>(L"FinalCube", iRandValue);
 
 		m_dwThrowCubeTime = 0;
 	}
@@ -1008,7 +999,7 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 }
 
 template<typename T>
-inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
+inline void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 {
 	CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 
@@ -1037,7 +1028,7 @@ inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
 		break;
 	}
 
-	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos);
+	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos, iIndex);
 	pGameObject->Sort_Component();
 	pLayer->Add_GameObject(pTag, pGameObject);
 	m_vecCube.push_back(pGameObject);

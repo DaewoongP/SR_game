@@ -1,21 +1,21 @@
 #pragma once
-
 #include "Include.h"
 #include "GameObject.h"
 
 BEGIN(Engine)
 
-class CRcTex;
+class CCubeTex;
 class CTexture;
 class CCollider;
 
 END
 
-class CItem : public CGameObject
+class CFinalCube :
+	public CGameObject
 {
 private:
-	explicit CItem(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CItem();
+	explicit CFinalCube(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFinalCube();
 
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
@@ -29,16 +29,18 @@ private:
 	HRESULT		Add_Component(void);
 
 private:
-	Engine::CRcTex*			m_pBufferCom;
-	Engine::CTexture*		m_pTextureCom;
-	Engine::CCollider*		m_pCollider;
+	Engine::CCubeTex*	m_pBufferCom;
+	Engine::CTexture*	m_pTextureCom;
+	Engine::CCollider*  m_pCollider;
 
-	_int					m_iIndex;
+	_int		m_iCubeIndex;
+
+	_bool		m_bCreateItem;
 
 public:
-	static CItem*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
+	static CFinalCube* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos, _int iIndex);
 
-protected:
-	virtual void Free(void) override;
+private:
+	virtual void Free() override;
 };
 

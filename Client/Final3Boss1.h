@@ -22,6 +22,9 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void SwapTrigger();
+	virtual void OnCollisionEnter(const class Collision* collision);
+
+	_int	Get_Boss1Hp() { return m_iHp; }
 
 protected:
 	HRESULT		Add_Component(void);
@@ -30,8 +33,7 @@ protected:
 	void		Throw_Cube(const _float& fTimeDelta);
 
 	template<typename T>
-	void		MakeCube(const _tchar* pTag);
-	virtual void OnCollisionEnter(const class Collision* collision);
+	void		MakeCube(const _tchar* pTag, _int iIndex);
 
 protected:
 	Engine::CCollider*		m_pCollider;
@@ -50,7 +52,7 @@ protected:
 	_float					m_fOffset_y;
 	_vec3					m_vOriginPos;
 
-	//°ø°İ »ç¿ë ÁÖ±â(º¸½º°¡ °ø°İÀ» ±×¸® ÀÚÁÖ¾²Áø ¾ÊÀ½.)
+	//ê³µê²© ì‚¬ìš© ì£¼ê¸°(ë³´ìŠ¤ê°€ ê³µê²©ì„ ê·¸ë¦¬ ìì£¼ì“°ì§„ ì•ŠìŒ.)
 	_float					m_dwRestTime;
 
 	_float					m_dwThrowCubeTime;

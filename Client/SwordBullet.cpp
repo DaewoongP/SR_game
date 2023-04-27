@@ -15,12 +15,15 @@ HRESULT CSwordBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 80.f;
-	m_pTransform->m_vScale *= 10.f;
+	m_pTransform->m_vScale = _vec3{ 10.f, 10.f, 10.f };
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
-	Engine::Ready_Frame(L"Sword1Sec", 1.f);
+	Engine::Ready_Frame(L"Sword1Sec", 2.f);
+
+	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
+
 	return S_OK;
 }
 
@@ -28,18 +31,21 @@ void CSwordBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 {
 	__super::Ready_Pool(vPos);
 	m_fSpeed = 80.f;
-	m_pTransform->m_vScale *= 10.f;
+	m_pTransform->m_vScale = _vec3{ 10.f, 10.f, 10.f };
 	m_pTex->Add_Anim(L"Idle", 0, 3, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
-	Engine::Ready_Frame(L"Sword1Sec", 1.f);
+
+	Engine::Ready_Frame(L"Sword1Sec", 2.f);
+
+	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
 }
 
 _int CSwordBullet::Update_GameObject(const _float & fTimeDelta)
 {
 	_int iResult = 0;
-	m_pTransform->m_vAngle.y -= D3DXToRadian(10.f);
+	m_pTransform->m_vAngle.y -= D3DXToRadian(15.f);
 	if (Engine::IsPermit_Call(L"Sword1Sec", fTimeDelta) && false == m_bShoot)
 		m_bShoot = true;
 	if (m_bShoot)
