@@ -51,7 +51,7 @@ HRESULT CMiniGameBat::Ready_GameObject(_vec3& vPos)
 	m_vecCol.push_back(L"KeyCube");
 
 
-	m_pShadowCom->m_fShadowHeight = 10.9f;
+	m_pShadowCom->m_fShadowHeight = 10.5f;
 	m_bInit = true;
 	return S_OK;
 }

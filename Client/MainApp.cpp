@@ -47,8 +47,6 @@ int CMainApp::Update_MainApp(const _float & fTimeDelta)
 void CMainApp::LateUpdate_MainApp(void)
 {
 	m_pManagementClass->LateUpdate_Management();
-	if (Engine::Get_DIKeyState(DIK_F8) == Engine::KEYDOWN)
-		g_ColliderRendering = !g_ColliderRendering;
 }
 
 void CMainApp::Render_MainApp(void)
@@ -56,7 +54,6 @@ void CMainApp::Render_MainApp(void)
 	Engine::Render_Begin(D3DXCOLOR(0.f, 0.f, 0.f, 1.f));
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
-	m_pCImguiMgr->GetInstance()->Update_Imgui(m_pGraphicDev);
 
 	Engine::Render_End();
 }
