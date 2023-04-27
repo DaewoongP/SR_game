@@ -8,6 +8,12 @@
 #include "Boss1Head.h"
 #include <functional>
 
+#include "MoveCube.h"
+#include "GravityCube.h"
+#include "CrackCube.h"
+#include "SwitchCube.h"
+#include "Spike.h"
+
 #define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
 for (int j = 0; j < clip->source[i].size(); j++)\
@@ -21,6 +27,7 @@ CFinal3Boss1::CFinal3Boss1(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_bInit = true;
 	m_dwRestTime = 1;
+	m_dwThrowCubeTime = 0.f;
 }
 
 CFinal3Boss1::~CFinal3Boss1()
@@ -917,6 +924,30 @@ void CFinal3Boss1::Move(const _float& fTimeDelta)
 
 	m_pTransform->m_vInfo[INFO_POS].x = m_vOriginPos.x + m_fOffset_x;
 	m_pTransform->m_vInfo[INFO_POS].y = m_vOriginPos.y + m_fOffset_y;
+}
+
+void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
+{
+	m_dwThrowCubeTime += fTimeDelta;
+
+	if (3.f < m_dwThrowCubeTime)
+	{
+		int iRandvalue = rand() % 5;
+
+
+
+		m_dwThrowCubeTime = 0;
+	}
+}
+
+template<typename T>
+inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
+{
+	_vec3 vPos = m_pTransform->m_vInfo[INFO_POS];
+	CGameObject pGameObject = T::Create(m_pGraphicDev, vPos);
+	pGameObject->Sort_Component();
+	m_pLayer->Add_GameObject(pTag, pGameObject);
+	m_vecCube.push_back(pGameObject);
 }
 
 CFinal3Boss1 * CFinal3Boss1::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)

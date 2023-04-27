@@ -2,7 +2,6 @@
 #include "Cube.h"
 #include "Export_Function.h"
 #include "GravityCube.h"
-#include "..\Engine\ObjectPool.h"
 CCube::CCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev)
 {

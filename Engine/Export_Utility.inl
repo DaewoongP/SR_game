@@ -95,8 +95,22 @@ inline vector<RayCollision>  Check_Collision_Ray(RAYCAST ray, CCollider* shootOb
 	return CCollisionMgr::GetInstance()->Check_Collision_Ray(ray,shootObj, tagname);
 }
 
+inline CBullet*		Reuse_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, _vec3& vPos, BULLETTYPE eType, _vec3& vDir)
+{
+	return CBulletPool::GetInstance()->Reuse_Bullet(pGraphicDev, vPos, eType, vDir);
+}
+inline void			Release_Bullet(CBullet* pBullet)
+{
+	CBulletPool::GetInstance()->Release_Bullet(pBullet);
+}
+inline void			Reserve_Bullet(LPDIRECT3DDEVICE9& pGraphicDev, BULLETTYPE eType)
+{
+	CBulletPool::GetInstance()->Reserve_Bullet(pGraphicDev, eType);
+}
+
 void						Release_Utility(void)
 {
+	CBulletPool::GetInstance()->DestroyInstance();
 	CCollisionMgr::GetInstance()->DestroyInstance();
 	CRenderer::GetInstance()->DestroyInstance();
 	CProtoMgr::GetInstance()->DestroyInstance();

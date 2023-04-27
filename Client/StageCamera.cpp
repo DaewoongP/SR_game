@@ -36,7 +36,7 @@ _int CStage1Camera::Update_GameObject(const _float & fTimeDelta)
 
 	__super::Update_GameObject(fTimeDelta);
 	_matrix matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 50.f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60), (_float)WINCX / WINCY, 1.0f, 200.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
 	return 0;

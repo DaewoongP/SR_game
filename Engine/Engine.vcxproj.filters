@@ -145,9 +145,6 @@
     <ClInclude Include="RcGradation.h">
       <Filter>Componnent\VIBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>Manager\ObjectPool</Filter>
-    </ClInclude>
     <ClInclude Include="CircularParticle.h">
       <Filter>Componnent\ParticleSystem\Circle</Filter>
     </ClInclude>
@@ -182,7 +179,7 @@
       <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClInclude>
     <ClInclude Include="BulletPool.h">
-      <Filter>Componnent\BulletPool</Filter>
+      <Filter>Pool\BulletPool</Filter>
     </ClInclude>
     <ClInclude Include="WaterParticle.h">
       <Filter>Componnent\ParticleSystem\Water</Filter>
@@ -355,7 +352,7 @@
       <Filter>Componnent\ParticleSystem\TexParticle</Filter>
     </ClCompile>
     <ClCompile Include="BulletPool.cpp">
-      <Filter>Componnent\BulletPool</Filter>
+      <Filter>Pool\BulletPool</Filter>
     </ClCompile>
     <ClCompile Include="WaterParticle.cpp">
       <Filter>Componnent\ParticleSystem\Water</Filter>
@@ -478,9 +475,6 @@
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{94e84c0d-baa8-42ea-b5f4-74fdeb443fb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\ObjectPool">
-      <UniqueIdentifier>{bae4fcd9-045d-45d9-b527-99a8d419a90c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\ParticleSystem\Spark">
       <UniqueIdentifier>{18e35a98-41f8-44a2-b4ed-82eeb7e57ce5}</UniqueIdentifier>
     </Filter>
@@ -511,9 +505,6 @@
     <Filter Include="Componnent\ParticleSystem\TexParticle">
       <UniqueIdentifier>{29d7f5a1-c8b3-4239-b45c-4671728cebeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Componnent\BulletPool">
-      <UniqueIdentifier>{3d3228c4-5b7a-4449-9413-a86d9f56649e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componnent\ParticleSystem\Water">
       <UniqueIdentifier>{560bd8ab-e608-44e4-810f-b2827b1be5b9}</UniqueIdentifier>
     </Filter>
@@ -540,6 +531,12 @@
     </Filter>
     <Filter Include="Componnent\ParticleSystem\Portal">
       <UniqueIdentifier>{55fbf054-192a-45d4-ac3e-5f51343f062d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pool">
+      <UniqueIdentifier>{204438cc-b389-4add-982d-52c2932515c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pool\BulletPool">
+      <UniqueIdentifier>{3d3228c4-5b7a-4449-9413-a86d9f56649e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
