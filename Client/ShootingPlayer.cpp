@@ -160,9 +160,9 @@ void CShootingPlayer::Sword_Bullet(const _float & fTimeDelta)
 
 void CShootingPlayer::Fire_Bullet(const _float& fTimeDelta)
 {
-	if (IsPermit_Call(L"2Sec", fTimeDelta))
+	for (size_t i = 0; i < 20; ++i)
 	{
-		for (size_t i = 0; i < 20; ++i)
+		if (IsPermit_Call(L"2Sec", fTimeDelta))
 		{
 			CFireBullet* pBullet = nullptr;
 			pBullet = CFireBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
