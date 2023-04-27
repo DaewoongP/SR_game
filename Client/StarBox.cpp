@@ -16,7 +16,7 @@ HRESULT CStarBox::Ready_GameObject(void)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	/* ÀÌÄÚµå Æ®·£½ºÆû ÄÄÆ÷³ÍÆ® ¾È½èÀ½.*/
-	m_pTransform->m_vScale = { 200.f, 200.f, 200.f };
+	m_pTransform->m_vScale = { 150.f, 150.f, 150.f };
 
 	m_pStarParticle->Start_Particle();
 
@@ -60,7 +60,7 @@ void CStarBox::Render_GameObject(void)
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pStarParticle->Update_Particle();
+	//m_pStarParticle->Update_Particle();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
