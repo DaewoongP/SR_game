@@ -8,12 +8,6 @@
 #include "Boss1Head.h"
 #include <functional>
 
-#include "MoveCube.h"
-#include "GravityCube.h"
-#include "CrackCube.h"
-#include "SwitchCube.h"
-#include "FoodCube.h"
-
 #define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
 for (int j = 0; j < clip->source[i].size(); j++)\
@@ -839,7 +833,6 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
-	Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
