@@ -310,6 +310,13 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireBullet", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/Firebolt_%d.png", 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"FireCharge ", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/MiniGameTex/FireCharge_%d.png", 4)), E_FAIL);
 	
+	//연출 1
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BackCode", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/BackCode_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ToodooProduceFace", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/Toodoo.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ToodooProduceHand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/ToodooHand_%d.png",2)), E_FAIL);
+
+
+
 	Set_String(L"Buffer Loading.......");
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"TriCol", CTriCol::Create(m_pGraphicDev)), E_FAIL);

@@ -16,15 +16,15 @@ HRESULT CFinalCamera_1_1::Ready_Camera()
 	//맵
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });//0
 	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 0.f,1.0f });//1
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });//2
-	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 60.f,1.0f });//3
-	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,0.1f });//4
-	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,1.0f });//5
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 80.f,1.0f });//2
+	m_vecXYPosAngleSpeed.push_back({ 31.0f ,17.0f, 80.f,1.0f });//3
+	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 80.f,0.1f });//4
+	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 80.f,1.0f });//5
 	//보스
-	m_vecXYPosAngleSpeed.push_back({ 200.f ,-50.f, 60.f,60.0f });//6
-	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,1.0f });//7
-	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,0.2f });//8
-
+	m_vecXYPosAngleSpeed.push_back({ -50.f ,0.f, 40.f,60.0f });//6
+	m_vecXYPosAngleSpeed.push_back({ -50.f ,0.f, 40.f,2.0f });//7
+	m_vecXYPosAngleSpeed.push_back({ -50.f ,-50.f, 25.f,0.2f });//8
+	m_vecXYPosAngleSpeed.push_back({ -50.f ,-50.f, 25.f,1.0f });//9
 	return S_OK;
 }
 
@@ -44,6 +44,7 @@ _int CFinalCamera_1_1::Update_GameObject(const _float & fTimeDelta)
 	case 6:
 	case 7:
 	case 8:
+	case 9:
 		Update_Direct_X(fTimeDelta);
 		break;
 	default:
@@ -92,6 +93,41 @@ void CFinalCamera_1_1::Update_Direct_X(const _float & fTimeDelta)
 	}
 }
 
+void CFinalCamera_1_1::Update_Direct(const _float & fTimeDelta)
+{
+	m_fTimer += fTimeDelta * m_vecXYPosAngleSpeed[m_iIndex].w;
+
+	_vec4 pOut;
+
+	if (m_fTimer >= 1.0f)
+	{
+		m_fTimer = 1.0f;
+	}
+
+	D3DXVec4Lerp(&pOut, &m_vecXYPosAngleSpeed[m_iIndex - 1], &m_vecXYPosAngleSpeed[m_iIndex], m_fTimer);
+
+	_vec3 vShake = { 0.0f,0.0f,-12.0f };
+
+	m_pTransform->Update_Shake(fTimeDelta, vShake);
+
+	m_vCam[EYE].x = pOut.x + vShake.x;
+	m_vCam[EYE].y = pOut.y + vShake.y;
+	m_vCam[EYE].z = vShake.z;
+	m_vCam[AT].x = pOut.x;
+	m_vCam[AT].y = pOut.y;
+
+	m_fProj[FOV] = D3DXToRadian(pOut.z);
+
+	if (1.0f == m_fTimer)
+	{
+		++m_iIndex;
+		m_fTimer = 0.0f;
+		if (m_iIndex == m_vecXYPosAngleSpeed.size())
+		{
+			m_bDead = true;
+		}
+	}
+}
 CFinalCamera_1_1 * CFinalCamera_1_1::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CFinalCamera_1_1*		pInstance = new CFinalCamera_1_1(pGraphicDev);
