@@ -58,9 +58,6 @@ _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
 	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
-		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
-		pLayer->Delete_Tag(L"ShootingCamera");
-		FACTORY<CStage1Camera>::Create(L"Camera", pLayer);
 		m_StageState = F3_SpawnCube;
 		m_bMonkeySpawnTrigger = false;
 		m_ShootingPlayerLerpTrigger = true;
