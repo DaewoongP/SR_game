@@ -42,7 +42,7 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	m_fOffset_x = 0;
 	m_fOffset_y = 0;
 	m_iHp = 100.f;
-	m_pCollider->Set_BoundingBox({500.f,500.f,500.f});
+	m_pCollider->Set_BoundingBox({50.f,50.f,50.f});
 
 	return S_OK;
 }
@@ -1009,7 +1009,6 @@ void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 	_int iRandValue = rand() % 5;
 	_vec3 vPos;
 
-	//_vec3(32.f, 15.f, -15.f)
 	switch (iRandValue)
 	{
 	case 0:

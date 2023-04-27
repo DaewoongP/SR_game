@@ -95,7 +95,6 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 			m_ShootingPlayer->Set_Update(true);
 			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = _vec3(CUBEX, CUBEY, 10);
 		}
-		
 	}
 }
 
