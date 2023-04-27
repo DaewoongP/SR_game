@@ -321,10 +321,12 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 			clip->Useloop = true;
 		}
 		m_pAnimation_Whole->AddClip(L"Idle", clip);
-			
+		_float _fLaugh=0.f;
+		_fLaugh+= fTimeDelta;
 		//손가락 공격임
 		clip = new AnimClip();
-		{ PlaySound_Effect(L"34", SOUND_EFFECT_ENEMY, 1.f);
+		{	
+			
 			clip->parts.push_back(m_PartsVec[0]); //몸통
 			clip->parts.push_back(m_PartsVec[1]); //머리통
 			clip->parts.push_back(m_PartsVec[9]);//어깨도 동동
@@ -387,7 +389,7 @@ _int CBoss1::Update_GameObject(const _float & fTimeDelta)
 
 		//손가락 공격임
 		clip = new AnimClip();
-		{
+		{	
 			clip->parts.push_back(m_PartsVec[0]); //몸통
 			clip->parts.push_back(m_PartsVec[1]); //머리통
 			clip->parts.push_back(m_PartsVec[9]);//어깨도 동동
@@ -764,8 +766,13 @@ void CBoss1::SetPattern()
 
 void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 {
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
 	StopSound(SOUND_EFFECT_ENEMY);
-	PlaySound_Effect(L"3", SOUND_EFFECT_ENEMY, 1.f);
+	PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	_vec3 summonpos = _vec3(m_PartsVec[14]->Get_WorldMatrixPointer()->_41,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_42,
@@ -800,6 +807,13 @@ void CBoss1::Do_EndFinger(const _float & fTimeDelta)
 
 void CBoss1::Do_SummonHead(const _float & fTimeDelta)
 {
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"3.wav", SOUND_EFFECT_ENEMY, 1.f);
 	//플레이어 위치 기준 x 값 +n 위치에 지정된 y값으로 이동하는 
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	_vec3 summonpos = _vec3(
@@ -898,6 +912,7 @@ void CBoss1::ReadyPartten()
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_EndFinger);
 	func.push_back(&CBoss1::Do_Rest);
+	m_bLaugh = true;
 	funcAction.push_back(func);
 	func.clear();
 
