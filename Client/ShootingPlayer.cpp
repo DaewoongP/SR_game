@@ -25,6 +25,8 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_vPos[LEFT] = vPos + _vec3(-6.5f, 5.f, 0.f);
 	m_vPos[RIGHT] = vPos + _vec3(6.5f, 5.f, 0.f);
 	m_vPrePos = vPos;
+	m_OriginPos = _vec3(0, 0, 0);
+	m_OriginRot = _vec3(0, 0, 0);
 	m_bPossibleShoot = true;
 	m_bLKey = true;
 	m_bRKey = true;
