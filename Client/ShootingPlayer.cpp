@@ -53,10 +53,9 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 		if (m_fLaserTime > 2.5f && pLaser->m_pTransform->m_vScale.y < 30.f)
 		{
 			pLaser->m_pTransform->m_vScale.y += 0.3f;
-			pLaser->m_pTransform->m_vInfo[INFO_POS].z += 0.1f;
+			pLaser->m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 			pLaser->Set_D_T();
-			pLaser->Get_Damage();
-			int i = 0;
+		
 		}
 
 	}
@@ -87,10 +86,10 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
 
-	/*if (GetAsyncKeyState('F'))
+	if (Engine::Get_DIKeyState(DIK_F) == Engine::KEYPRESS)
 	{
 		m_iBulletIndex = 4;
-	}*/
+	}
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bLKey)
 	{
 		m_bRKey = false;

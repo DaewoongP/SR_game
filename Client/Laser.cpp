@@ -19,6 +19,7 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
 	m_pTransform->m_vAngle.z = D3DXToRadian(90.f);
+	m_pTransform->m_vAngle.x = D3DXToRadian(90.f);
 	m_pTransform->m_vScale.y *= 3.f;
 	m_pTransform->m_vScale.x=D3DXVec3Length(&(m_vPos-m_vTarget))/2.f;
 	//m_pTransform->m_vInfo[INFO_POS].y = vPos.y;
@@ -32,30 +33,37 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 
 void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 {
+
 	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
+	m_pTransform->m_vAngle.y = D3DXToRadian(-100.f);
 	m_pTransform->m_vAngle.z = D3DXToRadian(90.f);
+	m_pTransform->m_vAngle.x = D3DXToRadian(-10.f);
+
 	m_pTransform->m_vScale.y *= 3.f;
 	m_pTransform->m_vScale.x = D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f;
+	//m_pTransform->m_vInfo[INFO_POS].y = vPos.y;
 	m_pTex->Add_Anim(L"Idle", 0, 6, 0.3f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
+	return ;
 }
 
 _int CLaser::Update_GameObject(const _float& fTimeDelta)
 {
-
+	if(Get_GameObject(L"Layer_GameLogic", L"Thirddee")!=nullptr)
 	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
+	if(Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")!=nullptr)
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
-	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f - 4.f) ,m_vPos.z + 10.f };
+	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y-5.f, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f)-10.f };
 	m_pTex->Update_Anim(fTimeDelta);
 	_vec3 vec = m_pTransform->m_vScale;
 
 	m_pCollider->Set_BoundingBox({ vec.y,vec.x,30.f });
-
+	
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
