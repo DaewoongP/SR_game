@@ -56,7 +56,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
 		pLayer->Delete_Tag(L"ShootingCamera");
@@ -213,14 +213,14 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 	if (m_pMonkey->m_pTransform->m_vInfo[INFO_POS].x < 0)
 	{
 		for (int i = 0; i < m_MokeyCube.size(); i++)
-			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f),true);
+			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f), true);
 		m_pMonkey = nullptr;
 		m_StageState = F3_NONE;
 
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 		_vec3 pos = m_TooTop->m_pTransform->m_vInfo[INFO_POS];
 		m_TooTop->Set_Render(false);
-		m_TooTop->Set_Update(false); 
+		m_TooTop->Set_Update(false);
 		m_TooTop = nullptr;
 		m_TooTop = CTopdee::Create(m_pGraphicDev, pos);
 		pLayer->Add_GameObject(L"Topdee", m_TooTop);
