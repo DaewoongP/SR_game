@@ -1004,7 +1004,9 @@
     <ClInclude Include="PDSemicolon.h">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
-    <ClInclude Include="TexCube.h" />
+    <ClInclude Include="TexCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1682,7 +1684,9 @@
     <ClCompile Include="PDSemicolon.cpp">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
-    <ClCompile Include="TexCube.cpp" />
+    <ClCompile Include="TexCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">
