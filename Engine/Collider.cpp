@@ -60,10 +60,6 @@ _int CCollider::Update_Component(const _float& fTimeDelta)
 
 void CCollider::LateUpdate_Component()
 {
-	if (Engine::Get_DIKeyState(DIK_F8) == Engine::KEYDOWN)
-	{
-		g_ColliderRendering = !g_ColliderRendering;
-	}
 }
 
 void CCollider::Render_Component()

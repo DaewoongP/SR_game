@@ -47,7 +47,7 @@ _int CSpike::Update_Too(const _float& fTimeDelta)
 	if (m_pTransform->m_vInfo[INFO_POS].z <= 9.5)
 	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
-			_float(m_pTransform->m_vInfo[INFO_POS].y + 0.2),
+			_float(m_pTransform->m_vInfo[INFO_POS].y + 0.16),
 			_float(m_pTransform->m_vInfo[INFO_POS].z + 0.125f));
 	}
 		
@@ -60,7 +60,7 @@ _int CSpike::Update_Top(const _float& fTimeDelta)
 	if (m_pTransform->m_vInfo[INFO_POS].z >= 8.5)
 	{
 		m_pTransform->Set_Pos(_float(m_pTransform->m_vInfo[INFO_POS].x),
-			_float(m_pTransform->m_vInfo[INFO_POS].y - 0.2),
+			_float(m_pTransform->m_vInfo[INFO_POS].y - 0.16),
 			_float(m_pTransform->m_vInfo[INFO_POS].z - 0.125f));
 	}
 		
