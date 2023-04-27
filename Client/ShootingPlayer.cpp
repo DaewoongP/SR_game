@@ -25,6 +25,8 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_vPos[LEFT] = vPos + _vec3(-6.5f, 5.f, 0.f);
 	m_vPos[RIGHT] = vPos + _vec3(6.5f, 5.f, 0.f);
 	m_vPrePos = vPos;
+	m_OriginPos = _vec3(0, 0, 0);
+	m_OriginRot = _vec3(0, 0, 0);
 	m_bPossibleShoot = true;
 	m_bLKey = true;
 	m_bRKey = true;
@@ -40,34 +42,34 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (!m_bUseUpdate)
 		return 0;
 	CGameObject* pLaser = nullptr;
-	
+
 	Add_RenderGroup(RENDER_ALPHA, this);
-	Key_Input(fTimeDelta);
-	Rot_Player();
+
+	if (m_bPossibleShoot)
+	{
+		Key_Input(fTimeDelta);
+		Rot_Player();
+	}
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	if (m_iBulletIndex == 4)
 		pLaser = Get_GameObject(L"Layer_GameLogic", L"ShootingLaser");
 
-	if (pLaser!=nullptr)
+	if (pLaser != nullptr)
 	{
-		
 		m_fLaserTime += fTimeDelta;
 		if (m_fLaserTime > 2.5f && pLaser->m_pTransform->m_vScale.y < 30.f)
 		{
 			pLaser->m_pTransform->m_vScale.y += 0.3f;
 			pLaser->m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 			pLaser->Set_D_T();
-		
 		}
-
 	}
 
-
-	if(m_bPossibleShoot)
+	if (m_bPossibleShoot)
 		Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
-	
+
 	return OBJ_NOEVENT;
 }
 

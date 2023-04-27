@@ -28,6 +28,7 @@ private:
 	_bool	m_bShoot;
 	_vec3 m_vPos;
 	_vec3 m_vTarget;
+	_float m_fEndTime;
 public:
 	_bool m_bOverPower = false;
 

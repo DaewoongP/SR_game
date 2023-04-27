@@ -22,9 +22,7 @@ HRESULT CItem::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = false;
 
-	//m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
-
-	m_pCollider->Set_Options({ 4.f, 1.f, 4.f }, COL_OBJ, false);
+	m_pCollider->Set_Options({ 4.f, 4.f, 1.f }, COL_OBJ, false);
 
 	m_iIndex = iIndex;
 
@@ -66,7 +64,7 @@ void CItem::Render_GameObject(void)
 
 void CItem::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Thirddee"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingPlayer"))
 	{
 		dynamic_cast<CShootingPlayer*>(collision->otherObj)->Set_Bullet(m_iIndex);
 		m_bDead = true;

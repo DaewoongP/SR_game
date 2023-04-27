@@ -58,14 +58,13 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 80.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
-		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
-		pLayer->Delete_Tag(L"ShootingCamera");
-		FACTORY<CStage1Camera>::Create(L"Camera", pLayer);
+		m_pBoss->Set_Throw(false);
 		m_StageState = F3_SpawnCube;
 		m_bMonkeySpawnTrigger = false;
 		m_ShootingPlayerLerpTrigger = true;
+		dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Pos_Rot(m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS], m_ShootingPlayer->m_pTransform->m_vAngle);
 		dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(false);
 	}
 	Do_SwapPlayer(fTimeDelta);
@@ -87,17 +86,54 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 {
 	if (m_SwapTop_ShootingTirgger)
 	{
-		//Å¾ï¿½ï¿½ ï¿½ß¾ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¶ï¿½.
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
-			m_TooTop->Set_Render(false);
-			m_TooTop->Set_Update(false);
+			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+			pLayer->Delete_Tag(L"Boss3");
+			pLayer->Delete_Tag(L"Boss3Left");
+			pLayer->Delete_Tag(L"Boss3Right");
+			pLayer->Delete_Tag(L"Boss3LeftEye");
+			pLayer->Delete_Tag(L"Boss3RightEye");
+			pLayer->Delete_Tag(L"BossLeftPupil");
+			pLayer->Delete_Tag(L"BossRightPupil");
+			pLayer->Delete_Tag(L"BossLeftEyebrow");
+			pLayer->Delete_Tag(L"BossRightEyebrow");
+			pLayer->Delete_Tag(L"Boss3Mouth");
+			pLayer->Delete_Tag(L"Boss3LPart");
+			pLayer->Delete_Tag(L"Boss3RPart");
+			pLayer->Delete_Tag(L"Boss3LPartShadow");
+			pLayer->Delete_Tag(L"Boss3RPartShadow");
+			pLayer->Delete_Tag(L"Boss3LPart1");
+			pLayer->Delete_Tag(L"Boss3RPart1");
+			pLayer->Delete_Tag(L"Boss3LPart1Shadow");
+			pLayer->Delete_Tag(L"Boss3RPart1Shadow");
+			pLayer->Delete_Tag(L"Boss3LPart2");
+			pLayer->Delete_Tag(L"Boss3RPart2");
+			pLayer->Delete_Tag(L"Boss3LPart2Shadow");
+			pLayer->Delete_Tag(L"Boss3RPart2Shadow");
+			pLayer->Delete_Tag(L"Boss3LPart3");
+			pLayer->Delete_Tag(L"Boss3RPart3");
+			pLayer->Delete_Tag(L"Boss3LPart3Shadow");
+			pLayer->Delete_Tag(L"Boss3RPart3Shadow");
+
+			pLayer->Delete_Tag(L"Topdee");
+			pLayer->Delete_Tag(L"TopdeeHead");
+			pLayer->Delete_Tag(L"TopdeeBody");
+			pLayer->Delete_Tag(L"TopdeeLeg");
+			pLayer->Delete_Tag(L"TopdeeArm");
+			
 			m_ShootingPlayer->Set_Render(true);
 			m_ShootingPlayer->Set_Update(true);
-			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = _vec3(CUBEX, CUBEY, 10);
+			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Get_OriginPos();
+			m_ShootingPlayer->m_pTransform->m_vAngle = dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Get_OriginRot();
+			m_SwapTop_ShootingTirgger = false;
+			dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(true);
+			//ÀüÈ¯µÇ°í À§Ä¡ È¸ÀüÀÌ ÀÌ»óÇÔ.
+			//¿ø·¡ À§Ä¡¿Í È¸Àü°ªÀ¸·Î µ¹·ÁÁÖ°í½ÍÀ½.
+			g_Is2D = true;
+			m_pBoss->Set_Throw(true);
 		}
-		
 	}
 }
 
@@ -122,13 +158,12 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(0.f, 0.f, 15.f));
-	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
+	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(31.f, 14.f, -13.f));
+	pLayer->Add_GameObject(L"ShootingPlayer", m_ShootingPlayer);
 
-	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
+	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-	// ì—¬ê¸°ì„œ ìƒì„±í•œê±° ë²¡í„°ì— ë„£ì–´ë†“ëŠ”ë°, ì›ìˆ­ì´ ë‚˜ì˜¤ê¸°ì „ì— esc ëˆ„ë¥¼ê²½ìš° ëˆ„ìˆ˜ë‚ ìˆ˜ë„ìˆìŒ
-	// ê·¸ê±¸ ì´ì œ Free ì—ì„œ ì‚­ì œí•˜ëŠ” ì½”ë“œë¡œ í•´ê²°í•¨.
+
 	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
@@ -216,14 +251,15 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 	if (m_pMonkey->m_pTransform->m_vInfo[INFO_POS].x < 0)
 	{
 		for (int i = 0; i < m_MokeyCube.size(); i++)
-			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f),true);
+			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f), true);
 		m_pMonkey = nullptr;
 		m_StageState = F3_NONE;
 
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 		_vec3 pos = m_TooTop->m_pTransform->m_vInfo[INFO_POS];
 		m_TooTop->Set_Render(false);
-		m_TooTop->Set_Update(false); 
+		m_TooTop->Set_Update(false);
+		pLayer->Delete_Tag(L"Toodee");
 		m_TooTop = nullptr;
 		m_TooTop = CTopdee::Create(m_pGraphicDev, pos);
 		pLayer->Add_GameObject(L"Topdee", m_TooTop);
@@ -246,7 +282,7 @@ void CFinalStage3::DoLerpShootingPlayer(const _float & fTimeDelta)
 		{
 			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 			m_TooTop = CToodee::Create(m_pGraphicDev, _vec3(10.f, 14.f, 10.f));
-			pLayer->Add_GameObject(L"Topdee", m_TooTop);
+			pLayer->Add_GameObject(L"Toodee", m_TooTop);
 			m_ShootingPlayer->Set_Render(false);
 			m_ShootingPlayer->Set_Update(false);
 			m_ShootingPlayerLerpTrigger = false;

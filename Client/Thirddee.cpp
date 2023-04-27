@@ -526,9 +526,6 @@ _int CThirddee::Update_GameObject(const _float & fTimeDelta)
 		return OBJ_DEAD;
 	if (m_DiePart != nullptr&&m_DiePart->GetDieAnimEnd())
 	{
-	/*	for (int i = 0; i < m_partVec.size(); i++)
-			m_partVec[i]->Set_Dead();
-		m_DiePart->Set_Dead();*/
 		m_bDead = true;
 	}
 		

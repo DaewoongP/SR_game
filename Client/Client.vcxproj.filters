@@ -320,6 +320,9 @@
     <Filter Include="00. GameObject\99. Etc\ProduceObj">
       <UniqueIdentifier>{ce7344bf-8874-4085-a962-2ab06b47642b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\TexCube">
+      <UniqueIdentifier>{a0a05c30-a440-49b8-a0b9-c10e36e50f5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -1001,6 +1004,9 @@
     <ClInclude Include="PDSemicolon.h">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
+    <ClInclude Include="TexCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1677,6 +1683,9 @@
     </ClCompile>
     <ClCompile Include="PDSemicolon.cpp">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="TexCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

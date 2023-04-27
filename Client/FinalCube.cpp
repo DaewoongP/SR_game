@@ -24,8 +24,6 @@ HRESULT CFinalCube::Ready_GameObject(_vec3 & vPos, _int iIndex)
 
 	m_pCollider->Set_Options({ 2.f, 2.f, 2.f }, COL_OBJ, false);
 
-	//m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
-
 	m_iCubeIndex = iIndex;
 	BoundingBox box;
 	box.Offset(vPos);
@@ -40,6 +38,7 @@ _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 	{
 		return OBJ_DEAD;
 	}
+
 	if (m_bDead)
 		m_pExpParticle->Start_Particle();
 
@@ -52,10 +51,10 @@ _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 		{
 			int i = 0;
 			// 4가지 아이템 중 하나를 무작위로 생성
-			_int iRandItem = 3;//rand() % 4;
+			_int iRandItem = rand() % 4;
 
 			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
-			FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, m_pTransform->m_vInfo[INFO_POS], iRandItem), );
+			FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, m_pTransform->m_vInfo[INFO_POS], iRandItem), E_FAIL);
 		}
 
 		m_bCreateItem = false;
@@ -91,7 +90,6 @@ void CFinalCube::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
 		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
-
 	{
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].z = 220.f;
 		m_bCreateItem = true;
