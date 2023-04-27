@@ -21,9 +21,9 @@ HRESULT CFinalCamera_1_1::Ready_Camera()
 	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,0.1f });//4
 	m_vecXYPosAngleSpeed.push_back({ 125.0f ,17.0f, 60.f,1.0f });//5
 	//보스
-	m_vecXYPosAngleSpeed.push_back({ 100.f ,-50.f, 120.f,60.0f });//6
-	m_vecXYPosAngleSpeed.push_back({ 150.f ,50.f, 120.f,1.0f });//7
-	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 120.f,0.1f });//8
+	m_vecXYPosAngleSpeed.push_back({ 200.f ,-50.f, 60.f,60.0f });//6
+	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,1.0f });//7
+	m_vecXYPosAngleSpeed.push_back({ 150.f ,-50.f, 60.f,0.2f });//8
 
 	return S_OK;
 }
@@ -50,9 +50,7 @@ _int CFinalCamera_1_1::Update_GameObject(const _float & fTimeDelta)
 		break;
 	}
 
-	__super::Update_GameObject(fTimeDelta);
-	//렌더러에 넣어주기
-	Engine::Add_RenderGroup(RENDER_ALPHABLEND, this);
+	CCamera::Update_GameObject(fTimeDelta);
 
 	return 0;
 }
@@ -70,7 +68,7 @@ void CFinalCamera_1_1::Update_Direct_X(const _float & fTimeDelta)
 
 	D3DXVec4Lerp(&pOut, &m_vecXYPosAngleSpeed[m_iIndex - 1], &m_vecXYPosAngleSpeed[m_iIndex], m_fTimer);
 
-	_vec3 vShake = { 0.0f,0.0f, 10.f };
+	_vec3 vShake = { 0.0f,0.0f, 50.f };
 
 	m_pTransform->Update_Shake(fTimeDelta, vShake);
 
