@@ -73,6 +73,8 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 	{
 		if (DIR_UP == tToodeeDir || DIR_BACK == tToodeeDir || DIR_LEFT == tToodeeDir || DIR_RIGHT == tToodeeDir)
 		{
+			StopSound(SOUND_EFFECT_GIMMICK);
+			PlaySound_Effect(L"11.wav", SOUND_EFFECT_GIMMICK, 1.f);
 			m_bSwtichON = true;
 			m_iTextureIndex = 1;
 			CSwitch::m_iCnt++;
@@ -82,6 +84,8 @@ void CSwitch::OnCollisionEnter(const Collision * collision)
 
 void CSwitch::OnCollisionExit(const Collision * collision)
 {
+	StopSound(SOUND_EFFECT_GIMMICK);
+	PlaySound_Effect(L"5.wav", SOUND_EFFECT_GIMMICK, 1.f);
 	CSwitch::m_iCnt--;
 
 	m_iTextureIndex = 0;

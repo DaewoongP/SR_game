@@ -486,6 +486,7 @@ void CBoss3::ShootBullet(const _float & fTimeDelta)
 
 void CBoss3::Do_Scream(const _float & fTimeDelta)
 {
+	
 	dynamic_cast<CStage1Camera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(4.f, 40, SHAKE_ALL);
 
 	BoundingBox box;
@@ -494,10 +495,13 @@ void CBoss3::Do_Scream(const _float & fTimeDelta)
 	m_pScreamParticle->Set_BoundingBox(box);
 	m_pScreamParticle->Set_SizeLifeTime(1.07f);
 	m_pScreamParticle->Start_Particle();
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"76.wav", SOUND_EFFECT_ENEMY, 1.f);
 }
 
 void CBoss3::End_Scream(const _float & fTimeDelta)
 {
+	
 	m_pScreamParticle->End_Particle();
 }
 

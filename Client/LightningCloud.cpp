@@ -52,6 +52,7 @@ _int CLightningCloud::Update_GameObject(const _float& fTimeDelta)
 	m_pLightningTex1->Update_Anim(fTimeDelta);
 	m_pLightningTex2->Update_Anim(fTimeDelta);
 	m_pLightningTex3->Update_Anim(fTimeDelta);
+
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
 }
@@ -60,6 +61,8 @@ _int CLightningCloud::Update_Too(const _float& fTimeDelta)
 {
 	if (m_bInit)
 	{
+		StopSound(SOUND_EFFECT_GIMMICK);
+		PlaySound_Effect(L"82.wav", SOUND_EFFECT_ENEMY, 1.f);
 		m_InitBox1 = m_Box1 = Check_BoundingBox(1);
 		m_pRainParticle1->Set_BoundingBox(m_Box1);
 		m_pRainParticle1->Start_Particle();
