@@ -23,6 +23,7 @@ public:
 public:
 	HRESULT				Ready_Loading(LOADINGID eID);
 	_uint				Loading_ForLogo(void);
+	_uint				Loading_ProduceScene1(void);
 	_uint				Loading_ForStage1(void);
 	_uint				Loading_ForStage2(void);
 	_uint				Loading_ForStage3(void);
@@ -38,6 +39,7 @@ public:
 	_uint				Loading_ForFinal1(void);
 	_uint				Loading_ForFinal2(void);
 	_uint				Loading_ForFinal3(void);
+	_uint				Loading_ProduceScene2(void);
 	_uint				Loading_ForBGTool(void);
 	_int				Get_LoadingPercent() { return m_iLoadingTexImgNum; }
 private:

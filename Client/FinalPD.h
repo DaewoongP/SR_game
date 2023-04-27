@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene.h"
-class CProduceScene :
+class CFinalPD :
 	public CScene
 {
 private:
-	explicit CProduceScene(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CProduceScene();
+	explicit CFinalPD(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFinalPD();
 
 public:
 	// CScene을(를) 통해 상속됨
@@ -21,10 +21,9 @@ private:
 	HRESULT				Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT				Ready_Layer_UI(const _tchar* pLayerTag);
 public:
-	static CProduceScene*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CFinalPD*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free(void);
-
 };
 
