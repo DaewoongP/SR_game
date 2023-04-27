@@ -305,6 +305,9 @@
     <Filter Include="00. GameObject\02. MapObject\Item">
       <UniqueIdentifier>{77c6f6f3-073f-46ba-a262-6671f75613ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. GameObject\02. MapObject\Cube\FinalMonkeyCube">
+      <UniqueIdentifier>{8a023e07-aa90-4bbb-af15-c85c3011e337}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -950,6 +953,9 @@
     <ClInclude Include="DefaultBullet.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="FinalMonkeyCube.h">
+      <Filter>00. GameObject\02. MapObject\Cube\FinalMonkeyCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1590,6 +1596,9 @@
     </ClCompile>
     <ClCompile Include="DefaultBullet.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalMonkeyCube.cpp">
+      <Filter>00. GameObject\02. MapObject\Cube\FinalMonkeyCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
