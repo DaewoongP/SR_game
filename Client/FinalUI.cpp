@@ -6,7 +6,7 @@
 
 CFinalUI::CFinalUI(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev),
-	m_iPreBoss1Hp(0)
+	m_iPreBoss1Hp(100)
 {
 }
 
@@ -35,22 +35,23 @@ _int CFinalUI::Update_GameObject(const _float& fTimeDelta)
 	vUp = { 0.0f,1.0f,0.0f };
 
 	_int iMaxHp = 100;
-	_int iBoss1Hp = 0;
+	_int iBoss1Hp = 100;
 	_float fBoss1HpPer = 0.f;
 
 	if (nullptr != Engine::Get_GameObject(L"Layer_GameLogic", L"Final3Boss1"))
 	{
 		iBoss1Hp = dynamic_cast<CFinal3Boss1*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Final3Boss1"))->Get_Boss1Hp();
 
-		fBoss1HpPer = (_float)iBoss1Hp / (_float)iMaxHp;
-		m_pTransform->m_vScale.x = fBoss1HpPer * m_BarMax;
-
 		if (iBoss1Hp != m_iPreBoss1Hp)
 		{
+			fBoss1HpPer = (_float)iBoss1Hp / (_float)iMaxHp;
+			m_pTransform->m_vScale.x = fBoss1HpPer * m_BarMax;
+					
+			_int iGap = m_iPreBoss1Hp - iBoss1Hp;
 			m_iPreBoss1Hp = iBoss1Hp;
-			m_pTransform->m_vInfo[INFO_POS].x -= 6.f;
-		}
-			
+
+			m_pTransform->m_vInfo[INFO_POS].x -= 6.f * iGap;
+		}	
 	}
 	
 	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100.f);

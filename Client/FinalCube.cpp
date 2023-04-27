@@ -81,13 +81,17 @@ void CFinalCube::Render_GameObject(void)
 void CFinalCube::OnCollisionEnter(const Collision * collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet") ||
 		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
 
 	{
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		m_bCreateItem = true;
-	}		
+	}	
+
+	if (!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet"))
+	{
+		m_bCreateItem = true;
+	}
 }
 
 HRESULT CFinalCube::Add_Component(void)
