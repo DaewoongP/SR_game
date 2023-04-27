@@ -313,6 +313,7 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\FinalCube">
       <UniqueIdentifier>{dc541e3e-9b69-465d-ba5f-4ca4d00098b4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Scene\ProduceScene">
       <UniqueIdentifier>{e30f3478-4f1b-4f45-95f6-8cd629a4ad84}</UniqueIdentifier>
     </Filter>
