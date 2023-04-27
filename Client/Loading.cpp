@@ -120,8 +120,8 @@ _uint CLoading::Loading_ForLogo(void)
 {
 	m_iLoadingTexImgNum = 0;
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
-	//Set_String(L"Sound/Bgm Loading..........");
-	FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
+	Set_String(L"Sound/Bgm Loading..........");
+	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
 	m_iLoadingTexImgNum = 1;
 	//Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");

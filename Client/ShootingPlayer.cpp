@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ShootingPlayer.h"
 #include "..\Engine\AbstractFactory.h"
-#include "Bullet.h"
 #include "SwordBullet.h"
 #include "FireBullet.h"
+#include "DefaultBullet.h"
 
 
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -26,7 +26,8 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 	m_vPos[LEFT] = vPos + _vec3(-5.f, 0.f, -5.f);
 	m_vPos[RIGHT] = vPos + _vec3(5.f, 0.f, -5.f);
 	m_vPrePos = vPos;
-	m_bKeyInput = true;
+	m_bLKey = true;
+	m_bRKey = true;
 	m_pTransform->m_vAngle.x = D3DXToRadian(-30);
 	m_fSlerp = 0.f;
 	Engine::Ready_Frame(L"2Sec", 0.5f);
@@ -41,7 +42,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	
-	Quad_Bullet(fTimeDelta);
+	Sword_Bullet(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -66,8 +67,9 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
 
-	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bKeyInput)
+	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bLKey)
 	{
+		m_bRKey = false;
 		m_fSlerp += fTimeDelta;
 		if (m_fSlerp >= 1.f)
 			m_fSlerp = 1.f;
@@ -77,8 +79,9 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 		return;
 	}
-	if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS && m_bKeyInput)
+	else if (Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYPRESS && m_bRKey)
 	{
+		m_bLKey = false;
 		m_fSlerp += fTimeDelta;
 		if (m_fSlerp >= 1.f)
 			m_fSlerp = 1.f;
@@ -87,17 +90,19 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_vPrePos = m_pTransform->m_vInfo[INFO_POS];
 		return;
 	}
-	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP ||
+	else if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYUP ||
 		Engine::Get_DIKeyState(DIK_RIGHT) == Engine::KEYUP)
 	{
 		m_fSlerp = 1.f;
-		m_bKeyInput = false;
+		m_bLKey = false;
+		m_bRKey = false;
 	}
 	m_fSlerp -= fTimeDelta;
 	if (m_fSlerp <= 0.f)
 	{
 		m_fSlerp = 0.f;
-		m_bKeyInput = true;
+		m_bLKey = true;
+		m_bRKey = true;
 		m_pTransform->m_vAngle.y = 0.f;
 		return;
 	}
@@ -110,7 +115,7 @@ void CShootingPlayer::Default_Bullet(const _float& fTimeDelta)
 	if (IsPermit_Call(L"1Sec", fTimeDelta))
 	{
 		CBullet* pBullet = nullptr;
-		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
+		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 1, 0));
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
@@ -121,20 +126,20 @@ void CShootingPlayer::Quad_Bullet(const _float & fTimeDelta)
 {
 	if (IsPermit_Call(L"1Sec", fTimeDelta))
 	{
-		CBullet* pBullet = nullptr;
-		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(1, 10, 0));
+		CDefaultBullet* pBullet = nullptr;
+		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(1, 10, 0));
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, 1));
+		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, 1));
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 10, 0));
+		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(-1, 10, 0));
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
-		pBullet = CBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, -1));
+		pBullet = CDefaultBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], _vec3(0, 30, -1));
 		if (pBullet == nullptr)
 			return;
 		m_pGameLogicLayer->Add_GameObject(L"Bullet", pBullet);
