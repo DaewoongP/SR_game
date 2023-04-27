@@ -5,12 +5,11 @@
 #include "SwordBullet.h"
 #include "FireBullet.h"
 
-
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr)
+	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr),
+	m_iBulletIndex(0)
 {
 }
-
 
 CShootingPlayer::~CShootingPlayer()
 {
@@ -41,7 +40,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	
-	Quad_Bullet(fTimeDelta);
+	Switch_Bullet(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -177,6 +176,37 @@ void CShootingPlayer::Rot_Player()
 	else
 	{
 		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 10.f);
+	}
+}
+
+void CShootingPlayer::Switch_Bullet(const _float & fTimeDelta)
+{
+	switch (m_iBulletIndex)
+	{
+	//Default Bullet
+	case 0 :
+		Default_Bullet(fTimeDelta);
+		break;
+
+	// Quad Bullet
+	case 1:
+		Quad_Bullet(fTimeDelta);
+		break;
+
+	// Sword Bullet
+	case 2:
+		Sword_Bullet(fTimeDelta);
+		break;
+
+	// Fire Bullet
+	case 3:
+		Fire_Bullet(fTimeDelta);
+		break;
+
+	// Default
+	default:
+		Default_Bullet(fTimeDelta);
+		break;
 	}
 }
 
