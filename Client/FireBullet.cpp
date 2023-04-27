@@ -16,7 +16,7 @@ HRESULT CFireBullet::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_fSpeed = 50.f;
 	m_pTransform->m_vAngle.z = D3DXToRadian(90);
-	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
+	m_pTex->Add_Anim(L"Idle", 0, 8, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	vDir = { GetRandomFloat(-1.f, 1.f), 20.f, GetRandomFloat(-1.f, 1.f) };
