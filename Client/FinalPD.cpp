@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ProduceScene.h"
+#include "FinalPD.h"
 
 #include "AbstractFactory.h"
 #include "Export_Function.h"
@@ -11,21 +11,26 @@
 #include "BackgroundSpr.h"
 #include "ProduceToodooHand.h"
 #include "ProduceErroeWindow.h"
+#include "PDGoal.h"
+#include "PDSadToodoo.h"
+#include "PDBackCode.h"
+#include "PDErroe.h"
+#include "PDSemicolon.h"
 
 
-CProduceScene::CProduceScene(LPDIRECT3DDEVICE9 pGraphicDev)
+CFinalPD::CFinalPD(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
 	CScene(pGraphicDev)
 {
 }
 
-CProduceScene::~CProduceScene()
+CFinalPD::~CFinalPD()
 {
 }
 
-HRESULT CProduceScene::Ready_Scene(void)
+HRESULT CFinalPD::Ready_Scene(void)
 {
-	m_eLoadingID = LOADING_PRODUCESCENE1;
+	m_eLoadingID = LOADING_PRODUCESCENE2;
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -36,31 +41,31 @@ HRESULT CProduceScene::Ready_Scene(void)
 
 }
 
-_int CProduceScene::Update_Scene(const _float & fTimeDelta)
+_int CFinalPD::Update_Scene(const _float & fTimeDelta)
 {
 	return __super::Update_Scene(fTimeDelta);
 }
 
-void CProduceScene::LateUpdate_Scene(void)
+void CFinalPD::LateUpdate_Scene(void)
 {
 	__super::LateUpdate_Scene();
 }
 
-void CProduceScene::Render_Scene(void)
+void CFinalPD::Render_Scene(void)
 {
 }
 
-HRESULT CProduceScene::Ready_Layer_Environment(const _tchar * pLayerTag)
-{
-	return S_OK;
-}
-
-HRESULT CProduceScene::Ready_Layer_GameLogic(const _tchar * pLayerTag)
+HRESULT CFinalPD::Ready_Layer_Environment(const _tchar * pLayerTag)
 {
 	return S_OK;
 }
 
-HRESULT CProduceScene::Ready_Layer_UI(const _tchar * pLayerTag)
+HRESULT CFinalPD::Ready_Layer_GameLogic(const _tchar * pLayerTag)
+{
+	return S_OK;
+}
+
+HRESULT CFinalPD::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
@@ -75,29 +80,34 @@ HRESULT CProduceScene::Ready_Layer_UI(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BackGround", pGameObject), E_FAIL);
 
-	pGameObject = CProduce1BackCode::Create(m_pGraphicDev);
+	pGameObject = CPDGoal::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Produce1BackCode", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PDGoal", pGameObject), E_FAIL);
 
-	pGameObject = CProduceToodoo::Create(m_pGraphicDev);
+	pGameObject = CPDSadToodoo::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ProduceToodoo", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PDSadToodoo", pGameObject), E_FAIL);
 
-	pGameObject = CProduceToodooHand::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ProduceToodooHand", pGameObject), E_FAIL);
 
-	pGameObject = CProduceErroeWindow::Create(m_pGraphicDev);
+	pGameObject = CPDBackCode::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ProduceErroeWindow", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PDBackCode", pGameObject), E_FAIL);
+	
+	pGameObject = CPDErroe::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PDErroe", pGameObject), E_FAIL);
+
+	pGameObject = CPDSemicolon::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PDSemicolon", pGameObject), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 	return S_OK;
 }
 
-CProduceScene * CProduceScene::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CFinalPD * CFinalPD::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CProduceScene *	pInstance = new CProduceScene(pGraphicDev);
+	CFinalPD *	pInstance = new CFinalPD(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Scene()))
 	{
@@ -108,7 +118,7 @@ CProduceScene * CProduceScene::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-void CProduceScene::Free(void)
+void CFinalPD::Free(void)
 {
 	__super::Free();
 }

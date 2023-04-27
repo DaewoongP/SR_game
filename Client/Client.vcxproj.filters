@@ -313,6 +313,11 @@
     </Filter>
     <Filter Include="00. GameObject\02. MapObject\FinalCube">
       <UniqueIdentifier>{dc541e3e-9b69-465d-ba5f-4ca4d00098b4}</UniqueIdentifier>
+    <Filter Include="01. Scene\ProduceScene">
+      <UniqueIdentifier>{e30f3478-4f1b-4f45-95f6-8cd629a4ad84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. GameObject\99. Etc\ProduceObj">
+      <UniqueIdentifier>{ce7344bf-8874-4085-a962-2ab06b47642b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -967,7 +972,24 @@
     <ClInclude Include="FinalStoneCube.h">
       <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClInclude>
-    <ClInclude Include="Produce1BackCode.h" />
+    <ClInclude Include="Produce1BackCode.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="ProduceToodoo.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="ProduceToodooHand.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="ProduceErroeWindow.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalPD.h" />
+    <ClInclude Include="PDSemicolon.h" />
+    <ClInclude Include="PDSadToodoo.h" />
+    <ClInclude Include="PDGoal.h" />
+    <ClInclude Include="PDBackCode.h" />
+    <ClInclude Include="PDErroe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1617,7 +1639,24 @@
     <ClCompile Include="FinalStoneCube.cpp">
       <Filter>00. GameObject\02. MapObject\FinalCube</Filter>
     </ClCompile>
-    <ClCompile Include="Produce1BackCode.cpp" />
+    <ClCompile Include="Produce1BackCode.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="ProduceToodoo.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="ProduceToodooHand.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="ProduceErroeWindow.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalPD.cpp" />
+    <ClCompile Include="PDSemicolon.cpp" />
+    <ClCompile Include="PDSadToodoo.cpp" />
+    <ClCompile Include="PDGoal.cpp" />
+    <ClCompile Include="PDBackCode.cpp" />
+    <ClCompile Include="PDErroe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">
