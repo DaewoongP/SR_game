@@ -24,6 +24,8 @@ public:
 	virtual void SwapTrigger();
 	virtual void OnCollisionEnter(const class Collision* collision);
 
+	_int	Get_Boss1Hp() { return m_iHp; }
+
 protected:
 	HRESULT		Add_Component(void);
 	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _vec3 osc, _vec3 csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);

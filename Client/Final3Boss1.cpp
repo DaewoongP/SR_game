@@ -949,7 +949,7 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 {
 	m_dwThrowCubeTime += fTimeDelta;
 
-	int iRandValue = rand() % 24;
+	int iRandValue = rand() % 18;
 
 	if (1.f < m_dwThrowCubeTime)
 	{

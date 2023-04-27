@@ -26,15 +26,15 @@ private:
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
+
 	_matrix m_matProjection;
 	_matrix m_matViewSpace;
-	_float m_fMaxHp = 0;
-	_float m_fHpPer;
-	_float m_HPUI;
-	_float m_fDelay;
+
+	_int	m_iPreBoss1Hp;
+
 	_bool m_bShakeDir;
 	_float m_BarMax;
-	_float m_BarPos;
+
 public:
 	static CFinalUI* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float Hp);
 
