@@ -14,7 +14,6 @@
 #include "ShootingPlayer.h"
 #include"FinalUI.h"
 #include"FinalUI_B.h"
-
 #include "Item.h"
 #include "StageCamera.h"
 
@@ -43,7 +42,8 @@ HRESULT CFinalStage3::Ready_Scene(void)
 }
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
-{
+{	
+	
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -64,6 +64,7 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	//FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"Camera", pLayer), E_FAIL);	
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -75,13 +76,13 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(4.f, 0.f, 0.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 
-	FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(20.f, 20.f, 8.f)), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(20.f, 200.f, 30.f)), E_FAIL);
 
 	// 카메라 확인용, 큐브 위치 확인용 나중에 삭제합시다 이건
-	
+
 
 	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-6.f, 200.f, 10.f), 0), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-3.f, 250.f, 15.f), 1), E_FAIL);

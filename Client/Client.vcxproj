@@ -231,6 +231,7 @@
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="LightningCloud.h" />
     <ClInclude Include="LoadingTex.h" />
@@ -251,7 +252,6 @@
     <ClInclude Include="Produce1BackCode.h" />
     <ClInclude Include="ProduceObject.h" />
     <ClInclude Include="ProduceScene.h" />
-    <ClInclude Include="RayLazer.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Semicolon.h" />
     <ClInclude Include="ShiningStar.h" />
@@ -425,6 +425,7 @@
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="LightningCloud.cpp" />
     <ClCompile Include="LoadingTex.cpp" />
@@ -445,7 +446,6 @@
     <ClCompile Include="Produce1BackCode.cpp" />
     <ClCompile Include="ProduceObject.cpp" />
     <ClCompile Include="ProduceScene.cpp" />
-    <ClCompile Include="RayLazer.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Semicolon.cpp" />
     <ClCompile Include="ShiningStar.cpp" />

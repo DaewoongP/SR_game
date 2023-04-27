@@ -48,7 +48,11 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	m_iHp = 100.f;
 	return S_OK;
 }
-
+void CFinal3Boss1::OnCollisionEnter(const Collision* collision)
+{
+	
+	
+}
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bInit)
@@ -858,6 +862,7 @@ void CFinal3Boss1::Render_GameObject(void)
 void CFinal3Boss1::SwapTrigger()
 {
 }
+
 
 HRESULT CFinal3Boss1::Add_Component(void)
 {

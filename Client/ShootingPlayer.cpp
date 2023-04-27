@@ -2,6 +2,7 @@
 #include "ShootingPlayer.h"
 #include "..\Engine\AbstractFactory.h"
 #include "Export_Function.h"
+#include"ShootingCamera.h"
 
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr),
@@ -34,13 +35,33 @@ HRESULT CShootingPlayer::Ready_GameObject(_vec3 & vPos)
 
 _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 {
+	CGameObject* pLaser = nullptr;
+	
 	Add_RenderGroup(RENDER_ALPHA, this);
 	Key_Input(fTimeDelta);
 	Rot_Player();
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
+	if (m_iBulletIndex == 4)
+		pLaser = Get_GameObject(L"Layer_GameLogic", L"ShootingLaser");
+
+	if (pLaser)
+	{
+		
+		m_fLaserTime += fTimeDelta;
+		if (m_fLaserTime > 2.5f && pLaser->m_pTransform->m_vScale.y < 30.f)
+		{
+			pLaser->m_pTransform->m_vScale.y += 0.3f;
+			pLaser->m_pTransform->m_vInfo[INFO_POS].z += 0.1f;
+		}
+
+	}
+
+
 	Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
+	if (pLaser == nullptr)
+		return 0;
 	return OBJ_NOEVENT;
 }
 
@@ -63,6 +84,10 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 {
 	_vec3 vUp = { 0,1,0 };
 
+	if (GetAsyncKeyState('F'))
+	{
+		m_iBulletIndex = 4;
+	}
 	if (Engine::Get_DIKeyState(DIK_LEFT) == Engine::KEYPRESS && m_bLKey)
 	{
 		m_bRKey = false;
@@ -102,6 +127,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransform->m_vAngle.y = 0.f;
 		return;
 	}
+	
 	// s Lerp Ã³¸®°¡ ¾È¸ÔÀ½.
 	D3DXVec3Lerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], 1 - m_fSlerp);
 }
@@ -121,6 +147,8 @@ void CShootingPlayer::Shoot_Bullet(const _float & fTimeDelta)
 		break;
 	case 3:
 		Fire_Bullet(fTimeDelta);
+		break;
+	case 4:Laser(fTimeDelta);
 		break;
 	default:
 		Default_Bullet(fTimeDelta);
@@ -188,7 +216,22 @@ void CShootingPlayer::Fire_Bullet(const _float& fTimeDelta)
 		}
 	}
 }
+void CShootingPlayer::Laser(const _float& fTimeDelta)
+{
+	if (m_bLaser)
+	{
+		CBullet* pBullet = nullptr;
 
+		pBullet = Engine::Reuse_Bullet(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS], LASER, _vec3(1, 0, 0));
+		if (pBullet == nullptr)
+			return;
+		m_pGameLogicLayer->Add_GameObject(L"ShootingLaser", pBullet);
+		m_bLaser = false;
+	}
+
+		
+	
+}
 void CShootingPlayer::Rot_Player()
 {
 	_vec3 vMin = m_pTransform->m_vInfo[INFO_POS] - m_vPos[INIT];

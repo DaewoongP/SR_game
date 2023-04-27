@@ -13,6 +13,7 @@ enum BULLETTYPE
 	DEFAULT,
 	SWORD,
 	FIRE,
+	LASER,
 	BULLET_END
 };
 class CBullet : public CGameObject
