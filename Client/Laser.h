@@ -1,6 +1,9 @@
 #pragma once
 #include "Include.h"
 #include "Bullet.h"
+BEGIN(Engine)
+class CCollider;
+END
 
 class CLaser : public CBullet
 {
@@ -15,14 +18,18 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
-
+	_bool Set_OverP() { return m_bOverPower = true; }
+	_bool Get_OverP() { return m_bOverPower; }
 private:
 	HRESULT Add_Component(void);
 
 private:
+	Engine::CCollider* m_pCollider;
 	_bool	m_bShoot;
 	_vec3 m_vPos;
 	_vec3 m_vTarget;
+public:
+	_bool m_bOverPower = false;
 
 public:
 	static CLaser* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);

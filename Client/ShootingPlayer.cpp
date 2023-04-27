@@ -3,6 +3,7 @@
 #include "..\Engine\AbstractFactory.h"
 #include "Export_Function.h"
 #include"ShootingCamera.h"
+#include"Laser.h"
 
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr),
@@ -45,7 +46,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_iBulletIndex == 4)
 		pLaser = Get_GameObject(L"Layer_GameLogic", L"ShootingLaser");
 
-	if (pLaser)
+	if (pLaser!=nullptr)
 	{
 		
 		m_fLaserTime += fTimeDelta;
@@ -53,6 +54,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 		{
 			pLaser->m_pTransform->m_vScale.y += 0.3f;
 			pLaser->m_pTransform->m_vInfo[INFO_POS].z += 0.1f;
+			pLaser->Set_Damage();
 		}
 
 	}
@@ -60,8 +62,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
-	if (pLaser == nullptr)
-		return 0;
+	
 	return OBJ_NOEVENT;
 }
 

@@ -12,7 +12,8 @@ CLaser::~CLaser()
 }
 
 HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
-{	
+{
+	
 	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget= Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
@@ -22,11 +23,10 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	m_pTransform->m_vScale.x=D3DXVec3Length(&(m_vPos-m_vTarget))/2.f;
 	//m_pTransform->m_vInfo[INFO_POS].y = vPos.y;
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTex->Add_Anim(L"Idle", 0, 36, 0.3f, true);
+	m_pTex->Add_Anim(L"Idle", 0, 6, 0.3f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
-	Engine::Ready_Frame(L"ShootingLaser", 1.f);
 	return S_OK;
 }
 
@@ -38,11 +38,13 @@ void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 _int CLaser::Update_GameObject(const _float& fTimeDelta)
 {
 
-
 	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f - 4.f) ,m_vPos.z + 10.f };
 	m_pTex->Update_Anim(fTimeDelta);
+	_vec3 vec = m_pTransform->m_vScale;
+
+	m_pCollider->Set_BoundingBox({ vec.y,vec.x,30.f });
 
 
 	__super::Update_GameObject(fTimeDelta);
@@ -66,6 +68,7 @@ void CLaser::Render_GameObject(void)
 
 void CLaser::OnCollisionEnter(const Collision* collision)
 {
+	collision->otherObj->Set_Damage();
 }
 
 HRESULT CLaser::Add_Component(void)
@@ -74,7 +77,10 @@ HRESULT CLaser::Add_Component(void)
 	pComponent = m_pTex = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"ShootingLaser", this));
 	NULL_CHECK_RETURN(m_pTex, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"ShootingLaser", pComponent });
-
+	
+	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 	return S_OK;
 }
 
