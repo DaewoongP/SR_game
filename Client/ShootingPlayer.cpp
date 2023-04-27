@@ -5,12 +5,11 @@
 #include "FireBullet.h"
 #include "DefaultBullet.h"
 
-
 CShootingPlayer::CShootingPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr)
+	: CGameObject(pGraphicDev), m_pGameLogicLayer(nullptr),
+	m_iBulletIndex(0)
 {
 }
-
 
 CShootingPlayer::~CShootingPlayer()
 {
@@ -42,7 +41,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	
-	Fire_Bullet(fTimeDelta);
+	Switch_Bullet(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -106,7 +105,7 @@ void CShootingPlayer::Key_Input(const _float & fTimeDelta)
 		m_pTransform->m_vAngle.y = 0.f;
 		return;
 	}
-	// s Lerp Ã³¸®°¡ ¾È¸ÔÀ½.
+	// s Lerp ÃƒÂ³Â¸Â®Â°Â¡ Â¾ÃˆÂ¸Ã”Ã€Â½.
 	D3DXVec3Lerp(&m_pTransform->m_vInfo[INFO_POS], &m_vPrePos, &m_vPos[INIT], 1 - m_fSlerp);
 }
 
@@ -185,6 +184,37 @@ void CShootingPlayer::Rot_Player()
 	else
 	{
 		m_pTransform->m_vAngle.y = D3DXToRadian(-fLen * 10.f);
+	}
+}
+
+void CShootingPlayer::Switch_Bullet(const _float & fTimeDelta)
+{
+	switch (m_iBulletIndex)
+	{
+	//Default Bullet
+	case 0 :
+		Default_Bullet(fTimeDelta);
+		break;
+
+	// Quad Bullet
+	case 1:
+		Quad_Bullet(fTimeDelta);
+		break;
+
+	// Sword Bullet
+	case 2:
+		Sword_Bullet(fTimeDelta);
+		break;
+
+	// Fire Bullet
+	case 3:
+		Fire_Bullet(fTimeDelta);
+		break;
+
+	// Default
+	default:
+		Default_Bullet(fTimeDelta);
+		break;
 	}
 }
 

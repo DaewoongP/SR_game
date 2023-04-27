@@ -13,6 +13,8 @@
 #include "ShootingCamera.h"
 #include "ShootingPlayer.h"
 
+#include "Item.h"
+
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
 {
@@ -72,6 +74,11 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(0.f, 0.f, 15.f)), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 	//FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(0.f, 200.f, 30.f)), E_FAIL);
+
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-6.f, 200.f, 10.f), 0), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-3.f, 250.f, 15.f), 1), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(3.f, 300.f, 15.f), 2), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(6.f, 350.f, 10.f), 3), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
