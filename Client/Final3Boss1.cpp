@@ -1032,10 +1032,10 @@ void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 		break;
 	}
 
-	/*CGameObject* pGameObject = CFinalCube::Create(m_pGraphicDev, vPos, iIndex);
+	CGameObject* pGameObject = CFinalCube::Create(m_pGraphicDev, vPos, iIndex);
 	pGameObject->Sort_Component();
 	pLayer->Add_GameObject(pTag, pGameObject);
-	m_vecCube.push_back(pGameObject);*/
+	m_vecCube.push_back(pGameObject);
 }
 
 CFinal3Boss1 * CFinal3Boss1::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 & vPos)
