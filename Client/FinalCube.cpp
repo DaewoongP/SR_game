@@ -51,8 +51,6 @@ void CFinalCube::Render_GameObject(void)
 	m_pTextureCom->Set_Texture(m_iCubeIndex);
 
 	m_pBufferCom->Render_Buffer();
-
-	//__super::Render_GameObject();
 }
 
 void CFinalCube::OnCollisionEnter(const Collision * collision)
