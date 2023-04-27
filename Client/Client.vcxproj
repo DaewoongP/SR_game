@@ -209,6 +209,8 @@
     <ClInclude Include="FinalCamera_1_1.h" />
     <ClInclude Include="FinalStage2.h" />
     <ClInclude Include="FinalStage3.h" />
+    <ClInclude Include="FinalUI.h" />
+    <ClInclude Include="FinalUI_B.h" />
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="Floor1.h" />
     <ClInclude Include="FoodCube.h" />
@@ -398,6 +400,8 @@
     <ClCompile Include="FinalCamera_1_1.cpp" />
     <ClCompile Include="FinalStage2.cpp" />
     <ClCompile Include="FinalStage3.cpp" />
+    <ClCompile Include="FinalUI.cpp" />
+    <ClCompile Include="FinalUI_B.cpp" />
     <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="Floor1.cpp" />
     <ClCompile Include="FoodCube.cpp" />

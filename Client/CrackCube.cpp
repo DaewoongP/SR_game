@@ -164,9 +164,9 @@ void CCrackCube::Shaking(_vec3& vPos, const _float& fTimeDelta)
 		m_bShakeDir = !m_bShakeDir;
 		
 		_float fRandomY = (_float)(rand() % 100) / 100.f;
-		_vec3 ShakePos = {vPos.x + 0.075f * fRandomX,
-					vPos.y ,  10.f};
-		m_pTransform->Set_Pos(ShakePos.x,ShakePos.y,10.f);
+		_vec3 ShakePos = {vPos.x + 0.15f * fRandomX,
+					vPos.y , vPos.z + 0.155f * fRandomX };
+		m_pTransform->Set_Pos(ShakePos.x,ShakePos.y,ShakePos.z);
 	}
 }
 
