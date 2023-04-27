@@ -53,7 +53,8 @@ _int CFinalUI::Update_GameObject(const _float& fTimeDelta)
 			m_pTransform->m_vInfo[INFO_POS].x -= 6.f * iGap;
 		}	
 	}
-	
+	if (iBoss1Hp <= 0.f)
+		m_pTransform->m_vScale.x = 0.f;
 	D3DXMatrixOrthoLH(&m_matProjection, WINCX, WINCY, 0, 100.f);
 	D3DXMatrixLookAtLH(&m_matViewSpace, &vEye, &vAt, &vUp);
 	__super::Update_GameObject(fTimeDelta);

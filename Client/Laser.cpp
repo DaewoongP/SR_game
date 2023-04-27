@@ -54,15 +54,16 @@ void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 
 _int CLaser::Update_GameObject(const _float& fTimeDelta)
 {
-
+	if(Get_GameObject(L"Layer_GameLogic", L"Thirddee")!=nullptr)
 	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
+	if(Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")!=nullptr)
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
-	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f - 4.f) };
+	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y-5.f, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f)-10.f };
 	m_pTex->Update_Anim(fTimeDelta);
 	_vec3 vec = m_pTransform->m_vScale;
 
 	m_pCollider->Set_BoundingBox({ vec.y,vec.x,30.f });
-
+	
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
