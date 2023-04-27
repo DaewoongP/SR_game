@@ -99,7 +99,6 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 			//전환되고 위치 회전이 이상함.
 			g_Is2D = true;
 		}
-		
 	}
 }
 
