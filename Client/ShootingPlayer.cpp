@@ -51,18 +51,14 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	if (pLaser!=nullptr)
 	{
-		
 		m_fLaserTime += fTimeDelta;
 		if (m_fLaserTime > 2.5f && pLaser->m_pTransform->m_vScale.y < 30.f)
 		{
 			pLaser->m_pTransform->m_vScale.y += 0.3f;
 			pLaser->m_pTransform->m_vInfo[INFO_POS].z -= 1.f;
 			pLaser->Set_D_T();
-		
 		}
-
 	}
-
 
 	if(m_bPossibleShoot)
 		Shoot_Bullet(fTimeDelta);

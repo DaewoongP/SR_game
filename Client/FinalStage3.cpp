@@ -85,7 +85,7 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 {
 	if (m_SwapTop_ShootingTirgger)
 	{
-		//ž�� �߾���� �ö�.
+		//ž�� �߾����?�ö�.
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
@@ -120,13 +120,12 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(0.f, 0.f, 15.f));
+	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(31.f, 14.f, -13.f));
 	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
 
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-	// 여기서 생성한거 벡터에 넣어놓는데, 원숭이 나오기전에 esc 누를경우 누수날수도있음
-	// 그걸 이제 Free 에서 삭제하는 코드로 해결함.
+
 	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
