@@ -52,7 +52,7 @@ HRESULT CBoss3::Ready_GameObject(_vec3 & vPos)
 	m_pTransform->m_bIsStatic = true;
 	m_pCollider->Set_BoundingBox({ 7.f, 7.f, 7.f });
 	m_pCollider->Set_Group(COL_OBJ);
-	m_iHp = 1;
+	m_iHp = 3;
 	m_pShadowCom->m_fShadowHeight = 13.0f;
 	m_pShadowCom->m_bUseOutLine = false;
 
