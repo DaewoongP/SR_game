@@ -3,7 +3,7 @@
 
 CPDSemicolon::CPDSemicolon(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
-	CProduceObject(pGraphicDev), iTextureIndex(0), m_bPlaySound(false)
+	CProduceObject(pGraphicDev), iTextureIndex(0), m_bPlaySound(false), m_bPlaySound2(false)
 {
 }
 
@@ -26,8 +26,8 @@ HRESULT CPDSemicolon::Ready_GameObject(void)
 
 	m_vecLerpList.push_back(_vec3(1000.0f, 0.0f, 0.0f));
 	m_vecLerpList.push_back(_vec3(0.0f, 1000.0f, 60.0f));
-	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.2f));
-	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.2f));
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.3f));
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.3f));
 	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));
 	m_vecLerpList.push_back(_vec3(0.0f, 1000.0f, 60.0f));
 	m_vecLerpList.push_back(_vec3(0.0f, 1000.0f, 60.0f));
@@ -49,12 +49,29 @@ _int CPDSemicolon::Update_GameObject(const _float & fTimeDelta)
 		On_Next(5);
 	}
 
-	if (4 == m_iIndex)
+	if (!m_bPlaySound && m_iIndex == 2)
 	{
-		
+		m_bPlaySound = true;
+		StopAll();
+		PlaySound_Effect(L"33.wav", SOUND_EFFECT_GIMMICK, 0.1f);
+		PlaySound_Effect(L"14.wav",SOUND_EFFECT, 1.0f);
+	}
+
+	if (!m_bPlaySound2 && 4 == m_iIndex)
+	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"27.wav", SOUND_EFFECT, 0.8f);
+		m_bPlaySound2 = true;
+		m_bPlaySound = false;
 		m_pTextureCom->Switch_Anim(L"SpeedIdle");
 	}
-	
+
+	if (!m_bPlaySound && 5 == m_iIndex)
+	{
+		m_bPlaySound = true;
+		StopAll();
+		PlaySound_Effect(L"37.wav", SOUND_EFFECT, 0.8f);
+	}
 
 	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_UI, this);

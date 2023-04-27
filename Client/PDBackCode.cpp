@@ -3,7 +3,7 @@
 
 CPDBackCode::CPDBackCode(LPDIRECT3DDEVICE9 pGraphicDev)
 	:
-	CProduceObject(pGraphicDev), iTextureIndex(1)
+	CProduceObject(pGraphicDev), iTextureIndex(1), m_bPlaySound(false)
 {
 }
 
@@ -24,7 +24,11 @@ HRESULT CPDBackCode::Ready_GameObject(void)
 	m_vecLerpList.push_back(_vec3(2000.0f, 0.0f, 0.2f));
 	m_vecLerpList.push_back(_vec3(2000.0f, 0.0f, 1.0f));
 	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 60.0f));
-	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.1f));
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));//5 출력 
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));//flase
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));//7 출력
+	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.5f));
 	m_vecLerpList.push_back(_vec3(0.0f, 0.0f, 0.1f));
 
 
@@ -40,7 +44,7 @@ _int CPDBackCode::Update_GameObject(const _float & fTimeDelta)
 
 	Update_Produce(fTimeDelta);
 
-	On_Next(5);
+	On_Next(9);
 
 	m_bStart = dynamic_cast<CProduceObject*>(Engine::Get_GameObject(L"Layer_UI", L"PDSemicolon"))->Get_Next();
 	
@@ -48,6 +52,33 @@ _int CPDBackCode::Update_GameObject(const _float & fTimeDelta)
 	{
 		iTextureIndex = 0;
 	}
+
+	switch (m_iIndex)
+	{
+	case 5:
+		if (!m_bPlaySound)
+		{
+			m_bPlaySound = true;
+			StopSound(SOUND_EFFECT);
+			PlaySound_Effect(L"13.wav", SOUND_EFFECT, 1.0f);
+		}
+		break;
+	case 6:
+		m_bPlaySound = false;
+		break;
+	case 7:
+		if (!m_bPlaySound)
+		{
+			m_bPlaySound = true;
+			StopSound(SOUND_EFFECT);
+			PlaySound_Effect(L"15.wav", SOUND_EFFECT, 1.0f);
+		}
+		break;
+	default:
+		break;
+	}
+
+
 	CGameObject::Update_GameObject(fTimeDelta);
 	Engine::Add_RenderGroup(RENDER_UI, this);
 

@@ -37,6 +37,13 @@ _int CPDSadToodoo::Update_GameObject(const _float & fTimeDelta)
 
 	Update_Produce(fTimeDelta);
 	On_Next(4);
+	if (!m_bPlaySound)
+	{
+StopAll();
+	PlaySound_Effect(L"33.wav", SOUND_EFFECT, 0.1f);
+	m_bPlaySound = true;
+	}
+	
 
 
 	CGameObject::Update_GameObject(fTimeDelta);
