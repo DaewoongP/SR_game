@@ -22,8 +22,6 @@ HRESULT CItem::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = false;
 
-	//m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
-
 	m_pCollider->Set_Options({ 4.f, 4.f, 1.f }, COL_OBJ, false);
 
 	m_iIndex = iIndex;
