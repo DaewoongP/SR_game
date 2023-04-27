@@ -988,7 +988,6 @@
     <ClInclude Include="ProduceErroeWindow.h">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
-    <ClInclude Include="FinalPD.h" />
     <ClInclude Include="PDBackCode.h">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
@@ -1006,6 +1005,9 @@
     </ClInclude>
     <ClInclude Include="TexCube.h">
       <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalPD.h">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1668,7 +1670,6 @@
     <ClCompile Include="ProduceErroeWindow.cpp">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
-    <ClCompile Include="FinalPD.cpp" />
     <ClCompile Include="PDBackCode.cpp">
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
@@ -1686,6 +1687,9 @@
     </ClCompile>
     <ClCompile Include="TexCube.cpp">
       <Filter>00. GameObject\02. MapObject\Cube\TexCube</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalPD.cpp">
+      <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
