@@ -20,7 +20,7 @@ HRESULT CSwordBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
-	Engine::Ready_Frame(L"Sword1Sec", 1.f);
+	Engine::Ready_Frame(L"Sword1Sec", 2.f);
 
 	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
 
@@ -37,7 +37,7 @@ void CSwordBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
 
-	Engine::Ready_Frame(L"Sword1Sec", 1.f);
+	Engine::Ready_Frame(L"Sword1Sec", 2.f);
 
 	m_pCollider->Set_BoundingBox(_vec3{ 4.f, 4.f, 4.f });
 }
