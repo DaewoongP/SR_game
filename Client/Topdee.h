@@ -67,7 +67,7 @@ protected:
 	_byte					m_byPlayerInputDir;
 	_byte					m_byLookDir;
 	_vec3					m_LookVec;
-	_float					m_fSpeed = 10.f;
+	_float					m_fSpeed = 13.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_bool					m_bIsMoveKeyPress = false;

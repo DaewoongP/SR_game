@@ -36,7 +36,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos, _int trigger)
 
 	m_pTransform->m_bIsStatic = false;
 	m_iHp = 3;
-	m_eCurrentState = B2_STUMP;
+	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
 	m_JumpCnt = 0;

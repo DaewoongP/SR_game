@@ -52,7 +52,7 @@ public:
 protected:
 	Engine::CLine*			m_pLine;
 
-	_float					m_fSpeed = 16.f;
+	_float					m_fSpeed = 20.f;
 	_vec3					m_MovetoPos;
 	_bool					m_bIsMoving = false;
 	_vec3					m_MoveVec;

@@ -52,7 +52,7 @@ protected:
 
 	_bool					m_bRender_too;
 	_bool					m_bJumpable;
-	_float					m_fSpeed = 10.f;
+	_float					m_fSpeed = 13.f;
 	_float					m_fWalkTime = 0.f;
 	COL_DIR					m_eKeyState;
 	_bool					m_bInit2;

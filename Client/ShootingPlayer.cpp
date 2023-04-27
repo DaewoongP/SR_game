@@ -42,16 +42,20 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (!m_bUseUpdate)
 		return 0;
 	CGameObject* pLaser = nullptr;
-	
+
 	Add_RenderGroup(RENDER_ALPHA, this);
-	Key_Input(fTimeDelta);
-	Rot_Player();
+
+	if (m_bPossibleShoot)
+	{
+		Key_Input(fTimeDelta);
+		Rot_Player();
+	}
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	if (m_iBulletIndex == 4)
 		pLaser = Get_GameObject(L"Layer_GameLogic", L"ShootingLaser");
 
-	if (pLaser!=nullptr)
+	if (pLaser != nullptr)
 	{
 		m_fLaserTime += fTimeDelta;
 		if (m_fLaserTime > 2.5f && pLaser->m_pTransform->m_vScale.y < 30.f)
@@ -62,10 +66,10 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 		}
 	}
 
-	if(m_bPossibleShoot)
+	if (m_bPossibleShoot)
 		Shoot_Bullet(fTimeDelta);
 	__super::Update_GameObject(fTimeDelta);
-	
+
 	return OBJ_NOEVENT;
 }
 
