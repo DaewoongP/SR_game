@@ -1,11 +1,11 @@
 #pragma once
 #include "ProduceObject.h"
-class CProduce1BackCode :
+class CPDErroe :
 	public CProduceObject
 {
 private:
-	explicit CProduce1BackCode(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CProduce1BackCode();
+	explicit CPDErroe(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CPDErroe();
 
 public:
 	virtual HRESULT		Ready_GameObject(void);
@@ -13,8 +13,9 @@ public:
 	virtual void		Render_GameObject(void);
 private:
 	_int iTextureIndex;
+	_bool m_bPlaySound;
 public:
-	static CProduce1BackCode* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CPDErroe* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	HRESULT Add_Component();
 private:
 	virtual void Free();

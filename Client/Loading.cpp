@@ -20,6 +20,8 @@
 #include "FinalStage1.h"
 #include "FinalStage3.h"
 #include "BackGroundToolScene.h"
+#include "ProduceScene.h"
+#include "FinalPD.h"
 
 CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphicDev)
 	: m_pGraphicDev(pGraphicDev)
@@ -46,6 +48,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	{
 	case LOADING_LOGO:
 		iFlag = pLoading->Loading_ForLogo();
+		break;
+	case LOADING_PRODUCESCENE1:
+		iFlag = pLoading->Loading_ProduceScene1();
 		break;
 	case LOADING_STAGE1:
 		iFlag = pLoading->Loading_ForStage1();
@@ -89,6 +94,9 @@ unsigned int CLoading::Thread_Main(void * pArg)
 	case LOADING_FINAL3:
 		iFlag = pLoading->Loading_ForFinal3();
 		break;
+	case LOADING_PRODUCESCENE2:
+		iFlag = pLoading->Loading_ProduceScene2();
+		break;
 	case LOADING_BGTOOL:
 		iFlag = pLoading->Loading_ForBGTool();
 		break;
@@ -118,11 +126,10 @@ _uint CLoading::Loading_ForLogo(void)
 	//Sound 로딩오래걸릴경우 여기를 끄면됨
 	Set_String(L"Sound/Bgm Loading..........");
 	//FAILED_CHECK_RETURN(Engine::Ready_Sound(), E_FAIL);
-
 	m_iLoadingTexImgNum = 1;
 	//Engine::PlayBGM(L"9.wav", 0.5f);
 	Set_String(L"Sound/Effect Loading..........");
-	//FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Sound_Effect(), E_FAIL);
 	m_iLoadingTexImgNum = 2;
 
 	Set_String(L"Sound/Effect Loading..........");
@@ -314,7 +321,11 @@ _uint CLoading::Loading_ForLogo(void)
 	//연출 1
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BackCode", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/BackCode_%d.png", 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ToodooProduceFace", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/Toodoo.png")), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ToodooProduceHand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/ToodooHand_%d.png",2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ToodooProduceHand", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/ToodooHand_%d.png", 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Erreo", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/Erroe.png")), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"SadToodoo", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/Sad_Toodoo.png")), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"GoalThirdee", CTexture::Create(m_pGraphicDev, TEX_NORMAL, L"../Resource/Texture/Export_Textures/Sprites/Produce_Img/Final_Player.png")), E_FAIL);
 
 
 
@@ -377,6 +388,10 @@ _uint CLoading::Loading_ForLogo(void)
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"BlockExp", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/blockExpSpr/blockExpSpr_%d.png",
 		9, 0.8f, 1, false)), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ItemExp", CTexParticle::Create(m_pGraphicDev,
+		L"../Resource/Texture/MiniGameTex/Explosion1x1_%d.png", 12,
+		1.f, 1, false)), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"ShineParticle", CTexParticle::Create(m_pGraphicDev,
 		L"../Resource/Texture/Export_Textures/Sprites/shineBiggerSpr/shineBiggerSpr_0.png", 1,
@@ -469,6 +484,17 @@ _uint CLoading::Loading_ForLogo(void)
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading Complete!!!!!!!!");
 
+	return 0;
+}
+
+_uint CLoading::Loading_ProduceScene1(void)
+{
+	Set_String(L"Stage Loading..........");
+	m_pScene = CProduceScene::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading0 Complete!!!!!!!!");
 	return 0;
 }
 
@@ -647,6 +673,18 @@ _uint CLoading::Loading_ForFinal3(void)
 	m_iLoadingTexImgNum = 12;
 	Set_String(L"Loading Final Complete!!!!!!!!");
 	return 0;
+}
+
+_uint CLoading::Loading_ProduceScene2(void)
+{
+	Set_String(L"Stage Loading..........");
+	m_pScene = CFinalPD::Create(m_pGraphicDev);
+	dynamic_cast<CPreStage*>(Engine::Get_Scene())->Set_Scene(m_pScene);
+	m_bFinish = true;
+	m_iLoadingTexImgNum = 12;
+	Set_String(L"Loading0 Complete!!!!!!!!");
+	return 0;
+
 }
 
 _uint CLoading::Loading_ForBGTool(void)

@@ -27,14 +27,21 @@ HRESULT CFinalCube::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	//m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
 
 	m_iCubeIndex = iIndex;
-
+	BoundingBox box;
+	box.Offset(vPos);
+	m_pExpParticle->Set_BoundingBox(box);
+	m_pExpParticle->Set_Size(10.f);
 	return S_OK;
 }
 
 _int CFinalCube::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_bDead)
+	if (m_pExpParticle->IsDead())
+	{
 		return OBJ_DEAD;
+	}
+	if (m_bDead)
+		m_pExpParticle->Start_Particle();
 
 	if (m_bCreateItem)
 	{
@@ -69,6 +76,8 @@ void CFinalCube::LateUpdate_GameObject(void)
 
 void CFinalCube::Render_GameObject(void)
 {
+	if (-1 == m_pExpParticle->Update_Particle())
+		return;
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(m_iCubeIndex);
@@ -109,6 +118,10 @@ HRESULT CFinalCube::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+
+	pComponent = m_pExpParticle = dynamic_cast<CTexParticle*>(Engine::Clone_Proto(L"ItemExp", this));
+	NULL_CHECK_RETURN(m_pExpParticle, E_FAIL);
+	m_vecComponent[ID_STATIC].push_back({ L"ItemExp", pComponent });
 
 	return S_OK;
 }

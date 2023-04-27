@@ -138,7 +138,7 @@ void CLayer::Delete_In_Layer()
 
 void CLayer::Delete_Tag(const _tchar * pObjTag)
 {
-	for (auto iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
+	for (auto& iter = m_uMapObject.begin(); iter != m_uMapObject.end();)
 	{
 		if (!lstrcmp(iter->second->m_pTag, pObjTag))
 		{

@@ -13,6 +13,8 @@
 #include "Boss3EyePupil.h"
 #include "Boss3Eyebrow.h"
 #include "Boss3Mouth.h"
+#include "Thirddee.h"
+#include "ShootingPlayer.h"
 
 CBoss3::CBoss3(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CCube(pGraphicDev),
@@ -731,7 +733,18 @@ HRESULT CBoss3::CreateParts(CLayer* pStageLayer)
 	FAILED_CHECK_RETURN(FACTORY<CBoss3HandPart>::Create(L"Boss3RPart3Shadow", pStageLayer, _vec3{ vPos.x ,vPos.y,vPos.z }, 2), E_FAIL);
 
 	m_pToodee = dynamic_cast<CToodee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Toodee"));
-	m_pTopdee = dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	if (dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CTopdee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
+	else if (dynamic_cast<CShootingPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CShootingPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
+	else if (dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee")))
+	{
+		m_pTopdee = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee"));
+	}
 	m_pBoss3Mouth = dynamic_cast<CBoss3Mouth*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Mouth"));
 	m_pBossLeftHand = dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Left"));
 	m_pBossRightHand = dynamic_cast<CBoss3Hand*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3Right"));

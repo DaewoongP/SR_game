@@ -25,7 +25,7 @@
 #include "Toodee.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CScene(pGraphicDev), m_bMonkeySpwanTrigger(true)
+	: CScene(pGraphicDev), m_bMonkeySpawnTrigger(true), m_bStoneSpawnTrigger(false)
 {
 }
 
@@ -53,12 +53,15 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpwanTrigger)
+	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
+		pLayer->Delete_Tag(L"ShootingCamera");
+		FACTORY<CStage1Camera>::Create(L"Camera", pLayer);
 		m_StageState = F3_SpawnCube;
-		m_bMonkeySpwanTrigger = false;
+		m_bMonkeySpawnTrigger = false;
 	}
-		
+
 	(this->*funcAction[m_StageState])(fTimeDelta);
 	return __super::Update_Scene(fTimeDelta);
 }
@@ -79,8 +82,8 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
-	//FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	
+	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -94,17 +97,10 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(31.f, 14.f, -13.f)), E_FAIL);
-
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-	///////////////////////// 1�� ////////////////////////////////////
-	/*
-	FAILED_CHECK_RETURN(FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(58.f, 6.f, 10.f)), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CTopdee>::Create(L"Topdee", pLayer, _vec3(26.f, 10.f, 10.f)), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CFinalStoneCube>::CreateParent(L"StoneCube", pLayer, _vec3(0,0,0)), E_FAIL);*/
-	///////////////////////// 2�� ////////////////////////////////////
-	/*for (int i = 0; i < CUBEX; i++)
+  // 이거 미리 생성해두기때문에 스테이지 나오기전에 esc누르면 삭제가 안되므로, __Free에서 불러주는데 문제있으면 생성시점 변경
+	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
 			continue;
@@ -194,6 +190,11 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f),true);
 		m_pMonkey = nullptr;
 		m_StageState = F3_NONE;
+
+		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+		FACTORY<CToodee>::Create(L"Toodee", pLayer, _vec3(1058.f, 6.f, 10.f));
+
+		FACTORY<CFinalStoneCube>::CreateParent(L"StoneCube", pLayer, _vec3(0, 0, 0));
 	}
 }
 
@@ -216,5 +217,6 @@ CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CFinalStage3::Free(void)
 {
+	for_each(m_MokeyCube.begin(), m_MokeyCube.end(), CDeleteObj());
 	__super::Free();
 }

@@ -8,7 +8,6 @@ BEGIN(Engine)
 class CRcTex;
 class CTexture;
 class CCollider;
-
 END
 
 class CItem : public CGameObject
@@ -32,7 +31,6 @@ private:
 	Engine::CRcTex*			m_pBufferCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCollider*		m_pCollider;
-
 	_int					m_iIndex;
 
 public:
