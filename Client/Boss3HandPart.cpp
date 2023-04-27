@@ -170,11 +170,15 @@ void CBoss3HandPart::Render_GameObject(void)
 	if (m_bSparkON)
 		m_pSparkAnimation->Set_Texture(0);	
 
-	if (!lstrcmp(m_pTag, L"Boss3LPartShadow") || !lstrcmp(m_pTag, L"Boss3RPartShadow")||
-		!lstrcmp(m_pTag, L"Boss3LPart1Shadow") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow")||
-		!lstrcmp(m_pTag, L"Boss3LPart2Shadow") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow")||
+	if (!lstrcmp(m_pTag, L"Boss3LPartShadow") || !lstrcmp(m_pTag, L"Boss3RPartShadow") ||
+		!lstrcmp(m_pTag, L"Boss3LPart1Shadow") || !lstrcmp(m_pTag, L"Boss3RPart1Shadow") ||
+		!lstrcmp(m_pTag, L"Boss3LPart2Shadow") || !lstrcmp(m_pTag, L"Boss3RPart2Shadow") ||
 		!lstrcmp(m_pTag, L"Boss3LPart3Shadow") || !lstrcmp(m_pTag, L"Boss3RPart3Shadow"))
+	{
+		if (m_pBoss3->m_pTransform->m_vInfo[INFO_POS].z >= m_pTransform->m_vInfo[INFO_POS].z)
+			return;
 		m_pTextureCom2->Set_Texture(m_iIndex);
+	}
 
 	m_pBufferCom->Render_Buffer();
 

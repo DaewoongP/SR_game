@@ -15,7 +15,7 @@ public:
 	void	Set_Shock(_bool TF) { m_bShock = TF; }
 	void	Set_Lerp() { m_bLerpMove = true; }
 	void	Set_Damaged() { m_bDamaged = true; }
-
+	void	Off_Shadow() { m_pShadowCom->Off(); }
 public:
 	virtual HRESULT Ready_GameObject(_vec3& vPos, _int iIndex);
 	virtual _int Update_GameObject(const _float& fTimeDelta) override;

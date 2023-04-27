@@ -19,6 +19,10 @@
 #include "StageCamera.h"
 #include "Boss2.h"
 #include "Item.h"
+#include "FinalStoneCube.h"
+#include "Boss3.h"
+#include "Topdee.h"
+#include "Toodee.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -34,7 +38,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 {
 	m_SpwanCube = false;
 	m_eLoadingID = LOADING_FINAL3;
-	m_pFade = CFade::Create(m_pGraphicDev, false);
+	
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
@@ -83,40 +87,8 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CShootingPlayer>::Create(L"Thirddee", pLayer, _vec3(4.f, 10.f, 10.f)), E_FAIL);
+
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-
-	FAILED_CHECK_RETURN(FACTORY<CFinal3Boss1>::Create(L"Final3Boss1", pLayer, _vec3(20.f, 20.f, 80.f)), E_FAIL);
-
-	for (int i = 0; i < CUBEX; i++)
-	{
-		if (i % 10 < 4)
-			continue;
-		FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)i * 2,10.f,10.f }, m_MokeyCube, 2), E_FAIL);
-	}
-	for (int i = 0; i < CUBEY; i++)
-	{
-		for (int j = 0; j < CUBEX; j++)
-		{
-			//맨 윗줄
-			if (i == 0)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-			//사이 첫줄
-			if (i == CUBEY - 1)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f },m_MokeyCube, 2), E_FAIL);
-			//사이 마지막줄
-			if (j == 0)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-			//맨 아랫줄
-			if (j == CUBEX - 1)
-				FAILED_CHECK_RETURN(FACTORY<CFinalMonkeyCube>::Create(L"MapCube", _vec3{ (_float)j * 2,(_float)i * 2,10.f }, m_MokeyCube, 2), E_FAIL);
-		}
-	}
-
-	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-6.f, 200.f, 10.f), 0), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(-3.f, 250.f, 15.f), 1), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(3.f, 300.f, 15.f), 2), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CItem>::Create(L"Item", pLayer, _vec3(6.f, 350.f, 10.f), 3), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
@@ -127,9 +99,6 @@ HRESULT CFinalStage3::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
-	_int pHp = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->Get_Hp();
-	FAILED_CHECK_RETURN(FACTORY<CFinalUI_B>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
-	FAILED_CHECK_RETURN(FACTORY<CFinalUI>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
 
