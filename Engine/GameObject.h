@@ -40,6 +40,11 @@ public:
 	_bool		Get_Damage() { return m_bDamage; }
 	_bool		Set_Damage() { return m_bDamage = false; }
 	_bool		m_bDamage = false;
+	void				Set_Render(_bool value) { m_bUseRender = value; }
+	void				Set_Update(_bool value) { m_bUseUpdate = value; }
+	_bool				Get_Render() { return m_bUseRender; }
+	_bool				Get_Update() { return m_bUseUpdate; }
+	_bool				Get_Dead() { return m_bDead; }
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag, COMPONENTID eID);
 
@@ -52,6 +57,8 @@ public:
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
 	_int m_iHp;
+	_bool					m_bUseRender = true;
+	_bool					m_bUseUpdate = true;
 protected:
 	virtual void		Free(void);
 };

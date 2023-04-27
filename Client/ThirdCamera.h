@@ -36,10 +36,19 @@ private:
 
 	_float		m_fs;
 	_float		m_fCamChangeSpeed;
-	_float		m_fShakeValue;
+	_float		m_fOffsetScale;
+	_bool		m_RePosition;
 public:
+	void	SetOffset(_float vec) { m_fOffsetScale = vec; m_RePosition = false; }
+	_float	GetOffset() { return m_fOffsetScale;}
+	void	SetRePosition() { m_RePosition = true; }
 	static CThirdCamera*	Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	void SetShakeValue(_float value) { m_fShakeValue = value; }
+
+	void Start_Camera_Shake(_float fDuration, _int iPower, SHAKE_AXIS eShake_Axis = Engine::SHAKE_ALL, _bool bUseWeak = true)
+	{
+		m_pTransform->m_bUseWeak = bUseWeak;
+		m_pTransform->Set_Shake(fDuration, iPower, eShake_Axis);
+	}
 private:
 	virtual void Free(void) override;
 };

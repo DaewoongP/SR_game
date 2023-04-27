@@ -83,6 +83,8 @@ void CLaserTurret::LateUpdate_GameObject(void)
 
 void CLaserTurret::Render_GameObject(void)
 {
+	if (!m_bUseRender)
+		return;
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
 
 	m_pTextureCom->Set_Texture(m_iIndex);

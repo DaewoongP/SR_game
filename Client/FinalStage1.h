@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene.h"
 
+class CThirddee;
+
 class CFinalStage1 : public Engine::CScene
 {
 private:
@@ -22,7 +24,7 @@ public:
 	static CFinalStage1*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
-	//CThirddee*			m_pPlayer;
+	CThirddee*			m_pPlayer;
 	virtual void		Free(void);
 	_int m_iCount = 0;
 

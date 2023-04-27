@@ -20,6 +20,7 @@
 #include "FinalPortal.h"
 #include "FinalPortalFloor.h"
 #include "Semicolon.h"
+#include "LaserTurret.h"
 #include "DynamicCamera.h"
 
 CFinalStage1::CFinalStage1(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -46,14 +47,76 @@ HRESULT CFinalStage1::Ready_Scene(void)
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	Engine::StopSound(SOUND_BGM);
 	Engine::PlayBGM(L"3.wav", 0.35f);
-	
-
-	//m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
 	return S_OK;
 }
 
 _int CFinalStage1::Update_Scene(const _float & fTimeDelta)
 {
+	if (m_pPlayer == nullptr)
+		m_pPlayer = dynamic_cast<CThirddee*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Thirddee"));
+	else 
+	{
+		if (m_pPlayer->Get_Dead())
+			return __super::Update_Scene(fTimeDelta);
+
+		auto _layer = m_uMapLayer.find(L"Layer_Environment");
+		auto iter_begin = _layer->second->GetMapObject()->begin();
+		auto iter_end = _layer->second->GetMapObject()->end();
+		for (; iter_begin != iter_end; iter_begin++)
+		{
+			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+			{
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 40)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else
+				{
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+		}
+
+		_layer = m_uMapLayer.find(L"Layer_GameLogic");
+		iter_begin = _layer->second->GetMapObject()->begin();
+		iter_end = _layer->second->GetMapObject()->end();
+		for (; iter_begin != iter_end; iter_begin++)
+		{
+			if (dynamic_cast<CCube*>(iter_begin->second) != nullptr)
+			{
+				if (!lstrcmp(iter_begin->second->m_pTag, L"GravityCube"))
+					continue;
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 20)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else
+				{
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+
+			if (dynamic_cast<CLaserTurret*>(iter_begin->second) != nullptr)
+			{
+				float offset = m_pPlayer->m_pTransform->m_vInfo[INFO_POS].x - iter_begin->second->m_pTransform->m_vInfo[INFO_POS].x;
+				if (fabsf(offset) > 24)
+				{
+					iter_begin->second->Set_Render(false);
+					iter_begin->second->Set_Update(false);
+				}
+				else {
+					iter_begin->second->Set_Render(true);
+					iter_begin->second->Set_Update(true);
+				}
+			}
+		}
+	}
 	return __super::Update_Scene(fTimeDelta);
 }
 

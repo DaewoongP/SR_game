@@ -13,11 +13,11 @@ CThirdCamera::~CThirdCamera()
 
 HRESULT CThirdCamera::Ready_GameObject(void)
 {
-	m_fShakeValue = 0;
 	D3DXMatrixIdentity(&m_matRot);
 	D3DXMatrixIdentity(&m_matView);
 	D3DXMatrixIdentity(&m_matProj);
 	m_fs = 0.f;
+	m_fOffsetScale = 1;
 	m_fCamChangeSpeed = 1.5f;
 	return S_OK;
 }
@@ -108,12 +108,11 @@ void CThirdCamera::Set_PlayerPos(const _float& fTimeDelta)
 	m_pTransform->Update_Shake(fTimeDelta, vShake);
 
 
-	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f);
-	m_fShakeValue = Lerp(m_fShakeValue, 0, 0.1f);
-	m_vTooView[AT] = m_vPlayerPos+ _vec3(GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue), GetRandomFloat(-m_fShakeValue, m_fShakeValue));
+	m_vTooView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -10.f)*m_fOffsetScale;
+	m_vTooView[AT] = m_vPlayerPos;
 	m_vTooView[UP] = _vec3(0.f, 1.f, 0.f);
 
-	m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f);
+	m_vTopView[EYE] = m_vPlayerPos + _vec3(-15.f, 0.f, -8.f)*m_fOffsetScale;
 	m_vTopView[AT] = m_vPlayerPos + vShake;
 	m_vTopView[UP] = _vec3(0.f, 0.f, -1.f);
 }
