@@ -46,7 +46,7 @@ _int CFinalStoneCube::Update_GameObject(const _float & fTimeDelta)
 		if (End_Pattern(fTimeDelta))
 		{
 			m_pGameLogicLayer->Delete_Tag(L"MapCube");
-			m_pGameLogicLayer->Delete_Tag(L"Boss3");
+			m_pBoss->m_bDead = true;
 			dynamic_cast<CFinalStage3*>(Engine::Get_Scene())->Set_SwapTrigger();
 			return OBJ_DEAD;
 		}
