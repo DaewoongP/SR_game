@@ -66,7 +66,7 @@ void CItem::Render_GameObject(void)
 
 void CItem::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingPlayer"))
 	{
 		dynamic_cast<CShootingPlayer*>(collision->otherObj)->Set_Bullet(m_iIndex);
 		m_bDead = true;

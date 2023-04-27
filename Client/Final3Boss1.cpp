@@ -20,7 +20,7 @@ for (int j = 0; j < clip->source[i].size(); j++)\
 }\
 
 CFinal3Boss1::CFinal3Boss1(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev), m_bThrow(true)
 {
 	m_bInit = true;
 	m_dwRestTime = 1;
@@ -841,7 +841,9 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
-	Throw_Cube(fTimeDelta);
+
+	if (m_bThrow)
+		Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 

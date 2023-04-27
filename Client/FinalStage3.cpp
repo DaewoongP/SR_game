@@ -58,6 +58,7 @@ _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
 	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
+		m_pBoss->Set_Throw(false);
 		m_StageState = F3_SpawnCube;
 		m_bMonkeySpawnTrigger = false;
 		m_ShootingPlayerLerpTrigger = true;
@@ -82,7 +83,6 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 {
 	if (m_SwapTop_ShootingTirgger)
 	{
-		//Å¾ï¿½ï¿½ ï¿½ß¾ï¿½ï¿½ï¿½ï¿?ï¿½Ã¶ï¿½.
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
@@ -98,6 +98,7 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 			dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(true);
 			//ÀüÈ¯µÇ°í À§Ä¡ È¸ÀüÀÌ ÀÌ»óÇÔ.
 			g_Is2D = true;
+			m_pBoss->Set_Throw(true);
 		}
 	}
 }
