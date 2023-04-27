@@ -232,6 +232,7 @@
     <ClInclude Include="GravityCube.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserTurret.h" />
     <ClInclude Include="FinalStoneCube.h" />
     <ClInclude Include="LightningCloud.h" />
@@ -427,6 +428,7 @@
     <ClCompile Include="GravityCube.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserTurret.cpp" />
     <ClCompile Include="FinalStoneCube.cpp" />
     <ClCompile Include="LightningCloud.cpp" />

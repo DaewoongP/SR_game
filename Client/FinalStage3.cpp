@@ -56,7 +56,6 @@ _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 	if (Engine::Get_DIKeyState(DIK_H) == Engine::KEYDOWN&&!m_SpwanCube)
 		m_StageState = F3_SpawnCube;
 	(this->*funcAction[m_StageState])(fTimeDelta);
-
 	return __super::Update_Scene(fTimeDelta);
 }
 
@@ -75,7 +74,9 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	//FAILED_CHECK_RETURN(FACTORY<CDynamicCamera>::Create(L"Camera", pLayer), E_FAIL);	
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -87,8 +88,6 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
-
-	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
 
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 

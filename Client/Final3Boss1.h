@@ -31,6 +31,7 @@ protected:
 
 	template<typename T>
 	void		MakeCube(const _tchar* pTag);
+	virtual void OnCollisionEnter(const class Collision* collision);
 
 protected:
 	Engine::CCollider*		m_pCollider;

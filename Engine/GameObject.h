@@ -38,6 +38,7 @@ public:
 	void				Set_Dead() { m_bDead = true; }
 	_int				Get_Hp() { return m_iHp; }
 	_bool		Get_Damage() { return m_bDamage; }
+	_bool		Set_D_T() { return m_bDamage = true; }
 	_bool		Set_Damage() { return m_bDamage = false; }
 	_bool		m_bDamage = false;
 	void				Set_Render(_bool value) { m_bUseRender = value; }
