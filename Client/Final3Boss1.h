@@ -26,6 +26,12 @@ public:
 	virtual void OnCollisionStay(const class Collision* collision);
 	_int	Get_Boss1Hp() { return m_iHp; }
 
+	void	Set_Throw(_bool bS) { m_bThrow = bS; }
+	void	Reset_Cubes() 
+	{ 
+		for (auto& iter : m_vecCube)
+			iter->m_bDead = true;
+	}
 protected:
 	HRESULT		Add_Component(void);
 	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _vec3 osc, _vec3 csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);
@@ -57,6 +63,7 @@ protected:
 	_float					m_dwThrowCubeTime;
 	vector<CGameObject*>	m_vecCube;
 
+	_bool					m_bThrow;
 public:
 	static CFinal3Boss1*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 

@@ -135,20 +135,28 @@ void CGiantHand::OnCollisionExit(const Collision * collision)
 void CGiantHand::Do_Stump(const _float & fTimeDelta)
 {
 	if (m_bStop)
+	{
+		StopSound(SOUND_EFFECT_ENEMY);
+		PlaySound_Effect(L"83.wav", SOUND_EFFECT_ENEMY, 1.f);
 		return;
+	}
 
 	if (m_fweight < 1)
 	{
+		
 		m_fweight += fTimeDelta * 3.f;
 		_float camoff = dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->GetOffset();
 		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetOffset(camoff + 0.1f);
 	}
 		
-	if (m_fweight >=1)
+	if (m_fweight >= 1)
+	{
+		
 		m_fweight = 1;
-
+	}
 	//weight가 1 미만인 경우 collider에 검출되면
 	_int pos_z = -7;
+	
 	m_pTransform->m_vInfo[INFO_POS].z =
 		Lerp(m_vSummonPos.z, pos_z, m_fweight);
 }

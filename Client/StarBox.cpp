@@ -60,7 +60,7 @@ void CStarBox::Render_GameObject(void)
 
 	m_pBufferCom->Render_Buffer();
 
-	//m_pStarParticle->Update_Particle();
+	m_pStarParticle->Update_Particle();
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }

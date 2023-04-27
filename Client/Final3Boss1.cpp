@@ -20,7 +20,7 @@ for (int j = 0; j < clip->source[i].size(); j++)\
 }\
 
 CFinal3Boss1::CFinal3Boss1(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev), m_bThrow(true)
 {
 	m_bInit = true;
 	m_dwRestTime = 1;
@@ -841,7 +841,14 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
-	Throw_Cube(fTimeDelta);
+
+	if (m_bThrow)
+		Throw_Cube(fTimeDelta);
+	else
+	{
+		for (auto& iter : m_vecCube)
+			iter->Set_Dead();
+	}
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -878,11 +885,11 @@ void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 	}
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-		m_iHp -= 0.00005f;
+		m_iHp -= 1.f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
 		{
-			m_iHp -= 1.f;
+			m_iHp -= 3.f;
 		}
 	}
 }
@@ -890,11 +897,11 @@ void CFinal3Boss1::OnCollisionStay(const Collision* collision)
 {
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-		m_iHp -= 0.00005f;
+		m_iHp -= 1.5f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
 		{
-			m_iHp -= 1.f;
+			m_iHp -= 3.f;
 		}
 	}
 }
@@ -989,7 +996,7 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 	{
 		if (lstrcmp((*iter)->m_pTag, L"FinalCube"))
 			iter = m_vecCube.erase(iter);
-		else if (-10.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].z)
+		else if (-20.f >= (*iter)->m_pTransform->m_vInfo[INFO_POS].z)
 		{
 			(*iter)->m_bDead = true;
 			iter = m_vecCube.erase(iter);

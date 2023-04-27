@@ -17,18 +17,6 @@ CMainApp::~CMainApp()
 }
 HRESULT CMainApp::Ready_MainApp(void)
 {
-//#ifdef _DEBUG
-//
-//	if (::AllocConsole() == TRUE)
-//	{
-//		FILE* nfp[3];
-//		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
-//		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
-//		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
-//		std::ios::sync_with_stdio();
-//	}
-//
-//#endif // _DEBUG
 
 	srand((unsigned int)time(NULL));
 	FAILED_CHECK_RETURN(Ready_DefaultSetting(&m_pGraphicDev), E_FAIL);
@@ -69,10 +57,7 @@ void CMainApp::Render_MainApp(void)
 
 	m_pManagementClass->Render_Management(m_pGraphicDev);
 	m_pCImguiMgr->GetInstance()->Update_Imgui(m_pGraphicDev);
-	if (g_IsInvin)
-	{
-		Engine::Render_Font(L"Font_Default", L"Invincible", &_vec2(200.f, 20.f), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
-	}
+
 	Engine::Render_End();
 }
 
