@@ -22,6 +22,7 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void SwapTrigger();
+	virtual void OnCollisionEnter(const class Collision* collision);
 
 protected:
 	HRESULT		Add_Component(void);

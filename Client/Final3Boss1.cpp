@@ -47,6 +47,9 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
+	if (m_bDead)
+		return OBJ_DEAD;
+
 	if (m_bInit)
 	{
 		//삼디를 가지고있어야함.
@@ -839,17 +842,31 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
+
+	Engine::Add_RenderGroup(RENDER_NONE, this);
+
 	return 0;
 }
 
 void CFinal3Boss1::LateUpdate_GameObject(void)
 {
+	if (0.f >= m_iHp)
+		m_bDead = true;
+
 	__super::LateUpdate_GameObject();
 }
 
 void CFinal3Boss1::Render_GameObject(void)
 {
 	__super::Render_GameObject();
+}
+
+void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
+{
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet") ||
+		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
+		--m_iHp;
 }
 
 void CFinal3Boss1::SwapTrigger()
@@ -865,6 +882,7 @@ HRESULT CFinal3Boss1::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+	m_pCollider->Set_Options({ 100.f, 100.f, 100.f }, COL_OBJ, false);
 
 	pComponent = m_pSlerpParticle = dynamic_cast<CSlerpParticle*>(Engine::Clone_Proto(L"SlerpParticle", this));
 	NULL_CHECK_RETURN(m_pSlerpParticle, E_FAIL);
