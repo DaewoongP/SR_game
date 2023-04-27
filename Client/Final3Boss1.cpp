@@ -56,10 +56,10 @@ void CFinal3Boss1::OnCollisionEnter(const Collision* collision)
 	collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-			--m_iHp;
+			m_iHp-=15.f;
 		if(Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage()==true)
 		{
-			m_iHp -= 50.f;
+			m_iHp -= 150.f;
 		}
 			
 	}

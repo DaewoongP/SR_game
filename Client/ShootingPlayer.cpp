@@ -54,7 +54,9 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 		{
 			pLaser->m_pTransform->m_vScale.y += 0.3f;
 			pLaser->m_pTransform->m_vInfo[INFO_POS].z += 0.1f;
-			pLaser->Set_Damage();
+			pLaser->Set_D_T();
+			pLaser->Get_Damage();
+			int i = 0;
 		}
 
 	}
