@@ -2,6 +2,8 @@
 #include "Item.h"
 #include "Export_Function.h"
 
+#include "ShootingPlayer.h"
+
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev),
 	m_iIndex(0)
@@ -20,6 +22,8 @@ HRESULT CItem::Ready_GameObject(_vec3 & vPos, _int iIndex)
 	m_pTransform->m_vScale = { 2.f, 2.f, 2.f };
 	m_pTransform->m_bIsStatic = false;
 
+	m_pTransform->m_vAngle.x = D3DXToRadian(-90.f);
+
 	m_iIndex = iIndex;
 
 	return S_OK;
@@ -30,6 +34,8 @@ _int CItem::Update_GameObject(const _float & fTimeDelta)
 	if (m_bDead)
 		return OBJ_DEAD;
 
+	m_pTransform->m_vInfo[INFO_POS].y -= 1.f;
+
 	CGameObject::Update_GameObject(fTimeDelta);
 
 	Engine::Add_RenderGroup(RENDER_NONE, this);
@@ -39,6 +45,9 @@ _int CItem::Update_GameObject(const _float & fTimeDelta)
 
 void CItem::LateUpdate_GameObject(void)
 {
+	if (-10.f >= m_pTransform->m_vInfo[INFO_POS].y)
+		m_bDead = true;
+
 	CGameObject::LateUpdate_GameObject();
 }
 
@@ -53,9 +62,11 @@ void CItem::Render_GameObject(void)
 
 void CItem::OnCollisionEnter(const Collision * collision)
 {
-	if (!lstrcmp(collision->otherObj->m_pTag, L"Toodee") ||
-		!lstrcmp(collision->otherObj->m_pTag, L"Topdee"))
+	if (!lstrcmp(collision->otherObj->m_pTag, L"Thirddee"))
+	{
+		dynamic_cast<CShootingPlayer*>(collision->otherObj)->Set_Bullet(m_iIndex);
 		m_bDead = true;
+	}
 
    	CGameObject::OnCollisionEnter(collision);
 }
@@ -75,8 +86,7 @@ HRESULT CItem::Add_Component(void)
 	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
 	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
 	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
-	m_pCollider->Set_BoundingBox(_vec3{ 2.f, 2.f, 2.f });
-	m_pCollider->Set_Group(COL_OBJ);
+	m_pCollider->Set_Options({ 4.f, 4.f, 4.f }, COL_OBJ, false);
 
 	return S_OK;
 }

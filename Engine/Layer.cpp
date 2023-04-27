@@ -73,7 +73,13 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 		}
 
 		else if (OBJ_DEAD == iResult && STAGE_END != iResult)
-		{
+		{	
+			if (dynamic_cast<CBullet*>(iter->second))
+			{
+				Engine::Release_Bullet(dynamic_cast<CBullet*>(iter->second));
+				iter = m_uMapObject.erase(iter);
+				continue;
+			}
 			if (!lstrcmp(iter->second->m_pTag, L"Toodee") ||
 				!lstrcmp(iter->second->m_pTag, L"Topdee") ||
 				!lstrcmp(iter->second->m_pTag, L"Thirddee"))

@@ -22,10 +22,15 @@ public:
 	virtual void LateUpdate_GameObject(void) override;
 	virtual void Render_GameObject(void) override;
 	virtual void SwapTrigger();
+
 protected:
 	HRESULT		Add_Component(void);
 	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _vec3 osc, _vec3 csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);
 	void		Move(const _float& fTimeDelta);
+	void		Throw_Cube(const _float& fTimeDelta);
+
+	template<typename T>
+	void		MakeCube(const _tchar* pTag);
 
 protected:
 	Engine::CCollider*		m_pCollider;
@@ -46,6 +51,10 @@ protected:
 
 	//공격 사용 주기(보스가 공격을 그리 자주쓰진 않음.)
 	_float					m_dwRestTime;
+
+	_float					m_dwThrowCubeTime;
+	vector<CGameObject*>	m_vecCube;
+
 public:
 	static CFinal3Boss1*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
@@ -53,4 +62,3 @@ protected:
 	virtual void Free(void) override;
 
 };
-

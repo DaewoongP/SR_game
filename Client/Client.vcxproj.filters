@@ -290,9 +290,6 @@
     <Filter Include="00. GameObject\00. Player\ShootingPlayer">
       <UniqueIdentifier>{7648e26c-4c37-4b40-8445-0cccbb3ab278}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. GameObject\99. Etc\Item">
-      <UniqueIdentifier>{77c6f6f3-073f-46ba-a262-6671f75613ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. GameObject\00. Player\ShootingPlayer\Bullet">
       <UniqueIdentifier>{81583915-9155-41c5-901a-d438466df3bd}</UniqueIdentifier>
     </Filter>
@@ -304,6 +301,8 @@
     </Filter>
     <Filter Include="00. GameObject\99. Etc\ProduceObj">
       <UniqueIdentifier>{ce7344bf-8874-4085-a962-2ab06b47642b}</UniqueIdentifier>
+    <Filter Include="00. GameObject\02. MapObject\Item">
+      <UniqueIdentifier>{77c6f6f3-073f-46ba-a262-6671f75613ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -913,15 +912,11 @@
     <ClInclude Include="ShootingPlayer.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClInclude>
-    <ClInclude Include="FinalCamera_1_1.h" />
-    <ClInclude Include="Boss3DeadCamera.h">
-      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
-    </ClInclude>
     <ClInclude Include="Boss3DeadCamera.h">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>00. GameObject\99. Etc\Item</Filter>
+      <Filter>00. GameObject\02. MapObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="SwordBullet.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
@@ -945,6 +940,15 @@
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClInclude>
     <ClInclude Include="Produce1BackCode.h" />
+    <ClInclude Include="FinalUI.h">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalUI_B.h">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultBullet.h">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1549,15 +1553,11 @@
     <ClCompile Include="ShootingPlayer.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="FinalCamera_1_1.cpp" />
-    <ClCompile Include="Boss3DeadCamera.cpp">
-      <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
-    </ClCompile>
     <ClCompile Include="Boss3DeadCamera.cpp">
       <Filter>00. GameObject\99. Etc\Camera\DirectCamera</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
-      <Filter>00. GameObject\99. Etc\Item</Filter>
+      <Filter>00. GameObject\02. MapObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="SwordBullet.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
@@ -1581,6 +1581,15 @@
       <Filter>00. GameObject\99. Etc\ProduceObj</Filter>
     </ClCompile>
     <ClCompile Include="Produce1BackCode.cpp" />
+    <ClCompile Include="FinalUI.cpp">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalUI_B.cpp">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultBullet.cpp">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rect.hlsl">
