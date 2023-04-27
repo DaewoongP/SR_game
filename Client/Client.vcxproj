@@ -251,6 +251,7 @@
     <ClInclude Include="Produce1BackCode.h" />
     <ClInclude Include="ProduceObject.h" />
     <ClInclude Include="ProduceScene.h" />
+    <ClInclude Include="RayLazer.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Semicolon.h" />
     <ClInclude Include="ShiningStar.h" />
@@ -444,6 +445,7 @@
     <ClCompile Include="Produce1BackCode.cpp" />
     <ClCompile Include="ProduceObject.cpp" />
     <ClCompile Include="ProduceScene.cpp" />
+    <ClCompile Include="RayLazer.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Semicolon.cpp" />
     <ClCompile Include="ShiningStar.cpp" />

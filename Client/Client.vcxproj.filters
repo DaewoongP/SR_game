@@ -950,6 +950,9 @@
     <ClInclude Include="DefaultBullet.h">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="RayLazer.h">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1589,6 +1592,9 @@
       <Filter>01. Scene\Stages\UI</Filter>
     </ClCompile>
     <ClCompile Include="DefaultBullet.cpp">
+      <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="RayLazer.cpp">
       <Filter>00. GameObject\00. Player\ShootingPlayer\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
