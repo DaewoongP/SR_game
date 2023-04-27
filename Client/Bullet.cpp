@@ -28,7 +28,7 @@ void CBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 
 _int CBullet::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_pTransform->m_vInfo[INFO_POS].y >= 210.f)
+	if (m_pTransform->m_vInfo[INFO_POS].z >= 210.f)
 		return OBJ_DEAD;
 	Add_RenderGroup(RENDER_ALPHA, this);
 	

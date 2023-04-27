@@ -56,7 +56,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
 		pLayer->Delete_Tag(L"ShootingCamera");
@@ -85,7 +85,7 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 {
 	if (m_SwapTop_ShootingTirgger)
 	{
-		//ž�� �߾����� �ö�.
+		//ž�� �߾���� �ö�.
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
@@ -106,8 +106,8 @@ HRESULT CFinalStage3::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 
-	
-	FAILED_CHECK_RETURN(FACTORY<CShootingCamera>::Create(L"ShootingCamera", pLayer), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CStage1Camera>::Create(L"Camera", pLayer), E_FAIL);
+
 	m_uMapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
@@ -120,12 +120,13 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-
 	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(0.f, 0.f, 15.f));
 	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
 
 	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
+	// 여기서 생성한거 벡터에 넣어놓는데, 원숭이 나오기전에 esc 누를경우 누수날수도있음
+	// 그걸 이제 Free 에서 삭제하는 코드로 해결함.
 	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
@@ -266,5 +267,6 @@ CFinalStage3 * CFinalStage3::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CFinalStage3::Free(void)
 {
+	for_each(m_MokeyCube.begin(), m_MokeyCube.end(), CDeleteObj());
 	__super::Free();
 }

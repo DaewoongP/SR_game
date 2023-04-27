@@ -11,7 +11,8 @@ public:
 	virtual HRESULT		Ready_GameObject(void);
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
 	virtual void		Render_GameObject(void);
-
+private:
+	_int iTextureIndex;
 public:
 	static CProduce1BackCode* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	HRESULT Add_Component();
