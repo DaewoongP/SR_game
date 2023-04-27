@@ -310,6 +310,7 @@
     <ClInclude Include="Switch.h" />
     <ClInclude Include="SwitchCube.h" />
     <ClInclude Include="SwordBullet.h" />
+    <ClInclude Include="TexCube.h" />
     <ClInclude Include="Theme1_Cloud.h" />
     <ClInclude Include="Theme1_Cow.h" />
     <ClInclude Include="Theme1_Cube.h" />
@@ -513,6 +514,7 @@
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="SwitchCube.cpp" />
     <ClCompile Include="SwordBullet.cpp" />
+    <ClCompile Include="TexCube.cpp" />
     <ClCompile Include="Theme1_Cloud.cpp" />
     <ClCompile Include="Theme1_Cow.cpp" />
     <ClCompile Include="Theme1_Cube.cpp" />

@@ -13,8 +13,7 @@ CLaser::~CLaser()
 
 HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 {
-	
-	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
+	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget= Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
@@ -28,13 +27,13 @@ HRESULT CLaser::Ready_Bullet(_vec3& vPos, _vec3& vDir)
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
 	m_bShoot = false;
+	m_fEndTime = 0.f;
 	return S_OK;
 }
 
 void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 {
-
-	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
+	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
 	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
 	vPos = m_vPos;
 	__super::Ready_Bullet(vPos);
@@ -54,16 +53,22 @@ void CLaser::Ready_Pool(_vec3& vPos, _vec3& vDir)
 
 _int CLaser::Update_GameObject(const _float& fTimeDelta)
 {
-	if(Get_GameObject(L"Layer_GameLogic", L"Thirddee")!=nullptr)
-	m_vPos = Get_GameObject(L"Layer_GameLogic", L"Thirddee")->m_pTransform->m_vInfo[INFO_POS];
-	if(Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")!=nullptr)
-	m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
-	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y-5.f, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f)-10.f };
+	m_fEndTime += fTimeDelta;
+	if (Get_GameObject(L"Layer_GameLogic", L"Topdee") != nullptr)
+		m_vPos = Get_GameObject(L"Layer_GameLogic", L"Topdee")->m_pTransform->m_vInfo[INFO_POS];
+	if (Get_GameObject(L"Layer_GameLogic", L"Final3Boss1") != nullptr)
+		m_vTarget = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->m_pTransform->m_vInfo[INFO_POS];
+	m_pTransform->m_vInfo[INFO_POS] = { m_vPos.x,m_vPos.y - 5.f, m_vPos.z + (D3DXVec3Length(&(m_vPos - m_vTarget)) / 2.f) - 10.f };
 	m_pTex->Update_Anim(fTimeDelta);
 	_vec3 vec = m_pTransform->m_vScale;
 
 	m_pCollider->Set_BoundingBox({ vec.y,vec.x,30.f });
-	
+	if (m_fEndTime > 3.5f)
+	{
+		m_pTransform->m_vScale.y -= 1.f;
+		if (m_pTransform->m_vScale.y <= 0)
+			m_pTransform->m_vScale.y = 0.f;
+	}
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;

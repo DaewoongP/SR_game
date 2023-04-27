@@ -5,6 +5,7 @@
 #include "Boss3.h"
 #include "StageCamera.h"
 #include "FinalStage3.h"
+#include "TexCube.h"
 
 CFinalStoneCube::CFinalStoneCube(LPDIRECT3DDEVICE9 pGraphicDev)
 	:CGameObject(pGraphicDev), m_bTrigger(false), m_iBossSpawn(0), m_bStart(false), m_bEnd(false)
@@ -44,6 +45,7 @@ _int CFinalStoneCube::Update_GameObject(const _float & fTimeDelta)
 	if (m_bEnd)
 		if (End_Pattern(fTimeDelta))
 		{
+			m_pGameLogicLayer->Delete_Tag(L"MapCube");
 			dynamic_cast<CFinalStage3*>(Engine::Get_Scene())->Set_SwapTrigger();
 			return OBJ_DEAD;
 		}
@@ -95,19 +97,19 @@ void CFinalStoneCube::Render_GameObject()
 
 HRESULT CFinalStoneCube::Ready_MapCubes()
 {
-	CCube* cube = nullptr;
+	CTexCube* cube = nullptr;
 	_vec3 vPos;
 	for (size_t i = 0; i < 8; ++i)
 	{
 		for (size_t j = 0; j < (i + 2) * 2; ++j)
 		{
 			vPos = _vec3((28 - 2.f * i) + 2.f * j, 34 - 2.f * i, LERPCUBEZ);
-			cube = CCube::Create(m_pGraphicDev, vPos, 6);
+			cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 			m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 			m_vecCube.push_back({ cube, vPos });
 
 			vPos = _vec3((28 - 2.f * i) + 2.f * j, 0 + 2.f * i, LERPCUBEZ);
-			cube = CCube::Create(m_pGraphicDev, vPos, 6);
+			cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 			m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 			m_vecCube.push_back({ cube, vPos });
 		}
@@ -115,14 +117,14 @@ HRESULT CFinalStoneCube::Ready_MapCubes()
 	for (size_t i = 0; i < 18; ++i)
 	{
 		vPos = _vec3(14.f + 2 * i, 18.f, LERPCUBEZ);
-		cube = CCube::Create(m_pGraphicDev, vPos, 6);
+		cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 		m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 		m_vecCube.push_back({ cube, vPos });
 	}
 	for (size_t i = 0; i < 18; ++i)
 	{
 		vPos = _vec3(14.f + 2 * i, 16.f, LERPCUBEZ);
-		cube = CCube::Create(m_pGraphicDev, vPos, 6);
+		cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 		m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 		m_vecCube.push_back({ cube, vPos });
 	}
@@ -135,7 +137,7 @@ HRESULT CFinalStoneCube::Ready_MapCubes()
 			if (i == 0)
 			{
 				vPos = _vec3(j * 2.f, i * 2.f, LERPCUBEZ - 2.f);
-				cube = CCube::Create(m_pGraphicDev, vPos, 6);
+				cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 				m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 				m_vecCube.push_back({ cube, vPos });
 			}
@@ -143,7 +145,7 @@ HRESULT CFinalStoneCube::Ready_MapCubes()
 			if (i == CUBEY - 1)
 			{
 				vPos = _vec3(j * 2.f, i * 2.f, LERPCUBEZ - 2.f);
-				cube = CCube::Create(m_pGraphicDev, vPos, 6);
+				cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 				m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 				m_vecCube.push_back({ cube, vPos });
 			}
@@ -151,7 +153,7 @@ HRESULT CFinalStoneCube::Ready_MapCubes()
 			if (j == 0)
 			{
 				vPos = _vec3(j * 2.f, i * 2.f, LERPCUBEZ - 2.f);
-				cube = CCube::Create(m_pGraphicDev, vPos, 6);
+				cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 				m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 				m_vecCube.push_back({ cube, vPos });
 			}
@@ -159,7 +161,7 @@ HRESULT CFinalStoneCube::Ready_MapCubes()
 			if (j == CUBEX - 1)
 			{
 				vPos = _vec3(j * 2.f, i * 2.f, LERPCUBEZ - 2.f);
-				cube = CCube::Create(m_pGraphicDev, vPos, 6);
+				cube = CTexCube::Create(m_pGraphicDev, vPos, 6);
 				m_pGameLogicLayer->Add_GameObject(L"MapCube", cube);
 				m_vecCube.push_back({ cube, vPos });
 			}

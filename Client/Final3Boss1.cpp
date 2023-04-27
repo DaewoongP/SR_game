@@ -20,7 +20,7 @@ for (int j = 0; j < clip->source[i].size(); j++)\
 }\
 
 CFinal3Boss1::CFinal3Boss1(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CGameObject(pGraphicDev)
+	: CGameObject(pGraphicDev), m_bThrow(true)
 {
 	m_bInit = true;
 	m_dwRestTime = 1;
@@ -42,7 +42,7 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	m_fOffset_x = 0;
 	m_fOffset_y = 0;
 	m_iHp = 100.f;
-	m_pCollider->Set_BoundingBox({500.f,500.f,500.f});
+	m_pCollider->Set_BoundingBox({100.f,100.f,50.f});
 
 	return S_OK;
 }
@@ -841,7 +841,9 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
-	Throw_Cube(fTimeDelta);
+
+	if (m_bThrow)
+		Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 
@@ -1009,7 +1011,6 @@ void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 	_int iRandValue = rand() % 5;
 	_vec3 vPos;
 
-	//_vec3(32.f, 15.f, -15.f)
 	switch (iRandValue)
 	{
 	case 0:

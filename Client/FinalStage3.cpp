@@ -58,11 +58,9 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 1.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 99.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
-		CLayer* pLayer = Engine::Get_Layer(L"Layer_Environment");
-		pLayer->Delete_Tag(L"ShootingCamera");
-		FACTORY<CStage1Camera>::Create(L"Camera", pLayer);
+		m_pBoss->Set_Throw(false);
 		m_StageState = F3_SpawnCube;
 		m_bMonkeySpawnTrigger = false;
 		m_ShootingPlayerLerpTrigger = true;
@@ -87,17 +85,23 @@ void CFinalStage3::Do_SwapPlayer(const _float & fTimeDelta)
 {
 	if (m_SwapTop_ShootingTirgger)
 	{
-		//ž�� �߾���� �ö�.
 		m_TooTop->m_pTransform->m_vInfo[INFO_POS] = Lerp(m_TooTop->m_pTransform->m_vInfo[INFO_POS], _vec3(CUBEX, CUBEY, 10), fTimeDelta);
 		if (D3DXVec3Length(&(m_TooTop->m_pTransform->m_vInfo[INFO_POS] - _vec3(CUBEX, CUBEY, 10))) < 0.3f)
 		{
-			m_TooTop->Set_Render(false);
-			m_TooTop->Set_Update(false);
+			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
+			m_TooTop->m_pTransform->m_vInfo[INFO_POS] = _vec3(10000, 10000, 10000);
+
+			pLayer->Get_GameObject(L"Topdee")->Set_Dead();
+			pLayer->Get_GameObject(L"Boss3")->Set_Dead();
 			m_ShootingPlayer->Set_Render(true);
 			m_ShootingPlayer->Set_Update(true);
 			m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS] = _vec3(CUBEX, CUBEY, 10);
+			m_SwapTop_ShootingTirgger = false;
+			dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(true);
+			//��ȯ�ǰ� ��ġ ȸ���� �̻���.
+			g_Is2D = true;
+			m_pBoss->Set_Throw(true);
 		}
-		
 	}
 }
 
@@ -122,13 +126,12 @@ HRESULT CFinalStage3::Ready_Layer_GameLogic(const _tchar * pLayerTag)
 
 	CGameObject*		pGameObject = nullptr;
 	FAILED_CHECK_RETURN(FACTORY<CStarBox>::Create(L"StarBox", pLayer), E_FAIL);
-	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(0.f, 0.f, 15.f));
-	pLayer->Add_GameObject(L"Topdee", m_ShootingPlayer);
+	m_ShootingPlayer = CShootingPlayer::Create(m_pGraphicDev, _vec3(31.f, 14.f, -13.f));
+	pLayer->Add_GameObject(L"ShootingPlayer", m_ShootingPlayer);
 
-	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(0.f, 200.f, 30.f));
+	pGameObject = m_pBoss = CFinal3Boss1::Create(m_pGraphicDev, _vec3(30.f, 15.f, 150.f));
 	pLayer->Add_GameObject(L"Final3Boss1", pGameObject);
-	// 여기서 생성한거 벡터에 넣어놓는데, 원숭이 나오기전에 esc 누를경우 누수날수도있음
-	// 그걸 이제 Free 에서 삭제하는 코드로 해결함.
+
 	for (int i = 0; i < CUBEX; i++)
 	{
 		if (i % 10 < 4)
@@ -216,14 +219,15 @@ void CFinalStage3::MonkeyDisAppear(const _float& fTimeDelta)
 	if (m_pMonkey->m_pTransform->m_vInfo[INFO_POS].x < 0)
 	{
 		for (int i = 0; i < m_MokeyCube.size(); i++)
-			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f),true);
+			dynamic_cast<CFinalMonkeyCube*>(m_MokeyCube[i])->SetLerpPos(200, GetRandomFloat(0, 2.f), true);
 		m_pMonkey = nullptr;
 		m_StageState = F3_NONE;
 
 		CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 		_vec3 pos = m_TooTop->m_pTransform->m_vInfo[INFO_POS];
 		m_TooTop->Set_Render(false);
-		m_TooTop->Set_Update(false); 
+		m_TooTop->Set_Update(false);
+		pLayer->Delete_Tag(L"Toodee");
 		m_TooTop = nullptr;
 		m_TooTop = CTopdee::Create(m_pGraphicDev, pos);
 		pLayer->Add_GameObject(L"Topdee", m_TooTop);
@@ -246,7 +250,7 @@ void CFinalStage3::DoLerpShootingPlayer(const _float & fTimeDelta)
 		{
 			CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 			m_TooTop = CToodee::Create(m_pGraphicDev, _vec3(10.f, 14.f, 10.f));
-			pLayer->Add_GameObject(L"Topdee", m_TooTop);
+			pLayer->Add_GameObject(L"Toodee", m_TooTop);
 			m_ShootingPlayer->Set_Render(false);
 			m_ShootingPlayer->Set_Update(false);
 			m_ShootingPlayerLerpTrigger = false;

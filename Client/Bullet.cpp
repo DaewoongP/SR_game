@@ -14,7 +14,7 @@ HRESULT CBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
+	m_pCollider->Set_Options({ 1.5f, 1.5f, 1.5f }, COL_OBJ, false);
 	D3DXVec3Normalize(&m_vDir, &vDir);
 	return S_OK;
 }
@@ -22,13 +22,13 @@ HRESULT CBullet::Ready_Bullet(_vec3 & vPos, _vec3& vDir)
 void CBullet::Ready_Pool(_vec3 & vPos, _vec3 & vDir)
 {
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
+	m_pCollider->Set_Options({ 1.5f, 1.5f, 1.5f }, COL_OBJ, false);
 	D3DXVec3Normalize(&m_vDir, &vDir);
 }
 
 _int CBullet::Update_GameObject(const _float & fTimeDelta)
 {
-	if (m_pTransform->m_vInfo[INFO_POS].z >= 210.f)
+	if (m_pTransform->m_vInfo[INFO_POS].z >= 150.f)
 		return OBJ_DEAD;
 	Add_RenderGroup(RENDER_ALPHA, this);
 	
