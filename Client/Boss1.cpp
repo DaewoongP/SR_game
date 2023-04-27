@@ -764,11 +764,14 @@ void CBoss1::SetPattern()
 
 void CBoss1::Do_SummonFinger(const _float & fTimeDelta)
 {
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"3", SOUND_EFFECT_ENEMY, 1.f);
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	_vec3 summonpos = _vec3(m_PartsVec[14]->Get_WorldMatrixPointer()->_41,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_42,
 		m_PartsVec[14]->Get_WorldMatrixPointer()->_43);
 	if (summonpos.x <= 1.f)
+
 		return;
 	if (pStageLayer != nullptr)
 		FACTORY<CBoss1Hand>::Create(L"Boss1Hand", pStageLayer, summonpos, 
