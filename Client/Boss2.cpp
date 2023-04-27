@@ -2434,7 +2434,7 @@ void CBoss2::Do_Scream(const _float & fTimeDelta)
 	BoundingBox box;
 	box.Offset(m_pTransform->m_vInfo[INFO_POS]);
 	m_pScreamParticle->Set_BoundingBox(box);
-	m_pScreamParticle->Set_SizeLifeTime(1.07f);
+	m_pScreamParticle->Set_SizeLifeTime(1.06f);
 	m_pScreamParticle->Start_Particle();
 	StopSound(SOUND_EFFECT_ENEMY);
 	PlaySound_Effect(L"76.wav", SOUND_EFFECT_ENEMY, 1.f);
@@ -2447,7 +2447,7 @@ void CBoss2::Do_ScreamEnd(const _float & fTimeDelta)
 	m_pAnimation_Body->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_dwRestTime = 1.0f;
-	m_pScreamParticle->End_Particle();
+	//m_pScreamParticle->End_Particle();
 	CheckIsLastActionIdx();
 }
 
