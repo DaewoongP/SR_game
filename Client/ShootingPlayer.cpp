@@ -42,7 +42,7 @@ _int CShootingPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (m_pGameLogicLayer == nullptr)
 		m_pGameLogicLayer = Engine::Get_Layer(L"Layer_GameLogic");
 	
-	Sword_Bullet(fTimeDelta);
+	Fire_Bullet(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return OBJ_NOEVENT;
@@ -162,11 +162,14 @@ void CShootingPlayer::Fire_Bullet(const _float& fTimeDelta)
 {
 	if (IsPermit_Call(L"2Sec", fTimeDelta))
 	{
-		CFireBullet* pBullet = nullptr;
-		pBullet = CFireBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
-		if (pBullet == nullptr)
-			return;
-		m_pGameLogicLayer->Add_GameObject(L"FireBullet", pBullet);
+		for (size_t i = 0; i < 20; ++i)
+		{
+			CFireBullet* pBullet = nullptr;
+			pBullet = CFireBullet::Create(m_pGraphicDev, m_pTransform->m_vInfo[INFO_POS]);
+			if (pBullet == nullptr)
+				return;
+			m_pGameLogicLayer->Add_GameObject(L"FireBullet", pBullet);
+		}
 	}
 }
 

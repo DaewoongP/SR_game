@@ -2,8 +2,7 @@
 #include "FireBullet.h"
 
 CFireBullet::CFireBullet(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CGameObject(pGraphicDev),
-	m_fSpeed(50.f)
+	:CBullet(pGraphicDev)
 {
 }
 
@@ -13,13 +12,16 @@ CFireBullet::~CFireBullet()
 
 HRESULT CFireBullet::Ready_GameObject(_vec3 & vPos)
 {
+	__super::Ready_Bullet(vPos);
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-	m_pTransform->m_vInfo[INFO_POS] = vPos;
-	m_pCollider->Set_Options({ 1.f, 1.f, 1.f }, COL_OBJ, false);
+	m_fSpeed = 50.f;
+	m_pTransform->m_vAngle.y = D3DXToRadian(90);
 	m_pTex->Add_Anim(L"Idle", 0, 2, 1.f, true);
 	m_pTex->Switch_Anim(L"Idle");
 	m_pTex->m_bUseFrameAnimation = true;
-	GetRandomVectorIncircle(&m_vDir, 1.f);
+	_vec3 vDir;
+	vDir = { GetRandomFloat(-1.f, 1.f), 20.f, GetRandomFloat(-1.f, 1.f) };
+	D3DXVec3Normalize(&m_vDir, &vDir);
 	return S_OK;
 }
 
@@ -47,7 +49,7 @@ void CFireBullet::LateUpdate_GameObject(void)
 void CFireBullet::Render_GameObject(void)
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransform->Get_WorldMatrixPointer());
-
+	
 	m_pTex->Set_Texture();
 	m_pBuf->Render_Buffer();
 
@@ -62,17 +64,9 @@ HRESULT CFireBullet::Add_Component(void)
 {
 	CComponent*		pComponent = nullptr;
 
-	pComponent = m_pBuf = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"RcTex", this));
-	NULL_CHECK_RETURN(m_pBuf, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"RcTex", pComponent });
-
-	pComponent = m_pTex = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bullet", this));
+	pComponent = m_pTex = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"FireBullet", this));
 	NULL_CHECK_RETURN(m_pTex, E_FAIL);
-	m_vecComponent[ID_STATIC].push_back({ L"Bullet", pComponent });
-
-	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
-	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
-	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
+	m_vecComponent[ID_STATIC].push_back({ L"FireBullet", pComponent });
 
 	return S_OK;
 }

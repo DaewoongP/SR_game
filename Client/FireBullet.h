@@ -1,16 +1,8 @@
 #pragma once
 #include "Include.h"
-#include "GameObject.h"
+#include "Bullet.h"
 
-BEGIN(Engine)
-
-class CRcTex;
-class CTexture;
-class CCollider;
-
-END
-
-class CFireBullet : public CGameObject
+class CFireBullet : public CBullet
 {
 private:
 	explicit CFireBullet(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -23,20 +15,13 @@ public:
 	virtual void Render_GameObject(void) override;
 	virtual void OnCollisionEnter(const class Collision* collision);
 
-protected:
+private:
 	HRESULT Add_Component(void);
-
-protected:
-	Engine::CRcTex*			m_pBuf;
-	Engine::CTexture*		m_pTex;
-	Engine::CCollider*		m_pCollider;
-	_vec3	m_vDir;
-	_float	m_fSpeed;
 
 public:
 	static CFireBullet*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
 
-protected:
+private:
 	virtual void Free(void) override;
 };
 
