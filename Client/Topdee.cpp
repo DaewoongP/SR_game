@@ -28,7 +28,7 @@ HRESULT CTopdee::Ready_GameObject(_vec3& vPos)
 	m_pCollider->m_bIsTrigger = true;
 	m_bRender = true;
 	m_LookVec = _vec3(0, 0, 0);
-	
+	m_fSpeed = 13.f;
 	__super::Update_GameObject(Engine::Get_Timer(L"Timer_FPS60"));
 	return S_OK;
 }
@@ -845,7 +845,7 @@ void CTopdee::SetDie()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer != nullptr)
 	{
-		m_pTransform->m_vInfo[INFO_POS].z -= 4.f;
+		m_pTransform->m_vInfo[INFO_POS].z -=1.f;
 		m_bKeyInput = false;
 		BoundingBox box;
 		box.Offset(m_pTransform->m_vInfo[INFO_POS]);
@@ -856,8 +856,9 @@ void CTopdee::SetDie()
 		m_pDeadParticle->Start_Particle();
 		FACTORY<CTopdeeParts>::Create(L"Topdee_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Topdee_Die", 0, true);
 		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Topdee_Die");
-		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
+		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.6f, false);
 		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
+		m_DiePart->m_pTransform->m_vScale *= 2.f;
 		StopSound(SOUND_EFFECT);
 		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
 		m_DiePart->SetAnim(L"Die");

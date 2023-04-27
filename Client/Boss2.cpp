@@ -36,7 +36,7 @@ HRESULT CBoss2::Ready_GameObject(_vec3 & vPos)
 
 	m_pTransform->m_bIsStatic = false;
 	m_iHp = 3;
-	m_eCurrentState = B2_STUMP;
+	m_eCurrentState = B2_JUMPING;
 	m_ePreState = B2_END;
 	m_bInit = false;
 
@@ -2077,7 +2077,6 @@ void CBoss2::OnCollisionEnter(const Collision * collision)
 			for (int i = 0; i < m_pTransform->GetChild(1)->GetChildCount(); i++)
 				if(dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject))
 					dynamic_cast<CBoss2Parts*>(m_pTransform->GetChild(1)->GetChild(i)->m_pGameObject)->TextureBlinkStart();
-			int a = 0;
 			dynamic_cast<CBoss2TailBody*>(m_pTransform->GetChild(1)->GetChild(13)->m_pGameObject)->TextureBlinkStart();
 			
 			//테일 
@@ -2368,11 +2367,11 @@ void CBoss2::SetPartten()
 		break;
 	case B2_SCREAM:
 		if (ran <3)
-			m_eCurrentState = B2_STUMP;
+			m_eCurrentState = B2_PUNCH;
 		else if (ran == 3)
 			m_eCurrentState = B2_STUMP;
 		else
-			m_eCurrentState = B2_PUNCH;
+			m_eCurrentState = B2_STUMP;
 		break;
 	case B2_PUNCH:
 		m_eCurrentState = B2_JUMPING;
@@ -2553,6 +2552,7 @@ void CBoss2::Do_Stump_02(const _float & fTimeDelta)
 		m_pRigid->AddForce(_vec3(0, 0, 1), 40.f, IMPULSE, fTimeDelta);
 	CheckIsLastActionIdx();
 	m_dwRestTime = 3;
+	m_bAttackAble = true;
 }
 
 void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
@@ -2575,8 +2575,6 @@ void CBoss2::Do_Turn_Minus(const _float & fTimeDelta)
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity.y = 0;
 	}
-	m_bAttackAble = true;
-
 }
 
 void CBoss2::CheckIsLastActionIdx()

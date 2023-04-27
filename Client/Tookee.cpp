@@ -24,7 +24,7 @@ HRESULT CTookee::Ready_GameObject(_vec3 & vPos)
 
 	m_MovetoPos = m_pTransform->m_vInfo[INFO_POS];
 	m_LookVec = _vec3(0, 0, 0);
-
+	m_fSpeed = 13.f;
 	m_pTransform->m_vScale = { 1.f, 1.f, 1.f };
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
 	m_pTransform->m_bIsStatic = false;
