@@ -38,6 +38,7 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 	m_bTurn_y=false;
 	m_fOffset_x = 0;
 	m_fOffset_y = 0;
+	m_iHp = 100.f;
 	return S_OK;
 }
 

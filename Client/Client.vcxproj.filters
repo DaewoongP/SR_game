@@ -928,6 +928,12 @@
     <ClInclude Include="Final3Boss1.h">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
     </ClInclude>
+    <ClInclude Include="FinalUI.h">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalUI_B.h">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1552,6 +1558,12 @@
     </ClCompile>
     <ClCompile Include="Final3Boss1.cpp">
       <Filter>00. GameObject\04. Boss\Boss1\Final3Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalUI.cpp">
+      <Filter>01. Scene\Stages\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalUI_B.cpp">
+      <Filter>01. Scene\Stages\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

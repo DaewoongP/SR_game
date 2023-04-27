@@ -127,6 +127,15 @@ public:
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
 		return S_OK;
 	}
+	static HRESULT	Create(const _tchar* pObjTag, CLayer* pLayer, _int iHP)
+	{
+		LPDIRECT3DDEVICE9 pGraphicDev = Get_GraphicDev();
+		CGameObject* pGameObject = T::Create(pGraphicDev,iHP);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pGameObject->Sort_Component();
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(pObjTag, pGameObject), E_FAIL);
+		return S_OK;
+	}
 };
 
 END

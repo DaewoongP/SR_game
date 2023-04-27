@@ -12,6 +12,8 @@
 #include "StarBox.h"
 #include "ShootingCamera.h"
 #include "ShootingPlayer.h"
+#include"FinalUI.h"
+#include"FinalUI_B.h"
 
 CFinalStage3::CFinalStage3(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CScene(pGraphicDev)
@@ -82,6 +84,9 @@ HRESULT CFinalStage3::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	CLayer*		pLayer = CLayer::Create();
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
+	_int pHp = Get_GameObject(L"Layer_GameLogic", L"Final3Boss1")->Get_Hp();
+	FAILED_CHECK_RETURN(FACTORY<CFinalUI_B>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
+	FAILED_CHECK_RETURN(FACTORY<CFinalUI>::Create(L"FinalUI", pLayer, pHp), E_FAIL);
 
 	CGameObject*		pGameObject = nullptr;
 
