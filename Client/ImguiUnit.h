@@ -23,6 +23,8 @@ public:
 	HRESULT LoadMonster(_int iStageNumber, CScene* pScene);
 	HRESULT SaveMapObject(_int iStageNumber);
 	HRESULT LoadMapObject(_int iStageNumber, CScene* pScene);
+	HRESULT LoadMapObject_Final1(_int iStageNumber, CScene* pScene);
+	
 
 	HRESULT	Undo(_int iStageNumber);
 private:

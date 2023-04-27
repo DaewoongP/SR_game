@@ -30,7 +30,7 @@ HRESULT CThirddee::Ready_GameObject(_vec3 & vPos, _int stage)
 	// �ִϸ��̼�
 	m_bInit2 = true;
 	m_bRender = true;
-	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+	m_pCollider->Set_BoundingBox({ 1.f,2.f,1.f });
 	m_pCollider->Set_BoundOffset(_vec3(0,0,0));
 	BoundingBox box;
 	m_moveTrue = true;
@@ -640,7 +640,7 @@ void CThirddee::SwapTrigger()
 	{
 		m_pRigid->m_bUseGrivaty = true;
 		m_pCollider->m_bIsTrigger = false;
-		m_pCollider->Set_BoundingBox({ 1.f,2.f,1.0f });
+		m_pCollider->Set_BoundingBox({ 1.f,2.f,0.2f });
 		m_pTransform->m_vAngle = _vec3(D3DXToRadian(0), D3DXToRadian(0), 0);
 		m_pTransform->m_vInfo[INFO_POS].z = 10;
 		m_MovetoPos.z = 10;
@@ -772,7 +772,7 @@ void CThirddee::OnCollisionEnter(const Collision * collision)
 		m_pAnimation_Leg->SetAnimation(L"Idle");
 		m_pAnimation_Arm->SetAnimation(L"Idle");
 		m_pAnimation_Head->SetAnimation(L"Idle");
-		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->SetShakeValue(.06f);
+		dynamic_cast<CThirdCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"Camera"))->Start_Camera_Shake(20.f, 20.0f, SHAKE_ALL);
 	}
 	m_bStage01_Col = true;
 }
@@ -811,7 +811,8 @@ void CThirddee::RayDisKey_part(COL_MOVEDIR dir)
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3Left") ||
 			!lstrcmp(_detectedCOL[i].tag, L"Boss3Right") ||
-			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")
+			!lstrcmp(_detectedCOL[i].tag, L"KeyCube")||
+			!lstrcmp(_detectedCOL[i].tag, L"GiantHand")
 			) m_byPlayerInputDir &= fdir[dir];
 		if (!lstrcmp(_detectedCOL[i].tag, L"MoveCube") ||
 			!lstrcmp(_detectedCOL[i].tag, L"GravityCube"))
@@ -930,11 +931,14 @@ void CThirddee::Set_Die()
 	CLayer* pStageLayer = dynamic_cast<CLayer*>(Engine::Get_Layer(L"Layer_GameLogic"));
 	if (pStageLayer != nullptr)
 	{
+		StopSound(SOUND_EFFECT);
+		PlaySound_Effect(L"9.wav", SOUND_EFFECT, 1.f);
 		FACTORY<CTopdeeParts>::Create(L"Third_Die", pStageLayer, _vec3(0, 0, 0), m_pTransform, L"Third_Die", 0, true);
 		CGameObject* die = Engine::Get_GameObject(L"Layer_GameLogic", L"Third_Die");
 		dynamic_cast<CTopdeeParts*>(die)->MakeAnim(L"Die", 0, 3, 0.2f, false);
 		dynamic_cast<CTopdeeParts*>(die)->SetAnim(L"Die");
 		m_DiePart = dynamic_cast<CTopdeeParts*>(die);
+
 		m_pRigid->m_bUseGrivaty = false;
 		m_pRigid->m_Velocity = _vec3(0, 0, 0);
 	}

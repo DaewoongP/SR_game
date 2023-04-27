@@ -53,7 +53,10 @@ HRESULT CStage8::Ready_Scene(void)
 
 _int CStage8::Update_Scene(const _float & fTimeDelta)
 {
-	m_bBLive = dynamic_cast<CBoss3*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3"))->Get_Dead();
+	CGameObject* pObj = Engine::Get_GameObject(L"Layer_GameLogic", L"Boss3");
+
+	if (nullptr != pObj)
+		m_bBLive = dynamic_cast<CBoss3*>(pObj)->Get_Dead();
 
 	if (m_iPreBossHp == 2 && m_bUICheck == true)
 	{

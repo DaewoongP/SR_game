@@ -15,6 +15,7 @@ HRESULT CBullet::Ready_GameObject(_vec3 & vPos, _vec3& vDir)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pCollider->Set_Options({1.f, 1.f, 1.f}, COL_OBJ, false);
 	D3DXVec3Normalize(&m_vDir, &vDir);
 	m_pTex->Add_Anim(L"Idle", 0, 3, GetRandomFloat(1.f, 3.f), true);
 	m_pTex->Switch_Anim(L"Idle");
@@ -68,6 +69,10 @@ HRESULT CBullet::Add_Component(void)
 	pComponent = m_pTex = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Bullet", this));
 	NULL_CHECK_RETURN(m_pTex, E_FAIL);
 	m_vecComponent[ID_STATIC].push_back({ L"Bullet", pComponent });
+
+	pComponent = m_pCollider = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Collider", this));
+	NULL_CHECK_RETURN(m_pCollider, E_FAIL);
+	m_vecComponent[ID_DYNAMIC].push_back({ L"Collider", pComponent });
 
 	return S_OK;
 }

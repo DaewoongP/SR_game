@@ -29,7 +29,7 @@ protected:
 protected:
 	Engine::CRcTex*			m_pBuf;
 	Engine::CTexture*		m_pTex;
-
+	Engine::CCollider*		m_pCollider;
 	_vec3	m_vDir;
 	_float	m_fSpeed;
 

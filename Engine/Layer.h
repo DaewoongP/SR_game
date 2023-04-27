@@ -21,6 +21,7 @@ public:
 	HRESULT				Ready_Layer(void);
 	_int				Update_Layer(const _float& fTimeDelta);
 	void				LateUpdate_Layer(void);
+	list<pair<const _tchar*, CGameObject*>>* GetMapObject() { return &m_uMapObject; }
 
 public:
 	void				Delete_In_Layer();
