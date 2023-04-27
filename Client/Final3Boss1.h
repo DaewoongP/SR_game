@@ -30,7 +30,7 @@ protected:
 	void		Throw_Cube(const _float& fTimeDelta);
 
 	template<typename T>
-	void		MakeCube(const _tchar* pTag);
+	void		MakeCube(const _tchar* pTag, _int iIndex);
 
 protected:
 	Engine::CCollider*		m_pCollider;

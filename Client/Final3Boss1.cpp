@@ -8,11 +8,7 @@
 #include "Boss1Head.h"
 #include <functional>
 
-#include "MoveCube.h"
-#include "GravityCube.h"
-#include "CrackCube.h"
-#include "SwitchCube.h"
-#include "Spike.h"
+#include"FinalCube.h"
 
 #define	BOSS1SCALE 2.f
 #define SCALEADD for (int i = 0; i < clip->source.size(); i++)\
@@ -840,6 +836,7 @@ _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 	}
 		
 	Move(fTimeDelta);
+	Throw_Cube(fTimeDelta);
 
 	__super::Update_GameObject(fTimeDelta);
 	return 0;
@@ -931,43 +928,11 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 {
 	m_dwThrowCubeTime += fTimeDelta;
 
+	int iRandValue = rand() % 24;
+
 	if (1.f < m_dwThrowCubeTime)
 	{
-		int iRandValue = rand() % 5;
-
-		switch (iRandValue)
-		{
-		case 0 :
-			MakeCube<CMoveCube>(L"MoveCube");
-			break;
-		case 1:
-			MakeCube<CGravityCube>(L"GravityCube");
-			break;
-		case 2:
-			MakeCube<CCrackCube>(L"CrackCube");
-			break;
-		case 3:
-			MakeCube<CSwitchCube>(L"SwitchCube");
-			break;
-		}
-
-		iRandValue = rand() % 5;
-
-		switch (iRandValue)
-		{
-		case 0:
-			MakeCube<CMoveCube>(L"MoveCube");
-			break;
-		case 1:
-			MakeCube<CGravityCube>(L"GravityCube");
-			break;
-		case 2:
-			MakeCube<CCrackCube>(L"CrackCube");
-			break;
-		case 3:
-			MakeCube<CSwitchCube>(L"SwitchCube");
-			break;
-		}
+		MakeCube<CFinalCube>(L"FinalCube", iRandValue);
 
 		m_dwThrowCubeTime = 0;
 	}
@@ -990,7 +955,7 @@ void CFinal3Boss1::Throw_Cube(const _float & fTimeDelta)
 }
 
 template<typename T>
-inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
+inline void CFinal3Boss1::MakeCube(const _tchar * pTag, _int iIndex)
 {
 	CLayer* pLayer = Engine::Get_Layer(L"Layer_GameLogic");
 
@@ -1019,7 +984,7 @@ inline void CFinal3Boss1::MakeCube(const _tchar * pTag)
 		break;
 	}
 
-	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos);
+	CGameObject* pGameObject = T::Create(m_pGraphicDev, vPos, iIndex);
 	pGameObject->Sort_Component();
 	pLayer->Add_GameObject(pTag, pGameObject);
 	m_vecCube.push_back(pGameObject);
