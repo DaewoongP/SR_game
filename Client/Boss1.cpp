@@ -842,6 +842,13 @@ void CBoss1::Do_EndHead(const _float & fTimeDelta)
 
 void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 {
+	if (m_bLaugh)
+	{
+		PlaySound_Effect(L"34.wav", SOUND_TODO, 1.f);
+		m_bLaugh = false;
+	}
+	StopSound(SOUND_EFFECT_ENEMY);
+	PlaySound_Effect(L"11.wav", SOUND_EFFECT_ENEMY, 1.f);
 	m_pAnimation_Whole->SetAnimation(L"Finger_Ready");
 	m_pAnimation_Face->SetAnimation(L"Idle");
 	m_pAnimation_Face->SetAnimation(L"Smile");
@@ -855,6 +862,7 @@ void CBoss1::Do_SummonGiant(const _float & fTimeDelta)
 void CBoss1::Do_IngGiant(const _float & fTimeDelta)
 {
 	//특정 조건 성립시.
+
 	if (m_Player->m_vInfo[INFO_POS].x < 30)
 	{
 		//전부 아이들로 바꾸고 담상태로 ㄱㄱ
@@ -921,6 +929,7 @@ void CBoss1::ReadyPartten()
 	func.push_back(&CBoss1::Do_Rest);
 	func.push_back(&CBoss1::Do_EndHead);
 	func.push_back(&CBoss1::Do_Rest);
+	m_bLaugh = true;
 	funcAction.push_back(func);
 	func.clear();
 
