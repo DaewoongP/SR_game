@@ -1,0 +1,73 @@
+#pragma once
+#include "Include.h"
+#include "GameObject.h"
+#include "Boss1Parts.h"
+
+BEGIN(Engine)
+class CCollider;
+class CSlerpParticle;
+class CShadow;
+class CAnimation;
+END
+class CFinal3Boss1 :
+	public CGameObject
+{
+protected:
+	explicit CFinal3Boss1(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFinal3Boss1();
+
+public:
+	virtual HRESULT Ready_GameObject(_vec3& vPos) override;
+	virtual _int Update_GameObject(const _float& fTimeDelta) override;
+	virtual void LateUpdate_GameObject(void) override;
+	virtual void Render_GameObject(void) override;
+	virtual void SwapTrigger();
+	virtual void OnCollisionEnter(const class Collision* collision);
+	virtual void OnCollisionStay(const class Collision* collision);
+	_int	Get_Boss1Hp() { return m_iHp; }
+
+	void	Set_Throw(_bool bS) { m_bThrow = bS; }
+	void	Reset_Cubes() 
+	{ 
+		for (auto& iter : m_vecCube)
+			iter->m_bDead = true;
+	}
+protected:
+	HRESULT		Add_Component(void);
+	void		LerpClipAdd(AnimClip* clip,_int idx,_float itv, _vec3 osc, _vec3 csc,_vec3 otr,_vec3 ctr,_vec3 orot,_vec3 crot,_int count);
+	void		Move(const _float& fTimeDelta);
+	void		Throw_Cube(const _float& fTimeDelta);
+
+	void		MakeCube(const _tchar* pTag, _int iIndex);
+
+protected:
+	Engine::CCollider*		m_pCollider;
+	Engine::CSlerpParticle*	m_pSlerpParticle;
+	Engine::CShadow*		m_pShadow;
+	Engine::CAnimation*     m_pAnimation_Whole;
+	Engine::CAnimation*     m_pAnimation_Face;
+	
+	CTransform*				m_Player;
+	vector<CTransform*>		m_PartsVec;
+	_bool					m_bInit;
+
+	_bool					m_bTurn_x;
+	_bool					m_bTurn_y;
+	_float					m_fOffset_x;
+	_float					m_fOffset_y;
+	_vec3					m_vOriginPos;
+
+	//공격 사용 주기(보스가 공격을 그리 자주쓰진 않음.)
+	_float					m_dwRestTime;
+
+	_float					m_dwThrowCubeTime;
+	vector<CGameObject*>	m_vecCube;
+
+	_bool					m_bThrow;
+public:
+	static CFinal3Boss1*		Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3& vPos);
+
+protected:
+	virtual void Free(void) override;
+
+};

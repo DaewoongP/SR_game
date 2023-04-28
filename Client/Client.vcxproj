@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AD20B058-F676-48EF-9BAA-275E79B112D2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Client</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\</OutDir>
+    <IncludePath>$(SolutionDir)Engine\;$(DXSDK_DIR)Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Output\;$(DXSDK_DIR)Lib\x86\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Imgui/Header/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;dinput8.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Client.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BackCloud.h" />
+    <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BackGroundBase.h" />
+    <ClInclude Include="BackgroundSpr.h" />
+    <ClInclude Include="BackGroundToolScene.h" />
+    <ClInclude Include="Bat.h" />
+    <ClInclude Include="Boss1.h" />
+    <ClInclude Include="Boss1Hand.h" />
+    <ClInclude Include="Boss1Head.h" />
+    <ClInclude Include="Boss1HeadSub.h" />
+    <ClInclude Include="Boss1Parts.h" />
+    <ClInclude Include="Boss2.h" />
+    <ClInclude Include="Boss2Body.h" />
+    <ClInclude Include="Boss2Camera.h" />
+    <ClInclude Include="Boss3Camera.h" />
+    <ClInclude Include="Boss3DeadCamera.h" />
+    <ClInclude Include="BossDeadCamera.h" />
+    <ClInclude Include="DefaultBullet.h" />
+    <ClInclude Include="DirectCamera.h" />
+    <ClInclude Include="Boss2Chain.h" />
+    <ClInclude Include="Boss2Eye.h" />
+    <ClInclude Include="Boss2EyeBrow.h" />
+    <ClInclude Include="Boss2Face.h" />
+    <ClInclude Include="Boss2Foot.h" />
+    <ClInclude Include="Boss2Hand.h" />
+    <ClInclude Include="Boss2Jaw.h" />
+    <ClInclude Include="Boss2JointSpot.h" />
+    <ClInclude Include="Boss2Nose.h" />
+    <ClInclude Include="Boss2Parts.h" />
+    <ClInclude Include="Boss2Stone.h" />
+    <ClInclude Include="Boss2Tail.h" />
+    <ClInclude Include="Boss2TailBody.h" />
+    <ClInclude Include="Boss3Eye.h" />
+    <ClInclude Include="Boss3Eyebrow.h" />
+    <ClInclude Include="Boss3EyePupil.h" />
+    <ClInclude Include="Boss3Hand.h" />
+    <ClInclude Include="Boss3Mouth.h" />
+    <ClInclude Include="Boss3HandPart.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ChapterCloudTex.h" />
+    <ClInclude Include="ChapterTex.h" />
+    <ClInclude Include="DynamicCamera.h" />
+    <ClInclude Include="EvilBat.h" />
+    <ClInclude Include="Final3Boss1.h" />
+    <ClInclude Include="FinalCamera_1_1.h" />
+    <ClInclude Include="FinalCube.h" />
+    <ClInclude Include="FinalMonkeyCube.h" />
+    <ClInclude Include="FinalPD.h" />
+    <ClInclude Include="FinalStage3.h" />
+    <ClInclude Include="FinalUI.h" />
+    <ClInclude Include="FinalUI_B.h" />
+    <ClInclude Include="FireBullet.h" />
+    <ClInclude Include="Floor1.h" />
+    <ClInclude Include="FoodCube.h" />
+    <ClInclude Include="HpUI.h" />
+    <ClInclude Include="ImguiBG.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="Cloud.h" />
+    <ClInclude Include="CrackCube.h" />
+    <ClInclude Include="DefaultBG.h" />
+    <ClInclude Include="DefaultCube.h" />
+    <ClInclude Include="DefaultGrid.h" />
+    <ClInclude Include="DefaultUnit.h" />
+    <ClInclude Include="Fade.h" />
+    <ClInclude Include="FinalPortal.h" />
+    <ClInclude Include="FinalPortalFloor.h" />
+    <ClInclude Include="FinalStage1.h" />
+    <ClInclude Include="GiantHand.h" />
+    <ClInclude Include="GravityCube.h" />
+    <ClInclude Include="Fireball.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Laser.h" />
+    <ClInclude Include="LaserTurret.h" />
+    <ClInclude Include="FinalStoneCube.h" />
+    <ClInclude Include="LightningCloud.h" />
+    <ClInclude Include="LoadingTex.h" />
+    <ClInclude Include="LogoCamera.h" />
+    <ClInclude Include="MapDeco.h" />
+    <ClInclude Include="MenuCubeSpr.h" />
+    <ClInclude Include="MenuSmoke.h" />
+    <ClInclude Include="MiniGame1Portal.h" />
+    <ClInclude Include="MiniGameBat.h" />
+    <ClInclude Include="MiniGamePig.h" />
+    <ClInclude Include="MiniStage1.h" />
+    <ClInclude Include="MiniStage2.h" />
+    <ClInclude Include="MiniTopdee.h" />
+    <ClInclude Include="MoveCamera.h" />
+    <ClInclude Include="PatternParts.h" />
+    <ClInclude Include="PDBackCode.h" />
+    <ClInclude Include="PDErroe.h" />
+    <ClInclude Include="PDGoal.h" />
+    <ClInclude Include="PDSadToodoo.h" />
+    <ClInclude Include="PDSemicolon.h" />
+    <ClInclude Include="PortalCube.h" />
+    <ClInclude Include="PreStage.h" />
+    <ClInclude Include="Produce1BackCode.h" />
+    <ClInclude Include="ProduceErroeWindow.h" />
+    <ClInclude Include="ProduceObject.h" />
+    <ClInclude Include="ProduceScene.h" />
+    <ClInclude Include="ProduceToodoo.h" />
+    <ClInclude Include="ProduceToodooHand.h" />
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Semicolon.h" />
+    <ClInclude Include="ShiningStar.h" />
+    <ClInclude Include="Boss3.h" />
+    <ClInclude Include="ShootingCamera.h" />
+    <ClInclude Include="ShootingPlayer.h" />
+    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Stage10.h" />
+    <ClInclude Include="Stage1TutorialCamera.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Stage4.h" />
+    <ClInclude Include="Stage7.h" />
+    <ClInclude Include="Stage5.h" />
+    <ClInclude Include="Stage6.h" />
+    <ClInclude Include="Stage8.h" />
+    <ClInclude Include="Stage9.h" />
+    <ClInclude Include="StageCamera.h" />
+    <ClInclude Include="GroundGrid.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImguiMgr.h" />
+    <ClInclude Include="ImguiStage.h" />
+    <ClInclude Include="ImguiUnit.h" />
+    <ClInclude Include="imgui_impl_dx9.h" />
+    <ClInclude Include="imgui_impl_win32.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="InstallCube.h" />
+    <ClInclude Include="InstallGrid.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="KeyCube.h" />
+    <ClInclude Include="Loading.h" />
+    <ClInclude Include="Logo.h" />
+    <ClInclude Include="MainApp.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Pig.h" />
+    <ClInclude Include="MoveCube.h" />
+    <ClInclude Include="PinkCloud.h" />
+    <ClInclude Include="StarBox.h" />
+    <ClInclude Include="SwallowPortal.h" />
+    <ClInclude Include="Switch.h" />
+    <ClInclude Include="SwitchCube.h" />
+    <ClInclude Include="SwordBullet.h" />
+    <ClInclude Include="TexCube.h" />
+    <ClInclude Include="Theme1_Cloud.h" />
+    <ClInclude Include="Theme1_Cow.h" />
+    <ClInclude Include="Theme1_Cube.h" />
+    <ClInclude Include="Theme1_Gradation.h" />
+    <ClInclude Include="Theme1_Floor.h" />
+    <ClInclude Include="Theme1_House.h" />
+    <ClInclude Include="Theme1_Nibble.h" />
+    <ClInclude Include="Theme1_Sun.h" />
+    <ClInclude Include="Theme1_Tree.h" />
+    <ClInclude Include="Theme1_Wall.h" />
+    <ClInclude Include="Theme2_BatStatue.h" />
+    <ClInclude Include="Theme2_BigLeaf.h" />
+    <ClInclude Include="Theme2_Bush_0.h" />
+    <ClInclude Include="Theme2_Bush_1.h" />
+    <ClInclude Include="Theme2_Bush_2.h" />
+    <ClInclude Include="Theme2_Bush_3.h" />
+    <ClInclude Include="Theme2_Bush_4.h" />
+    <ClInclude Include="Theme2_Gradation.h" />
+    <ClInclude Include="Theme2_LongTree.h" />
+    <ClInclude Include="Theme2_PigStatue_0.h" />
+    <ClInclude Include="Theme2_PigStatue_1.h" />
+    <ClInclude Include="Theme3_AlphaPlate.h" />
+    <ClInclude Include="Theme3_BrokenPlate.h" />
+    <ClInclude Include="Theme3_Cloud.h" />
+    <ClInclude Include="Theme3_Gradation.h" />
+    <ClInclude Include="Theme3_Moss.h" />
+    <ClInclude Include="Theme3_Pattern_0.h" />
+    <ClInclude Include="Theme3_Pattern_1.h" />
+    <ClInclude Include="Theme3_Plate.h" />
+    <ClInclude Include="Theme3_SemicolonPlate.h" />
+    <ClInclude Include="Theme4_Chimney.h" />
+    <ClInclude Include="Theme4_Gear16.h" />
+    <ClInclude Include="Theme4_Gear8.h" />
+    <ClInclude Include="Theme4_Gradation.h" />
+    <ClInclude Include="Theme4_Smoke_0.h" />
+    <ClInclude Include="Theme4_Smoke_1.h" />
+    <ClInclude Include="Thirddee.h" />
+    <ClInclude Include="Tookee.h" />
+    <ClInclude Include="ThirdCamera.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="Toodee.h" />
+    <ClInclude Include="Topdee.h" />
+    <ClInclude Include="Portal.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Spike.h" />
+    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="StageBG.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TopdeeJoint.h" />
+    <ClInclude Include="TopdeeParts.h" />
+    <ClInclude Include="UICamera.h" />
+    <ClInclude Include="Water.h" />
+    <ClInclude Include="WaterPipe.h" />
+    <ClInclude Include="Theme.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BackCloud.cpp" />
+    <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BackGroundBase.cpp" />
+    <ClCompile Include="BackgroundSpr.cpp" />
+    <ClCompile Include="BackGroundToolScene.cpp" />
+    <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Boss1.cpp" />
+    <ClCompile Include="Boss1Hand.cpp" />
+    <ClCompile Include="Boss1Head.cpp" />
+    <ClCompile Include="Boss1HeadSub.cpp" />
+    <ClCompile Include="Boss1Parts.cpp" />
+    <ClCompile Include="Boss2.cpp" />
+    <ClCompile Include="Boss2Body.cpp" />
+    <ClCompile Include="Boss2Camera.cpp" />
+    <ClCompile Include="Boss3Camera.cpp" />
+    <ClCompile Include="Boss3DeadCamera.cpp" />
+    <ClCompile Include="BossDeadCamera.cpp" />
+    <ClCompile Include="DefaultBullet.cpp" />
+    <ClCompile Include="DirectCamera.cpp" />
+    <ClCompile Include="Boss2Chain.cpp" />
+    <ClCompile Include="Boss2Eye.cpp" />
+    <ClCompile Include="Boss2EyeBrow.cpp" />
+    <ClCompile Include="Boss2Face.cpp" />
+    <ClCompile Include="Boss2Foot.cpp" />
+    <ClCompile Include="Boss2Hand.cpp" />
+    <ClCompile Include="Boss2Jaw.cpp" />
+    <ClCompile Include="Boss2JointSpot.cpp" />
+    <ClCompile Include="Boss2Nose.cpp" />
+    <ClCompile Include="Boss2Parts.cpp" />
+    <ClCompile Include="Boss2Stone.cpp" />
+    <ClCompile Include="Boss2Tail.cpp" />
+    <ClCompile Include="Boss2TailBody.cpp" />
+    <ClCompile Include="Boss3Eye.cpp" />
+    <ClCompile Include="Boss3Eyebrow.cpp" />
+    <ClCompile Include="Boss3EyePupil.cpp" />
+    <ClCompile Include="Boss3Hand.cpp" />
+    <ClCompile Include="Boss3Mouth.cpp" />
+    <ClCompile Include="Boss3HandPart.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ChapterCloudTex.cpp" />
+    <ClCompile Include="ChapterTex.cpp" />
+    <ClCompile Include="DynamicCamera.cpp" />
+    <ClCompile Include="EvilBat.cpp" />
+    <ClCompile Include="Final3Boss1.cpp" />
+    <ClCompile Include="FinalCamera_1_1.cpp" />
+    <ClCompile Include="FinalCube.cpp" />
+    <ClCompile Include="FinalMonkeyCube.cpp" />
+    <ClCompile Include="FinalPD.cpp" />
+    <ClCompile Include="FinalStage3.cpp" />
+    <ClCompile Include="FinalUI.cpp" />
+    <ClCompile Include="FinalUI_B.cpp" />
+    <ClCompile Include="FireBullet.cpp" />
+    <ClCompile Include="Floor1.cpp" />
+    <ClCompile Include="FoodCube.cpp" />
+    <ClCompile Include="HpUI.cpp" />
+    <ClCompile Include="ImguiBG.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Cloud.cpp" />
+    <ClCompile Include="CrackCube.cpp" />
+    <ClCompile Include="DefaultBG.cpp" />
+    <ClCompile Include="DefaultCube.cpp" />
+    <ClCompile Include="DefaultGrid.cpp" />
+    <ClCompile Include="Fade.cpp" />
+    <ClCompile Include="FinalPortal.cpp" />
+    <ClCompile Include="FinalPortalFloor.cpp" />
+    <ClCompile Include="FinalStage1.cpp" />
+    <ClCompile Include="GiantHand.cpp" />
+    <ClCompile Include="GravityCube.cpp" />
+    <ClCompile Include="Fireball.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="LaserTurret.cpp" />
+    <ClCompile Include="FinalStoneCube.cpp" />
+    <ClCompile Include="LightningCloud.cpp" />
+    <ClCompile Include="LoadingTex.cpp" />
+    <ClCompile Include="LogoCamera.cpp" />
+    <ClCompile Include="MapDeco.cpp" />
+    <ClCompile Include="MenuCubeSpr.cpp" />
+    <ClCompile Include="MenuSmoke.cpp" />
+    <ClCompile Include="MiniGame1Portal.cpp" />
+    <ClCompile Include="MiniGameBat.cpp" />
+    <ClCompile Include="MiniGamePig.cpp" />
+    <ClCompile Include="MiniStage1.cpp" />
+    <ClCompile Include="MiniStage2.cpp" />
+    <ClCompile Include="MiniTopdee.cpp" />
+    <ClCompile Include="MoveCamera.cpp" />
+    <ClCompile Include="PatternParts.cpp" />
+    <ClCompile Include="PDBackCode.cpp" />
+    <ClCompile Include="PDErroe.cpp" />
+    <ClCompile Include="PDGoal.cpp" />
+    <ClCompile Include="PDSadToodoo.cpp" />
+    <ClCompile Include="PDSemicolon.cpp" />
+    <ClCompile Include="PortalCube.cpp" />
+    <ClCompile Include="PreStage.cpp" />
+    <ClCompile Include="Produce1BackCode.cpp" />
+    <ClCompile Include="ProduceErroeWindow.cpp" />
+    <ClCompile Include="ProduceObject.cpp" />
+    <ClCompile Include="ProduceScene.cpp" />
+    <ClCompile Include="ProduceToodoo.cpp" />
+    <ClCompile Include="ProduceToodooHand.cpp" />
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Semicolon.cpp" />
+    <ClCompile Include="ShiningStar.cpp" />
+    <ClCompile Include="Boss3.cpp" />
+    <ClCompile Include="ShootingCamera.cpp" />
+    <ClCompile Include="ShootingPlayer.cpp" />
+    <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Stage10.cpp" />
+    <ClCompile Include="Stage1TutorialCamera.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Stage4.cpp" />
+    <ClCompile Include="Stage7.cpp" />
+    <ClCompile Include="Stage5.cpp" />
+    <ClCompile Include="Stage6.cpp" />
+    <ClCompile Include="Stage8.cpp" />
+    <ClCompile Include="Stage9.cpp" />
+    <ClCompile Include="StageCamera.cpp" />
+    <ClCompile Include="GroundGrid.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImguiMgr.cpp" />
+    <ClCompile Include="ImguiStage.cpp" />
+    <ClCompile Include="ImguiUnit.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx9.cpp" />
+    <ClCompile Include="imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="InstallCube.cpp" />
+    <ClCompile Include="InstallGrid.cpp" />
+    <ClCompile Include="Key.cpp" />
+    <ClCompile Include="KeyCube.cpp" />
+    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="Logo.cpp" />
+    <ClCompile Include="MainApp.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Pig.cpp" />
+    <ClCompile Include="PinkCloud.cpp" />
+    <ClCompile Include="StarBox.cpp" />
+    <ClCompile Include="SwallowPortal.cpp" />
+    <ClCompile Include="Switch.cpp" />
+    <ClCompile Include="SwitchCube.cpp" />
+    <ClCompile Include="SwordBullet.cpp" />
+    <ClCompile Include="TexCube.cpp" />
+    <ClCompile Include="Theme1_Cloud.cpp" />
+    <ClCompile Include="Theme1_Cow.cpp" />
+    <ClCompile Include="Theme1_Cube.cpp" />
+    <ClCompile Include="Theme1_Gradation.cpp" />
+    <ClCompile Include="Theme1_Floor.cpp" />
+    <ClCompile Include="Theme1_House.cpp" />
+    <ClCompile Include="Theme1_Nibble.cpp" />
+    <ClCompile Include="Theme1_Sun.cpp" />
+    <ClCompile Include="Theme1_Tree.cpp" />
+    <ClCompile Include="Theme1_Wall.cpp" />
+    <ClCompile Include="Theme2_BatStatue.cpp" />
+    <ClCompile Include="Theme2_BigLeaf.cpp" />
+    <ClCompile Include="Theme2_Bush_0.cpp" />
+    <ClCompile Include="Theme2_Bush_1.cpp" />
+    <ClCompile Include="Theme2_Bush_2.cpp" />
+    <ClCompile Include="Theme2_Bush_3.cpp" />
+    <ClCompile Include="Theme2_Bush_4.cpp" />
+    <ClCompile Include="Theme2_Gradation.cpp" />
+    <ClCompile Include="Theme2_LongTree.cpp" />
+    <ClCompile Include="Theme2_PigStatue_0.cpp" />
+    <ClCompile Include="Theme2_PigStatue_1.cpp" />
+    <ClCompile Include="Theme3_AlphaPlate.cpp" />
+    <ClCompile Include="Theme3_BrokenPlate.cpp" />
+    <ClCompile Include="Theme3_Cloud.cpp" />
+    <ClCompile Include="Theme3_Gradation.cpp" />
+    <ClCompile Include="Theme3_Moss.cpp" />
+    <ClCompile Include="Theme3_Pattern_0.cpp" />
+    <ClCompile Include="Theme3_Pattern_1.cpp" />
+    <ClCompile Include="Theme3_Plate.cpp" />
+    <ClCompile Include="Theme3_SemicolonPlate.cpp" />
+    <ClCompile Include="Theme4_Chimney.cpp" />
+    <ClCompile Include="Theme4_Gear16.cpp" />
+    <ClCompile Include="Theme4_Gear8.cpp" />
+    <ClCompile Include="Theme4_Gradation.cpp" />
+    <ClCompile Include="Theme4_Smoke_0.cpp" />
+    <ClCompile Include="Theme4_Smoke_1.cpp" />
+    <ClCompile Include="Thirddee.cpp" />
+    <ClCompile Include="Tookee.cpp" />
+    <ClCompile Include="ThirdCamera.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Toodee.cpp" />
+    <ClCompile Include="Topdee.cpp" />
+    <ClCompile Include="MoveCube.cpp" />
+    <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Spike.cpp" />
+    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="StageBG.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Defaultunit.cpp" />
+    <ClCompile Include="TopdeeJoint.cpp" />
+    <ClCompile Include="TopdeeParts.cpp" />
+    <ClCompile Include="UICamera.cpp" />
+    <ClCompile Include="Water.cpp" />
+    <ClCompile Include="WaterPipe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rect.hlsl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
