@@ -58,7 +58,7 @@ HRESULT CFinalStage3::Ready_Scene(void)
 
 _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 {
-	if (m_pBoss->m_iHp <= 80.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
+	if (m_pBoss->m_iHp <= 30.f && !m_SpwanCube && m_bMonkeySpawnTrigger)
 	{
 		m_pBoss->Set_Throw(false);
 		m_StageState = F3_SpawnCube;
@@ -67,6 +67,7 @@ _int CFinalStage3::Update_Scene(const _float & fTimeDelta)
 		dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Pos_Rot(m_ShootingPlayer->m_pTransform->m_vInfo[INFO_POS], m_ShootingPlayer->m_pTransform->m_vAngle);
 		dynamic_cast<CShootingPlayer*>(m_ShootingPlayer)->Set_Shoot(false);
 	}
+
 	Do_SwapPlayer(fTimeDelta);
 	DoLerpShootingPlayer(fTimeDelta);
 	(this->*funcAction[m_StageState])(fTimeDelta);

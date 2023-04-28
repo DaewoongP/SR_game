@@ -57,7 +57,7 @@ public:
 	_tchar					m_pTag[MAX_STR];
 	class CTransform*	m_pTransform;
 	_bool					m_bDead;
-	_int m_iHp;
+	_float					m_iHp;
 	_bool					m_bUseRender = true;
 	_bool					m_bUseUpdate = true;
 protected:

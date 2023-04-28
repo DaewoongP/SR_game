@@ -50,7 +50,10 @@ HRESULT CFinal3Boss1::Ready_GameObject(_vec3 & vPos)
 _int CFinal3Boss1::Update_GameObject(const _float & fTimeDelta)
 {
 	if (m_bDead)
-		return OBJ_DEAD;
+	{
+		return STAGE_END;
+	}
+		
 
 	if (m_bInit)
 	{
@@ -875,21 +878,21 @@ void CFinal3Boss1::OnCollisionEnter(const Collision * collision)
 	if (!lstrcmp(collision->otherObj->m_pTag, L"Bullet") ||
 		!lstrcmp(collision->otherObj->m_pTag, L"FireBullet"))
 	{
-		--m_iHp;
+		m_iHp -= 0.5f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 	}		
 	if (!lstrcmp(collision->otherObj->m_pTag, L"SwordBullet"))
 	{
-		m_iHp -= 2;
+		m_iHp -= 1;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 	}
 	if (!lstrcmp(collision->otherObj->m_pTag, L"ShootingLaser"))
 	{
-		m_iHp -= 1.f;
+		m_iHp -= 0.5f;
 		collision->otherObj->m_pTransform->m_vInfo[INFO_POS].y = 220.f;
 		if (Get_GameObject(L"Layer_GameLogic", L"ShootingLaser")->Get_Damage() == true)
 		{
-			m_iHp -= 3.f;
+			m_iHp -= 2.f;
 		}
 	}
 }

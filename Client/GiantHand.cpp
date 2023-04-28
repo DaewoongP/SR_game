@@ -21,6 +21,7 @@ HRESULT CGiantHand::Ready_GameObject(_vec3 & vPos)
 	m_pCollider->Set_BoundingBox({1,35,35});
 	m_pCollider->Set_BoundOffset(_vec3(0,-8,+0.5f));
 	m_pTransform->m_vInfo[INFO_POS] = vPos;
+	m_pTransform->m_vInfo[INFO_POS].x -= 4;
 	m_pTransform->m_vScale = _vec3(30, 30, 30);
 	m_pTransform->m_vAngle = _vec3(D3DXToRadian(-90), D3DXToRadian(90), 0);
 	m_vSummonPos = vPos;
